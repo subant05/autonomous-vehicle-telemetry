@@ -6,7 +6,6 @@ app.use({device(req, next){
     next()
 }})
 app.use({inbound(data,next){
-    console.log(data)
     let newData
     if(!isNaN(data))
         newData = new Date(parseInt(data)).toTimeString()
