@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <style>
+            #messageWrapper{
+                display: flex;
+                flex-direction: row;
+            }
+            #messageWrapper div{
+                width:50%
+            }
+        </style>
+    </head>
+  <body>
+    <select id="channel">
+      <option value="A">A</option>
+      <option value="B">B</option>
+    </select>
+    <input type="text" id="sendField" /><button id="sendButton">Send</button>
+    <div id="messageWrapper">
+        <div id="messageAreaA"></div>
+        <div id="messageAreaB"></div>
+    </div>
+
+  </body>
+  <script>
+    const messageAreaA = document.querySelector("#messageAreaA");
+    const messageAreaB = document.querySelector("#messageAreaB");
+    const sendField = document.querySelector("#sendField");
+    const sendButton = document.querySelector("#sendButton");
+    const channel = document.querySelector("#channel");
+
+    const socket = new WebSocket("ws://localhost:8080");
+
+    socket.addEventListener("open", function (event) {
+      socket.addEventListener("message", (message) => {
+        const data = JSON.parse(message.data)
+        if(data.subject && data.subject === "B")
+            messageAreaB.innerHTML = `${messageAreaB.innerHTML}<br/>${data.value ? data.value : data}`;
+
+        else 
+            messageAreaA.innerHTML = `${messageAreaA.innerHTML}<br/>${
+            data.value ? data.value : data
+            }`;
+      });
+
+      sendButton.addEventListener(
+        "click",
+        (event) => {
+          socket.send(JSON.stringify({subject:channel.value, value:sendField.value}));
+          sendField.value = "";
+        },
+        false
+      );
+    });
+  </script>
+</html>
