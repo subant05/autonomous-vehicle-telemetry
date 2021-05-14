@@ -4,19 +4,19 @@ const WebSocket = require("ws");
 
 class GreatRedSpot {
   constructor({ port = 8080 } = {}) {
-    this.inbound = [];
-    this.outbound = [];
-    this.device = [];
+    this.wsInbound = [];
+    this.wsOutbound = [];
+    this.restful = [];
     this.port = port;
-    this.socket;
+    this.sockets=[]
 
-    this.server = http.createServer(this.deviceHandler.bind(this));
+    this.server = http.createServer(this.restfulHandler.bind(this));
     const WebSocketServer = new WebSocket.Server({ server: this.server });
     WebSocketServer.on("connection", (socket) => {
-      this.socket = socket;
-      socket.on("message", this.inboundHandler.bind(this));
+      this.sockets.push(socket);
+      socket.on("message", this.wsInboundHandler.bind(this));
       socket.on("open", this.openHandler.bind(this));
-      socket.on("close", this.closeHandler.bind(this));
+      socket.on("close", this.closeHandler.bind(this, socket));
     });
   }
 
@@ -25,44 +25,37 @@ class GreatRedSpot {
     this.send(Date.now());
   }
 
-  closeHandler() {
-    console.log("disconnected");
+  closeHandler(socket) {
+    return function cb(){
+        console.log("disconnected");
+        this.sockets.splice(this.sockets.findIndex(s=>s===socket), 1)
+    }
   }
 
-  inboundHandler(message) {
-    this.executePlugins(this.inbound, message);
+  wsInboundHandler(message) {
+    this.executePlugins(this.wsInbound, message);
   }
 
-  deviceHandler(req, res) {
-    if (req.url.endsWith("favicon.ico")) {
-      res.status = 204;
-      res.end();
-    } else
-      this.executePlugins(this.device, req, (data) => {
-        switch (data.error) {
-          case true:
-            res.statusCode = 500;
-            res.end("Error");
-            break;
-          default:
-            res.statusCode = 200;
-            res.end("success");
-        }
+  restfulHandler(req, res) {
+      console.log(req.method)
+      this.executePlugins(this.restful, {req, res}, () => {
+            if(!res.stream)
+                res.end(res.body);
       });
   }
 
   send(data) {
-    this.executePlugins(this.outbound, data, () => this.socket.send(data));
+    this.executePlugins(this.wsOutbound, data, () => this.sockets.forEach(socket=>socket.send(JSON.stringify(data))));
   }
 
-  run() {
-    this.server.listen(this.port);
+  run(port) {
+    this.server.listen(port || this.port);
   }
 
   use(plugins) {
-    if (plugins.device) this.device.push(plugins.device);
-    if (plugins.inbound) this.inbound.push(plugins.inbound);
-    if (plugins.outbound) this.outbound.unshift(plugins.outbound);
+    if (plugins.restful) this.restful.push(plugins.restful);
+    if (plugins.wsInbound) this.wsInbound.push(plugins.wsInbound);
+    if (plugins.wsOutbound) this.wsOutbound.unshift(plugins.wsOutbound);
   }
 
   executePlugins(plugins, data, final) {
