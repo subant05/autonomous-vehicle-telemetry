@@ -1,6 +1,7 @@
 const { throws } = require("assert");
 const http = require("http");
 const WebSocket = require("ws");
+const fs = require('fs')
 
 class GreatRedSpot {
   constructor({ port = 8080 } = {}) {
@@ -56,6 +57,23 @@ class GreatRedSpot {
     if (plugins.restful) this.restful.push(plugins.restful);
     if (plugins.wsInbound) this.wsInbound.push(plugins.wsInbound);
     if (plugins.wsOutbound) this.wsOutbound.unshift(plugins.wsOutbound);
+  }
+
+  renderHTML(req, res, file, cb=()=>{}) {
+    res.stream = true
+    fs.createReadStream(`${__dirname}/../../app/${file}`)
+        .on('open', function () {
+            res.status = 200
+            this.pipe(res);
+        })
+        .on('error', function(err) {
+            res.end(err);
+        })
+        .on("finish", function(){
+            res.end()
+        })
+    cb()
+
   }
 
   executePlugins(plugins, data, final) {
