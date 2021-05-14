@@ -1,0 +1,14 @@
+{
+  "name": "jupiter-web-server",
+  "version": "0.1.0",
+  "description": "Web service for Jupiter hardware nodes and web application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Blue River Technologies",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^7.4.5"
+  }
+}
