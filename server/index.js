@@ -1,13 +1,13 @@
 const grs = require('./middleware')
 const router = require('./plugins/router')()
 
-router.add("/", (req,res, mw)=>{
+router.add("get","/", (req,res, mw)=>{
         mw.renderHTML(req,res,"index.html")
     })
-    .add("/device", (req, res, mw)=>{
+    .add("get","/device", (req, res, mw)=>{
         mw.renderHTML(req,res,"device.html", ()=>mw.send ({value:`A device sent data at: ${new Date()}`}))
     })
-    .redirect("*","/")
+    .redirect("get","*","/")
 
 const app =  grs({port:8080})
 app.run()

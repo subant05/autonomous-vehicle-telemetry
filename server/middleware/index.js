@@ -38,7 +38,6 @@ class GreatRedSpot {
   }
 
   restfulHandler(req, res) {
-      console.log(req.method)
       this.executePlugins(this.restful, {req, res}, () => {
             if(!res.stream)
                 res.end(res.body);
@@ -85,7 +84,7 @@ class GreatRedSpot {
 
         if (update) data = update;
 
-        iterator(++index);
+        iterator.call(this, ++index);
       });
     };
     iterator(0);
