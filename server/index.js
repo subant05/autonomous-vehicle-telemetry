@@ -14,9 +14,10 @@ const PORT = process.env.PORT || 4000;
 
 const router = express.Router();
 
-function returnHTML(file) {
+function returnHTML() {
   return function (req, res, next) {
-    fs.createReadStream(`${__dirname}/../app/${file}`)
+    const file = req.url==="/" ? "/index.html" : req.url
+    fs.createReadStream(`${__dirname}/../dist${file}`)
       .on("open", function () {
         res.status = 200;
         this.pipe(res);
@@ -28,14 +29,14 @@ function returnHTML(file) {
         res.end();
         next();
       });
-    res.send("home page");
+    // res.send("home page");
   };
 }
 
 // Web App.
-router.get("/", returnHTML("index.html"));
+router.get("", returnHTML("index.html"));
 // Devices.
-router.get("/device", async function (req, res) {
+router.get("/api", async function (req, res) {
   await pubsub.publish(DEVICE_MESSAGE, {
     deviceMessage: `From Device ${new Date()}`,
   });
