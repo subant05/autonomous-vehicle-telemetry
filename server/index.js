@@ -2,67 +2,27 @@ import express from "express";
 import { createServer } from "http";
 import { ApolloServer } from "apollo-server-express";
 import { PubSub, withFilter } from "apollo-server";
-import fs from "fs";
+import morgan from 'morgan';
+import path from 'path';
+import apiRouter from './api-routes'
+import graphQlServer from './graphql'
 
 const pubsub = new PubSub();
 const DEVICE_MESSAGE = Symbol.for("DEVICE_MESSAGE");
-
-import typeDefs from "./graphql/schema";
-import resolvers from "./graphql/resolvers";
+const eventTypes = {DEVICE_MESSAGE}
 
 const PORT = process.env.PORT || 4000;
 
-const router = express.Router();
-
-function returnHTML() {
-  return function (req, res, next) {
-    const file = req.url==="/" ? "/index.html" : req.url
-    fs.createReadStream(`${__dirname}/../dist${file}`)
-      .on("open", function () {
-        res.status = 200;
-        this.pipe(res);
-      })
-      .on("error", function (err) {
-        res.end(err);
-      })
-      .on("finish", function () {
-        res.end();
-        next();
-      });
-    // res.send("home page");
-  };
-}
-
-// Web App.
-router.get("", returnHTML("index.html"));
-// Devices.
-router.get("/api", async function (req, res) {
-  await pubsub.publish(DEVICE_MESSAGE, {
-    deviceMessage: `From Device ${new Date()}`,
-  });
-  res.send("device");
-});
-
-
 const app = express();
-app.use("/", router);
+const apolloServer = graphQlServer({pubsub,events:eventTypes,app})
 
-const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: async ({ req }) => {
-    return {
-      pubsub,
-      events: {
-        DEVICE_MESSAGE,
-      },
-    };
-  },
-});
-apolloServer.applyMiddleware({ app });
-
-// 404
-app.use(returnHTML("index.html"));
+app.use(morgan('dev'));
+app.use("/api", apiRouter({pubsub, eventTypes }));
+app.use("/", express.static(path.join(__dirname, "../dist")));
+app.use(express.static('dist'));
+app.get('*', function (req, res) {
+    res.sendFile(path.join( `${__dirname}../../dist/index.html`));
+ });
 
 const httpServer = createServer(app);
 apolloServer.installSubscriptionHandlers(httpServer);
