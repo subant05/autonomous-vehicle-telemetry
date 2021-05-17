@@ -32,7 +32,7 @@ function returnHTML(file) {
   };
 }
 
-// Route.
+// Web App.
 router.get("/", returnHTML("index.html"));
 // Devices.
 router.get("/device", async function (req, res) {
@@ -41,6 +41,8 @@ router.get("/device", async function (req, res) {
   });
   res.send("device");
 });
+
+
 const app = express();
 app.use("/", router);
 
