@@ -1,0 +1,40 @@
+.container__content{
+    display: grid;
+    grid-template-columns: 200px calc(100% - 200px);
+    grid-template-areas: "side-nav main-content";
+    grid-gap: 0px;
+
+    .nav__side-nav,
+    .container__content-main{
+        padding: 0 20px;
+    }
+
+    .nav__side-nav{
+        height: 100vh;
+        border-right: 1px solid #ccc;
+        top:0px;
+        overflow: hidden;
+        display: none;
+
+        a { 
+            display:block;
+            border-bottom: 1px solid #ccc;
+            &:last-of-type {
+                border:none;
+            }
+            &:hover{
+                background-color: blue;
+                .mat-list-item{
+                    color:var(--white);
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width:851px) {
+        .nav__side-nav{
+            display:block;
+        }
+    }
+}
+

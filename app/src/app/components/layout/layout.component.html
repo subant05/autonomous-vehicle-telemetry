@@ -1,0 +1,12 @@
+<div class="container__content">
+    <nav class="nav__side-nav">
+        <mat-list>
+            <a [routerLink]='["/"]'><mat-list-item>Dashboard</mat-list-item></a> 
+            <a [routerLink]='["/devices"]'><mat-list-item>Devices</mat-list-item></a> 
+        </mat-list>
+    </nav>
+    <div class="container__content-main">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
