@@ -14,6 +14,13 @@ const eventTypes = {DEVICE_MESSAGE}
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
+
+app.use(express.json())
 const apolloServer = graphQlServer({pubsub,events:eventTypes,app})
 
 app.use(morgan('dev'));
