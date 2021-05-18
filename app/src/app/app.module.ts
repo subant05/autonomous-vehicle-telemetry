@@ -51,6 +51,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { DevicesComponent } from './pages/devices/devices.component';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { DevicesComponent } from './pages/devices/devices.component';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    GraphQLModule,
     // 
   ],
   providers: [],
