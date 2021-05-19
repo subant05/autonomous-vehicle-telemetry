@@ -3,6 +3,9 @@
     grid-template-columns: 200px calc(100% - 200px);
     grid-template-areas: "side-nav main-content";
     grid-gap: 0px;
+    top: 75px;
+    position: absolute;
+    width: 100%;
 
     .nav__side-nav,
     .container__content-main{
@@ -10,9 +13,10 @@
     }
 
     .nav__side-nav{
-        height: 100vh;
+        height: calc(100vh - 75px);
+        position: sticky;
+        top: 75px;
         border-right: 1px solid #ccc;
-        top:0px;
         overflow: hidden;
         display: none;
 
