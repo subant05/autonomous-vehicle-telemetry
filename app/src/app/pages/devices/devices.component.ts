@@ -6,12 +6,24 @@ const COMMENTS_SUBSCRIPTION = gql`
 subscription deviceMessage {
   deviceMessage{
     timestamp
-    topic
-    type
-    msg
-    
+    topic 
+    msg{
+      header{
+        id
+        timestamp
+      	seq
+        node
+      }
+      id
+      data
+    }
+    type{
+      module
+      class
+    }
   }
-}`;
+}
+`;
 
 @Component({
   selector: 'app-devices',
