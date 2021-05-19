@@ -6,12 +6,12 @@ import morgan from 'morgan';
 import path from 'path';
 import apiRouter from './api-routes'
 import graphQlServer from './graphql'
+import dotenv from 'dotenv'
+dotenv.config({ path: '../.env' })
 
 const pubsub = new PubSub();
 const DEVICE_MESSAGE = Symbol.for("DEVICE_MESSAGE");
 const eventTypes = {DEVICE_MESSAGE}
-
-const PORT = process.env.PORT || 4000;
 
 const app = express();
 app.use(
@@ -34,11 +34,11 @@ app.get('*', function (req, res) {
 const httpServer = createServer(app);
 apolloServer.installSubscriptionHandlers(httpServer);
 
-httpServer.listen({ port: PORT }, () => {
+httpServer.listen({ port: process.env.WEB_SERVER_PORT }, () => {
   console.log(
-    `🚀 Server ready at http://localhost:${PORT}${apolloServer.graphqlPath}`
+    `🚀 Server ready at http://${process.env.WEB_SERVER_DOMAIN}:${process.env.WEB_SERVER_PORT}${apolloServer.graphqlPath}`
   );
   console.log(
-    `🚀 Subscriptions ready at ws://localhost:${PORT}${apolloServer.subscriptionsPath}`
+    `🚀 Subscriptions ready at ws://${process.env.WEB_SERVER_DOMAIN}:${process.env.WEB_SERVER_PORT}${apolloServer.subscriptionsPath}`
   );
 });
