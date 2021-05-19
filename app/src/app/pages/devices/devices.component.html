@@ -1,1 +1,25 @@
 <p>devices works!</p>
+<div  *ngFor="let device of devices;">
+    <ul>
+        <li>{{device.topic}}</li>
+        <li>Message</li>
+        <li>
+            <ul>
+                <li *ngFor="let msg of device.msg">
+                    {{msg}}
+                </li>
+            </ul>
+        </li>
+        <li>
+            Type
+        </li>
+        <li>
+            <ul>
+                <li *ngFor="let type of device.type">
+                    {{type}}
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <hr/>
+</div>

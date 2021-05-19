@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 const COMMENTS_SUBSCRIPTION = gql`
 subscription deviceMessage {
@@ -12,6 +12,7 @@ subscription deviceMessage {
     
   }
 }`;
+
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
@@ -19,21 +20,23 @@ subscription deviceMessage {
 })
 export class DevicesComponent implements OnInit {
   
-  constructor(apollo: Apollo) {
-    apollo.subscribe({
-      query: COMMENTS_SUBSCRIPTION // Subscription gql
-    }).subscribe(
-      (response:any) => {
-        console.log(response)
-      },
-      error => {
-        console.log(error);
-      }
-    );
+  devices:any[] =[]
 
+  constructor(private apollo: Apollo) {
+   
   }
 
   ngOnInit(): void {
+    this.apollo.subscribe({
+      query: COMMENTS_SUBSCRIPTION // Subscription gql
+    }).subscribe(
+      (response:any) => {
+        console.log(response.data.deviceMessage)
+        this.devices.push(response.data.deviceMessage)
+      },
+      error => {
+        console.log(error);
+      })
   }
 
 }
