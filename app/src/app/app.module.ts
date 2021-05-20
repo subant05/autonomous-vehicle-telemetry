@@ -23,8 +23,9 @@ import {MatListModule} from '@angular/material/list';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { DevicesComponent } from './pages/devices/devices.component';
-import { GraphQLModule } from './graphql.module';
+import { GraphQLModule } from './modules/graphql.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DashboardComponent,
     ProfileComponent,
     LayoutComponent,
-    DevicesComponent
+    DevicesComponent,
+    TopNavigationComponent
   ],
   imports: [
     BrowserModule,
