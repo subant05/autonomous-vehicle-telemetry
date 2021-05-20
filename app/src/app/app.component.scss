@@ -21,18 +21,35 @@
         padding: 0 20px;
 
         .nav__logo{
-            justify-self: flex-start;
-            width: 40px;
+            justify-self: center;
+            display:block;
+            margin:auto;
+
+            img{
+                width: 40px;
+            }
         }
 
         ul{
             list-style: none;
             display: flex;
             justify-content: flex-end;
-            flex-grow: 1;
+            flex-grow: 0;
 
             li{
                 justify-self: flex-end;
+            }
+        }
+    }
+
+    @media screen and (min-width:800px){
+        .nav__top {
+            .nav__logo{
+                justify-self: flex-start;
+                margin:none;
+            }
+            ul{
+                flex-grow: 1;
             }
         }
     }

@@ -24,6 +24,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { DevicesComponent } from './pages/devices/devices.component';
 import { GraphQLModule } from './graphql.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { GraphQLModule } from './graphql.module';
     MatListModule,
 
     GraphQLModule,
+     FontAwesomeModule,
     // 
   ],
   providers: [{
