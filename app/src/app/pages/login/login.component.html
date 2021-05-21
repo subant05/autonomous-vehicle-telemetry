@@ -5,11 +5,10 @@
                 </div>
                 <mat-divider></mat-divider>
                 <mat-card-actions>
-                    <button mat-flat-button color="accent" *ngIf="isLoggedin === false" type="button" (click)="loginWithGoogle()">
+                    <button mat-flat-button color="primary" *ngIf="isLoggedin === false" type="button" (click)="loginWithGoogle()">
                         Login with Google
                         <mat-icon matSuffix aria-label="Log into Google" >login</mat-icon>
                     </button>                    
                 </mat-card-actions>
     </mat-card>
-    <ng-template>Login Failed</ng-template>
 </div>
