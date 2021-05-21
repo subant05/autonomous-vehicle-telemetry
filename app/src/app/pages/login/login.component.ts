@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
+import { Router, ActivatedRoute } from '@angular/router'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +10,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  googleUser: SocialUser | undefined;
+  isLoggedin: boolean = false;
+
+  constructor(
+    private socialAuthService: SocialAuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
+  ) {
+
+  }
 
   ngOnInit(): void {
+    this.socialAuthService.authState.subscribe((user) => {
+      this.googleUser = user;
+      this.isLoggedin = (user != null);
+      console.log(this.googleUser);
+      if (this.isLoggedin){
+        this.router.navigate(["/"])
+      }else
+        this.snackBar.open("LogIn Failed");
+
+    });
+  }
+
+  loginWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  logOut(): void {
+    this.socialAuthService.signOut();
   }
 
 }

@@ -9,12 +9,15 @@ import { split, ApolloClientOptions } from '@apollo/client/core';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { InMemoryCache } from '@apollo/client/core';
-
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Google OAuth
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
 
 // Material
 import { MatListModule } from '@angular/material/list';
@@ -23,6 +26,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar'
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -56,10 +60,26 @@ import { MenuService } from './services/navigation/menu.service'
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    MatSnackBarModule,
     // 
     GraphQLModule,
+    SocialLoginModule,
   ],
   providers: [{
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '1068443878218-kk375e4311cc3r2rk3b0hn9ukm900tjo.apps.googleusercontent.com'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    },
+    {
     provide: APOLLO_OPTIONS,
     // @ts-ignore
     useFactory(httpLink: HttpLink): ApolloClientOptions {

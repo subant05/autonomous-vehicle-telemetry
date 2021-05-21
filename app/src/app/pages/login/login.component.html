@@ -3,20 +3,13 @@
                 <div class="login__card--logo">
                     <img src="/assets/brt-icon-sm.png"/>
                 </div>
-                <mat-form-field appearance="outline">
-                  <mat-label>Username</mat-label>
-                  <input matInput placeholder="Username" aria-label="Login Username">
-                  <mat-icon matSuffix aria-label="Username login Icon">edit</mat-icon>
-                  <!-- <mat-hint>Username</mat-hint> -->
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                  <mat-label>Password</mat-label>
-                  <input matInput placeholder="Password" aria-label="Login Password">
-                  <mat-icon matSuffix aria-label="Password Icon">visibility_off</mat-icon>
-                  <!-- <mat-hint>Password</mat-hint> -->
-                </mat-form-field>
+                <mat-divider></mat-divider>
                 <mat-card-actions>
-                    <button mat-flat-button color="primary">LOGIN</button>
+                    <button mat-flat-button color="accent" *ngIf="isLoggedin === false" type="button" (click)="loginWithGoogle()">
+                        Login with Google
+                        <mat-icon matSuffix aria-label="Log into Google" >login</mat-icon>
+                    </button>                    
                 </mat-card-actions>
     </mat-card>
+    <ng-template>Login Failed</ng-template>
 </div>
