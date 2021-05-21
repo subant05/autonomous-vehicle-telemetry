@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
+  showLeftNav:boolean | undefined;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  toggleSideNav(){
+    this.showLeftNav = !this.showLeftNav;
   }
 
 }

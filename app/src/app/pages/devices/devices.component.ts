@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, Subscription } from 'rxjs';
+import { MenuService } from 'src/app/services/navigation/menu.service';
 
 const COMMENTS_SUBSCRIPTION = gql`
 subscription deviceMessage {
@@ -30,15 +31,20 @@ subscription deviceMessage {
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.scss']
 })
-export class DevicesComponent implements OnInit {
+export class DevicesComponent implements OnInit, OnDestroy {
   
   devices:any[] =[]
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private menuService: MenuService) {
    
   }
 
   ngOnInit(): void {
+    this.menuService.menu.next([
+      {label:"Geolocation", url:"#"},
+      {label:"Images", url:"#"}
+    ])
+
     this.apollo.subscribe({
       query: COMMENTS_SUBSCRIPTION // Subscription gql
     }).subscribe(
@@ -49,6 +55,10 @@ export class DevicesComponent implements OnInit {
       error => {
         console.log(error);
       })
+  }
+
+  ngOnDestroy(){
+    this.menuService.menu.next(null)
   }
 
 }

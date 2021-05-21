@@ -1,106 +1,11 @@
 .container__content{
     top: 50px;
     position: absolute;
-    width: 100%;
+    width: 100%;    
 
-    .nav__side-nav,
     .container__content-main{
         padding: 0 20px;
     }
-
-    .nav__side-nav{
-        height: calc(100vh - 75px);
-        top: 0px;
-        border-right: 1px solid #ccc;
-        overflow: hidden;
-        position: fixed;
-        left:-200px;
-        background-color: var(--white);
-        z-index: 1;
-
-        &.show{
-            left:0px;
-            animation: show-navigation 500ms 1;
-        }
-        &.hide{
-            left:-200px;
-            animation: hide-navigation 500ms 1;
-        }
-
-
-        .nav__side-nav--toggle-btn{
-            position:fixed;
-            top:4px;
-            left:10px;
-            z-index: 1;
-            background: var(--white);
-            border: none;
-            font-size: 2rem;
-            font-weight: lighter;
-            border: 1px solid #ccc;
-
-            &.show{
-                left:149px;
-                animation: move-right-hamburger 500ms 1;
-
-            }
-            &.hide{
-                left:10px;
-                animation: move-left-hamburger 500ms 1;
-            }
-
-        }
-
-        a { 
-            display:block;
-            border-bottom: 1px solid #ccc;
-            &:last-of-type {
-                border:none;
-            }
-            &:hover{
-                background-color: blue;
-                .mat-list-item{
-                    color:var(--white);
-                }
-            }
-        }
-    }
-
-        
-    @keyframes show-navigation {
-        0%{
-        left:-200px;
-        }
-        100%{
-        left:0;
-        }
-    }
-    @keyframes move-right-hamburger {
-        0%{
-        left:0px;
-        }
-        100%{
-        left:149px;
-        }
-    }
-    @keyframes move-left-hamburger {
-        0%{
-        left:149px;
-        }
-        100%{
-        left:0px;
-        }
-    }
-            
-    @keyframes hide-navigation {
-        0%{
-        left:0;
-        }
-        100%{
-        left:-200;
-        }
-    }
-    
 }
 
 
@@ -113,19 +18,5 @@
         top: 50px;
         position: absolute;
         width: 100%;
-
-        .nav__side-nav,
-        .nav__side-nav.show{
-            display:block;
-            position:sticky !important;
-            top:75px;
-            animation: none;
-            background: transparent;
-            z-index:0;
-
-            .nav__side-nav--toggle-btn{
-                display: none !important;
-            }
-        }
     }
 }

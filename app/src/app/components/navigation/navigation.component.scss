@@ -1,0 +1,115 @@
+.nav__side-nav{
+    padding: 0 20px;
+    height: 100vh;
+    top: 0px;
+    border-right: 1px solid var(--lightgray);
+    overflow: hidden;
+    position: fixed;
+    left:-200px;
+    background-color: var(--white);
+    z-index: 1;
+
+    &.show{
+        left:0px;
+        animation: show-left-navigation 500ms 1;
+    }
+    &.hide{
+        left:-200px;
+        animation: hide-left-navigation 500ms 1;
+    }
+
+
+    .nav__side-nav--toggle-btn{
+        position:fixed;
+        top:4px;
+        left:10px;
+        z-index: 1;
+        background: var(--white);
+        border: none;
+        font-size: 2rem;
+        font-weight: lighter;
+        cursor: pointer;
+
+        &.show{
+            left:150px;
+            animation: move-right-main-hamburger 500ms 1;
+
+        }
+        &.hide{
+            left:10px;
+            animation: move-left-main-hamburger 500ms 1;
+        }
+
+    }
+
+    a { 
+        display:block;
+        border-bottom: 1px solid var(--lightgray);
+        &:last-of-type {
+            border:none;
+        }
+        &.active,
+        &:hover{
+            background-color: var(--blueriver);
+            .mat-list-item{
+                color:var(--white);
+            }
+        }
+    }
+
+    
+    @keyframes show-left-navigation {
+        0%{
+        left:-200px;
+        }
+        100%{
+        left:0;
+        }
+    }
+    @keyframes hide-left-navigation {
+        0%{
+        left:0;
+        }
+        100%{
+        left:-200;
+        }
+    }
+
+    @keyframes move-right-main-hamburger {
+        0%{
+        left:10px;
+        }
+        100%{
+        left:150px;
+        }
+    }
+    @keyframes move-left-main-hamburger {
+        0%{
+        left:150px;
+        }
+        100%{
+        left:10px;
+        }
+    }
+}
+
+
+@media screen and (min-width:800px) {
+    
+    .nav__side-nav,
+    .nav__side-nav.hide,
+    .nav__side-nav.show{
+        display:block;
+        position:sticky !important;
+        top:50px;
+        animation: none;
+        background: transparent;
+        z-index:0;
+        height: calc(100vh - 50px);
+
+
+        .nav__side-nav--toggle-btn{
+            display: none !important;
+        }
+    }
+}

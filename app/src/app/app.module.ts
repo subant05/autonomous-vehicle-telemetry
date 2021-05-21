@@ -3,12 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutes } from './routes/app-routes.module'
 import { ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
-import {APOLLO_OPTIONS} from 'apollo-angular';
-import {HttpLink} from 'apollo-angular/http';
-import {split, ApolloClientOptions} from '@apollo/client/core';
-import {WebSocketLink} from '@apollo/client/link/ws';
-import {getMainDefinition} from '@apollo/client/utilities';
-import {InMemoryCache} from '@apollo/client/core';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { split, ApolloClientOptions } from '@apollo/client/core';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { InMemoryCache } from '@apollo/client/core';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -17,15 +17,20 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Material
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { DevicesComponent } from './pages/devices/devices.component';
 import { GraphQLModule } from './modules/graphql.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
+import { MenuService } from './services/navigation/menu.service'
 
 @NgModule({
   declarations: [
@@ -46,10 +51,13 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
     BrowserAnimationsModule,
     // Material
     MatListModule,
-
-    GraphQLModule,
-     FontAwesomeModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
     // 
+    GraphQLModule,
   ],
   providers: [{
     provide: APOLLO_OPTIONS,
@@ -67,17 +75,7 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
           reconnect: true,
         },
       });
-
-      // using the ability to split links, you can send data to each link
-      // depending on what kind of operation is being sent
       const link = split(
-        // split based on operation type
-        // ({query}) => {
-        //   const {kind, operation} = getMainDefinition(query);
-        //   return (
-        //     kind === 'OperationDefinition' && operation === 'subscription'
-        //   );
-        // },
         ({ query }) => {
           let definition = getMainDefinition(query);
           return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
@@ -93,7 +91,9 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
       };
     },
     deps: [HttpLink],
-  }],
+  },
+    MenuService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

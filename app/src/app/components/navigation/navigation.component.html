@@ -1,1 +1,12 @@
-<p>navigation works!</p>
+<nav class="nav__side-nav" 
+[ngClass]="{ show:showLeftNav===true, hide:showLeftNav===false }">
+    <button class="nav__side-nav--toggle-btn" 
+        [ngClass]="{ show:showLeftNav===true, hide:showLeftNav===false}"
+       (click)="toggleSideNav()">
+       <mat-icon matSuffix aria-label="toggle mobile menu view" >{{!showLeftNav ? "menu" : "menu_open"}}</mat-icon>
+    </button>
+    <mat-list (click)="toggleSideNav()">
+        <a [routerLink]='["/"]' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-list-item>Dashboard</mat-list-item></a> 
+        <a [routerLink]='["/devices"]' routerLinkActive="active"><mat-list-item>Devices</mat-list-item></a> 
+    </mat-list>
+</nav>

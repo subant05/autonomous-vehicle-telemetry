@@ -1,13 +1,6 @@
 
 <div class="content">
-  <nav class="nav__top">
-    <a [routerLink]='["/"]' class="nav__logo" ><img src="/assets/brt-icon-sm.png"/></a>
-    <ul>
-      <li>
-        <!-- <a mat-flat-button [routerLink]='["/login"]'> Sign Up</a> -->
-      </li>
-    </ul>
-  </nav>
+  <app-top-navigation></app-top-navigation>
   <div class="content__main">
     <router-outlet></router-outlet>
   </div>

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import {MenuService} from "../../services/navigation/menu.service"
+import {IMenu} from "../../interfaces/navigation/menu"
 
 @Component({
   selector: 'app-top-navigation',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopNavigationComponent implements OnInit {
 
-  constructor() { }
+  menu:IMenu[] | null = []
+  showRightNav:boolean | undefined;
+
+  constructor(private menuService: MenuService) {}
 
   ngOnInit(): void {
+    this.menuService.menu.subscribe((data)=>{
+      this.menu = data;
+    })
+  }
+
+  toggleSideNav(){
+    this.showRightNav = !this.showRightNav;
   }
 
 }

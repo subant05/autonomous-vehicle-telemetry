@@ -1,16 +1,5 @@
 <div class="container__content">
-    <nav class="nav__side-nav" 
-    [ngClass]="{ show:showRightNav, hide:!showRightNav}">
-        <button class="nav__side-nav--toggle-btn" 
-            [ngClass]="{ show:showRightNav, hide:!showRightNav}"
-           (click)="toggleSideNav()">
-            <fa-icon [icon]="faBars" primaryColor="red"></fa-icon>
-        </button>
-        <mat-list>
-            <a [routerLink]='["/"]'><mat-list-item>Dashboard</mat-list-item></a> 
-            <a [routerLink]='["/devices"]'><mat-list-item>Devices</mat-list-item></a> 
-        </mat-list>
-    </nav>
+    <app-navigation></app-navigation>
     <div class="container__content-main">
         <router-outlet></router-outlet>
     </div>

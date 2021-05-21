@@ -1,1 +1,24 @@
-<p>top-navigation works!</p>
+<nav class="nav__top">
+    <a [routerLink]='["/"]' class="nav__logo" >
+        <img src="/assets/brt-icon-sm.png"/>
+    </a>
+    <ul class="nav__top-menu" *ngIf="menu && menu.length" 
+    [ngClass]="{ show:showRightNav===true, hide:showRightNav===false}">
+        <li *ngFor="let menuItem of menu">
+            <span *ngIf="menuItem.callback">
+                <a mat-flat-button (click)="menuItem.callback($event); toggleSideNav()" tooltip="menuItem.tooltip"> {{menuItem.label}} </a>
+            </span>
+            <span *ngIf="menuItem.url">
+                <a mat-flat-button routerLink='menuItem.url' (click)="toggleSideNav()" tooltip="menuItem.tooltip"> {{menuItem.label}} </a>
+            </span>
+        </li>
+    </ul>
+    <button class="nav__top-nav--toggle-btn" 
+        *ngIf="menu && menu.length"
+        (click)="toggleSideNav()" 
+        [ngClass]="{ show:showRightNav===true, hide:showRightNav===false}">
+        <mat-icon matSuffix aria-label="toggle mobile menu view" >
+            {{!showRightNav ? "menu" : "menu_open"}}
+        </mat-icon>
+    </button>
+</nav>
