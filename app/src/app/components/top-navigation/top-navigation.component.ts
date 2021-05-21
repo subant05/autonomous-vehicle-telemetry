@@ -14,7 +14,7 @@ export class TopNavigationComponent implements OnInit, OnDestroy {
   showRightNav:boolean | null;
 
   constructor(private menuService: MenuService) {
-
+    this.showRightNav = null
   }
 
   ngOnInit(): void {
