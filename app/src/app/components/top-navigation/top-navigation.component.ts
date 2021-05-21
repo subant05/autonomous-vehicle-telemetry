@@ -8,14 +8,18 @@ import {IMenu} from "../../interfaces/navigation/menu"
   templateUrl: './top-navigation.component.html',
   styleUrls: ['./top-navigation.component.scss']
 })
-export class TopNavigationComponent implements OnInit {
+export class TopNavigationComponent implements OnInit, OnDestroy {
 
   menu:IMenu[] | null = []
-  showRightNav:boolean | undefined;
+  showRightNav:boolean | null;
 
-  constructor(private menuService: MenuService) {}
+  constructor(private menuService: MenuService) {
+
+  }
 
   ngOnInit(): void {
+    this.showRightNav = null
+
     this.menuService.menu.subscribe((data)=>{
       this.menu = data;
     })
@@ -23,6 +27,10 @@ export class TopNavigationComponent implements OnInit {
 
   toggleSideNav(){
     this.showRightNav = !this.showRightNav;
+  }
+
+  ngOnDestroy(){
+    this.showRightNav = null
   }
 
 }
