@@ -29,8 +29,9 @@ export class LoginComponent implements OnInit {
       console.log(this.googleUser);
       if (this.isLoggedin){
         this.router.navigate(["/"])
-      }else
-        this.snackBar.open("LogIn Failed");
+      }
+      // else
+      //   this.snackBar.open("LogIn Failed");
 
     });
   }

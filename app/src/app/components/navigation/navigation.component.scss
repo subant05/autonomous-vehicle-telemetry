@@ -1,6 +1,6 @@
 .nav__side-nav{
     padding: 0 20px;
-    height: 100vh;
+    height: calc(100vh + 50px);
     top: 0px;
     border-right: 1px solid var(--lightgray);
     overflow: hidden;
@@ -18,6 +18,15 @@
         animation: hide-left-navigation 500ms 1;
     }
 
+    .nav__side-nav--profile{
+        position: fixed;
+        bottom: 20px;
+
+        a {
+            cursor: pointer;
+        }
+
+    }
 
     .nav__side-nav--toggle-btn{
         position:fixed;

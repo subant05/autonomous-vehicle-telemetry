@@ -6,11 +6,13 @@ import { DashboardComponent } from "../pages/dashboard/dashboard.component"
 import { ProfileComponent } from "../pages/profile/profile.component"
 import { LayoutComponent } from "../components/layout/layout.component"
 import { DevicesComponent } from "../pages/devices/devices.component"
+import { AuthGuardService } from "../services/auth/auth-guard.service"
 
 const routes: Routes = [
     {
         path:"",
         component:LayoutComponent,
+        canActivate:[AuthGuardService],
         children:[
             {
                 path:"",

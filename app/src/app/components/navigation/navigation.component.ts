@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SocialAuthService } from 'angularx-social-login';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-navigation',
@@ -8,7 +10,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 export class NavigationComponent implements OnInit, OnDestroy {
   showLeftNav:boolean | null;
 
-  constructor() { 
+  constructor(
+    private socialAuthService: SocialAuthService,
+    private router: Router
+  ) { 
     this.showLeftNav = null
   }
 
@@ -21,6 +26,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.showLeftNav = null
+  }
+
+  logOut(): void {
+    this.socialAuthService.signOut();
+    this.router.navigate(["/login"])
   }
 
 }

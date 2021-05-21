@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Google OAuth
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
+import {AuthGuardService} from './services/auth/auth-guard.service'
 
 // Material
 import { MatListModule } from '@angular/material/list';
@@ -68,7 +69,7 @@ import { MenuService } from './services/navigation/menu.service'
   providers: [{
       provide: 'SocialAuthServiceConfig',
       useValue: {
-        autoLogin: false,
+        autoLogin: true,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
@@ -112,7 +113,8 @@ import { MenuService } from './services/navigation/menu.service'
     },
     deps: [HttpLink],
   },
-    MenuService
+    MenuService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })
