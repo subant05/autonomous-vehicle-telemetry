@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {GeolocationService} from '../../services/geolocation/geolocation.service'
+
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
 
@@ -34,83 +36,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           [-122.493782, 37.833683]
         ]
 
-  constructor() { }
+  constructor(private gisService: GeolocationService) { }
 
   ngOnInit(): void {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiYW50Ymx1ZXJpdmVydGVjaCIsImEiOiJja295a3IwemowbjMwMndwZ2RkdHY2bmJjIn0.xpY0kRQNFTeFgc5l6hqRtQ';
-      this.map = new mapboxgl.Map({
-      container: 'map', // container ID
-      style: 'mapbox://styles/mapbox/satellite-v9', // style URL
-      center: [-122.483696, 37.833818], // starting position [lng, lat]
-      zoom: 15 // starting zoom
-    });
-
-    
+     this.gisService.getStaticMap(
+      {
+        container:"map"
+        , coordinates:this.coordinates
+        , center:this.coordinates[0]
+        , showTractor:true
+        , zoom:15}
+    )
    }
 
    ngAfterViewInit(){
-    this.map.on('load',  () =>{
-      this.map.addSource('route', {
-        'type': 'geojson',
-        'data': {
-        'type': 'Feature',
-        'properties': {},
-        'geometry': {
-        'type': 'LineString',
-        'coordinates': this.coordinates
-        }
-        }
-      });
-      this.map.loadImage(
-        '/assets/tractor.png',
-         (error:any, image:any) =>{
-          if (error) throw error;
-          
-          // Add the image to the map style.
-          this.map.addImage('tracker', image);
-         
-        // Add a data source containing one point feature.
-        this.map.addSource('point', {
-            'type': 'geojson',
-            'data': {
-            'type': 'FeatureCollection',
-            'features': [
-                {
-                'type': 'Feature',
-                'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-122.493782, 37.833683]
-                            }
-                }
-              ]
-          }
-        });
- 
-        // Add a layer to use the image to represent the data.
-      this.map.addLayer({
-        'id': 'points',
-        'type': 'symbol',
-        'source': 'point', // reference the data source
-        'layout': {
-            'icon-image': 'tracker', // reference the image
-            'icon-size': 0.05
-            }
-        });
-      });
-      this.map.addLayer({
-        'id': 'route',
-        'type': 'line',
-        'source': 'route',
-        'layout': {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        'paint': {
-          'line-color': 'rgba(255,0,0,1)',
-          'line-width': 8
-          }
-        });
-    });
+    
    }
 
 }

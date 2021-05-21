@@ -22,7 +22,7 @@ import { environment } from '../environments/environment';
 // Google OAuth
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
-import {AuthGuardService} from './services/auth/auth-guard.service'
+import { AuthGuardService } from './services/auth/auth-guard.service'
 
 // Material
 import { MatListModule } from '@angular/material/list';
@@ -39,7 +39,10 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { DevicesComponent } from './pages/devices/devices.component';
 import { GraphQLModule } from './modules/graphql.module';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
+
+// Service
 import { MenuService } from './services/navigation/menu.service'
+import { GeolocationService } from './services/geolocation/geolocation.service'
 
 @NgModule({
   declarations: [
@@ -71,20 +74,20 @@ import { MenuService } from './services/navigation/menu.service'
     SocialLoginModule,
   ],
   providers: [{
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: true,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              environment.googleAuthClientId
-            )
-          }
-        ]
-      } as SocialAuthServiceConfig,
-    },
-    {
+    provide: 'SocialAuthServiceConfig',
+    useValue: {
+      autoLogin: true,
+      providers: [
+        {
+          id: GoogleLoginProvider.PROVIDER_ID,
+          provider: new GoogleLoginProvider(
+            environment.googleAuthClientId
+          )
+        }
+      ]
+    } as SocialAuthServiceConfig,
+  },
+  {
     provide: APOLLO_OPTIONS,
     // @ts-ignore
     useFactory(httpLink: HttpLink): ApolloClientOptions {
@@ -118,7 +121,8 @@ import { MenuService } from './services/navigation/menu.service'
     deps: [HttpLink],
   },
     MenuService,
-    AuthGuardService
+    AuthGuardService,
+    GeolocationService
   ],
   bootstrap: [AppComponent]
 })
