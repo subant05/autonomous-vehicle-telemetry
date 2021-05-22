@@ -32,22 +32,22 @@ export class GeolocationService {
     }
   }
 
-  private getImageGEOJSON({ type, dataType, geometryType, coordinates }: IGeoJSONArgs){
+  private getImageGEOJSON({ type, dataType, geometryType, coordinateType="Point", coordinates }: IGeoJSONArgs){
     return {
-              'type': type,
-              'data': {
-              'type': dataType,
-              'features': [
-                  {
-                  'type': geometryType,
-                  'geometry': {
-                              'type': 'Point',
-                              'coordinates': coordinates
-                              }
-                  }
-                ]
-            }
-          }
+        'type': type,
+        'data': {
+          'type': dataType,
+          'features': [
+              {
+              'type': geometryType,
+              'geometry': {
+                'type': coordinateType,
+                'coordinates': coordinates
+                }
+              }
+            ]
+      }
+    }
   }
 
   private setupMap(container: string, center: number[], zoom: number) {
@@ -59,7 +59,7 @@ export class GeolocationService {
     });
   }
 
-  private addImage({ coordinates = [], map }: IAddImageArgs) {
+  private addImage({ name="tractor",coordinates = [], map }: IAddImageArgs) {
     map.loadImage(
       '/assets/tractor.png',
       (error: any, image: any) => {
@@ -85,11 +85,11 @@ export class GeolocationService {
       });
   }
 
-  private paintLine({ lineSize = 5, lineColor = "red" }: IPaintLine, map: any) {
+  private paintLine({ lineSize = 5, lineColor = "red", source = "route" }: IPaintLine, map: any) {
     map.addLayer({
       'id': 'route',
       'type': 'line',
-      'source': 'route',
+      'source': source,
       'layout': {
         'line-join': 'round',
         'line-cap': 'round'
@@ -108,7 +108,7 @@ export class GeolocationService {
     if (showTractor)
       this.addImage({ coordinates:coordinates[coordinates.length-1], map })
 
-    this.paintLine({ lineColor, lineSize }, map)
+    this.paintLine({ source:"route", lineColor, lineSize }, map)
   }
 
   getStaticMap({ container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 15, lineColor, lineSize }: IGeolocationConfig) {
@@ -116,5 +116,41 @@ export class GeolocationService {
     map.on("load",()=>{
       this.onLoadStaticMapHandler({ container, coordinates, center, showTractor, lineColor, lineSize }, map)
     })
+  }
+
+  getReplayMap({ container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 20, lineColor, lineSize }: IGeolocationConfig){
+    const map = this.setupMap(container, center, zoom)
+    map.on("load",()=>{
+
+      const geoJson = this.getImageGEOJSON({ 
+        type: 'geojson'
+        , dataType: 'FeatureCollection'
+        , geometryType: 'Feature'
+        , coordinateType: "LineString"
+        , coordinates: [coordinates[0]] 
+      })
+
+      map.addSource('trace',geoJson );
+      this.paintLine({ source:"trace", lineColor, lineSize }, map)
+
+      map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
+      map.setPitch(30);
+
+      let i = 0;
+      let timer = window.setInterval( () => {
+          if (i < coordinates.length) {
+            geoJson.data.features[0].geometry.coordinates.push(
+              // @ts-ignore
+              coordinates[i]
+            )
+            map.getSource('trace').setData(geoJson.data);
+            map.panTo(coordinates[i]);
+            i++;
+          } else {
+            window.clearInterval(timer);
+          }
+        }
+      , 1000);
+    });
   }
 }

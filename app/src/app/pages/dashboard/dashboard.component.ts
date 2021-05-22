@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(private gisService: GeolocationService) { }
 
   ngOnInit(): void {
-     this.gisService.getStaticMap(
+     this.gisService.getReplayMap(
       {
         container:"map"
         , coordinates:this.coordinates
