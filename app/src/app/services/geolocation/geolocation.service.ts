@@ -18,7 +18,9 @@ export class GeolocationService {
   }
 
 
-  private getGEOJSON({ type, dataType, geometryType, coordinates }: IGeoJSONArgs) {
+  private getGEOJSON(config: IGeoJSONArgs) {
+    const { type, dataType, geometryType, coordinates } = config
+
     return {
       'type': type,
       'data': {
@@ -32,20 +34,27 @@ export class GeolocationService {
     }
   }
 
-  private getImageGEOJSON({ type, dataType, geometryType, coordinateType="Point", coordinates }: IGeoJSONArgs){
+  private getFeaturesGEOJSON(config: IGeoJSONArgs) {
+    const { type
+      , dataType
+      , geometryType
+      , coordinateType = "Point"
+      , coordinates 
+    } = config
+
     return {
-        'type': type,
-        'data': {
-          'type': dataType,
-          'features': [
-              {
-              'type': geometryType,
-              'geometry': {
-                'type': coordinateType,
-                'coordinates': coordinates
-                }
-              }
-            ]
+      'type': type,
+      'data': {
+        'type': dataType,
+        'features': [
+          {
+            'type': geometryType,
+            'geometry': {
+              'type': coordinateType,
+              'coordinates': coordinates
+            }
+          }
+        ]
       }
     }
   }
@@ -59,7 +68,7 @@ export class GeolocationService {
     });
   }
 
-  private addImage({ name="tractor",coordinates = [], map }: IAddImageArgs) {
+  private addImage({ name = "tractor", coordinates = [], map }: IAddImageArgs) {
     map.loadImage(
       '/assets/tractor.png',
       (error: any, image: any) => {
@@ -70,7 +79,7 @@ export class GeolocationService {
 
         // Add a data source containing one point feature.
         map.addSource('point'
-          , this.getImageGEOJSON({ type: 'geojson', dataType: 'FeatureCollection', geometryType: 'Feature', coordinates }));
+          , this.getFeaturesGEOJSON({ type: 'geojson', dataType: 'FeatureCollection', geometryType: 'Feature', coordinates }));
 
         // Add a layer to use the image to represent the data.
         map.addLayer({
@@ -85,7 +94,13 @@ export class GeolocationService {
       });
   }
 
-  private paintLine({ lineSize = 5, lineColor = "red", source = "route" }: IPaintLine, map: any) {
+  private paintLine(config: IPaintLine, map: any) {
+    const { 
+        lineSize = 5
+        , lineColor = "red"
+        , source = "route" 
+      } = config
+
     map.addLayer({
       'id': 'route',
       'type': 'line',
@@ -101,56 +116,81 @@ export class GeolocationService {
     });
   }
 
-  private onLoadStaticMapHandler({ container, coordinates, center, showTractor, lineColor, lineSize }: IGeolocationConfig, map: any) {
+  private onLoadStaticMapHandler(config: IGeolocationConfig, map: any) {
+    const { coordinates
+      , showTractor
+      , lineColor
+      , lineSize 
+    } = config
+
     map.addSource('route'
       , this.getGEOJSON({ type: "geojson", dataType: 'Feature', geometryType: 'LineString', coordinates }));
 
     if (showTractor)
-      this.addImage({ coordinates:coordinates[coordinates.length-1], map })
+      this.addImage({ coordinates: coordinates[coordinates.length - 1], map })
 
-    this.paintLine({ source:"route", lineColor, lineSize }, map)
+    this.paintLine({ source: "route", lineColor, lineSize }, map)
   }
 
-  getStaticMap({ container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 15, lineColor, lineSize }: IGeolocationConfig) {
+  getStaticMap(config: IGeolocationConfig) {
+    const { container = "map"
+            , coordinates = [[]]
+            , center = coordinates[0]
+            , showTractor = false
+            , zoom = 15
+            , lineColor
+            , lineSize 
+          } = config
     const map = this.setupMap(container, center, zoom)
-    map.on("load",()=>{
+
+    map.on("load", () => {
       this.onLoadStaticMapHandler({ container, coordinates, center, showTractor, lineColor, lineSize }, map)
     })
+
   }
 
-  getReplayMap({ container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 20, lineColor, lineSize }: IGeolocationConfig){
+  getReplayMap(config: IGeolocationConfig): void {
+    const { 
+      container = "map"
+      , coordinates = [[]]
+      , center = coordinates[0]
+      , showTractor = false
+      , zoom = 20
+      , lineColor
+      , lineSize 
+    } = config
     const map = this.setupMap(container, center, zoom)
-    map.on("load",()=>{
-
-      const geoJson = this.getImageGEOJSON({ 
+    
+    map.on("load", () => {
+      const geoJson = this.getFeaturesGEOJSON({
         type: 'geojson'
         , dataType: 'FeatureCollection'
         , geometryType: 'Feature'
         , coordinateType: "LineString"
-        , coordinates: [coordinates[0]] 
+        , coordinates: [coordinates[0]]
       })
 
-      map.addSource('trace',geoJson );
-      this.paintLine({ source:"trace", lineColor, lineSize }, map)
+      map.addSource('trace', geoJson);
+      this.paintLine({ source: "trace", lineColor, lineSize }, map)
 
       map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
       map.setPitch(30);
 
       let i = 0;
-      let timer = window.setInterval( () => {
-          if (i < coordinates.length) {
-            geoJson.data.features[0].geometry.coordinates.push(
-              // @ts-ignore
-              coordinates[i]
-            )
-            map.getSource('trace').setData(geoJson.data);
-            map.panTo(coordinates[i]);
-            i++;
-          } else {
-            window.clearInterval(timer);
-          }
+      let timer = window.setInterval(() => {
+        if (i < coordinates.length) {
+          geoJson.data.features[0].geometry.coordinates.push(
+            // @ts-ignore
+            coordinates[i]
+          )
+          map.getSource('trace').setData(geoJson.data);
+          map.panTo(coordinates[i]);
+          i++;
+        } else {
+          window.clearInterval(timer);
         }
-      , 1000);
+      }
+        , 1000);
     });
   }
 }
