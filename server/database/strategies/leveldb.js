@@ -8,7 +8,7 @@ EventEmitter.defaultMaxListeners = 20
 export default class LevelDB extends EventEmitter {
     constructor(){
         super()
-        this.db = level("./_devices")
+        this.db = level("../db")
         this.db.clear()
     }
 
