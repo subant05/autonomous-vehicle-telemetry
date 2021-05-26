@@ -40,7 +40,7 @@
             border:none;
 
             &.show{
-                right:350px;
+                right:250px;
                 animation: move-right-hamburger 500ms 1;
     
             }
@@ -50,38 +50,62 @@
             }
         }
 
-        ul{
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .nav__top-menu {
             position: fixed;
-            right:-350px;
+            right:-250px;
             top:0px;
-            width:350px;
+            width:250px;
             background-color: var(--white);
             border-left:1px solid var(--lightgray);
             height: 100vh;
             margin-top:0;
             padding-inline-start:10px;
+            word-break: break-all;
+            overflow-y: auto;
+
+            h5 {
+                font-size: 1.2rem;
+                padding:0;
+                margin-left:20px;
+            }
+
+            ul{
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0px;
+                margin-right: 10px;
+
+                li{
+                    align-self: flex-start;
+                    border-bottom: 1px solid var(--lightgray);
+                    width:100%;
+
+                    &:last-of-type {
+                        border-bottom:none;
+                    }
+
+                    a{
+                        white-space: pre-wrap;
+                    }
+                }
+            }
 
             &.show{
                 right:0px;
                 animation: show-right-navigation 500ms 1;
             }
             &.hide{
-                right:-350px;
+                right:-250px;
                 animation: hide-right-navigation 500ms 1;
-            }
-
-            li{
-                align-self: flex-start;
             }
         }
 
+
         @keyframes show-right-navigation {
             0%{
-                right:-350px;
+                right:-250px;
             }
             100%{
                 right:0;
@@ -93,7 +117,7 @@
                 right:0;
             }
             100%{
-                right:-200;
+                right:-250;
             }
         }
         @keyframes move-right-hamburger {
@@ -101,12 +125,12 @@
                 right:10px;
             }
             100%{
-                right:350px;
+                right:250px;
             }
         }
         @keyframes move-left-hamburger {
             0%{
-                right:350px;
+                right:250px;
             }
             100%{
                 right:10px;

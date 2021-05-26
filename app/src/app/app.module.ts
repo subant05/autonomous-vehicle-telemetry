@@ -32,6 +32,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
+import { MatGridListModule } from '@angular/material/grid-list';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -42,7 +43,10 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 
 // Service
 import { MenuService } from './services/navigation/menu.service'
-import { GeolocationService } from './services/geolocation/geolocation.service'
+import { GeolocationService } from './services/geolocation/geolocation.service';
+import { ErrorComponent } from './pages/error/error.component';
+import { DeviceTopicComponent } from './pages/devices/pages/device-topic/device-topic.component';
+import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-live.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +57,10 @@ import { GeolocationService } from './services/geolocation/geolocation.service'
     ProfileComponent,
     LayoutComponent,
     DevicesComponent,
-    TopNavigationComponent
+    TopNavigationComponent,
+    ErrorComponent,
+    DeviceTopicComponent,
+    DeviceLiveComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +76,7 @@ import { GeolocationService } from './services/geolocation/geolocation.service'
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatGridListModule,
     // 
     GraphQLModule,
     SocialLoginModule,

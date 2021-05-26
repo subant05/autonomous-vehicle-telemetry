@@ -196,8 +196,8 @@ export class GeolocationService {
         , 1000);
     });
   }
-
-  getLiveMap(config: IGeolocationConfig): void{
+  
+  getLiveMap(config: IGeolocationConfig): Promise<any>{
     const { 
       container = "map"
       , coordinates = [[]]
@@ -210,44 +210,27 @@ export class GeolocationService {
 
     const map = this.setupMap(container, center, zoom)
 
-    map.on("load", () => {
-      const geoJson = this.getFeaturesGEOJSON({
-        type: 'geojson'
-        , dataType: 'FeatureCollection'
-        , geometryType: 'Feature'
-        , coordinateType: "LineString"
-        , coordinates: []
-      })
-      map.addSource('trace', geoJson);
-      this.paintLine({ source: "trace", lineColor, lineSize }, map)
+    return new Promise((resolve,reject)=>{
+      map.on("load", () => {
+        const geoJson = this.getFeaturesGEOJSON({
+          type: 'geojson'
+          , dataType: 'FeatureCollection'
+          , geometryType: 'Feature'
+          , coordinateType: "LineString"
+          , coordinates: []
+        })
+        map.addSource('trace', geoJson);
+        this.paintLine({ source: "trace", lineColor, lineSize }, map)
+  
+        // if(center)
+        //   map.jumpTo({ 'center': center, 'zoom': 14 });
+        map.setPitch(30);
 
-      // if(center)
-      //   map.jumpTo({ 'center': center, 'zoom': 14 });
-      map.setPitch(30);
+        resolve({map,geoJson})
+  
+      });
+    })
 
-
-      this.apollo.subscribe({
-        query: gql`subscription geographicCoordinates {
-          geographicCoordinates{
-            longitude
-            latitude
-          }
-        }`
-      }).subscribe(
-        (response:any) => {
-          console.log(response.data.geographicCoordinates)
-          const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
-
-          // @ts-ignore
-          geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
-          map.getSource('trace').setData(geoJson.data);
-          map.panTo([longitude,latitude]);
-        },
-        error => {
-          console.log(error);
-        }
-      )
-
-    });
+    
   }
 }

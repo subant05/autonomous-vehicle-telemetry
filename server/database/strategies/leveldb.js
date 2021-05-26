@@ -28,7 +28,7 @@ export default class LevelDB extends EventEmitter {
                 if(storedValues.findIndex(val=>{
                     return JSON.stringify(val)===JSON.stringify(data)
                 }) !== -1){
-                    console.log("Duplicate Data:", data)
+                    storedValues =null
                     callback(new Error("Duplicate Data:"+JSON.stringify(data)))
                     return
                 }

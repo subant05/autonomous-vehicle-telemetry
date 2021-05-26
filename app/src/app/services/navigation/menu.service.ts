@@ -6,5 +6,5 @@ import {IMenu} from "../../interfaces/navigation/menu"
   providedIn: 'root'
 })
 export class MenuService {
-  menu:Subject<IMenu[] | null> = new Subject<IMenu[] |  null>();
+  menu:Subject<IMenu | null> = new Subject<IMenu |  null>();
 }

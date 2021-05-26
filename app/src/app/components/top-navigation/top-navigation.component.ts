@@ -10,7 +10,7 @@ import {IMenu} from "../../interfaces/navigation/menu"
 })
 export class TopNavigationComponent implements OnInit, OnDestroy {
 
-  menu:IMenu[] | null = []
+  menu:any
   showRightNav:boolean | null;
 
   constructor(private menuService: MenuService) {
