@@ -39,12 +39,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(private gisService: GeolocationService) { }
 
   ngOnInit(): void {
-     this.gisService.getReplayMap(
+     this.gisService.getLiveMap(
       {
         container:"map"
-        , coordinates:this.coordinates
-        , center:this.coordinates[0]
         , showTractor:true
+        , coordinates:[]
         , zoom:15}
     )
    }

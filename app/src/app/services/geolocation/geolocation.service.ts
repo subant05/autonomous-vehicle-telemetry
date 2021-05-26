@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { environment } from '../../../environments/environment'
 import { IGeolocationConfig, IGeoJSONArgs, IAddImageArgs, IPaintLine } from '../../interfaces/geolocation/geolocation'
+// import {geographicCoordinates} from '../../graphql/query-syntax/subscriptions/geographic-coordinates'
 
+const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 mapboxgl.accessToken = environment.mapboxAPIKey
 
 @Injectable({
@@ -13,7 +15,7 @@ mapboxgl.accessToken = environment.mapboxAPIKey
 export class GeolocationService {
   private readonly mapboxgl = mapboxgl
 
-  constructor() {
+  constructor(private apollo: Apollo) {
     mapboxgl.accessToken = environment.mapboxAPIKey
   }
 
@@ -59,7 +61,7 @@ export class GeolocationService {
     }
   }
 
-  private setupMap(container: string, center: number[], zoom: number) {
+  private setupMap(container: string, center: number[] | undefined | null, zoom: number) {
     return new mapboxgl.Map({
       container, // container ID
       style: 'mapbox://styles/mapbox/satellite-v9', // style URL
@@ -159,6 +161,7 @@ export class GeolocationService {
       , lineColor
       , lineSize 
     } = config
+
     const map = this.setupMap(container, center, zoom)
     
     map.on("load", () => {
@@ -191,6 +194,60 @@ export class GeolocationService {
         }
       }
         , 1000);
+    });
+  }
+
+  getLiveMap(config: IGeolocationConfig): void{
+    const { 
+      container = "map"
+      , coordinates = [[]]
+      , showTractor = false
+      , center
+      , zoom = 20
+      , lineColor
+      , lineSize 
+    } = config
+
+    const map = this.setupMap(container, center, zoom)
+
+    map.on("load", () => {
+      const geoJson = this.getFeaturesGEOJSON({
+        type: 'geojson'
+        , dataType: 'FeatureCollection'
+        , geometryType: 'Feature'
+        , coordinateType: "LineString"
+        , coordinates: []
+      })
+      map.addSource('trace', geoJson);
+      this.paintLine({ source: "trace", lineColor, lineSize }, map)
+
+      // if(center)
+      //   map.jumpTo({ 'center': center, 'zoom': 14 });
+      map.setPitch(30);
+
+
+      this.apollo.subscribe({
+        query: gql`subscription geographicCoordinates {
+          geographicCoordinates{
+            longitude
+            latitude
+          }
+        }`
+      }).subscribe(
+        (response:any) => {
+          console.log(response.data.geographicCoordinates)
+          const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
+
+          // @ts-ignore
+          geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
+          map.getSource('trace').setData(geoJson.data);
+          map.panTo([longitude,latitude]);
+        },
+        error => {
+          console.log(error);
+        }
+      )
+
     });
   }
 }

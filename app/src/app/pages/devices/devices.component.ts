@@ -2,29 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable, Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/navigation/menu.service';
-
-const COMMENTS_SUBSCRIPTION = gql`
-subscription deviceMessage {
-  deviceMessage{
-    timestamp
-    topic 
-    msg{
-      header{
-        id
-        timestamp
-      	seq
-        node
-      }
-      id
-      data
-    }
-    type{
-      module
-      class
-    }
-  }
-}
-`;
+const SubscriptionQL  = require( 'src/app/graphql/query-syntax/subscriptions')
+const QueryQL = require("src/app/graphql/query-syntax/query")
 
 @Component({
   selector: 'app-devices',
@@ -46,16 +25,33 @@ export class DevicesComponent implements OnInit, OnDestroy {
     ])
 
     this.apollo.subscribe({
-      query: COMMENTS_SUBSCRIPTION // Subscription gql
+      query: SubscriptionQL.DEVICE_MESSAGE_SUBSCRIPTION // Subscription gql
     }).subscribe(
       (response:any) => {
-        console.log(response.data.deviceMessage)
-        this.devices.push(response.data.deviceMessage)
+        console.log(response.data.deviceMessage.msg)
+        this.devices.push(response.data.deviceMessage.msg)
       },
       error => {
         console.log(error);
-      })
-  }
+      }
+    )
+
+    this.apollo
+      .watchQuery<any>({query:QueryQL.Topics})
+      .valueChanges
+      .subscribe(({ data, loading }) => {
+        
+        if(!loading)
+          this.menuService.menu.next(data.topics.map((topic:any)=>{
+            return {
+              label:topic.name,
+              callback(){
+                console.log(topic.name,)
+              }
+            }
+          }))
+      });
+   }
 
   ngOnDestroy(){
     this.menuService.menu.next(null)

@@ -4,7 +4,7 @@ export interface IGeolocationConfig {
     showTractor?:boolean;
     lineColor?:string;
     lineSize?:number;
-    center?:number[];
+    center?:number[] | null | undefined;
     zoom?:number
 }
 

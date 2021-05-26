@@ -7,31 +7,32 @@ import path from 'path';
 import apiRouter from './api-routes'
 import graphQlServer from './graphql'
 import dotenv from 'dotenv'
+import * as EventContants from './graphql/constants'
+import Database from './database/index'
+import LevelDB from './database/strategies/leveldb'
 dotenv.config({ path: '../.env' })
 
+const db = new Database(new LevelDB);
 const pubsub = new PubSub();
-const DEVICE_MESSAGE = Symbol.for("DEVICE_MESSAGE");
-const eventTypes = {DEVICE_MESSAGE}
-
 const app = express();
+const apolloServer = graphQlServer({pubsub ,events:EventContants, app, db})
+const httpServer = createServer(app);
+
 app.use(
   express.urlencoded({
     extended: true
   })
 )
 
-app.use(express.json())
-const apolloServer = graphQlServer({pubsub,events:eventTypes,app})
-
+app.use(express.json({limit: '50mb', extended: true}))
 app.use(morgan('dev'));
-app.use("/api", apiRouter({pubsub, eventTypes }));
+app.use("/api", apiRouter({pubsub, eventTypes:EventContants, db }));
 app.use("/", express.static(path.join(__dirname, "../dist")));
 app.use(express.static('dist'));
 app.get('*', function (req, res) {
     res.sendFile(path.join( `${__dirname}../../dist/index.html`));
  });
 
-const httpServer = createServer(app);
 apolloServer.installSubscriptionHandlers(httpServer);
 
 httpServer.listen({ port: process.env.WEB_SERVER_PORT }, () => {
