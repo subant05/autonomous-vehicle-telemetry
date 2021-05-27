@@ -1,1 +1,7 @@
 <p>device-topic works!</p>
+<div [ngSwitch]="currentRoute">
+    <div *ngSwitchCase="'starfire'">
+        {{coordinates | json}}
+    </div>
+    <div *ngDefaultCase></div>
+</div>

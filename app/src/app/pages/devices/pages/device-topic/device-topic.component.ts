@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router'
+import { Subscription } from 'rxjs';
+import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
 
 @Component({
   selector: 'app-device-topic',
@@ -8,18 +10,33 @@ import {Router, ActivatedRoute} from '@angular/router'
 })
 export class DeviceTopicComponent implements OnInit, OnDestroy {
 
-  constructor(private router: Router, private route: ActivatedRoute) { 
-    this.route.params.subscribe(data=>{
-      console.log(data)
-    })
+  querySubscription: Subscription |null =null
+  coordinates: number[][] = []
+  currentRoute: string =  ""
+
+  constructor(
+    private router: Router
+    , private route: ActivatedRoute
+    , private gqlQueryService: GqlQueryService) { 
   }
 
   ngOnInit(): void {
-    console.log((this.route.url as any).value.join("/"))
+    this.currentRoute =  (this.route.url as any).value.join("/")
+
+    switch(this.currentRoute){
+      case "starfire":
+        this.querySubscription = this.gqlQueryService.getGeolocaton().subscribe((subscription:any)=>{
+          if(!subscription.loading)
+          this.coordinates = subscription.data.geolocation.map((geo:any)=>{
+            return geo.msg ? [geo.msg.longitude, geo.msg.latitude] : []
+          })
+        })
+        break;
+    }
   }
 
   ngOnDestroy(){
-    console.log("Destroyed")
+    this.querySubscription?.unsubscribe()
   }
 
 }

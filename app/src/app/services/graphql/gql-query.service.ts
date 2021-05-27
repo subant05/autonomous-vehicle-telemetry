@@ -14,4 +14,9 @@ export class GqlQueryService {
       .watchQuery<any>({ query: QueryQL.Topics })
       .valueChanges
   }
+  getGeolocaton(){
+    return this.graphService
+      .watchQuery<any>({ query: QueryQL.Geolocation })
+      .valueChanges
+  }
 }
