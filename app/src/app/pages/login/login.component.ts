@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
     this.socialAuthService.authState.subscribe((user) => {
       this.googleUser = user;
       this.isLoggedin = (user != null);
-      console.log(this.googleUser);
       if (this.isLoggedin){
         this.router.navigate(["/"])
       }

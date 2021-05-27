@@ -15,32 +15,32 @@ export class DeviceLiveComponent implements OnInit, OnDestroy {
   constructor(private gisService: GeolocationService, private graphQLSubscription: GqlSubscriptionService) { }
 
   async ngOnInit() {
-    const {map,geoJson} = await this.gisService.getLiveMap(
-      {
-        container:"map1"
-        , showTractor:true
-        , coordinates:[]
-        , zoom:15}
-    )
+    // const {map,geoJson} = await this.gisService.getLiveMap(
+    //   {
+    //     container:"map1"
+    //     , showTractor:true
+    //     , coordinates:[]
+    //     , zoom:15}
+    // )
 
-    this.geoUpdateSubscription = this.graphQLSubscription.getGeolocationStream().subscribe(
-      (response:any) => {
-        console.log(response.data.geographicCoordinates)
-        const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
+    // this.geoUpdateSubscription = this.graphQLSubscription.getGeolocationStream().subscribe(
+    //   (response:any) => {
+    //     console.log(response.data.geographicCoordinates)
+    //     const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
 
-        // @ts-ignore
-        geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
-        map.getSource('trace').setData(geoJson.data);
-        map.panTo([longitude,latitude]);
-      },
-      error => {
-        console.log(error);
-      }
-    )
+    //     // @ts-ignore
+    //     geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
+    //     map.getSource('trace').setData(geoJson.data);
+    //     map.panTo([longitude,latitude]);
+    //   },
+    //   error => {
+    //     console.log(error);
+    //   }
+    // )
   }
 
   ngOnDestroy(): void{
-    this.geoUpdateSubscription?.unsubscribe()
+    // this.geoUpdateSubscription?.unsubscribe()
   }
 
 }

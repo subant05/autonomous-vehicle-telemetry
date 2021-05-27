@@ -1,7 +1,15 @@
-<p>device-topic works!</p>
 <div [ngSwitch]="currentRoute">
     <div *ngSwitchCase="'starfire'">
-        {{coordinates | json}}
+        <div class="grid">
+            <div class="cell">
+                <b>Static</b>
+                <app-starfire [showTractor]=true [zoom]=20></app-starfire>
+            </div>
+            <div class="cell">
+                <b>Replay</b>
+                <app-starfire playback="replay"  [zoom]=30></app-starfire>
+            </div>
+        </div>
     </div>
-    <div *ngDefaultCase></div>
+    <div *ngSwitchDefault>Coming Soon!</div>
 </div>

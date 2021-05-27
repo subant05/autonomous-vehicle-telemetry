@@ -1,0 +1,118 @@
+import { Component, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators'
+import {v4 as uuid} from 'uuid'
+import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
+import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
+import {GeolocationService} from 'src/app/services/geolocation/geolocation.service'
+
+@Component({
+  selector: 'app-starfire',
+  templateUrl: './starfire.component.html',
+  styleUrls: ['./starfire.component.scss']
+})
+export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
+  querySubscription: Subscription |null =null
+  mapNodeId: string = uuid()
+
+  @Input() playback: string = "static"
+  @Input() showTractor: boolean = false
+  @Input() zoom: number = 15
+  @Input() coordinates: number[][] | undefined;
+  @Input() lineColor: string | undefined;
+  @Input() lineSize:  number | undefined
+
+  constructor(
+    private gqlQueryService: GqlQueryService
+    , private gisService: GeolocationService
+    , private graphQLSubscription: GqlSubscriptionService) { }
+
+  
+  private async setupDynamicMap(config:any){
+    return this.gisService.getLiveMap(config)
+  }
+
+  private async setupStaticMap(coordinates?:number[][]){
+    this.gisService[this.playback ==="static" ? "getStaticMap" : "getReplayMap"]({
+      container:this.mapNodeId
+      , coordinates: coordinates || this.coordinates || []
+      , showTractor:this.showTractor
+      , zoom:this.zoom
+      , lineColor:this.lineColor
+      , lineSize:this.lineSize 
+    })
+  }
+
+  private async generateLiveMap(){
+    const config = {
+      container:this.mapNodeId
+      , showTractor:this.showTractor
+      , coordinates:[]
+      , zoom:this.zoom
+    }
+
+    this.setupDynamicMap(config).then((mapConfig:any)=>{
+      const {map,geoJson} = mapConfig
+      this.querySubscription = this.graphQLSubscription
+        .getGeolocationStream()
+        .subscribe(
+        (response:any) => {
+          const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
+  
+          // @ts-ignore
+          geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
+          map.getSource('trace').setData(geoJson.data);
+          map.panTo([longitude,latitude]);
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    })
+  }
+
+  private async generateStaticMap(){
+    if(this.coordinates instanceof Array )
+      this.setupStaticMap()
+    else
+      this.querySubscription = this.gqlQueryService
+        .getGeolocaton()
+        .pipe(map((geoData:any)=>
+          !geoData.loading ?
+            geoData
+            .data
+            .geolocation
+            .map((geo:any)=>
+              geo.msg ? 
+                [geo.msg.longitude, geo.msg.latitude] 
+                : [])
+          : 
+          []
+        ))
+        .subscribe((coordinates:any)=>{
+          if(coordinates.length)
+            this.setupStaticMap(coordinates)
+        })
+  }
+
+  ngOnInit(): void {  }
+
+  ngAfterViewInit(){
+    switch(this.playback){
+      case "static":
+      case "replay":
+        this.generateStaticMap()
+        break;
+      case "live":
+        this.generateLiveMap()    
+        break;
+      default:
+        break;
+    }
+  }
+
+  ngOnDestroy(){
+    this.querySubscription?.unsubscribe()
+  }
+
+}

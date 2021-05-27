@@ -1,42 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router'
-import { Subscription } from 'rxjs';
-import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
+import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute} from '@angular/router'
 
 @Component({
   selector: 'app-device-topic',
   templateUrl: './device-topic.component.html',
   styleUrls: ['./device-topic.component.scss']
 })
-export class DeviceTopicComponent implements OnInit, OnDestroy {
-
-  querySubscription: Subscription |null =null
-  coordinates: number[][] = []
+export class DeviceTopicComponent implements OnInit {
   currentRoute: string =  ""
 
-  constructor(
-    private router: Router
-    , private route: ActivatedRoute
-    , private gqlQueryService: GqlQueryService) { 
+  constructor( private route: ActivatedRoute) { 
   }
 
   ngOnInit(): void {
     this.currentRoute =  (this.route.url as any).value.join("/")
-
-    switch(this.currentRoute){
-      case "starfire":
-        this.querySubscription = this.gqlQueryService.getGeolocaton().subscribe((subscription:any)=>{
-          if(!subscription.loading)
-          this.coordinates = subscription.data.geolocation.map((geo:any)=>{
-            return geo.msg ? [geo.msg.longitude, geo.msg.latitude] : []
-          })
-        })
-        break;
-    }
-  }
-
-  ngOnDestroy(){
-    this.querySubscription?.unsubscribe()
   }
 
 }

@@ -47,6 +47,7 @@ import { GeolocationService } from './services/geolocation/geolocation.service';
 import { ErrorComponent } from './pages/error/error.component';
 import { DeviceTopicComponent } from './pages/devices/pages/device-topic/device-topic.component';
 import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-live.component';
+import { StarfireComponent } from './components/topics/starfire/starfire.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-li
     ErrorComponent,
     DeviceTopicComponent,
     DeviceLiveComponent,
+    StarfireComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,6 +106,7 @@ import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-li
         uri: 'http://localhost:4000/graphql',
       });
 
+      
       // Create a WebSocket link:
       const ws = new WebSocketLink({
         uri: `ws://localhost:4000/graphql`,
@@ -120,9 +123,25 @@ import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-li
         http,
       );
 
+      const defaultOptions = {
+        watchQuery: {
+          fetchPolicy: 'network-only',
+          errorPolicy: 'ignore',
+        },
+        query: {
+          fetchPolicy: 'network-only',
+          errorPolicy: 'all',
+        },
+        subscription: {
+          fetchPolicy: 'network-only',
+          errorPolicy: 'all',
+        },
+      }
+
       return {
         link,
-        cache: new InMemoryCache({}),
+        cache: new InMemoryCache(),
+        defaultOptions: defaultOptions,
         // ... options
       };
     },

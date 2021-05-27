@@ -113,7 +113,8 @@ export class GeolocationService {
       },
       'paint': {
         'line-color': lineColor,
-        'line-width': lineSize
+        'line-width': lineSize,
+        'line-opacity': 0.8
       }
     });
   }
