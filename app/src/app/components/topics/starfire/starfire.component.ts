@@ -52,7 +52,7 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
     }
 
     this.setupDynamicMap(config).then((mapConfig:any)=>{
-      const {map,geoJson} = mapConfig
+      const {map, geoJson, image} = mapConfig
       this.querySubscription = this.graphQLSubscription
         .getGeolocationStream()
         .subscribe(
@@ -72,7 +72,7 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
               , coordinateType: "LineString"
               , coordinates: [newCoordinates]
             })
-            map.getSource('point').setData(imagePosition.data);
+            map.getSource(image).setData(imagePosition.data);
           }
 
           map.panTo(newCoordinates);

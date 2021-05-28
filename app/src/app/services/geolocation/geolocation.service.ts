@@ -14,6 +14,7 @@ mapboxgl.accessToken = environment.mapboxAPIKey
 })
 export class GeolocationService {
   private readonly mapboxgl = mapboxgl
+  private tractorName:string = 'tractor'
 
   constructor(private apollo: Apollo) {
     mapboxgl.accessToken = environment.mapboxAPIKey
@@ -29,26 +30,26 @@ export class GeolocationService {
     });
   }
 
-  private addImage({ name = "tractor", coordinates = [], map }: IAddImageArgs) {
+  private addImage({ coordinates = [], map }: IAddImageArgs) {
     map.loadImage(
       '/assets/tractor.png',
       (error: any, image: any) => {
         if (error) throw error;
 
         // Add the image to the map style.
-        map.addImage('tracker', image);
+        map.addImage(this.tractorName, image);
 
         // Add a data source containing one point feature.
-        map.addSource('point'
+        map.addSource(this.tractorName
           , this.getFeaturesGEOJSON({ type: 'geojson', dataType: 'FeatureCollection', geometryType: 'Feature', coordinates }));
 
         // Add a layer to use the image to represent the data.
         map.addLayer({
           'id': 'points',
           'type': 'symbol',
-          'source': 'point', // reference the data source
+          'source': this.tractorName, // reference the data source
           'layout': {
-            'icon-image': 'tracker', // reference the image
+            'icon-image': this.tractorName, // reference the image
             'icon-size': 0.05
           }
         });
@@ -200,7 +201,7 @@ export class GeolocationService {
               , coordinateType: "LineString"
               , coordinates: [coordinates[i]]
             })
-            map.getSource('point').setData(imagePosition.data);
+            map.getSource(this.tractorName).setData(imagePosition.data);
           }
           i++;
         } else {
@@ -241,7 +242,7 @@ export class GeolocationService {
         
           map.setPitch(30);
 
-        resolve({map,geoJson})
+        resolve({map, geoJson, image:this.tractorName})
   
       });
     })

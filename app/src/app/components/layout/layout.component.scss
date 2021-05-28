@@ -5,6 +5,7 @@
 
     .container__content-main{
         padding: 0 20px;
+        grid-column: 2;
     }
 }
 
@@ -14,6 +15,7 @@
         display: grid;
         grid-template-columns: 200px auto;
         grid-template-areas: "side-nav main-content";
+        grid-auto-flow:dense;
         grid-gap: 0px;
         top: 50px;
         position: absolute;
