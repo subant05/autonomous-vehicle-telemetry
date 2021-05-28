@@ -34,11 +34,7 @@ $app-theme: mat.define-light-theme((
 @include mat.all-component-themes($app-theme);
 
 /* You can add global styles to this file, and also import other style files */
-@import url(base.scss);
-@import url(variables.scss);
-
-
-.mapboxgl-ctrl-bottom-left,
-.mapboxgl-ctrl-bottom-right{
-  display:none !important;
-}
+@import "base.scss";
+@import "variables.scss";
+@import "grid.scss";
+@import "mapbox.scss";

@@ -1,12 +1,12 @@
 <div [ngSwitch]="currentRoute">
     <div *ngSwitchCase="'starfire'">
-        <div class="grid">
-            <div class="cell">
-                <b>Static</b>
+        <div class="grid gap">
+            <div class="grid__cell">
+                <div class="grid__cell--label">Static</div>
                 <app-starfire [showTractor]=true [zoom]=20></app-starfire>
             </div>
-            <div class="cell">
-                <b>Replay</b>
+            <div class="grid__cell">
+                <div class="grid__cell--label">Replay</div>
                 <app-starfire playback="replay" [showTractor]=true [zoom]=30></app-starfire>
             </div>
         </div>
