@@ -12,6 +12,8 @@
         .live-pulse{
             margin-left: 20px;
             animation: pulse 1000ms infinite;
+            position: absolute;
+            top: 20px;
         }
     
         @keyframes pulse {

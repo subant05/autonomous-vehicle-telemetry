@@ -58,11 +58,25 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
         .subscribe(
         (response:any) => {
           const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
-  
+          const newCoordinates = [longitude,latitude]
+
           // @ts-ignore
-          geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
+          geoJson.data.features[0].geometry.coordinates.push(newCoordinates)
           map.getSource('trace').setData(geoJson.data);
-          map.panTo([longitude,latitude]);
+
+          if (this.showTractor){
+            const imagePosition = this.gisService.getFeaturesGEOJSON({
+              type: 'geojson'
+              , dataType: 'FeatureCollection'
+              , geometryType: 'Feature'
+              , coordinateType: "LineString"
+              , coordinates: [newCoordinates]
+            })
+            map.getSource('point').setData(imagePosition.data);
+          }
+
+          map.panTo(newCoordinates);
+          
         },
         error => {
           console.log(error);

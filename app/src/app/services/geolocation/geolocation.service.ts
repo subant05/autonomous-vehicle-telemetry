@@ -20,47 +20,6 @@ export class GeolocationService {
   }
 
 
-  private getGEOJSON(config: IGeoJSONArgs) {
-    const { type, dataType, geometryType, coordinates } = config
-
-    return {
-      'type': type,
-      'data': {
-        'type': dataType,
-        'properties': {},
-        'geometry': {
-          'type': geometryType,
-          'coordinates': coordinates
-        }
-      }
-    }
-  }
-
-  private getFeaturesGEOJSON(config: IGeoJSONArgs) {
-    const { type
-      , dataType
-      , geometryType
-      , coordinateType = "Point"
-      , coordinates 
-    } = config
-
-    return {
-      'type': type,
-      'data': {
-        'type': dataType,
-        'features': [
-          {
-            'type': geometryType,
-            'geometry': {
-              'type': coordinateType,
-              'coordinates': coordinates
-            }
-          }
-        ]
-      }
-    }
-  }
-
   private setupMap(container: string, center: number[] | undefined | null, zoom: number) {
     return new mapboxgl.Map({
       container, // container ID
@@ -135,6 +94,48 @@ export class GeolocationService {
     this.paintLine({ source: "route", lineColor, lineSize }, map)
   }
 
+
+  getGEOJSON(config: IGeoJSONArgs) {
+    const { type, dataType, geometryType, coordinates } = config
+
+    return {
+      'type': type,
+      'data': {
+        'type': dataType,
+        'properties': {},
+        'geometry': {
+          'type': geometryType,
+          'coordinates': coordinates
+        }
+      }
+    }
+  }
+
+   getFeaturesGEOJSON(config: IGeoJSONArgs) {
+    const { type
+      , dataType
+      , geometryType
+      , coordinateType = "Point"
+      , coordinates 
+    } = config
+
+    return {
+      'type': type,
+      'data': {
+        'type': dataType,
+        'features': [
+          {
+            'type': geometryType,
+            'geometry': {
+              'type': coordinateType,
+              'coordinates': coordinates
+            }
+          }
+        ]
+      }
+    }
+  }
+
   getStaticMap(config: IGeolocationConfig) {
     const { container = "map"
             , coordinates = [[]]
@@ -176,6 +177,8 @@ export class GeolocationService {
 
       map.addSource('trace', geoJson);
       this.paintLine({ source: "trace", lineColor, lineSize }, map)
+      if (showTractor)
+        this.addImage({ coordinates, map })
 
       map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
       map.setPitch(30);
@@ -189,6 +192,16 @@ export class GeolocationService {
           )
           map.getSource('trace').setData(geoJson.data);
           map.panTo(coordinates[i]);
+          if (showTractor){
+            const imagePosition = this.getFeaturesGEOJSON({
+              type: 'geojson'
+              , dataType: 'FeatureCollection'
+              , geometryType: 'Feature'
+              , coordinateType: "LineString"
+              , coordinates: [coordinates[i]]
+            })
+            map.getSource('point').setData(imagePosition.data);
+          }
           i++;
         } else {
           window.clearInterval(timer);
@@ -222,10 +235,11 @@ export class GeolocationService {
         })
         map.addSource('trace', geoJson);
         this.paintLine({ source: "trace", lineColor, lineSize }, map)
-  
-        // if(center)
-        //   map.jumpTo({ 'center': center, 'zoom': 14 });
-        map.setPitch(30);
+        
+        if (showTractor)
+          this.addImage({ coordinates, map })
+        
+          map.setPitch(30);
 
         resolve({map,geoJson})
   
