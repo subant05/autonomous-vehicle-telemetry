@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, DoCheck, OnChanges } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
 import { Observable, Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/navigation/menu.service';
 import { IMenu, IMenuLinks } from 'src/app/interfaces/navigation/menu'
@@ -20,8 +19,7 @@ export class DevicesComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
   rootPath: string = "";
 
   constructor(
-    private apollo: Apollo
-    , private menuService: MenuService
+     private menuService: MenuService
     , private router: Router
     , private route: ActivatedRoute
     , private graphqlQueryService: GqlQueryService) {

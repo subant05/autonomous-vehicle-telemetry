@@ -33,6 +33,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatGridListModule } from '@angular/material/grid-list';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -48,6 +50,8 @@ import { ErrorComponent } from './pages/error/error.component';
 import { DeviceTopicComponent } from './pages/devices/pages/device-topic/device-topic.component';
 import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-live.component';
 import { StarfireComponent } from './components/topics/starfire/starfire.component';
+import { ImagePairComponent } from './components/topics/image-pair/image-pair.component';
+import { ImageComponent } from './components/image/image.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +67,8 @@ import { StarfireComponent } from './components/topics/starfire/starfire.compone
     DeviceTopicComponent,
     DeviceLiveComponent,
     StarfireComponent,
+    ImagePairComponent,
+    ImageComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +85,8 @@ import { StarfireComponent } from './components/topics/starfire/starfire.compone
     MatButtonModule,
     MatSnackBarModule,
     MatGridListModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
     // 
     GraphQLModule,
     SocialLoginModule,

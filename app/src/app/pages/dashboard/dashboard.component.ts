@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor() { }
+  constructor( private gqlSubsctiption: GqlSubscriptionService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.gqlSubsctiption.getDeviceStream().subscribe((response:any)=>{
+      // if(response.data.deviceMessage.topic && response.data.deviceMessage.topic.includes("_map"))
+        console.log(JSON.stringify(response.data, null, " "))
+    })
+  }
 
-   ngAfterViewInit(){}
+  ngAfterViewInit(){}
 
 }

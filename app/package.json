@@ -29,6 +29,7 @@
     "apollo-angular": "^2.4.0",
     "d3": "^6.7.0",
     "graphql": "^15.0.0",
+    "image-js": "^0.31.4",
     "mapbox-gl": "^2.2.0",
     "rxjs": "~6.6.0",
     "subscriptions-transport-ws": "^0.9.18",

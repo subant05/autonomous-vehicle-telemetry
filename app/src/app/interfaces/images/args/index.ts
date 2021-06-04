@@ -1,0 +1,1 @@
+export {GetDataUrl} from './get-data-url'
