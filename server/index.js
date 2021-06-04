@@ -1,5 +1,6 @@
 import express from "express";
 import { createServer } from "http";
+import fs from 'fs'
 import { ApolloServer } from "apollo-server-express";
 import { PubSub, withFilter } from "apollo-server";
 import morgan from 'morgan';
@@ -17,6 +18,7 @@ const pubsub = new PubSub();
 const app = express();
 const apolloServer = graphQlServer({pubsub ,events:EventContants, app, db})
 const httpServer = createServer(app);
+const requestLogStream = fs.createWriteStream(path.join(__dirname, 'request.log'), { flags: 'a' })
 
 app.use(
   express.urlencoded({
@@ -25,7 +27,7 @@ app.use(
 )
 
 app.use(express.json({limit: '50mb', extended: true}))
-app.use(morgan('dev'));
+app.use(morgan('dev', {stream: requestLogStream }));
 app.use("/api", apiRouter({pubsub, eventTypes:EventContants, db }));
 app.use("/", express.static(path.join(__dirname, "../dist")));
 app.use(express.static('dist'));
@@ -42,4 +44,4 @@ httpServer.listen({ port: process.env.WEB_SERVER_PORT }, () => {
   console.log(
     `🚀 Subscriptions ready at ws://${process.env.WEB_SERVER_DOMAIN}:${process.env.WEB_SERVER_PORT}${apolloServer.subscriptionsPath}`
   );
-});
+}).setTimeout(1000*60*10);

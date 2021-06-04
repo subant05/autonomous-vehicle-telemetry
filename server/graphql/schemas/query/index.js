@@ -5,5 +5,7 @@ export default  gql`
        hello: String!
        geolocation:[Starfire!]
        topics:[Topic!]
+       imagePair(topic:String! cursor:Int!):[CameraPair!]
+       segmentationMap(topic:String cursor:Int!):[SegmentationMap!]
    }
 `;

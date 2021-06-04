@@ -3,7 +3,7 @@ import EventEmitter from 'events'
 import * as DB_EVENTS from '../events'
 import { resolve } from 'path';
 
-EventEmitter.defaultMaxListeners = 20
+EventEmitter.defaultMaxListeners = 0
 
 export default class LevelDB extends EventEmitter {
     constructor(){
@@ -45,9 +45,6 @@ export default class LevelDB extends EventEmitter {
                 const savedData = storedValues.pop()
                 storedValues = null
 
-                if(query === "/starfire")
-                    console.log(savedData)
-
                 this.emit(DB_EVENTS.DB_INSERT_SUCCESS,{query, data:savedData, options} )
     
                 if(event)
@@ -60,18 +57,30 @@ export default class LevelDB extends EventEmitter {
     }
 
     async read({query="",options={},callback=a=>a,event}){
+        const {cursor, limit}  = options
+
+
         if((typeof query !== 'string' || !query ))
             return this.emit(DB_EVENTS.DB_READ_ERROR,{query, options});
         
         this.db.get(query, (error,data)=>{
-            callback(error,data)
+
+            let returnData = data ?  JSON.parse(data) : [];
+
+            if(cursor || limit){
+                returnData = returnData.slice(
+                    (cursor && cursor > 0) ? cursor-1 : 0
+                    , (limit && limit > 0) ? limit : 1)
+            }
+
+            callback(error,returnData)
 
             if(error){
                 this.emit(DB_EVENTS.DB_READ_ERROR,{query, options, error});
             } else{
-                this.emit(DB_EVENTS.DB_READ_SUCCESS,{query, data, options, error});
+                this.emit(DB_EVENTS.DB_READ_SUCCESS,{query, returnData, options, error});
                 if(event)
-                    this.emit(event,{query, data, options, error});
+                    this.emit(event,{query, returnData, options, error});
             }
 
         })
