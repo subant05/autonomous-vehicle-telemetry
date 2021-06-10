@@ -3,3 +3,4 @@
 dist
 /server/_devices
 /db
+request.log

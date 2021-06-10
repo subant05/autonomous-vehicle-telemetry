@@ -2,12 +2,12 @@
     <div *ngSwitchCase="'starfire'">
         <div class="grid gap">
             <div class="grid__cell">
-                <div class="grid__cell--label">Static</div>
                 <app-starfire [showTractor]=true [zoom]=20></app-starfire>
+                <div class="grid__cell--label">Static</div>
             </div>
             <div class="grid__cell">
-                <div class="grid__cell--label">Replay</div>
                 <app-starfire playback="replay" [showTractor]=true [zoom]=30></app-starfire>
+                <div class="grid__cell--label">Replay</div>
             </div>
         </div>
     </div>

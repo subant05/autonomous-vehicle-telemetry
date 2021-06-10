@@ -9,6 +9,15 @@ export class GqlQueryService {
 
   constructor( private graphService: Apollo ) { }
 
+  private basicFilteredQuery (Query:any, variables:any) {
+    return this.graphService
+    .watchQuery<any>({ 
+      query: Query, 
+      variables
+    })
+    .valueChanges
+  }
+
   getTopics(){
     return this.graphService
       .watchQuery<any>({ query: QueryQL.Topics })
@@ -21,15 +30,12 @@ export class GqlQueryService {
       .valueChanges
   }
 
-  getImagePair(topic="",cursor=0){
-    return this.graphService
-      .watchQuery<any>({ 
-        query: QueryQL.ImagePair, 
-        variables: {
-          topic,
-          cursor,
-        }
-      })
-      .valueChanges
+  getImagePair(variables:any){
+    return this.basicFilteredQuery(QueryQL.ImagePair, variables)
   }
+
+  getSegmentationMap(variables:any){
+    return this.basicFilteredQuery(QueryQL.SegmentationMap, variables)
+  }
+  
 }

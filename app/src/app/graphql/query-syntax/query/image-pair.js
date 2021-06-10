@@ -5,6 +5,11 @@ query ImagePair($topic:String! $cursor:Int!){
         imagePair(topic:$topic cursor:$cursor){
             timestamp
             topic
+            pagination{
+              position
+              pageSize
+              length
+            }
             msg{
               header{
                   id

@@ -35,6 +35,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatPaginatorModule} from '@angular/material/paginator';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -52,6 +53,7 @@ import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-li
 import { StarfireComponent } from './components/topics/starfire/starfire.component';
 import { ImagePairComponent } from './components/topics/image-pair/image-pair.component';
 import { ImageComponent } from './components/image/image.component';
+import { ImageSegmentationComponent } from './components/topics/image-segmentation/image-segmentation.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,7 @@ import { ImageComponent } from './components/image/image.component';
     StarfireComponent,
     ImagePairComponent,
     ImageComponent,
+    ImageSegmentationComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +90,7 @@ import { ImageComponent } from './components/image/image.component';
     MatGridListModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
     // 
     GraphQLModule,
     SocialLoginModule,

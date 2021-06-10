@@ -6,6 +6,6 @@ export default  gql`
        geolocation:[Starfire!]
        topics:[Topic!]
        imagePair(topic:String! cursor:Int!):[CameraPair!]
-       segmentationMap(topic:String cursor:Int!):[SegmentationMap!]
+       segmentationMap(topic:String cursor:Int!, id:Float!):[SegmentationMap!]
    }
 `;

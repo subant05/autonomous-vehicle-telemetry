@@ -1,9 +1,9 @@
-async function getTopicData(parent, {topic="",cursor=1}, ctx, info){
+async function getTopicData(parent, {topic="",cursor=1, id}, ctx, info){
   if(!topic || typeof topic !== 'string')
       return []
 
   const data = await new Promise((resolve, reject)=>{
-    ctx.db.read({query:topic, options:{cursor, limit:1}, callback(err,data){
+    ctx.db.read({query:topic, options:{cursor, limit:1, id}, callback(err,data){
       if(err){
         resolve([])
       } else

@@ -9,7 +9,7 @@ export default class LevelDB extends EventEmitter {
     constructor(){
         super()
         this.db = level("../db")
-        this.db.clear()
+        // this.db.clear()
     }
 
     async create({query="",data=null,options={},callback=a=>a,event}){
@@ -57,7 +57,7 @@ export default class LevelDB extends EventEmitter {
     }
 
     async read({query="",options={},callback=a=>a,event}){
-        const {cursor, limit}  = options
+        const {cursor, limit, id}  = options
 
 
         if((typeof query !== 'string' || !query ))
@@ -67,10 +67,24 @@ export default class LevelDB extends EventEmitter {
 
             let returnData = data ?  JSON.parse(data) : [];
 
+            if(id) 
+                returnData = returnData.filter(dataSet=>{
+                    if(!dataSet.msg || !(dataSet.msg && (dataSet.msg.header || dataSet.msg.descriptor)))
+                        return false 
+
+                   return (dataSet.msg.header || dataSet.msg.descriptor).id == id
+                })
+
             if(cursor || limit){
+                const length  = returnData.length
                 returnData = returnData.slice(
                     (cursor && cursor > 0) ? cursor-1 : 0
                     , (limit && limit > 0) ? limit : 1)
+
+                returnData = returnData.map((dataSet, position)=>{
+                    dataSet.pagination = {length, position,pageSize:limit}
+                    return dataSet
+                })
             }
 
             callback(error,returnData)

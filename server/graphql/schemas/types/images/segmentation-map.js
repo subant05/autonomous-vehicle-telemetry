@@ -32,5 +32,6 @@ export default gql`
         topic:String!
         msg:SegmentationMapMessage
         type:DeviceMessageType
+        pagination:Pagination
     }
 `

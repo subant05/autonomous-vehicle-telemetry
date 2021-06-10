@@ -1,13 +1,28 @@
-<div *ngIf="leftImageUrl && rightImageUrl; else loading" class="grid gap images">
-    <div class="grid__cell">
-        <div class="grid__cell--label">Left</div>
-        <img [src]="leftImageUrl" id="leftImage">
-    </div>
-    <div class="grid__cell">
-        <div class="grid__cell--label">Right</div>
-        <img [src]="rightImageUrl" id="rightImage">
+<!-- <mat-paginator [length]="pagesLength"
+[pageSize]="pageSize"
+(page)="getCurrentImage($event)">
+</mat-paginator> -->
+<div *ngIf="leftImageUrl$ && rightImageUrl$ | async; else loading;" >
+
+    <div class="grid gap images">
+        <div class="grid__cell">
+            <div class="segmentation">
+                <app-image-segmentation [imageId]="imageHeaderId$ | async" [topic]="segmentationTopic$ | async" ></app-image-segmentation>
+            </div>
+            <div class="grid__cell--label">Left</div>
+            <img [src]="leftImageUrl$ | async" [id]="leftImageId">
+    
+        </div>
+        <div class="grid__cell">
+            <div class="segmentation">
+                <app-image-segmentation  [imageId]="imageHeaderId$ | async" [topic]="segmentationTopic$ | async" ></app-image-segmentation>
+            </div>
+            <div class="grid__cell--label">Right</div>
+            <img [src]="rightImageUrl$ | async" [id]="rightImageId">
+        </div>
     </div>
 </div>
+
 <ng-template #loading>
     <span *ngIf="noImage; else loader">
         No image were found.

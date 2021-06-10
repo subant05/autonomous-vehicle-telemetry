@@ -5,4 +5,5 @@ export interface GetDataUrl {
     is_bigendian?:number;
     data:number[]
     bitDepth?:number
+    isSegmentation?:boolean
 }
