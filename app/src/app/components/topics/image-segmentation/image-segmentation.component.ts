@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges, SimpleChange } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { v4 as uuid } from "uuid"
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service'
@@ -20,6 +20,7 @@ export class ImageSegmentationComponent implements OnInit, OnDestroy, OnChanges 
   @Input() topic: string | null | undefined = "";
   @Input() cursor: number = 0;
   @Input() imageId: number | null | undefined;
+  @Output("load") load =  new EventEmitter<string>()
 
   constructor(
     private gqlQueryService: GqlQueryService
@@ -30,22 +31,26 @@ export class ImageSegmentationComponent implements OnInit, OnDestroy, OnChanges 
     const topic:string | null | undefined = argTopic || this.topic
     const imageId:number | null | undefined = argImageId || this.imageId
 
-    if (!imageId || !topic)
+    if (!imageId || !topic){
+      this.load.emit("unloaded")
       return;
+    }
 
-      this.querySubscription?.unsubscribe()
-      this.querySubscription = this.gqlQueryService
-      .getSegmentationMap({ topic, cursor: this.cursor, id: imageId })
-      .subscribe(response => {
-        if (!response.data.segmentationMap || !response.data.segmentationMap.length) {
-          this.noImage = true
-          return;
-        }
+    this.querySubscription?.unsubscribe()
+    this.querySubscription = this.gqlQueryService
+    .getSegmentationMap({ topic, cursor: this.cursor, id: imageId })
+    .subscribe(response => {
+      if (!response.data.segmentationMap || !response.data.segmentationMap.length) {
+        this.noImage = true
+        this.load.emit("no segmentation")
+        return;
+      }
 
-        const segmentationMap = response.data.segmentationMap[0]
+      const segmentationMap = response.data.segmentationMap[0]
 
-        this.imageUrl = this.imageService.getDataURL({...segmentationMap.msg.image, isSegmentation:true})
-      })
+      this.imageUrl = this.imageService.getDataURL({...segmentationMap.msg.image, isSegmentation:true})
+      this.load.emit("loaded")
+    })
   }
 
   ngOnInit(): void {

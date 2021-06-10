@@ -1,24 +1,40 @@
 <!-- <mat-paginator [length]="pagesLength"
-[pageSize]="pageSize"
-(page)="getCurrentImage($event)">
+    [pageSize]="pageSize"
+    (page)="getCurrentImage($event)">
 </mat-paginator> -->
-<div *ngIf="leftImageUrl$ && rightImageUrl$ | async; else loading;" >
-
+<div *ngIf="leftImageUrl && rightImageUrl; else loading;" >
     <div class="grid gap images">
+        <div class="grid__cell" *ngIf="loadedSegmentations.length == 2; else segmentationLoader;">
+            <mat-slide-toggle 
+                class="segmentation-toggle"
+                [color]="segmentationToggle.color"
+                [checked]="segmentationToggle.checked"
+                [disabled]="loadedSegmentations.length < 2"
+                (change)="toggleSegmentation($event)">
+                Segmentation
+            </mat-slide-toggle>
+        </div> 
+        <ng-template #segmentationLoader>
+            <div class="grid__cell">
+                <mat-progress-bar mode="indeterminate">
+                    Segmentation
+                </mat-progress-bar>
+            </div>
+        </ng-template>
         <div class="grid__cell">
-            <div class="segmentation">
-                <app-image-segmentation [imageId]="imageHeaderId$ | async" [topic]="segmentationTopic$ | async" ></app-image-segmentation>
+            <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
+                <app-image-segmentation (load)="onSegmentationLoad($event)" [imageId]="imageHeaderId" [topic]="segmentationTopic$ | async" ></app-image-segmentation>
             </div>
             <div class="grid__cell--label">Left</div>
-            <img [src]="leftImageUrl$ | async" [id]="leftImageId">
+            <img [src]="leftImageUrl" [id]="leftImageId">
     
         </div>
         <div class="grid__cell">
-            <div class="segmentation">
-                <app-image-segmentation  [imageId]="imageHeaderId$ | async" [topic]="segmentationTopic$ | async" ></app-image-segmentation>
+            <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
+                <app-image-segmentation (load)="onSegmentationLoad($event)" [imageId]="imageHeaderId" [topic]="segmentationTopic$ | async" ></app-image-segmentation>
             </div>
             <div class="grid__cell--label">Right</div>
-            <img [src]="rightImageUrl$ | async" [id]="rightImageId">
+            <img [src]="rightImageUrl" [id]="rightImageId">
         </div>
     </div>
 </div>

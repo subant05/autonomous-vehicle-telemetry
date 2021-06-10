@@ -1,4 +1,10 @@
-<!-- <img class="segmentation-image"  *ngIf="imageUrl" [src]="imageUrl" [id]="imgId"> -->
-<div [ngStyle]="{width:'1024px', height:'512px', 'background-size': '3072px 512px', 'background-image': 'url(' + imageUrl + ')', 'background-repeat':'no-repeat' }">
-
+<div *ngIf="imageUrl; else loading"class="segmentation-image " [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}">
+    <img *ngIf="imageUrl" [src]="imageUrl" [id]="imgId">
 </div>
+<ng-template #loading>
+    <span *ngIf="noImage; else loader">
+    </span>
+    <ng-template #loader>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </ng-template>
+</ng-template>

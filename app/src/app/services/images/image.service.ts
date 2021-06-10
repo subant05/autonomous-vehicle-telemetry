@@ -10,98 +10,54 @@ export class ImageService {
    
   constructor() { }
 
+
+  private mapRGBChannels(data: number[], index:number, red:number, green:number, blue:number, reverse?:boolean | number){
+    if(!reverse){
+      data[index] =  red;     // red
+      data[index + 1] = green; // green
+      data[index + 2] =  blue; // blue
+    } else {
+      data[index + 2] =  blue; // blue
+      data[index + 1] = green; // green
+      data[index] =  red;     // red
+    }
+  }
+
   private generateSegmentationColor( data:number[], index:number, step:number, value:number[], reverse?:boolean | number ){
     const code = value[step]
 
     switch(code){
       // ‘Drivable’: (0, 0, 0), # Black
       case 0: 
-        if(!reverse){
-          data[index] =  0;     // red
-          data[index + 1] = 0; // green
-          data[index + 2] =  0; // blue
-        } else {
-          data[index + 2] =  0; // blue
-          data[index + 1] = 0; // green
-          data[index] =  0;     // red
-        }
+        this.mapRGBChannels(data,index, 0, 0, 0, reverse)
         break;
       // ‘Obstacle’: (1.0, 0, 0), # Red
       case 1:
-        if(!reverse){
-          data[index] =  255;     // red
-          data[index + 1] = 0; // green
-          data[index + 2] =  0; // blue
-        } else {
-          data[index + 2] =  0; // blue
-          data[index + 1] = 0; // green
-          data[index] =  255;     // red
-        }
+        this.mapRGBChannels(data,index, 255, 0, 0, reverse)
         break;
       // ‘Sky’: (0, 0, 1.0), # Blue
       case 2:
-        if(!reverse){
-          data[index] =  0;     // red
-          data[index + 1] = 0; // green
-          data[index + 2] =  255; // blue
-        } else {
-          data[index + 2] =  255; // blue
-          data[index + 1] = 0; // green
-          data[index] =  0;     // red
-        }
+        this.mapRGBChannels(data,index, 0, 0, 255, reverse)
         break; 
       // ‘Trees’: (0, 1.0, 0), # Green
       case 3:
-        if(!reverse){
-          data[index] =  0;     // red
-          data[index + 1] = 255; // green
-          data[index + 2] =  0; // blue
-        } else {
-          data[index + 2] =  0; // blue
-          data[index + 1] = 255; // green
-          data[index] =  0;     // red
-        }
+        this.mapRGBChannels(data,index, 0, 255, 0, reverse)
         break;
       // ‘Implement’: (1.0, 1.0, 0.0), # Yellow 
       case 4:
-        if(!reverse){
-          data[index] =  255;     // red
-          data[index + 1] = 255; // green
-          data[index + 2] =  0; // blue
-        } else {
-          data[index + 2] =  0; // blue
-          data[index + 1] = 255; // green
-          data[index] =  255;     // red
-        }
+        this.mapRGBChannels(data,index, 255, 255, 0, reverse)
         break;
       // ‘Human’: (0.0, 1.0, 1.0), # Teal
       case 5:
-        if(!reverse){
-          data[index] =  0;     // red
-          data[index + 1] = 255; // green
-          data[index + 2] =  255; // blue
-        } else {
-          data[index + 2] =  255; // blue
-          data[index + 1] = 255; // green
-          data[index] =  0;     // red
-        }
+        this.mapRGBChannels(data,index, 0, 255, 255, reverse)
         break;      
       }
 
     data[index + 3] =  !code ? 0 : 125;  // alpha
-
   }
 
-  private generateRgbColor(data:number[], index:number, step:number, value:number[], reverse?:boolean | number){
-    if(!reverse){
-      data[index] =  value[step];     // red
-      data[index + 1] = value[step + 1]; // green
-      data[index + 2] =  value[step + 2]; // blue
-    } else {
-      data[index + 2] =  value[step]; // blue
-      data[index + 1] = value[step + 1]; // green
-      data[index] =  value[step +2];     // red
-    }
+  private generateRgbColor(data:number[], index:number, step:number, value:number[], reverse:boolean | number){
+    this.mapRGBChannels(data,index, value[step], value[step + 1], value[step + 2], reverse)
     data[index + 3] = 255;  // alpha
   }
 

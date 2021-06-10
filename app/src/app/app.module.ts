@@ -36,6 +36,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -91,6 +92,7 @@ import { ImageSegmentationComponent } from './components/topics/image-segmentati
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatSlideToggleModule,
     // 
     GraphQLModule,
     SocialLoginModule,
