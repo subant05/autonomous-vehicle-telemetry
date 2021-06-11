@@ -33618,3 +33618,11 @@
 [0mGET /vendor.js.map [32m200[0m 1.331 ms - 10110671[0m
 [0mGET /favicon.ico [32m200[0m 1.477 ms - 948[0m
 [0mGET / [32m200[0m 2.846 ms - 842[0m
+[0mGET / [32m200[0m 4.897 ms - 842[0m
+[0mGET /styles.css [32m200[0m 2.051 ms - 86643[0m
+[0mGET /runtime.js [32m200[0m 3.943 ms - 7291[0m
+[0mGET /polyfills.js [32m200[0m 3.381 ms - 131619[0m
+[0mGET /main.js [32m200[0m 2.954 ms - 186603[0m
+[0mGET /vendor.js [32m200[0m 3.165 ms - 8265609[0m
+[0mGET /assets/brt-icon-sm.png [32m200[0m 1.167 ms - 2501[0m
+[0mGET /assets/tractor.png [32m200[0m 1.199 ms - 777270[0m
