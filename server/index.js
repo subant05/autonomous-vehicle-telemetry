@@ -37,9 +37,9 @@ app.get('*', function (req, res) {
 
 apolloServer.installSubscriptionHandlers(httpServer);
 
-httpServer.listen({ port: process.env.WEB_SERVER_PORT }, () => {
+httpServer.listen({ port: process.env.PORT || process.env.WEB_SERVER_PORT }, () => {
   console.log(
-    `🚀 Server ready at http://${process.env.WEB_SERVER_DOMAIN}:${process.env.WEB_SERVER_PORT}${apolloServer.graphqlPath}`
+    `🚀 Server ready at http://${process.env.WEB_SERVER_DOMAIN}:${process.env.PORT || process.env.WEB_SERVER_PORT}${apolloServer.graphqlPath}`
   );
   console.log(
     `🚀 Subscriptions ready at ws://${process.env.WEB_SERVER_DOMAIN}:${process.env.WEB_SERVER_PORT}${apolloServer.subscriptionsPath}`
