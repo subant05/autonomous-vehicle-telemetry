@@ -472,7 +472,7 @@ AppModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵ�
                 });
                 // Create a WebSocket link:
                 const ws = new _apollo_client_link_ws__WEBPACK_IMPORTED_MODULE_24__.WebSocketLink({
-                    uri: `${location.protocol === "https" ? "wss:" : "ws:"}//${location.host}${_environments_environment__WEBPACK_IMPORTED_MODULE_5__.environment.serviceEndpoint}`,
+                    uri: `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${_environments_environment__WEBPACK_IMPORTED_MODULE_5__.environment.serviceEndpoint}`,
                     options: {
                         reconnect: true,
                     },

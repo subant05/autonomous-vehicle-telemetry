@@ -123,7 +123,7 @@ import { ImageSegmentationComponent } from './components/topics/image-segmentati
       
       // Create a WebSocket link:
       const ws = new WebSocketLink({
-        uri: `${location.protocol === "https" ? "wss:" : "ws:"}//${location.host}${environment.serviceEndpoint}`,
+        uri: `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${environment.serviceEndpoint}`,
         options: {
           reconnect: true,
         },
