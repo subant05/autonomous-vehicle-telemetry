@@ -468,11 +468,11 @@ AppModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵ�
             useFactory(httpLink) {
                 // Create an http link:
                 const http = httpLink.create({
-                    uri: 'http://localhost:4000/graphql',
+                    uri: `http://${location.host}${_environments_environment__WEBPACK_IMPORTED_MODULE_5__.environment.serviceEndpoint}`,
                 });
                 // Create a WebSocket link:
                 const ws = new _apollo_client_link_ws__WEBPACK_IMPORTED_MODULE_24__.WebSocketLink({
-                    uri: `ws://localhost:4000/graphql`,
+                    uri: `ws://${location.host}${_environments_environment__WEBPACK_IMPORTED_MODULE_5__.environment.serviceEndpoint}`,
                     options: {
                         reconnect: true,
                     },
@@ -2776,7 +2776,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const sharedConfig = {
     googleAuthClientId: '1068443878218-kk375e4311cc3r2rk3b0hn9ukm900tjo.apps.googleusercontent.com',
-    mapboxAPIKey: "pk.eyJ1IjoiYW50Ymx1ZXJpdmVydGVjaCIsImEiOiJja295a3IwemowbjMwMndwZ2RkdHY2bmJjIn0.xpY0kRQNFTeFgc5l6hqRtQ"
+    mapboxAPIKey: "pk.eyJ1IjoiYW50Ymx1ZXJpdmVydGVjaCIsImEiOiJja295a3IwemowbjMwMndwZ2RkdHY2bmJjIn0.xpY0kRQNFTeFgc5l6hqRtQ",
+    serviceEndpoint: "/graphql",
 };
 
 

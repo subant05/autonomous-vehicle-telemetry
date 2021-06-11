@@ -117,13 +117,13 @@ import { ImageSegmentationComponent } from './components/topics/image-segmentati
     useFactory(httpLink: HttpLink): ApolloClientOptions {
       // Create an http link:
       const http = httpLink.create({
-        uri: 'http://localhost:4000/graphql',
+        uri: `http://${location.host}${environment.serviceEndpoint}`,
       });
 
       
       // Create a WebSocket link:
       const ws = new WebSocketLink({
-        uri: `ws://localhost:4000/graphql`,
+        uri: `ws://${location.host}${environment.serviceEndpoint}`,
         options: {
           reconnect: true,
         },
