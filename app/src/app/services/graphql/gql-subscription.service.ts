@@ -20,4 +20,10 @@ export class GqlSubscriptionService {
       query: SubscriptionQL.GEOGRAPHIC_COORDINATES
     })
   }
+
+  getOnlineVehicles(){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.ONLINE_VEHICLES
+    })
+  }
 }

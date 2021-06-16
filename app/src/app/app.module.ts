@@ -31,17 +31,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatGridListModule } from '@angular/material/grid-list';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LayoutComponent } from './components/layout/layout.component';
-import { DevicesComponent } from './pages/devices/devices.component';
+import { VehiclesComponent } from './pages/vehicles/vehicles.component';
 import { GraphQLModule } from './modules/graphql.module';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
 
@@ -49,12 +51,14 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 import { MenuService } from './services/navigation/menu.service'
 import { GeolocationService } from './services/geolocation/geolocation.service';
 import { ErrorComponent } from './pages/error/error.component';
-import { DeviceTopicComponent } from './pages/devices/pages/device-topic/device-topic.component';
-import { DeviceLiveComponent } from './pages/devices/pages/device-live/device-live.component';
+import { VehicleTopicComponent } from './pages/vehicles/pages/vehicle-topic/vehicle-topic.component';
+import { VehicleLiveComponent } from './pages/vehicles/pages/vehicle-live/vehicle-live.component';
 import { StarfireComponent } from './components/topics/starfire/starfire.component';
 import { ImagePairComponent } from './components/topics/image-pair/image-pair.component';
 import { ImageComponent } from './components/image/image.component';
 import { ImageSegmentationComponent } from './components/topics/image-segmentation/image-segmentation.component';
+import { VehicleListComponent } from './pages/vehicles/pages/vehicle-list/vehicle-list.component';
+import { VehicleComponent } from './pages/vehicles/pages/vehicle/vehicle.component';
 
 @NgModule({
   declarations: [
@@ -64,15 +68,17 @@ import { ImageSegmentationComponent } from './components/topics/image-segmentati
     DashboardComponent,
     ProfileComponent,
     LayoutComponent,
-    DevicesComponent,
+    VehiclesComponent,
     TopNavigationComponent,
     ErrorComponent,
-    DeviceTopicComponent,
-    DeviceLiveComponent,
+    VehicleTopicComponent,
+    VehicleLiveComponent,
     StarfireComponent,
     ImagePairComponent,
     ImageComponent,
     ImageSegmentationComponent,
+    VehicleListComponent,
+    VehicleComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,6 +99,8 @@ import { ImageSegmentationComponent } from './components/topics/image-segmentati
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatSlideToggleModule,
+    MatTableModule,
+    MatButtonToggleModule,
     // 
     GraphQLModule,
     SocialLoginModule,
@@ -120,7 +128,7 @@ import { ImageSegmentationComponent } from './components/topics/image-segmentati
         uri: `${location.protocol}//${location.host}${environment.serviceEndpoint}`,
       });
 
-      
+
       // Create a WebSocket link:
       const ws = new WebSocketLink({
         uri: `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${environment.serviceEndpoint}`,

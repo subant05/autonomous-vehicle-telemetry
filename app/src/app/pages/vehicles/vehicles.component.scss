@@ -1,0 +1,35 @@
+.header {
+    display: flex;
+    align-items: center;
+    word-break: break-all;
+
+    .header__title{
+        width:100%;
+
+        h1{
+         display:inline-block;
+        }
+        .live-pulse{
+            margin-left: 20px;
+            animation: pulse 1000ms infinite;
+            position: absolute;
+            top: 20px;
+        }
+    
+        @keyframes pulse {
+            0%{
+                transform: scale(0);
+                box-shadow:0 0 0 1px solid rgba(255,0,0,1);
+            }
+            100%{
+                transform: scale(1);
+                box-shadow:1 2 3 20px solid rgba(255,0,0,1);
+            }
+        }
+    }
+    .header__topic{
+        width:100%;
+    }
+    
+
+}

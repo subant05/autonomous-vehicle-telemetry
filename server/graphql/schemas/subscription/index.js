@@ -4,5 +4,6 @@ export default gql`
    type Subscription {
       deviceMessage: DeviceMessage
       geographicCoordinates: GeographicCoordinates
+      onlineDevices:[Device!]
    }
 `;

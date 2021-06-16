@@ -59,4 +59,12 @@ export default gql`
       longitude:Float
       latitude:Float
    }
+
+   type Device {
+      id:String!
+      name:String!
+      type:String!
+      status:String!
+      connected:Boolean
+   }
 `;

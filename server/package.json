@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js --exec babel-node --ext js,graphql --max-old-space-size=8199  ",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run dev"
+    "start": "babel-node index.js"
   },
   "author": "",
   "license": "ISC",

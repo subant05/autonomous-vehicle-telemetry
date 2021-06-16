@@ -7,7 +7,7 @@
     </button>
     <mat-list (click)="toggleSideNav()">
         <a [routerLink]='["/"]' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-list-item>Dashboard</mat-list-item></a> 
-        <a [routerLink]='["/devices"]' routerLinkActive="active"><mat-list-item>Devices</mat-list-item></a> 
+        <a [routerLink]='["/vehicles"]' routerLinkActive="active"><mat-list-item>Vehicles</mat-list-item></a> 
     </mat-list>
     <mat-list class="nav__side-nav--profile">
         <a (click)="logOut()">

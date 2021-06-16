@@ -1,0 +1,22 @@
+<div class="header">
+    <div class="header__title">
+        <h2>
+            LIVE
+        </h2>
+        <button 
+            class="live-pulse"
+            mat-mini-fab color="warn" 
+            aria-label="Section is live">
+        </button>
+    </div>
+</div>
+<div class="grid gap">
+    <div class="grid__cell">
+        <div class="grid__cell--label">Geolocation</div>
+        <app-starfire playback="live" [showTractor]=true [zoom]=20></app-starfire>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Images</div>
+    </div>
+</div>
+<router-outlet></router-outlet>

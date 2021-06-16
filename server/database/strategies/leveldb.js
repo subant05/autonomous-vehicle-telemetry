@@ -9,7 +9,6 @@ export default class LevelDB extends EventEmitter {
     constructor(){
         super()
         this.db = level("./db")
-        // this.db.clear()
     }
 
     async create({query="",data=null,options={},callback=a=>a,event}){
