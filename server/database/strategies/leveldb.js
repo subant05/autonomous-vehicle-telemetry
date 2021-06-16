@@ -16,7 +16,7 @@ export default class LevelDB extends EventEmitter {
             return this.emit(DB_EVENTS.DB_INSERT_ERROR,{query, data, options});
 
         this.db.get(query, (err, value) => {
-            let storedValues
+            let storedValues = []
             if(err){
                 storedValues = []
             }

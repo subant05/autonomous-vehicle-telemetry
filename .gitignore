@@ -1,5 +1,6 @@
 */node_modules
 .DS_Store
 /server/_devices
-/db
+/server/db
+/server/request.log
 request.log
