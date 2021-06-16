@@ -64,7 +64,8 @@ export default class LevelDB extends EventEmitter {
         
         this.db.get(query, (error,data)=>{
 
-            let returnData = data ?  JSON.parse(data) : [];
+            // Get last index first
+            let returnData = data ?  JSON.parse(data): [];
 
             if(id) 
                 returnData = returnData.filter(dataSet=>{
@@ -76,7 +77,7 @@ export default class LevelDB extends EventEmitter {
 
             if(cursor || limit){
                 const length  = returnData.length
-                returnData = returnData.slice(
+                returnData = returnData.reverse().slice(
                     (cursor && cursor > 0) ? cursor-1 : 0
                     , (limit && limit > 0) ? limit : 1)
 
