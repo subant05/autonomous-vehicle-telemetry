@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
+    "@graphile/pg-pubsub": "^4.12.1",
     "apollo-server": "^2.24.0",
     "apollo-server-express": "^2.24.0",
     "babel-cli": "^6.26.0",
@@ -25,6 +27,11 @@
     "jsonwebtoken": "^8.5.1",
     "level": "^7.0.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "postgraphile": "^4.12.3"
+  },
+  "devDependencies": {
+    "db-migrate": "^0.11.12",
+    "db-migrate-pg": "^1.2.2"
   }
 }
