@@ -1,1 +1,26 @@
 /* Replace with your SQL commands */
+DROP TABLE images.camera_pair;
+DROP TABLE images.camera_pair_message;
+DROP TABLE images.camera_meta;
+DROP TABLE images.camera_histogram;
+DROP TABLE images.small_histogram;
+DROP TABLE images.full_histogram;
+DROP TABLE images.camera_roi;
+DROP TABLE images.camera_meta_q;
+DROP TABLE images.camera_meta_p2;
+DROP TABLE images.camera_meta_p1;
+DROP TABLE images.camera_meta_r2;
+DROP TABLE images.camera_meta_r1;
+DROP TABLE images.camera_meta_f;
+DROP TABLE images.camera_meta_e;
+DROP TABLE images.stereo_intrinsics;
+DROP TABLE images.stereo_intrinsics_r_rodrigues;
+DROP TABLE images.stereo_intrinsics_r;
+DROP TABLE images.stereo_intrinsics_t;
+DROP TABLE images.side_intrinsics;
+DROP TABLE images.side_intrinsics_d;
+DROP TABLE images.side_intrinsics_k;
+DROP TABLE images.images;
+DROP TABLE images.image_header;
+DROP TABLE images.image_data;
+DROP TABLE images.camera_pair_message_header;

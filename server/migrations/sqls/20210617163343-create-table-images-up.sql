@@ -1,4 +1,5 @@
 /* Replace with your SQL commands */
+-- CAMERA IMAGES
 CREATE TABLE IF NOT EXISTS images.camera_pair_message_header (
     id BIGSERIAL,
     header_id BIGINT NOT NULL,
@@ -290,4 +291,88 @@ CREATE TABLE IF NOT EXISTS images.camera_pair (
     CONSTRAINT fk_topics_type
         FOREIGN KEY(topic_type_id)
         REFERENCES topics.topic_types(id)
+);
+
+-- SEGMENTATION
+
+CREATE TABLE IF NOT EXISTS images.segmentation_map_header_stamp(
+    id BIGSERIAL,
+    sec BIGINT NOT NULL,
+    nanosec BIGINT NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.segmentation_map_image_header (
+    id BIGSERIAL,
+    stamp_id BIGINT NOT NULL,
+    frame_id VARCHAR(255),
+    PRIMARY KEY(id),
+    CONSTRAINT fk_segmentation_map_header_stamp
+        FOREIGN KEY(stamp_id)
+        REFERENCES images.segmentation_map_header_stamp(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.segmentation_map_descriptor (
+    id BIGSERIAL,
+    header_id BIGINT NOT NULL,
+    readingAt TIMESTAMPTZ NOT NULL,
+    seq DECIMAL NOT NULL,
+    node VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.segmentation_map_image_data (
+    id BIGSERIAL,
+    data text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.segmentation_map_image (
+    id BIGSERIAL,
+    header_id BIGINT NOT NULL,
+    height INT NOT NULL,
+    width INT NOT NULL,
+    encoding VARCHAR(255) NOT NULL,
+    is_bigendian INT NOT NULL,
+    step INT NOT NULL,
+    data_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_segmentation_map_image_header
+        FOREIGN KEY(header_id)
+        REFERENCES images.segmentation_map_image_header(id),
+    CONSTRAINT fk_segmentation_map_image_data 
+        FOREIGN KEY(data_id)
+        REFERENCES images.segmentation_map_image_data(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.segmentation_map_message (
+    id BIGSERIAL,
+    descriptor_id BIGINT NOT NULL,
+    image_id BIGINT NOT NULL,
+    camera_meta_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_segmentation_map_descriptor
+        FOREIGN KEY(descriptor_id)
+        REFERENCES images.segmentation_map_descriptor(id),
+    CONSTRAINT fk_camera_meta
+        FOREIGN KEY(camera_meta_id)
+        REFERENCES images.camera_meta(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.segmentation_map (
+    id BIGSERIAL,
+    readingAt TIMESTAMPTZ NOT NULL,
+    topic_id BIGINT NOT NULL,
+    topic_type_id BIGINT NOT NULL,
+    msg_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_topic_id 
+        FOREIGN KEY(topic_id)
+        REFERENCES topics.topics(id),
+    CONSTRAINT fk_topics_type
+        FOREIGN KEY(topic_type_id)
+        REFERENCES topics.topic_types(id),
+    CONSTRAINT fk_segmentation_map_message
+        FOREIGN KEY(msg_id)
+        REFERENCES images.segmentation_map_message(id)
 );

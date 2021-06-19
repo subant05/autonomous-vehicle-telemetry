@@ -11,12 +11,13 @@ import dotenv from 'dotenv'
 import * as EventContants from './graphql/constants'
 import Database from './database/index'
 import LevelDB from './database/strategies/leveldb'
+import postgresDB from './database/strategies/postgres'
 import { postgraphile, makePluginHook }  from "postgraphile";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 
 dotenv.config({ path: './.env' })
 
-const db = new Database(new LevelDB);
+const db = new Database(postgresDB);
 const pubsub = new PubSub();
 const app = express();
 // const apolloServer = graphQlServer({pubsub ,events:EventContants, app, db})

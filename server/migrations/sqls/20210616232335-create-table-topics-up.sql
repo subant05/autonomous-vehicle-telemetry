@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS  topics.topic_types(
 
 CREATE TABLE IF NOT EXISTS  topics.topics (
     id BIGSERIAL,
-    name text NOT NULL,
+    name text UNIQUE NOT NULL,
     description text NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), 
