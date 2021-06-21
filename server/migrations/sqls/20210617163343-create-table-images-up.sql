@@ -281,6 +281,7 @@ CREATE TABLE IF NOT EXISTS images.camera_pair (
     topic_id BIGINT NOT NULL,
     msg_id BIGINT NOT NULL,
     topic_type_id BIGINT NOT NULL,
+    vehicle_id BIGINT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_camera_pair_topic
         FOREIGN KEY(topic_id)
@@ -290,8 +291,10 @@ CREATE TABLE IF NOT EXISTS images.camera_pair (
         REFERENCES images.camera_pair_message(id),
     CONSTRAINT fk_topics_type
         FOREIGN KEY(topic_type_id)
-        REFERENCES topics.topic_types(id)
-);
+        REFERENCES topics.topic_types(id),
+    CONSTRAINT fk_vehicle_id
+        FOREIGN KEY(vehicle_id)
+        REFERENCES vehicles.vehicles(id);
 
 -- SEGMENTATION
 
@@ -365,6 +368,8 @@ CREATE TABLE IF NOT EXISTS images.segmentation_map (
     topic_id BIGINT NOT NULL,
     topic_type_id BIGINT NOT NULL,
     msg_id BIGINT NOT NULL,
+    vehicle_id BIGINT NOT NULL,
+    image_id BIGINT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_topic_id 
         FOREIGN KEY(topic_id)
@@ -374,5 +379,11 @@ CREATE TABLE IF NOT EXISTS images.segmentation_map (
         REFERENCES topics.topic_types(id),
     CONSTRAINT fk_segmentation_map_message
         FOREIGN KEY(msg_id)
-        REFERENCES images.segmentation_map_message(id)
+        REFERENCES images.segmentation_map_message(id),
+    CONSTRAINT fk_vehicle_id
+        FOREIGN KEY(vehicle_id)
+        REFERENCES vehicles.vehicles(id);
+    CONSTRAINT fk_image_id
+        FOREIGN KEY(image_id)
+        REFERENCES images.images(id)
 );

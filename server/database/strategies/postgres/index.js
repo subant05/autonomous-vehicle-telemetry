@@ -10,6 +10,7 @@ class Postgres extends EventEmitter {
     }
 
     create({query="",data=null,options={},callback=a=>a,event}){
+        data.vehicle = {id:"1234", name:'Gilroy Tractor', type: 'tractor'}
         Geolocation.sqlInsertStarFire(query, data)
     }
 

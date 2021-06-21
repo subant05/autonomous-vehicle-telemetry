@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS  vehicles.vehicle_states (
 
 CREATE TABLE IF NOT EXISTS  vehicles.vehicles (
     id BIGSERIAL,
-    name varchar(255) NOT NULL,
+    device_id: VARCHAR(255) UNIQUE NOT NULL,
+    name varchar(255) UNIQUE NOT NULL,
     type_id BIGINT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
