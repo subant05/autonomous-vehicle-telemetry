@@ -1,12 +1,13 @@
 import * as Topics from './queries/topics'
 import * as Geolocation from './queries/starfire'
+import * as ScheduledTasks from './queries/scheduled-tasks'
 import EventEmitter from 'events'
 import * as DB_EVENTS from '../../events'
 
 class Postgres extends EventEmitter {
     constructor(){
         super()
-
+        ScheduledTasks.removeOfflineVehicles()
     }
 
     create({query="",data=null,options={},callback=a=>a,event}){
