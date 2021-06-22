@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import {Subscription} from 'rxjs'
+
 import {ActivatedRoute, Router} from '@angular/router'
 import { MatTableDataSource } from '@angular/material/table';
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
@@ -26,7 +27,7 @@ export class VehicleListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onlineVehiclesSubscription = this.gqlSubscription
       .getOnlineVehicles()
       .subscribe((response:any)=>{
-        this.vehicles = new MatTableDataSource(response.data.onlineDevices)
+        this.vehicles = new MatTableDataSource(response)
       })
   }
 

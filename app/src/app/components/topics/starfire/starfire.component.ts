@@ -20,7 +20,8 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
   @Input() zoom: number = 15
   @Input() coordinates: number[][] | undefined;
   @Input() lineColor: string | undefined;
-  @Input() lineSize:  number | undefined
+  @Input() lineSize:  number | undefined;
+  @Input() vehicleId: string | number | undefined;
 
   constructor(
     private gqlQueryService: GqlQueryService
@@ -89,17 +90,16 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.coordinates instanceof Array )
       this.setupStaticMap()
     else
+     if(this.vehicleId)
       this.querySubscription = this.gqlQueryService
-        .getGeolocaton()
+        .getGeolocaton({vehicleId: parseInt(this.vehicleId.toString()) })
         .pipe(map((geoData:any)=>
           !geoData.loading ?
-            geoData
-            .data
-            .geolocation
-            .map((geo:any)=>
-              geo.msg ? 
-                [geo.msg.longitude, geo.msg.latitude] 
-                : [])
+            geoData.data.starfires.nodes.map((geo:any)=>
+              geo.msg ?
+              [geo.msg.longitude, geo.msg.latitude] 
+              :[]
+            )
           : 
           []
         ))

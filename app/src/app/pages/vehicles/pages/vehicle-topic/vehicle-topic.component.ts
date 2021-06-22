@@ -8,6 +8,7 @@ import {ActivatedRoute} from '@angular/router'
 })
 export class VehicleTopicComponent implements OnInit {
   currentRoute: string =  ""
+  vehicleId: string=""
 
   constructor( private route: ActivatedRoute) { 
   }
@@ -15,6 +16,7 @@ export class VehicleTopicComponent implements OnInit {
   ngOnInit(): void {
     console.log("Topic")
     this.currentRoute =  (this.route.url as any).value.join("/")
+    this.vehicleId = (this.route.parent as any).snapshot.params.id
   }
 
 }

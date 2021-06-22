@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
+import { map } from 'rxjs/operators'
 const QueryQL = require("src/app/graphql/query-syntax/query")
 
 @Injectable({
@@ -24,9 +25,9 @@ export class GqlQueryService {
       .valueChanges
   }
 
-  getGeolocaton(){
+  getGeolocaton(variables:any){
     return this.graphService
-      .watchQuery<any>({ query: QueryQL.Geolocation })
+      .watchQuery<any>({ query: QueryQL.Geolocation,variables })
       .valueChanges
   }
 

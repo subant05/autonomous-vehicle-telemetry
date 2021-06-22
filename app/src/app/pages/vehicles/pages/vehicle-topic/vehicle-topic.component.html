@@ -4,11 +4,11 @@
         <div class="grid gap">
             <div class="grid__cell">
                 <div class="grid__cell--label">Static</div>
-                <app-starfire [showTractor]=true [zoom]=20></app-starfire>
+                <app-starfire [showTractor]=true [zoom]=20 [vehicleId]="vehicleId" ></app-starfire>
             </div>
             <div class="grid__cell">
                 <div class="grid__cell--label">Replay</div>
-                <app-starfire playback="replay" [showTractor]=true [zoom]=30></app-starfire>
+                <app-starfire playback="replay" [showTractor]=true [zoom]=30 [vehicleId]="vehicleId"></app-starfire>
             </div>
         </div>
     </div>

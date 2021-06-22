@@ -1,15 +1,18 @@
 import { gql } from 'apollo-angular';
 
 const topics = gql`
-query {
-    topics{
+query Topics{
+  topics {
+    nodes{
+      id
       name
-      type {
-        module
+      type{
         class
+        module
       }
     }
   }
+}
 `
 
 export {topics as default}
