@@ -4,7 +4,8 @@ import moment from 'moment';
 export const removeOfflineVehicles = async ()=>{
     await client.query(`
     DELETE FROM vehicles.vehicles_online 
-    WHERE updated_at < $1`,
+    WHERE updated_at < $1;
+    `,
         [
             moment()
             .subtract(3, 'minutes')
@@ -14,4 +15,21 @@ export const removeOfflineVehicles = async ()=>{
     )
 
     setTimeout(()=>removeOfflineVehicles(), 1000)
+}
+
+export const publishOnlineVehicles = async ()=>{
+    await client.query(`
+    select pg_notify(
+        'postgraphile:online_vehicles',
+        json_build_object(
+          '__node__', json_build_array(
+            'foos',
+            (select id from vehicles.vehicles_online )
+          )
+        )::text
+      )
+    `)
+
+    setTimeout(()=>publishOnlineVehicles(), 500)
+
 }

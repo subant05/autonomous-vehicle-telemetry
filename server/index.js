@@ -14,6 +14,10 @@ import LevelDB from './database/strategies/leveldb'
 import postgresDB from './database/strategies/postgres'
 import { postgraphile, makePluginHook }  from "postgraphile";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
+import PgPubsub from "@graphile/pg-pubsub"
+
+const pluginHook = makePluginHook([PgPubsub]);
+
 
 dotenv.config({ path: './.env' })
 
@@ -40,14 +44,15 @@ app.use(
     process.env.DATABASE_URL,
     ["vehicles","topics","messages","geolocation"],
     {
-      appendPlugins: [PgSimplifyInflectorPlugin],
-      pluginHook: true,
+      appendPlugins: [PgSimplifyInflectorPlugin,],
+      pluginHook,
       watchPg: true,
       enhanceGraphiql: true,
       ignoreRBAC: false, // Role Based Access Control (RBAC)
       extendedErrors: ["errcode", "detail", "hint"],
       graphiql: true,
       subscriptions: true,
+      simpleSubscriptions: true,
       live:true
 
     }
