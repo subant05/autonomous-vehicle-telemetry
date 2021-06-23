@@ -41,7 +41,7 @@
         cursor: pointer;
 
         &.show{
-            left:150px;
+            left:200px;
             animation: move-right-main-hamburger 500ms 1;
 
         }
@@ -65,6 +65,15 @@
                 color:var(--white);
             }
         }
+
+        .nav__side-nav--link-label{
+            width:100%;
+        }
+        .nav__side-nav--link-icon{
+            width:50px;
+        }
+
+        
     }
 
     
@@ -90,12 +99,12 @@
         left:10px;
         }
         100%{
-        left:150px;
+        left:200px;
         }
     }
     @keyframes move-left-main-hamburger {
         0%{
-        left:150px;
+        left:200px;
         }
         100%{
         left:10px;

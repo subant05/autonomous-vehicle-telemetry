@@ -10,7 +10,7 @@ export class GqlQueryService {
 
   constructor( private graphService: Apollo ) { }
 
-  private basicFilteredQuery (Query:any, variables:any) {
+  private basicFilteredQuery (Query:any, variables:any={}) {
     return this.graphService
     .watchQuery<any>({ 
       query: Query, 
@@ -27,7 +27,7 @@ export class GqlQueryService {
 
   getGeolocaton(variables:any){
     return this.graphService
-      .watchQuery<any>({ query: QueryQL.Geolocation,variables })
+      .watchQuery<any>({ query: QueryQL.Geolocation.ById,variables })
       .valueChanges
   }
 
@@ -37,6 +37,19 @@ export class GqlQueryService {
 
   getSegmentationMap(variables:any){
     return this.basicFilteredQuery(QueryQL.SegmentationMap, variables)
+  }
+
+  getAllVehicles(){
+    return this.basicFilteredQuery(QueryQL.Vehicles.All)
+      .pipe(map(response=>{
+        return response.data.vehicles.nodes.map((vehicle:any)=>{
+          return {...vehicle, type: vehicle.type.type}
+        })
+      }))
+  }
+
+  getVehicleById(variables:any){
+    return this.basicFilteredQuery(QueryQL.Vehicles.ById, variables)
   }
   
 }

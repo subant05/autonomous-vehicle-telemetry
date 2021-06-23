@@ -14,6 +14,7 @@ import LevelDB from './database/strategies/leveldb'
 import postgresDB from './database/strategies/postgres'
 import { postgraphile, makePluginHook }  from "postgraphile";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
+import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import PgPubsub from "@graphile/pg-pubsub"
 
 const pluginHook = makePluginHook([PgPubsub]);
@@ -44,7 +45,7 @@ app.use(
     process.env.DATABASE_URL,
     ["vehicles","topics","messages","geolocation"],
     {
-      appendPlugins: [PgSimplifyInflectorPlugin,],
+      appendPlugins: [PgSimplifyInflectorPlugin,ConnectionFilterPlugin],
       pluginHook,
       watchPg: true,
       enhanceGraphiql: true,

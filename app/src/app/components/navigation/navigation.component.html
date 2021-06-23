@@ -6,8 +6,18 @@
        <mat-icon matSuffix aria-label="toggle mobile menu view" >{{!showLeftNav ? "menu" : "menu_open"}}</mat-icon>
     </button>
     <mat-list (click)="toggleSideNav()">
-        <a [routerLink]='["/"]' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-list-item>Dashboard</mat-list-item></a> 
-        <a [routerLink]='["/vehicles"]' routerLinkActive="active"><mat-list-item>Vehicles</mat-list-item></a> 
+        <a [routerLink]='["/"]' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav__side-nav--link">
+            <mat-list-item>
+                <mat-icon class="example-tab-icon nav__side-nav--link-icon">bar_chart</mat-icon>
+                <div class="nav__side-nav--link-label">Dashboard</div>
+            </mat-list-item>
+        </a> 
+        <a [routerLink]='["/vehicles"]' routerLinkActive="active" class="nav__side-nav--link">
+            <mat-list-item>
+                <mat-icon class="example-tab-icon nav__side-nav--link-icon">agriculture</mat-icon>
+                <div class="nav__side-nav--link-label">Vehicles</div>
+            </mat-list-item>
+        </a> 
     </mat-list>
     <mat-list class="nav__side-nav--profile">
         <a (click)="logOut()">

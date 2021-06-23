@@ -14,7 +14,7 @@ export const removeOfflineVehicles = async ()=>{
         ]
     )
 
-    setTimeout(()=>removeOfflineVehicles(), 1000)
+    setTimeout(()=>removeOfflineVehicles(), 3000)
 }
 
 export const publishOnlineVehicles = async ()=>{
@@ -23,13 +23,12 @@ export const publishOnlineVehicles = async ()=>{
         'postgraphile:online_vehicles',
         json_build_object(
           '__node__', json_build_array(
-            'foos',
             (select id from vehicles.vehicles_online )
           )
         )::text
       )
     `)
 
-    setTimeout(()=>publishOnlineVehicles(), 500)
+    setTimeout(()=>publishOnlineVehicles(), 3000)
 
 }

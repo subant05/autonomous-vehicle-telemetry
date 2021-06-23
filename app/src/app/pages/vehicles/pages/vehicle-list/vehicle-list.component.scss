@@ -1,7 +1,10 @@
-table {
+.mat-table {
     width: 100%;
 }
 
 th.mat-sort-header-sorted {
     color: black;
+}
+tr.mat-row, tr.mat-footer-row{
+    cursor: pointer;
 }

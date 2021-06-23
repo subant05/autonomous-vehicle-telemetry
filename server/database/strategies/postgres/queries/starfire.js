@@ -127,6 +127,8 @@ export const sqlInsertStarFire = async (argTopic, data) => {
                 , $3
                 , $4
             )
+
+            RETURNING *
         `, [
             moment(data.timestamp/1000000).utc().format('YYYY-MM-DD HH:mm:ssZZ')
             , topic.rows[0].id
