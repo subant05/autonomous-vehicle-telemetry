@@ -23,13 +23,13 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
       extend type Subscription {
         # (Subscription) will be triggered when the current starfire's data changes
         sqlStarfire: SQLStarfirePayload @pgSubscription(topic: ${embed(
-            ()=>`postgraphile:starfire_insert`
+            ()=>`postgraphile:sql_starfire`
         )})
         sqlVehicle: SQLVehiclePayload @pgSubscription(topic: ${embed(
-            ()=>`postgraphile:vehicle_insert`
+            ()=>`postgraphile:sql_vehicle`
         )})
         sqlVehicleStatus: SQLVehicleStatusPayload @pgSubscription(topic: ${embed(
-            ()=>`postgraphile:vehicle_status_insert_update`
+            ()=>`postgraphile:sql_vehicle_status`
         )})
       }
     `,

@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION geolocation.starfire_insert_notifcation()
     AS $$
 BEGIN
     perform pg_notify(
-        'postgraphile:starfire_insert',
+        'postgraphile:sql_starfire',
         json_build_object(
           'event', TG_OP,
           '__node__', json_build_array(

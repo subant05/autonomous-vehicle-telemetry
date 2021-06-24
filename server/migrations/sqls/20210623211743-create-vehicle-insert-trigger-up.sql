@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION vehicles.vehicle_insert_notifcation()
     AS $$
 BEGIN
     perform pg_notify(
-        'postgraphile:vehicle_insert',
+        'postgraphile:sql_vehicle',
         json_build_object(
           'event', TG_OP,
           '__node__', json_build_array(
