@@ -4,8 +4,9 @@ CREATE OR REPLACE FUNCTION geolocation.starfire_insert_notifcation()
     AS $$
 BEGIN
     perform pg_notify(
-        'postgraphile:starfire_added',
+        'postgraphile:starfire_insert',
         json_build_object(
+          'event', TG_OP,
           '__node__', json_build_array(
             NEW.ID
           )
@@ -18,7 +19,7 @@ $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER starfire_insert
-    AFTER INSERT ON geolocation.starfire FOR EACH ROW
+    AFTER INSERT OR UPDATE ON geolocation.starfire FOR EACH ROW
     EXECUTE PROCEDURE geolocation.starfire_insert_notifcation();
 
 

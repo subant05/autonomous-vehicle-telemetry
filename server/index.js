@@ -16,6 +16,7 @@ import { postgraphile, makePluginHook }  from "postgraphile";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import PgPubsub from "@graphile/pg-pubsub"
+import {JupiterSubscriptionPlugin} from './plugins/postgraphile/subscriptions'
 
 const pluginHook = makePluginHook([PgPubsub]);
 
@@ -45,7 +46,11 @@ app.use(
     process.env.DATABASE_URL,
     ["vehicles","topics","messages","geolocation"],
     {
-      appendPlugins: [PgSimplifyInflectorPlugin,ConnectionFilterPlugin],
+      appendPlugins: [
+        PgSimplifyInflectorPlugin
+        , ConnectionFilterPlugin
+        , JupiterSubscriptionPlugin
+      ],
       pluginHook,
       watchPg: true,
       enhanceGraphiql: true,
