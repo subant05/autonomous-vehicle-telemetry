@@ -14,14 +14,22 @@ CREATE TABLE IF NOT EXISTS images.image_data (
     data text NOT NULL,
     PRIMARY KEY(id)
 );
- 
+
+CREATE TABLE IF NOT EXISTS images.image_header_stamp (
+    id BIGSERIAL,
+    sec INT NOT NULL,
+    nanosec INT NOT NULL,
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE IF NOT EXISTS images.image_header (
     id BIGSERIAL,
-    header_id BIGINT NOT NULL,
-    readingAt TIMESTAMPTZ NOT NULL,
-    seq DECIMAL NOT NULL,
-    node VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id)
+    stamp_id BIGINT NOT NULL,
+    frame_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_image_header_stamp
+	    FOREIGN KEY (stamp_id)
+	    REFERENCES images.image_header_stamp (id);
 );
 
 CREATE TABLE IF NOT EXISTS images.images (
@@ -70,39 +78,75 @@ CREATE TABLE IF NOT EXISTS images.side_intrinsics (
         REFERENCES images.side_intrinsics_d(id)
 );
 
-CREATE TABLE IF NOT EXISTS images.stereo_intrinsics_t(
+CREATE TABLE IF NOT EXISTS images.stereo_extrinsics_t(
     id BIGSERIAL,
     data text NOT NULL,
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS images.stereo_intrinsics_r(
+CREATE TABLE IF NOT EXISTS images.stereo_extrinsics_r(
     id BIGSERIAL,
     data text NOT NULL,
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS images.stereo_intrinsics_r_rodrigues(
+CREATE TABLE IF NOT EXISTS images.stereo_extrinsics_r_rodrigues(
     id BIGSERIAL,
     data text NOT NULL,
     PRIMARY KEY(id)
 );
 
-CREATE TABLE IF NOT EXISTS images.stereo_intrinsics (
+CREATE TABLE IF NOT EXISTS images.stereo_extrinsics (
     id BIGSERIAL,
     t_id BIGINT NOT NULL,
     r_id BIGINT NOT NULL,
     r_rodrigues_id BIGINT NOT NULL,
     PRIMARY KEY(id),
-    CONSTRAINT fk_stereo_intrinsics_t
+    CONSTRAINT fk_stereo_extrinsics_t
         FOREIGN KEY(t_id)
-        REFERENCES images.stereo_intrinsics_t(id),
-    CONSTRAINT fk_stereo_intrinsics_r
+        REFERENCES images.stereo_extrinsics_t(id),
+    CONSTRAINT fk_stereo_extrinsics_r
         FOREIGN KEY(r_id)
-        REFERENCES images.stereo_intrinsics_r(id),
-    CONSTRAINT fk_stereo_intrinsics_r_rodrigues
+        REFERENCES images.stereo_extrinsics_r(id),
+    CONSTRAINT fk_stereo_extrinsics_r_rodrigues
         FOREIGN KEY(r_rodrigues_id)
-        REFERENCES images.stereo_intrinsics_r_rodrigues(id)
+        REFERENCES images.stereo_extrinsics_r_rodrigues(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS images.tractor_extrinsics_t(
+    id BIGSERIAL,
+    data text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.tractor_extrinsics_r(
+    id BIGSERIAL,
+    data text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.tractor_extrinsics_r_rodrigues(
+    id BIGSERIAL,
+    data text NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.tractor_extrinsics (
+    id BIGSERIAL,
+    t_id BIGINT NOT NULL,
+    r_id BIGINT NOT NULL,
+    r_rodrigues_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_tractor_extrinsics_t
+        FOREIGN KEY(t_id)
+        REFERENCES images.tractor_extrinsics_t(id),
+    CONSTRAINT fk_tractor_extrinsics_r
+        FOREIGN KEY(r_id)
+        REFERENCES images.tractor_extrinsics_r(id),
+    CONSTRAINT fk_tractor_extrinsics_r_rodrigues
+        FOREIGN KEY(r_rodrigues_id)
+        REFERENCES images.tractor_extrinsics_r_rodrigues(id)
 );
 
 CREATE TABLE IF NOT EXISTS images.camera_meta_e (
@@ -215,10 +259,10 @@ CREATE TABLE IF NOT EXISTS images.camera_meta (
         REFERENCES images.side_intrinsics(id),
     CONSTRAINT fk_stereo_extrinsics
         FOREIGN KEY(stereo_extrinsics_id)
-        REFERENCES images.stereo_intrinsics(id),
+        REFERENCES images.stereo_extrinsics(id),
     CONSTRAINT fk_tractor_extrinsics
         FOREIGN KEY(tractor_extrinsics_id)
-        REFERENCES images.stereo_intrinsics(id),
+        REFERENCES images.tractor_intrinsics(id),
     CONSTRAINT fk_e
         FOREIGN KEY(e_id)
         REFERENCES images.camera_meta_e(id),
@@ -319,7 +363,6 @@ CREATE TABLE IF NOT EXISTS images.camera (
     readingAt TIMESTAMPTZ NOT NULL,
     topic_id BIGINT NOT NULL,
     msg_id BIGINT NOT NULL,
-    topic_type_id BIGINT NOT NULL,
     vehicle_id BIGINT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_camera_topic
@@ -328,9 +371,6 @@ CREATE TABLE IF NOT EXISTS images.camera (
     CONSTRAINT fk_camera_msg 
         FOREIGN KEY(msg_id)
         REFERENCES images.camera_message(id),
-    CONSTRAINT fk_topics_type
-        FOREIGN KEY(topic_type_id)
-        REFERENCES topics.topic_types(id),
     CONSTRAINT fk_vehicle_id
         FOREIGN KEY(vehicle_id)
         REFERENCES vehicles.vehicles(id)
