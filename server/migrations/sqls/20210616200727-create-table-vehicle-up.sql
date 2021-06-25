@@ -117,3 +117,35 @@ CREATE INDEX idx_vehicles_status_id
 CREATE INDEX idx_vehicles_status_vehicleid
     ON vehicles.vehicle_status(vehicle_id);
 
+
+CREATE TABLE IF NOT EXISTS vehicles.vehicle_topics (
+    id BIGSERIAL,
+    vehicle_id BIGINT NOT NULL,
+    topic_id BIGINT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (id),
+    CONSTRAINT fk_vehicle_id
+        FOREIGN KEY (vehicle_id)
+        REFERENCES vehicles.vehicles(id),
+    CONSTRAINT fk_topic_id
+        FOREIGN KEY (topic_id)
+        REFERENCES topics.topics(id)
+);
+
+CREATE INDEX idx_vehicle_topic_id
+    ON vehicles.vehicle_topics (id);
+CREATE INDEX idx_vehicle_topic_topic_id
+    ON vehicles.vehicle_topics (topic_id);
+CREATE INDEX idx_vehicle_topic_vehicle_id
+    ON vehicles.vehicle_topics (vehicle_id);
+
+COMMENT ON TABLE vehicles.vehicle_topics IS '@omit delete
+This is the vehicles topics table, which is related to vehicles topics if produces';
+COMMENT ON COLUMN vehicles.vehicle_topics.id IS '@omit create,update
+The ID of vehicles topics assigned by the database';
+COMMENT ON COLUMN vehicles.vehicle_topics.vehicle_id IS '@omit create,update
+The vehicle id of vehicle that sent topic';
+COMMENT ON COLUMN vehicles.vehicle_topics.topic_id IS '@omit create,update
+The topic id  of topic vehicle sent';
+COMMENT ON COLUMN vehicles.vehicle_topics.created_at IS '@omit create,update
+The timestamp of topic vehicle sent';

@@ -39,11 +39,11 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
               , callback:()=>{
                 this.router.navigate(['vehicles',this.vehicleId])
               }
-            },...data.topics.nodes.map((topic: any) => {
+            },...data.vehicle.vehicleTopics.nodes.map((topicType: any) => {
             return {
-              label: topic.name,
+              label: topicType.topic.name,
               callback:()=> {
-                this.loadTopic(topic)
+                this.loadTopic(topicType.topic)
               }
             }
           })]
@@ -63,8 +63,8 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
   ngOnInit(): void {
     this.currentRoute =  (this.route.url as any).value.join("/")
     this.graphqlQueryService
-      .getTopics()
-      .subscribe(data=>this.loadMenu(data));
+      .getTopicsByVehicleId({id:this.vehicleId})
+      .subscribe(response=>this.loadMenu(response));
   }
 
   ngOnDestroy(): void{

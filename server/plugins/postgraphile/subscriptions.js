@@ -45,7 +45,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                 _context,
                 { graphile: { selectGraphQLResultFromTable } }
             ) {
-                console.log("---- :EVENT: ----", event)
+                console.log(event)
                 const rows = await selectGraphQLResultFromTable(
                 sql.fragment`geolocation.starfire`,
                 (tableAlias, sqlBuilder) => {
@@ -56,6 +56,8 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                 );
                 return rows[0];
             },
+
+
         },
         SQLVehiclePayload: {
         // This method finds the starfire from the database based on the event

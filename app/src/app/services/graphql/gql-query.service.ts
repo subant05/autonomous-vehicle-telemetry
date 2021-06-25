@@ -21,8 +21,12 @@ export class GqlQueryService {
 
   getTopics(){
     return this.graphService
-      .watchQuery<any>({ query: QueryQL.Topics })
+      .watchQuery<any>({ query: QueryQL.Topics.All })
       .valueChanges
+  }
+
+  getTopicsByVehicleId(variables:any){
+    return this.basicFilteredQuery(QueryQL.Topics.ByVehicleId, variables)
   }
 
   getGeolocaton(variables:any){

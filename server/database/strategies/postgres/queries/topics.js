@@ -11,9 +11,11 @@ export const sqlInsertTopicType = async (type)=>{
             `)
         return topicTypes.rows.length ? topicTypes.rows[0] : type
     }catch(e){
-        console.log("TYPES INSERT ERROR",e.message)
         if(e.message.includes("duplicate key "))
             return type
+        else {
+            console.log("TYPES INSERT ERROR",e.message)
+        }
     }
 
     console.log("SQL: TOPIC TYPE INSERT FAILED")
@@ -52,9 +54,11 @@ export const sqlInsertTopic = async (argTopic, argData) => {
                 WHERE name='${argTopic}'
             `)
     }catch(e){
-        console.log("TOPICS INSERT ERROR: ",e.message)
         if(e.message.includes("duplicate key "))
             return sqlSelectTopic(argTopic)
+        else{
+            console.log("TOPICS INSERT ERROR: ",e.message)
+        }
     }
 
     console.log("SQL: TOPIC INSERT FAILED")

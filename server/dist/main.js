@@ -144,13 +144,13 @@ query ImagePair($topic:String! $cursor:Int!){
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Topics": () => (/* reexport safe */ _topics__WEBPACK_IMPORTED_MODULE_0__.default),
+/* harmony export */   "Topics": () => (/* reexport module object */ _topics__WEBPACK_IMPORTED_MODULE_0__),
 /* harmony export */   "Geolocation": () => (/* reexport module object */ _geolocation__WEBPACK_IMPORTED_MODULE_1__),
 /* harmony export */   "ImagePair": () => (/* reexport safe */ _image_pair__WEBPACK_IMPORTED_MODULE_2__.default),
 /* harmony export */   "SegmentationMap": () => (/* reexport safe */ _segmentation_map__WEBPACK_IMPORTED_MODULE_3__.default),
 /* harmony export */   "Vehicles": () => (/* reexport module object */ _vehicles__WEBPACK_IMPORTED_MODULE_4__)
 /* harmony export */ });
-/* harmony import */ var _topics__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./topics */ 93785);
+/* harmony import */ var _topics__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./topics */ 168);
 /* harmony import */ var _geolocation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geolocation */ 418);
 /* harmony import */ var _image_pair__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./image-pair */ 18517);
 /* harmony import */ var _segmentation_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./segmentation-map */ 67636);
@@ -218,10 +218,63 @@ query SegmentationMap($topic:String! $cursor:Int! $id:Float!){
 
 /***/ }),
 
-/***/ 93785:
-/*!******************************************************!*\
-  !*** ./src/app/graphql/query-syntax/query/topics.js ***!
-  \******************************************************/
+/***/ 168:
+/*!************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/topics/index.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ByVehicleId": () => (/* reexport safe */ _topics_by_vehicle_id__WEBPACK_IMPORTED_MODULE_0__.default),
+/* harmony export */   "All": () => (/* reexport safe */ _topics__WEBPACK_IMPORTED_MODULE_1__.default)
+/* harmony export */ });
+/* harmony import */ var _topics_by_vehicle_id__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./topics-by-vehicle-id */ 297);
+/* harmony import */ var _topics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./topics */ 620);
+
+
+
+
+
+/***/ }),
+
+/***/ 297:
+/*!***************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/topics/topics-by-vehicle-id.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ topicByVehicleId)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const topicByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+query VehicleTopics($id:BigInt!){
+    vehicle(id:$id){
+        vehicleTopics{
+            nodes{
+                topic{
+                    name
+                }
+            }
+      }
+    }
+  }
+  `
+
+  
+
+/***/ }),
+
+/***/ 620:
+/*!*************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/topics/topics.js ***!
+  \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2591,11 +2644,11 @@ class VehicleComponent {
                             this.router.navigate(['vehicles', this.vehicleId]);
                         }
                     },
-                    ...data.topics.nodes.map((topic) => {
+                    ...data.vehicle.vehicleTopics.nodes.map((topicType) => {
                         return {
-                            label: topic.name,
+                            label: topicType.topic.name,
                             callback: () => {
-                                this.loadTopic(topic);
+                                this.loadTopic(topicType.topic);
                             }
                         };
                     })
@@ -2612,8 +2665,8 @@ class VehicleComponent {
     ngOnInit() {
         this.currentRoute = this.route.url.value.join("/");
         this.graphqlQueryService
-            .getTopics()
-            .subscribe(data => this.loadMenu(data));
+            .getTopicsByVehicleId({ id: this.vehicleId })
+            .subscribe(response => this.loadMenu(response));
     }
     ngOnDestroy() {
         var _a;
@@ -3079,8 +3132,11 @@ class GqlQueryService {
     }
     getTopics() {
         return this.graphService
-            .watchQuery({ query: QueryQL.Topics })
+            .watchQuery({ query: QueryQL.Topics.All })
             .valueChanges;
+    }
+    getTopicsByVehicleId(variables) {
+        return this.basicFilteredQuery(QueryQL.Topics.ByVehicleId, variables);
     }
     getGeolocaton(variables) {
         return this.graphService

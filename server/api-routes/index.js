@@ -1,4 +1,5 @@
 import express from "express";
+import fs from 'fs'
 let recorded = false
 function apiRouter({ pubsub, eventTypes, db }) {
   const router = express.Router();
@@ -28,7 +29,22 @@ function apiRouter({ pubsub, eventTypes, db }) {
     //   recorded = !recorded
     // }
 
+    // if(req.body.topic.includes('preview')){
+    //   fs.writeFile('helloworld.txt', JSON.stringify(req.body, null, " "), function (err) {
+    //     if (err) return console.log(err);
+    //     console.log('Hello World > helloworld.txt');
+    //   });
+    // }
+
     try {
+      // Vehicle Data Added Temporarily
+      req.body.vehicle =  {
+        id:"1234"
+        , name:'Gilroy Tractor'
+        , type: 'tractor'
+        , ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress
+      }
+
       db.on("data-saved", async (data) => {
         const index = onlineDevices.findIndex(device => {
           if(device.id === "1"){

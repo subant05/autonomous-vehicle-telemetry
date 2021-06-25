@@ -24,3 +24,5 @@ DROP TABLE images.images;
 DROP TABLE images.image_header;
 DROP TABLE images.image_data;
 DROP TABLE images.camera_pair_message_header;
+DROP TABLE images.camera_message;
+DROP TABLE images.camera;

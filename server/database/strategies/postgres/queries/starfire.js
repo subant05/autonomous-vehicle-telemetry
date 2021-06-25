@@ -1,5 +1,5 @@
 import { sqlInsertTopic } from './topics'
-import {sqlInsertVehicle, sqlInsertVehicleOnline} from './vehicles'
+import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from './vehicles'
 import moment from 'moment';
 const { client, pool } = require("../connection.js")
 
@@ -74,6 +74,7 @@ export const sqlInsertStarfireMessage = async (data) => {
                     , $14
                     , $15
                 )
+                
                 RETURNING *
             `, [
                 starFireHeader.rows[0].id
@@ -111,10 +112,9 @@ export const sqlInsertStarFire = async (argTopic, data) => {
     try{
         const topic = await sqlInsertTopic(argTopic, data)
         const vehicle = await sqlInsertVehicle(data.vehicle)
+        const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         const starFireMessage = await sqlInsertStarfireMessage(data.msg)
-        // console.log(starFireMessage)
-        // return;
         const starFire = await client.query(`
             INSERT INTO geolocation.starfire (
                 readingAt

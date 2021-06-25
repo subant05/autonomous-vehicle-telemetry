@@ -1,6 +1,6 @@
 /* Replace with your SQL commands */
 -- CAMERA IMAGES
-CREATE TABLE IF NOT EXISTS images.camera_pair_message_header (
+CREATE TABLE IF NOT EXISTS images.camera_message_header (
     id BIGSERIAL,
     header_id BIGINT NOT NULL,
     readingAt TIMESTAMPTZ NOT NULL,
@@ -263,7 +263,7 @@ CREATE TABLE IF NOT EXISTS images.camera_pair_message (
     PRIMARY KEY(id),
     CONSTRAINT fk_camera_pair_message_header
         FOREIGN KEY(header_id)
-        REFERENCES images.camera_pair_message_header(id),
+        REFERENCES images.camera_message_header(id),
     CONSTRAINT fk_camera_pair_left_image
         FOREIGN KEY(left_image_id)
         REFERENCES images.images(id),
@@ -295,6 +295,46 @@ CREATE TABLE IF NOT EXISTS images.camera_pair (
     CONSTRAINT fk_vehicle_id
         FOREIGN KEY(vehicle_id)
         REFERENCES vehicles.vehicles(id);
+
+
+CREATE TABLE IF NOT EXISTS images.camera_message (
+    id BIGSERIAL,
+    header_id BIGINT NOT NULL,
+    image_id BIGINT NOT NULL,
+    camera_meta_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_camera_message_header
+        FOREIGN KEY(header_id)
+        REFERENCES images.camera_message_header(id),
+    CONSTRAINT fk_camera_image
+        FOREIGN KEY(image_id)
+        REFERENCES images.images(id),
+    CONSTRAINT fk_camera_meta
+        FOREIGN KEY(camera_meta_id)
+        REFERENCES images.camera_meta(id)
+);
+
+CREATE TABLE IF NOT EXISTS images.camera (
+    id BIGSERIAL,
+    readingAt TIMESTAMPTZ NOT NULL,
+    topic_id BIGINT NOT NULL,
+    msg_id BIGINT NOT NULL,
+    topic_type_id BIGINT NOT NULL,
+    vehicle_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_camera_topic
+        FOREIGN KEY(topic_id)
+        REFERENCES topics.topics(id),
+    CONSTRAINT fk_camera_msg 
+        FOREIGN KEY(msg_id)
+        REFERENCES images.camera_message(id),
+    CONSTRAINT fk_topics_type
+        FOREIGN KEY(topic_type_id)
+        REFERENCES topics.topic_types(id),
+    CONSTRAINT fk_vehicle_id
+        FOREIGN KEY(vehicle_id)
+        REFERENCES vehicles.vehicles(id)
+);
 
 -- SEGMENTATION
 
