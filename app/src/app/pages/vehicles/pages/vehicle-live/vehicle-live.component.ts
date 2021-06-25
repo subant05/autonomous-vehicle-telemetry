@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {GeolocationService} from 'src/app/services/geolocation/geolocation.service'
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
+import {ActivatedRoute} from '@angular/router'
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
 @Component({
@@ -12,9 +13,16 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 export class VehicleLiveComponent implements OnInit, OnDestroy {
 
   geoUpdateSubscription:Subscription | null = null
-  constructor(private gisService: GeolocationService, private graphQLSubscription: GqlSubscriptionService) { }
+  vehicleId: string=""
+
+  constructor(
+    private gisService: GeolocationService
+    , private graphQLSubscription: GqlSubscriptionService
+    , private route: ActivatedRoute) { }
 
   async ngOnInit() {
+    this.vehicleId = (this.route.parent as any).snapshot.params.id
+
     // const {map,geoJson} = await this.gisService.getLiveMap(
     //   {
     //     container:"map1"

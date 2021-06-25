@@ -54,11 +54,12 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
 
     this.setupDynamicMap(config).then((mapConfig:any)=>{
       const {map, geoJson, image} = mapConfig
+      const variables = this.vehicleId ? {vehicleId:parseInt((this.vehicleId as string))} :{}
       this.querySubscription = this.graphQLSubscription
-        .getGeolocationStream()
+        .getGeolocationStream(variables)
         .subscribe(
         (response:any) => {
-          const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
+          const {longitude,latitude} = response.data.sqlStarfire ? response.data.sqlStarfire.starfire.msg : (response.data.geographicCoordinates as {longitude:number, latitude:number})
           const newCoordinates = [longitude,latitude]
 
           // @ts-ignore

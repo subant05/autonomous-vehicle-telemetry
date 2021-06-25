@@ -14,7 +14,6 @@ export class VehicleTopicComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("Topic")
     this.currentRoute =  (this.route.url as any).value.join("/")
     this.vehicleId = (this.route.parent as any).snapshot.params.id
   }

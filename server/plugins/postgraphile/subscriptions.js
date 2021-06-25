@@ -4,7 +4,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
     typeDefs: gql`
       type SQLStarfirePayload {
         # (Subscription PAYLOAD Type )Starfire type data retturned on this subscription type resolver below
-        starfire: Starfire
+        starfire(vehicleId:Float): Starfire
         event: String
       }
 
@@ -41,17 +41,20 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
             // (Type Resolver)
             async starfire(
                 event,
-                _args,
+                {vehicleId},
                 _context,
                 { graphile: { selectGraphQLResultFromTable } }
             ) {
-                console.log(event)
                 const rows = await selectGraphQLResultFromTable(
                 sql.fragment`geolocation.starfire`,
                 (tableAlias, sqlBuilder) => {
                     sqlBuilder.where(
-                    sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                        sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
                     );
+                    if(vehicleId)
+                        sqlBuilder.where(
+                            sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`
+                        );
                 }
                 );
                 return rows[0];

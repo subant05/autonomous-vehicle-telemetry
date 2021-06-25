@@ -17,9 +17,10 @@ export class GqlSubscriptionService {
     })
   }
 
-  getGeolocationStream(){
+  getGeolocationStream(variables={}){
     return this.graphService.subscribe({
-      query: SubscriptionQL.GEOGRAPHIC_COORDINATES
+      query: SubscriptionQL.GEOGLOCATION.Vehicles
+      , variables
     })
   }
 

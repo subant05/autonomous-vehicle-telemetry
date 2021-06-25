@@ -428,26 +428,54 @@ subscription deviceMessage {
 
 /***/ }),
 
-/***/ 13230:
-/*!******************************************************************************!*\
-  !*** ./src/app/graphql/query-syntax/subscriptions/geographic-coordinates.js ***!
-  \******************************************************************************/
+/***/ 758:
+/*!*************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/subscriptions/geolocation/index.js ***!
+  \*************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ geographicCoordinates)
+/* harmony export */   "Vehicles": () => (/* reexport safe */ _vehicles__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _vehicles__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vehicles */ 743);
+
+
+
+
+/***/ }),
+
+/***/ 743:
+/*!****************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/subscriptions/geolocation/vehicles.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ vehicleGeographicCoordinates)
 /* harmony export */ });
 /* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
 
 
-const geographicCoordinates = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`subscription geographicCoordinates {
-    geographicCoordinates{
-      longitude
-      latitude
+const vehicleGeographicCoordinates = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+subscription VehicleGeographicCoordinates($vehicleId:Float) {
+  sqlStarfire{
+    starfire(vehicleId:$vehicleId){
+      msg{
+        longitude
+        latitude
+      }
+      vehicle{
+        name
+        ip
+      }
     }
-  }`
+  }
+}
+`
 
   
 
@@ -463,11 +491,11 @@ const geographicCoordinates = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.defaul
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "DEVICE_MESSAGE_SUBSCRIPTION": () => (/* reexport safe */ _device_message__WEBPACK_IMPORTED_MODULE_0__.default),
-/* harmony export */   "GEOGRAPHIC_COORDINATES": () => (/* reexport safe */ _geographic_coordinates__WEBPACK_IMPORTED_MODULE_1__.default),
+/* harmony export */   "GEOGLOCATION": () => (/* reexport module object */ _geolocation__WEBPACK_IMPORTED_MODULE_1__),
 /* harmony export */   "ONLINE_VEHICLES": () => (/* reexport safe */ _vehicles_online__WEBPACK_IMPORTED_MODULE_2__.default)
 /* harmony export */ });
 /* harmony import */ var _device_message__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./device-message */ 11502);
-/* harmony import */ var _geographic_coordinates__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geographic-coordinates */ 13230);
+/* harmony import */ var _geolocation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geolocation */ 758);
 /* harmony import */ var _vehicles_online__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vehicles-online */ 81000);
 
 
@@ -1698,11 +1726,14 @@ class StarfireComponent {
           geoJson,
           image
         } = mapConfig;
-        _this3.querySubscription = _this3.graphQLSubscription.getGeolocationStream().subscribe(response => {
+        const variables = _this3.vehicleId ? {
+          vehicleId: parseInt(_this3.vehicleId)
+        } : {};
+        _this3.querySubscription = _this3.graphQLSubscription.getGeolocationStream(variables).subscribe(response => {
           const {
             longitude,
             latitude
-          } = response.data.geographicCoordinates;
+          } = response.data.sqlStarfire ? response.data.sqlStarfire.starfire.msg : response.data.geographicCoordinates;
           const newCoordinates = [longitude, latitude]; // @ts-ignore
 
           geoJson.data.features[0].geometry.coordinates.push(newCoordinates);
@@ -2261,9 +2292,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37716);
 /* harmony import */ var src_app_services_geolocation_geolocation_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/geolocation/geolocation.service */ 39487);
 /* harmony import */ var src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/graphql/gql-subscription.service */ 86427);
-/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/button */ 51095);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 39895);
+/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/button */ 51095);
 /* harmony import */ var _components_topics_starfire_starfire_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../components/topics/starfire/starfire.component */ 93254);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 39895);
 
 
 
@@ -2275,34 +2306,39 @@ __webpack_require__.r(__webpack_exports__);
 const mapboxgl = __webpack_require__(/*! mapbox-gl/dist/mapbox-gl.js */ 82958);
 
 class VehicleLiveComponent {
-  constructor(gisService, graphQLSubscription) {
+  constructor(gisService, graphQLSubscription, route) {
     this.gisService = gisService;
     this.graphQLSubscription = graphQLSubscription;
+    this.route = route;
     this.geoUpdateSubscription = null;
+    this.vehicleId = "";
   }
 
-  ngOnInit() {// const {map,geoJson} = await this.gisService.getLiveMap(
-    //   {
-    //     container:"map1"
-    //     , showTractor:true
-    //     , coordinates:[]
-    //     , zoom:15}
-    // )
-    // this.geoUpdateSubscription = this.graphQLSubscription.getGeolocationStream().subscribe(
-    //   (response:any) => {
-    //     console.log(response.data.geographicCoordinates)
-    //     const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
-    //     // @ts-ignore
-    //     geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
-    //     map.getSource('trace').setData(geoJson.data);
-    //     map.panTo([longitude,latitude]);
-    //   },
-    //   error => {
-    //     console.log(error);
-    //   }
-    // )
+  ngOnInit() {
+    var _this = this;
 
-    return (0,_Users_anthonycrawford_Documents_Jupiter_JupiterWebService_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)(function* () {})();
+    return (0,_Users_anthonycrawford_Documents_Jupiter_JupiterWebService_app_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__.default)(function* () {
+      _this.vehicleId = _this.route.parent.snapshot.params.id; // const {map,geoJson} = await this.gisService.getLiveMap(
+      //   {
+      //     container:"map1"
+      //     , showTractor:true
+      //     , coordinates:[]
+      //     , zoom:15}
+      // )
+      // this.geoUpdateSubscription = this.graphQLSubscription.getGeolocationStream().subscribe(
+      //   (response:any) => {
+      //     console.log(response.data.geographicCoordinates)
+      //     const {longitude,latitude} = (response.data.geographicCoordinates as {longitude:number, latitude:number})
+      //     // @ts-ignore
+      //     geoJson.data.features[0].geometry.coordinates.push([longitude,latitude])
+      //     map.getSource('trace').setData(geoJson.data);
+      //     map.panTo([longitude,latitude]);
+      //   },
+      //   error => {
+      //     console.log(error);
+      //   }
+      // )
+    })();
   }
 
   ngOnDestroy() {// this.geoUpdateSubscription?.unsubscribe()
@@ -2311,15 +2347,15 @@ class VehicleLiveComponent {
 }
 
 VehicleLiveComponent.ɵfac = function VehicleLiveComponent_Factory(t) {
-  return new (t || VehicleLiveComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_geolocation_geolocation_service__WEBPACK_IMPORTED_MODULE_1__.GeolocationService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_2__.GqlSubscriptionService));
+  return new (t || VehicleLiveComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_geolocation_geolocation_service__WEBPACK_IMPORTED_MODULE_1__.GeolocationService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_2__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__.ActivatedRoute));
 };
 
 VehicleLiveComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({
   type: VehicleLiveComponent,
   selectors: [["app-vehicle-live"]],
   decls: 14,
-  vars: 2,
-  consts: [[1, "header"], [1, "header__title"], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "grid", "gap"], [1, "grid__cell"], [1, "grid__cell--label"], ["playback", "live", 3, "showTractor", "zoom"]],
+  vars: 3,
+  consts: [[1, "header"], [1, "header__title"], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "grid", "gap"], [1, "grid__cell"], [1, "grid__cell--label"], ["playback", "live", 3, "showTractor", "zoom", "vehicleId"]],
   template: function VehicleLiveComponent_Template(rf, ctx) {
     if (rf & 1) {
       _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "div", 0);
@@ -2348,10 +2384,10 @@ VehicleLiveComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE
 
     if (rf & 2) {
       _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](9);
-      _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("showTractor", true)("zoom", 20);
+      _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("showTractor", true)("zoom", 20)("vehicleId", ctx.vehicleId);
     }
   },
-  directives: [_angular_material_button__WEBPACK_IMPORTED_MODULE_5__.MatButton, _components_topics_starfire_starfire_component__WEBPACK_IMPORTED_MODULE_3__.StarfireComponent, _angular_router__WEBPACK_IMPORTED_MODULE_6__.RouterOutlet],
+  directives: [_angular_material_button__WEBPACK_IMPORTED_MODULE_6__.MatButton, _components_topics_starfire_starfire_component__WEBPACK_IMPORTED_MODULE_3__.StarfireComponent, _angular_router__WEBPACK_IMPORTED_MODULE_5__.RouterOutlet],
   styles: [".grid__cell[_ngcontent-%COMP%] {\n  height: 400px;\n}\n\n.header[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  word-break: break-all;\n}\n\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%]   h2[_ngcontent-%COMP%] {\n  display: inline-block;\n}\n\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%]   .live-pulse[_ngcontent-%COMP%] {\n  margin-left: 20px;\n  animation: pulse 1000ms infinite;\n  position: relative;\n  top: -5px;\n}\n\n@keyframes pulse {\n  0% {\n    transform: scale(0);\n    box-shadow: 0 0 0 1px solid red;\n  }\n  100% {\n    transform: scale(1);\n    box-shadow: 1 2 3 20px solid red;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbGl2ZS5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7QUFDSjs7QUFFQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLHFCQUFBO0FBQ0o7O0FBQ0k7RUFDSSxXQUFBO0FBQ1I7O0FBQ1E7RUFDQyxxQkFBQTtBQUNUOztBQUVRO0VBQ0ksaUJBQUE7RUFDQSxnQ0FBQTtFQUNBLGtCQUFBO0VBQ0EsU0FBQTtBQUFaOztBQUdRO0VBQ0k7SUFDSSxtQkFBQTtJQUNBLCtCQUFBO0VBRGQ7RUFHVTtJQUNJLG1CQUFBO0lBQ0EsZ0NBQUE7RUFEZDtBQUNGIiwiZmlsZSI6InZlaGljbGUtbGl2ZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ncmlkX19jZWxsIHtcbiAgICBoZWlnaHQ6NDAwcHg7XG59XG5cbi5oZWFkZXIge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICB3b3JkLWJyZWFrOiBicmVhay1hbGw7XG5cbiAgICAuaGVhZGVyX190aXRsZXtcbiAgICAgICAgd2lkdGg6MTAwJTtcblxuICAgICAgICBoMntcbiAgICAgICAgIGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuICAgICAgICB9XG5cbiAgICAgICAgLmxpdmUtcHVsc2V7XG4gICAgICAgICAgICBtYXJnaW4tbGVmdDogMjBweDtcbiAgICAgICAgICAgIGFuaW1hdGlvbjogcHVsc2UgMTAwMG1zIGluZmluaXRlO1xuICAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgICAgICAgdG9wOiAtNXB4O1xuICAgICAgICB9XG4gICAgXG4gICAgICAgIEBrZXlmcmFtZXMgcHVsc2Uge1xuICAgICAgICAgICAgMCV7XG4gICAgICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwKTtcbiAgICAgICAgICAgICAgICBib3gtc2hhZG93OjAgMCAwIDFweCBzb2xpZCByZ2JhKDI1NSwwLDAsMSk7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAxMDAle1xuICAgICAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7XG4gICAgICAgICAgICAgICAgYm94LXNoYWRvdzoxIDIgMyAyMHB4IHNvbGlkIHJnYmEoMjU1LDAsMCwxKTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cbn0iXX0= */"]
 });
 
@@ -2535,7 +2571,6 @@ class VehicleTopicComponent {
         this.vehicleId = "";
     }
     ngOnInit() {
-        console.log("Topic");
         this.currentRoute = this.route.url.value.join("/");
         this.vehicleId = this.route.parent.snapshot.params.id;
     }
@@ -3194,9 +3229,10 @@ class GqlSubscriptionService {
             query: SubscriptionQL.DEVICE_MESSAGE_SUBSCRIPTION
         });
     }
-    getGeolocationStream() {
+    getGeolocationStream(variables = {}) {
         return this.graphService.subscribe({
-            query: SubscriptionQL.GEOGRAPHIC_COORDINATES
+            query: SubscriptionQL.GEOGLOCATION.Vehicles,
+            variables
         });
     }
     getOnlineVehicles() {
