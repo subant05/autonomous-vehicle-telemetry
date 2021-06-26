@@ -159,6 +159,48 @@ export const sqlInsertCameraMessageMeta = async (data) =>{
                 )
                 
                 RETURNING id
+            ),
+            ins_e as (
+                INSERT INTO images.camera_meta_e (data)
+                VALUES ($31)
+
+                RETURNING id
+            ),
+            ins_f as (
+                INSERT INTO images.camera_meta_f (data)
+                VALUES($32)
+
+                RETURNING id
+            ),
+            ins_r1 as (
+                INSERT INTO images.camera_meta_r1 (data)
+                VALUES ($33)
+
+                RETURNING id
+            ),
+            ins_r2 as (
+                INSERT INTO images.camera_meta_r2 (data)
+                VALUES ($34)
+
+                RETURNING id
+            ),
+            ins_p1 as (
+                INSERT INTO images.camera_meta_p1 (data)
+                VALUES($35)
+
+                RETURNING id
+            ),
+            ins_p2 as (
+                INSERT INTO images.camera_meta_p2 (data)
+                VALUES($36)
+
+                RETURNING id
+            ),
+            ins_q as (
+                INSERT INTO images.camera_meta_q (data)
+                VALUES($37)
+
+                RETURNING id
             )
 
             INSERT INTO images.camera_meta (
@@ -191,13 +233,13 @@ export const sqlInsertCameraMessageMeta = async (data) =>{
                 , (select id from ins_right_intrinsics)
                 , (select id from ins_stereo_extrinsics)
                 , (select id from ins_tractor_extrinsics)
-                , $31
-                , $32
-                , $33
-                , $34
-                , $35
-                , $36
-                , $37
+                , (select id from ins_e )
+                , (select id from ins_f)
+                , (select id from ins_r1)
+                , (select id from ins_r2)
+                , (select id from ins_p1)
+                , (select id from ins_p2)
+                , (select id from ins_q)
                 , (select id from ins_left_roi)
                 , (select id from ins_right_roi)
                 , $38
@@ -241,13 +283,13 @@ export const sqlInsertCameraMessageMeta = async (data) =>{
             , JSON.stringify(data.right_histogram.small_histogram)
             , data.serial_number
             , data.camera_name
-            , data.e_id
-            , data.f_id
-            , data.r1_id
-            , data.r2_id
-            , data.p1_id
-            , data.p2_id
-            , data.q_id
+            , JSON.stringify(data.e)
+            , JSON.stringify(data.f)
+            , JSON.stringify(data.r1)
+            , JSON.stringify(data.r2)
+            , JSON.stringify(data.p1)
+            , JSON.stringify(data.p2)
+            , JSON.stringify(data.q)
             , data.left_exposure
             , data.right_exposure
             , data.left_gain

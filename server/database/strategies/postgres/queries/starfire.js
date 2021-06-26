@@ -27,6 +27,8 @@ export const sqlInsertStarFireHeader = async (data) => {
 
     } catch (e) {
         console.log("STARFIRE HEADER INSERT ERROR: ", e.message)
+        console.log("STARFIRE HEADER INSERT STACK: ", e.stack)
+
         return null
 
     }
@@ -36,7 +38,7 @@ export const sqlInsertStarfireMessage = async (data) => {
     // console.log(JSON.stringify(data, null , " "))
     try {
         // console.log(JSON.stringify(data,null, " "))
-        const starFireHeader = await sqlInsertStarFireHeader(data.header)
+        const starFireHeader = await sqlInsertStarFireHeader(data.header || data.descriptor)
         if(starFireHeader !== null){
             const starFireMessage = await client.query(`
                 INSERT INTO geolocation.starfire_message
