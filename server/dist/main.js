@@ -515,17 +515,19 @@ __webpack_require__.r(__webpack_exports__);
 
 const topicByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 query VehicleTopics($id:BigInt!){
-    vehicle(id:$id){
-        vehicleTopics{
+    topics (filter:{name:{notLike:"%segmentation%"}}) {
+          nodes{
+          vehicleTopics(filter:{vehicleId:{equalTo:$id}}){
             nodes{
-                topic{
-                    name
-                    id
-                }
+              topic{
+                name
+                id
+              }
             }
+          }
+        }
       }
     }
-  }
   `
 
   
@@ -548,7 +550,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const topics = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 query Topics{
-  topics {
+  topics (filter:{name:{notLike:"%segmentation%"}}) {
     nodes{
       id
       name
@@ -1120,8 +1122,92 @@ class RgbImageComponent {
         this.imageUrl = "";
         this.width = "";
         this.height = "";
+        this.resultId = (0,uuid__WEBPACK_IMPORTED_MODULE_1__.default)();
+        this.lensId = (0,uuid__WEBPACK_IMPORTED_MODULE_1__.default)();
+        this.zoomAdded = false;
         this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_1__.default)();
         this.class = "";
+    }
+    movelens(e) {
+        this.result.style.display = "block";
+        this.lens.style.display = "block";
+        let pos, x, y;
+        /* Prevent any other actions that may occur when moving over the image */
+        e.preventDefault();
+        /* Get the cursor's x and y positions: */
+        pos = this.getCursorPos(e);
+        /* Calculate the position of the this.lens: */
+        x = pos.x - (this.lens.offsetWidth / 2);
+        y = pos.y - (this.lens.offsetHeight / 2);
+        /* Prevent the this.lens from being positioned outside the image: */
+        if (x > this.img.width - this.lens.offsetWidth) {
+            x = this.img.width - this.lens.offsetWidth;
+        }
+        if (x < 0) {
+            x = 0;
+        }
+        if (y > this.img.height - this.lens.offsetHeight) {
+            y = this.img.height - this.lens.offsetHeight;
+        }
+        if (y < 0) {
+            y = 0;
+        }
+        /* Set the position of the this.lens: */
+        this.lens.style.left = x + "px";
+        this.lens.style.top = y + "px";
+        /* Display what the this.lens "sees": */
+        if (window.visualViewport.width <= (this.result.offsetWidth + x + 150))
+            this.result.style.left = (x - 300) + "px";
+        else
+            this.result.style.left = (x + 40) + "px";
+        this.result.style.top = (y + 40) + "px";
+        this.result.style.backgroundPosition = "-" + (x * this.cx) + "px -" + (y * this.cy) + "px";
+    }
+    getCursorPos(e) {
+        var a, x = 0, y = 0;
+        e = e || window.event;
+        /* Get the x and y positions of the image: */
+        a = this.img.getBoundingClientRect();
+        /* Calculate the cursor's x and y coordinates, relative to the image: */
+        x = e.pageX - a.left;
+        y = e.pageY - a.top;
+        /* Consider any page scrolling: */
+        x = x - window.pageXOffset;
+        y = y - window.pageYOffset;
+        return { x: x, y: y };
+    }
+    hideZoom() {
+        this.result.style.display = "none";
+        this.lens.style.display = "none";
+    }
+    setupZoom() {
+        this.result = document.getElementById(this.resultId);
+        /* Create this.lens: */
+        this.lens = document.getElementById(this.lensId);
+        /* Insert this.lens: */
+        this.img.parentElement.insertBefore(this.lens, this.img);
+        /* Calculate the ratio between this.result DIV and this.lens: */
+        this.cx = +(window.getComputedStyle(this.result).width.replace("px", "")) / +(window.getComputedStyle(this.lens).width.replace("px", ""));
+        this.cy = +(window.getComputedStyle(this.result).height.replace("px", "")) / +(window.getComputedStyle(this.lens).height.replace("px", ""));
+        /* Set background properties for the this.result DIV */
+        this.result.style.backgroundImage = "url('" + this.img.src + "')";
+        this.result.style.backgroundSize = (this.img.width * this.cx) + "px " + (this.img.height * this.cy) + "px";
+        /* Execute a function when someone moves the cursor over the image, or the this.lens: */
+        this.lens.addEventListener("mousemove", this.movelens.bind(this));
+        this.img.addEventListener("mousemove", this.movelens.bind(this));
+        this.lens.addEventListener("mouseleave", this.hideZoom.bind(this));
+        this.img.addEventListener("mouseleave", this.hideZoom.bind(this));
+        /* And also for touch screens: */
+        this.lens.addEventListener("touchmove", this.movelens.bind(this));
+        this.img.addEventListener("touchmove", this.movelens.bind(this));
+    }
+    renderImageZoom() {
+        if (!this.zoomAdded) {
+            this.img = document.getElementById(this.id);
+            this.img.removeEventListener("load", this.setupZoom.bind(this));
+            this.img.addEventListener("load", this.setupZoom.bind(this));
+            this.zoomAdded = true;
+        }
     }
     ngOnInit() {
         let parsedData;
@@ -1145,14 +1231,29 @@ class RgbImageComponent {
             console.log(e.message);
         }
     }
+    ngAfterViewInit() {
+    }
+    ngAfterViewChecked() {
+        if (document.getElementById(this.id))
+            this.renderImageZoom();
+    }
 }
 RgbImageComponent.ɵfac = function RgbImageComponent_Factory(t) { return new (t || RgbImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_0__.ImageService)); };
-RgbImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: RgbImageComponent, selectors: [["app-rgb-image"]], inputs: { id: "id", class: "class", data: "data" }, decls: 1, vars: 8, consts: [[3, "src", "id", "ngStyle"]], template: function RgbImageComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "img", 0);
+RgbImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: RgbImageComponent, selectors: [["app-rgb-image"]], inputs: { id: "id", class: "class", data: "data" }, decls: 4, vars: 10, consts: [[1, "img-zoom-container"], [3, "src", "id", "ngStyle"], [1, "img-zoom-result", 3, "id"], [1, "img-zoom-lens", 3, "id"]], template: function RgbImageComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](1, "img", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](3, "div", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassMap"](ctx.class);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("src", ctx.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵsanitizeUrl"])("id", ctx.id)("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction2"](5, _c0, ctx.width, ctx.height));
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__.NgStyle], styles: ["img[_ngcontent-%COMP%] {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJnYi1pbWFnZS5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUFDSiIsImZpbGUiOiJyZ2ItaW1hZ2UuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpbWcge1xuICAgIHdpZHRoOjEwMCU7XG59Il19 */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("src", ctx.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵsanitizeUrl"])("id", ctx.id)("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction2"](7, _c0, ctx.width, ctx.height));
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("id", ctx.resultId);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("id", ctx.lensId);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__.NgStyle], styles: [".img-zoom-container[_ngcontent-%COMP%] {\n  position: relative;\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n}\n\nimg[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.img-zoom-lens[_ngcontent-%COMP%] {\n  position: absolute;\n  border: 1px solid #d4d4d4;\n  \n  width: 40px;\n  height: 40px;\n  display: block;\n}\n\n.img-zoom-result[_ngcontent-%COMP%] {\n  position: absolute;\n  border: 1px solid #d4d4d4;\n  \n  width: 200px;\n  height: 200px;\n  display: none;\n  z-index: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJnYi1pbWFnZS5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGtCQUFBO0VBQ0EsYUFBQTtFQUNBLGlCQUFBO0VBQ0Esc0JBQUE7RUFDQSx1QkFBQTtFQUNBLG1CQUFBO0FBQ0o7O0FBRUU7RUFDRyxXQUFBO0FBQ0w7O0FBQ0U7RUFDRSxrQkFBQTtFQUNBLHlCQUFBO0VBQ0EsNEJBQUE7RUFDQSxXQUFBO0VBQ0EsWUFBQTtFQUNBLGNBQUE7QUFFSjs7QUFDRTtFQUNFLGtCQUFBO0VBQ0EseUJBQUE7RUFDQSxrQ0FBQTtFQUNBLFlBQUE7RUFDQSxhQUFBO0VBQ0EsYUFBQTtFQUNBLFVBQUE7QUFFSiIsImZpbGUiOiJyZ2ItaW1hZ2UuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW1nLXpvb20tY29udGFpbmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LXdyYXA6IG5vd3JhcDtcbiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIH1cbiAgXG4gIGltZyB7XG4gICAgIHdpZHRoOjEwMCU7XG4gIH1cbiAgLmltZy16b29tLWxlbnMge1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjZDRkNGQ0O1xuICAgIC8qc2V0IHRoZSBzaXplIG9mIHRoZSBsZW5zOiovXG4gICAgd2lkdGg6IDQwcHg7XG4gICAgaGVpZ2h0OiA0MHB4O1xuICAgIGRpc3BsYXk6YmxvY2s7XG4gIH1cbiAgXG4gIC5pbWctem9vbS1yZXN1bHQge1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjZDRkNGQ0O1xuICAgIC8qc2V0IHRoZSBzaXplIG9mIHRoZSByZXN1bHQgZGl2OiovXG4gICAgd2lkdGg6IDIwMHB4O1xuICAgIGhlaWdodDogMjAwcHg7XG4gICAgZGlzcGxheTpub25lO1xuICAgIHotaW5kZXg6IDE7XG4gIH0iXX0= */"] });
 
 
 /***/ }),
@@ -1996,8 +2097,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/graphql/gql-query.service */ 91776);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 38583);
 /* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material/paginator */ 99692);
-/* harmony import */ var _images_segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../images/segmentation-image/segmentation-image.component */ 98299);
-/* harmony import */ var _images_rgb_image_rgb_image_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../images/rgb-image/rgb-image.component */ 29045);
+/* harmony import */ var _images_rgb_image_rgb_image_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../images/rgb-image/rgb-image.component */ 29045);
+/* harmony import */ var _images_segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../images/segmentation-image/segmentation-image.component */ 98299);
 /* harmony import */ var _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material/slide-toggle */ 45396);
 /* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
 
@@ -2039,12 +2140,12 @@ function PreviewComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, PreviewComponent_div_0_div_2_Template, 3, 3, "div", 4);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](3, PreviewComponent_div_0_ng_template_3_Template, 3, 0, "ng-template", null, 5, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](5, "div", 6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](6, "div", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](7, "app-segmentation-image", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function PreviewComponent_div_0_Template_app_segmentation_image_load_7_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r9); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r8.onSegmentationLoad($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](6, "app-rgb-image", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](7, "div", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](8, "app-segmentation-image", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function PreviewComponent_div_0_Template_app_segmentation_image_load_8_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r9); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r8.onSegmentationLoad($event); });
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](8, "app-rgb-image", 9);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
@@ -2054,11 +2155,11 @@ function PreviewComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r0.loadSegmentation())("ngIfElse", _r4);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("data", ctx_r0.imageData)("id", ctx_r0.imageId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction1"](6, _c0, ctx_r0.segmentationToggle.checked ? "visible" : "hidden"));
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("imageHeaderId", ctx_r0.imageHeaderId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("data", ctx_r0.imageData)("id", ctx_r0.imageId);
 } }
 function PreviewComponent_ng_template_1_span_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "span");
@@ -2156,7 +2257,7 @@ class PreviewComponent {
     }
 }
 PreviewComponent.ɵfac = function PreviewComponent_Factory(t) { return new (t || PreviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_0__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };
-PreviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: PreviewComponent, selectors: [["app-preview"]], inputs: { topic: "topic", cursor: "cursor", vehicleId: "vehicleId", topicId: "topicId" }, decls: 5, vars: 4, consts: [[4, "ngIf", "ngIfElse"], ["loading", ""], [3, "length", "pageSize", "page"], [1, "grid", "gap", "images"], ["class", "grid__cell center-cell-content", 4, "ngIf", "ngIfElse"], ["segmentationLoader", ""], [1, "grid__cell", "center-cell-content"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], [1, "images", 3, "data", "id"], [1, "segmentation-toggle", 3, "color", "checked", "disabled", "change"], ["mode", "indeterminate"], ["loader", ""]], template: function PreviewComponent_Template(rf, ctx) { if (rf & 1) {
+PreviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: PreviewComponent, selectors: [["app-preview"]], inputs: { topic: "topic", cursor: "cursor", vehicleId: "vehicleId", topicId: "topicId" }, decls: 5, vars: 4, consts: [[4, "ngIf", "ngIfElse"], ["loading", ""], [3, "length", "pageSize", "page"], [1, "grid", "gap", "images"], ["class", "grid__cell center-cell-content", 4, "ngIf", "ngIfElse"], ["segmentationLoader", ""], [1, "grid__cell", "center-cell-content"], [1, "images", 3, "data", "id"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], [1, "segmentation-toggle", 3, "color", "checked", "disabled", "change"], ["mode", "indeterminate"], ["loader", ""]], template: function PreviewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, PreviewComponent_div_0_Template, 9, 8, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, PreviewComponent_ng_template_1_Template, 3, 2, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](3, "hr");
@@ -2168,7 +2269,7 @@ PreviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4_
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.imageData)("ngIfElse", _r1);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("length", ctx.pagesLength)("pageSize", ctx.pageSize);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.NgIf, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_8__.MatPaginator, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgStyle, _images_segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_2__.SegmentationImageComponent, _images_rgb_image_rgb_image_component__WEBPACK_IMPORTED_MODULE_3__.RgbImageComponent, _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_9__.MatSlideToggle, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_10__.MatProgressBar], styles: [".images[_ngcontent-%COMP%]   .image[_ngcontent-%COMP%], .images[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  height: auto;\n  max-width: 512px;\n  margin: auto;\n  position: absolute;\n}\n.images[_ngcontent-%COMP%]   .segmentation[_ngcontent-%COMP%] {\n  position: absolute;\n  margin: auto;\n  margin-left: 20px;\n  margin-right: 20px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInByZXZpZXcuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUk7O0VBR0ksWUFBQTtFQUNBLGdCQUFBO0VBQ0EsWUFBQTtFQUNBLGtCQUFBO0FBRlI7QUFLSTtFQUNJLGtCQUFBO0VBQ0EsWUFBQTtFQUNBLGlCQUFBO0VBQ0Esa0JBQUE7QUFIUiIsImZpbGUiOiJwcmV2aWV3LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlcyB7XG4gICAgLy8gd2lkdGg6IDEwMCU7XG4gICAgLmltYWdlLFxuICAgIGltZyB7XG4gICAgICAgIC8vIHdpZHRoOiAxMDAlO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICAgIG1heC13aWR0aDogNTEycHg7XG4gICAgICAgIG1hcmdpbjphdXRvO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgfVxuXG4gICAgLnNlZ21lbnRhdGlvbntcbiAgICAgICAgcG9zaXRpb246YWJzb2x1dGU7XG4gICAgICAgIG1hcmdpbjphdXRvO1xuICAgICAgICBtYXJnaW4tbGVmdDogMjBweDtcbiAgICAgICAgbWFyZ2luLXJpZ2h0OiAyMHB4O1xuICAgICAgICAvLyB3aWR0aDogMTAwJTtcbiAgICB9XG59XG4iXX0= */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.NgIf, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_8__.MatPaginator, _images_rgb_image_rgb_image_component__WEBPACK_IMPORTED_MODULE_2__.RgbImageComponent, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgStyle, _images_segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_3__.SegmentationImageComponent, _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_9__.MatSlideToggle, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_10__.MatProgressBar], styles: [".images[_ngcontent-%COMP%]   .image[_ngcontent-%COMP%], .images[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  height: auto;\n  max-width: 512px;\n  margin: auto;\n  position: absolute;\n}\n.images[_ngcontent-%COMP%]   .segmentation[_ngcontent-%COMP%] {\n  position: absolute;\n  margin: auto;\n  margin-left: 20px;\n  margin-right: 20px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInByZXZpZXcuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUk7O0VBR0ksWUFBQTtFQUNBLGdCQUFBO0VBQ0EsWUFBQTtFQUNBLGtCQUFBO0FBRlI7QUFLSTtFQUNJLGtCQUFBO0VBQ0EsWUFBQTtFQUNBLGlCQUFBO0VBQ0Esa0JBQUE7QUFIUiIsImZpbGUiOiJwcmV2aWV3LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlcyB7XG4gICAgLy8gd2lkdGg6IDEwMCU7XG4gICAgLmltYWdlLFxuICAgIGltZyB7XG4gICAgICAgIC8vIHdpZHRoOiAxMDAlO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICAgIG1heC13aWR0aDogNTEycHg7XG4gICAgICAgIG1hcmdpbjphdXRvO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgfVxuXG4gICAgLnNlZ21lbnRhdGlvbntcbiAgICAgICAgcG9zaXRpb246YWJzb2x1dGU7XG4gICAgICAgIG1hcmdpbjphdXRvO1xuICAgICAgICBtYXJnaW4tbGVmdDogMjBweDtcbiAgICAgICAgbWFyZ2luLXJpZ2h0OiAyMHB4O1xuICAgICAgICAvLyB3aWR0aDogMTAwJTtcbiAgICB9XG59XG4iXX0= */"] });
 
 
 /***/ }),
@@ -3315,7 +3416,10 @@ class VehicleComponent {
                             this.router.navigate(['vehicles', this.vehicleId]);
                         }
                     },
-                    ...data.vehicle.vehicleTopics.nodes.map((topicType) => {
+                    ...data.topics.nodes.map((vehicleTopic) => {
+                        const topicType = vehicleTopic.vehicleTopics.nodes.map((topic) => {
+                            return topic;
+                        })[0];
                         return {
                             label: topicType.topic.name,
                             callback: () => {

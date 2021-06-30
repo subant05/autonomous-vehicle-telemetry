@@ -1,1 +1,5 @@
-<img [src]="imageUrl" [id]=id [class]="class" [ngStyle]="{maxWidth:width, maxHeight:height}">
+<div class="img-zoom-container">
+    <img [src]="imageUrl" [id]=id [class]="class" [ngStyle]="{maxWidth:width, maxHeight:height}">
+    <div [id]="resultId" class="img-zoom-result"></div>
+    <div [id]="lensId" class="img-zoom-lens"></div>
+</div>

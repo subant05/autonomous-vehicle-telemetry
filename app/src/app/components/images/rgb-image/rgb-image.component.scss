@@ -1,3 +1,30 @@
-img {
-    width:100%;
-}
+.img-zoom-container {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  img {
+     width:100%;
+  }
+  .img-zoom-lens {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    /*set the size of the lens:*/
+    width: 40px;
+    height: 40px;
+    display:block;
+  }
+  
+  .img-zoom-result {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    /*set the size of the result div:*/
+    width: 200px;
+    height: 200px;
+    display:none;
+    z-index: 1;
+  }

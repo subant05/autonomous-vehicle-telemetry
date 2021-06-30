@@ -42,16 +42,21 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
               , callback:()=>{
                 this.router.navigate(['vehicles',this.vehicleId])
               }
-            },...data.vehicle.vehicleTopics.nodes.map((topicType: any) => {
-            return {
-              label: topicType.topic.name,
-              callback:()=> {
-                this.currentVehicleTopicService.topicInfo = topicType
-                this.loadTopic(topicType.topic)
-              }
+            },
+            ...data.topics.nodes.map((vehicleTopic:any)=>{
+                const topicType = vehicleTopic.vehicleTopics.nodes.map((topic:any)=>{
+                      return topic
+                  })[0]
+                return  {
+                  label: topicType.topic.name,
+                  callback:()=> {
+                    this.currentVehicleTopicService.topicInfo = topicType
+                    this.loadTopic(topicType.topic)
+                  }
+                }
+              })
+              ]
             }
-          })]
-        }
         )
   }
 

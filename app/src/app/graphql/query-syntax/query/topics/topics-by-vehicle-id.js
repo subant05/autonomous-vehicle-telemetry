@@ -2,17 +2,19 @@ import { gql } from 'apollo-angular';
 
 const topicByVehicleId = gql`
 query VehicleTopics($id:BigInt!){
-    vehicle(id:$id){
-        vehicleTopics{
+    topics (filter:{name:{notLike:"%segmentation%"}}) {
+          nodes{
+          vehicleTopics(filter:{vehicleId:{equalTo:$id}}){
             nodes{
-                topic{
-                    name
-                    id
-                }
+              topic{
+                name
+                id
+              }
             }
+          }
+        }
       }
     }
-  }
   `
 
   export {topicByVehicleId as default}

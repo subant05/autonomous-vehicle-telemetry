@@ -2,7 +2,7 @@ import { gql } from 'apollo-angular';
 
 const topics = gql`
 query Topics{
-  topics {
+  topics (filter:{name:{notLike:"%segmentation%"}}) {
     nodes{
       id
       name

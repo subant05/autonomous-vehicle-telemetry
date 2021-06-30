@@ -18,10 +18,10 @@
             </div>
         </ng-template>
         <div class="grid__cell center-cell-content">
+                <app-rgb-image [data]="imageData" [id]="imageId" class="images"></app-rgb-image>
                 <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
                     <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="imageHeaderId"></app-segmentation-image>
                 </div>
-                <app-rgb-image [data]="imageData" [id]="imageId" class="images"></app-rgb-image>
         </div>
     </div>
 </div>
