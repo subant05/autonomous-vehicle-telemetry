@@ -12,7 +12,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 })
 export class PreviewComponent implements OnInit, OnDestroy {
 
-  loadedSegmentations:string[] = []
+  loadedSegmentations:boolean | null =null
   querySubscription: Subscription | null =null
   imageUrl: string = ""
   imageData: any
@@ -26,7 +26,7 @@ export class PreviewComponent implements OnInit, OnDestroy {
   segmentationToggle = {
     color:"primary",
     checked:false,
-    disabled: this.loadedSegmentations.length < 2 || this.loadedSegmentations.indexOf("no segmentation") !== -1
+    disabled: this.loadedSegmentations !== null && !this.loadedSegmentations
   } 
   @Input() topic: string = "";
   @Input() cursor: number = 0;
@@ -81,19 +81,23 @@ export class PreviewComponent implements OnInit, OnDestroy {
       this.cursor = event.pageIndex
       this.imageData =null;
       this.noImage =false;
+      this.loadedSegmentations = null;
       this.getImage()
       console.log(event)
     }
   }
 
+  loadSegmentation(){
+    return typeof this.loadedSegmentations === 'boolean'
+  }
   onSegmentationLoad(event:any) {
     switch(event){
-      case "no segmentation":
       case "loaded":
-          this.loadedSegmentations.push(event)
+          this.loadedSegmentations = true
           break;
+      case "no segmentation":
       case "unloaded":
-          this.loadedSegmentations.pop()
+          this.loadedSegmentations = false
           break;
     }
   }

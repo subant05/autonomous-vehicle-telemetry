@@ -1,34 +1,32 @@
+<hr/>
 <mat-paginator [length]="pagesLength"
     [pageSize]="pageSize"
     (page)="getCurrentImage($event)">
 </mat-paginator>
 <div *ngIf="imageData; else loading;" >
     <div class="grid gap images">
-        <!-- <div class="grid__cell" *ngIf="loadedSegmentations.length == 2; else segmentationLoader;">
+        <div class="grid__cell center-cell-content" *ngIf="loadSegmentation(); else segmentationLoader;">
             <mat-slide-toggle 
                 class="segmentation-toggle"
                 [color]="segmentationToggle.color"
                 [checked]="segmentationToggle.checked"
-                [disabled]="loadedSegmentations.length < 2"
+                [disabled]="!loadedSegmentations"
                 (change)="toggleSegmentation($event)">
                 Segmentation
             </mat-slide-toggle>
         </div> 
         <ng-template #segmentationLoader>
-            <div class="grid__cell">
+            <div class="grid__cell center-cell-content">
                 <mat-progress-bar mode="indeterminate">
                     Segmentation
                 </mat-progress-bar>
             </div>
-        </ng-template> -->
-        <div class="grid__cell">
-            <!-- <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} "> -->
-            <div class="segmentation">
-                <app-segmentation-image   [imageHeaderId]="imageHeaderId"></app-segmentation-image>
-            </div>
-            <div class="grid__cell--label">Preview Image</div>
-            <app-rgb-image [data]="imageData" [id]="imageId"></app-rgb-image>
-
+        </ng-template>
+        <div class="grid__cell center-cell-content">
+                <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
+                    <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="imageHeaderId"></app-segmentation-image>
+                </div>
+                <app-rgb-image [data]="imageData" [id]="imageId" class="images"></app-rgb-image>
         </div>
     </div>
 </div>

@@ -57,7 +57,21 @@ export class GqlQueryService {
   }
 
   getSegmentationMapByHeaderId(variables:any){
-    return this.basicFilteredQuery(QueryQL.Images.SegmentationMapByHeaderId, variables)
+    return this
+      .basicFilteredQuery(QueryQL.Images.SegmentationMapByHeaderId, variables)
+      .pipe(map(response=>{
+        return response.data.cameraMessageHeaders.nodes.filter((msg:any) =>{
+          if(!msg.cameraMessagesByHeaderId.nodes.length)
+            return false
+            
+          return msg.cameraMessagesByHeaderId.nodes[0].image.encoding === "rgb8" || 
+                  msg.cameraMessagesByHeaderId.nodes[0].image.encoding === "mono8"
+            }).map((msg:any)=>{
+                const image = {...msg.cameraMessagesByHeaderId.nodes[0].image}
+                image.data = JSON.parse(image.data.data)
+                return image
+            })
+      }))
   }
 
   getImagePreview(variables:any){

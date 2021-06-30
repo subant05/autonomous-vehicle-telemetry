@@ -1,19 +1,19 @@
 .images {
     // width: 100%;
-
     .image,
     img {
         // width: 100%;
         height: auto;
-        min-width: 300px;
-        max-width: 1024px;
+        max-width: 512px;
         margin:auto;
+        position: absolute;
     }
 
     .segmentation{
         position:absolute;
-        // padding-right:20px;
         margin:auto;
-
+        margin-left: 20px;
+        margin-right: 20px;
+        // width: 100%;
     }
 }

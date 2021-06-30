@@ -38,38 +38,13 @@ export class SegmentationImageComponent implements OnInit {
     this.querySubscription = this.gqlQueryService
     .getSegmentationMapByHeaderId({ imageHeaderId })
     .subscribe(response => {
+      const image = response.find((msg:any)=>msg.encoding === "rgb8")
+      const segmentation = response.find((msg:any)=>msg.encoding === "mono8")
 
-      if (!response.data.cameraMessageHeaders.nodes.length 
-        || !response.data.cameraMessageHeaders.nodes[0].cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes.length) {
-        this.noImage = true
+      if(!response.length || !segmentation){
         this.load.emit("no segmentation")
-        return;
+        return
       }
-
-      const image = {...response
-        .data
-        .cameraMessageHeaders
-        .nodes[2]
-        .cameraMessagesByHeaderId
-        .nodes[0]
-        .camerasByMsgId
-        .nodes[0]
-        .msg
-        .image}
-
-      const segmentation = {...response
-        .data
-        .cameraMessageHeaders
-        .nodes[0]
-        .cameraMessagesByHeaderId
-        .nodes[0]
-        .segmentationMapsByMsgId
-        .nodes[0]
-        .msg
-        .image}
-
-      image.data = JSON.parse(image.data.data)
-      segmentation.data = JSON.parse(segmentation.data.data)
 
       this.imageData = this.imageService.getDataURL({...segmentation, isSegmentation:true});
       this.imageUrl = this.imageService.getDataURL({...image});

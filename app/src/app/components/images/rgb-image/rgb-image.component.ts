@@ -11,6 +11,8 @@ export class RgbImageComponent implements OnInit {
   private regexArray =  /^(\[)(.*)(\])$/
 
   imageUrl: string = ""
+  width: string=""
+  height: string=""
   @Input() id: string = uuid()
   @Input() class: string = ""
   @Input() data: string | [] | {} | undefined;
@@ -32,6 +34,8 @@ export class RgbImageComponent implements OnInit {
             break;
       }
 
+      this.width = (parsedData as any).width +"px"
+      this.height = (parsedData as any).height+"px"
       this.imageUrl = this.imageService.getDataURL(parsedData)
     }catch(e){
       console.log(e.message)

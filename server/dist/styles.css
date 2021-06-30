@@ -2869,6 +2869,15 @@ a {
   height: auto;
 }
 
+.grid .grid__cell.center-cell-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .grid .grid__cell .grid__cell--label {
   font-weight: bold;
   padding: 20px;
@@ -2876,6 +2885,11 @@ a {
   color: white;
   z-index: 1;
   background-color: rgba(100, 100, 100, 0.5);
+}
+
+.grid .grid__cell .grid__cell--label.left-align-label {
+  align-self: left;
+  justify-self: flex-start;
 }
 
 @media screen and (min-width: 800px) {
