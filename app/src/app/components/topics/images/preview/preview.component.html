@@ -1,8 +1,3 @@
-<hr/>
-<mat-paginator [length]="pagesLength"
-    [pageSize]="pageSize"
-    (page)="getCurrentImage($event)">
-</mat-paginator>
 <div *ngIf="imageData; else loading;" >
     <div class="grid gap images">
         <div class="grid__cell center-cell-content" *ngIf="loadSegmentation(); else segmentationLoader;">
@@ -39,3 +34,8 @@
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </ng-template>
 </ng-template>
+<hr/>
+<mat-paginator [length]="pagesLength"
+    [pageSize]="pageSize"
+    (page)="getCurrentImage($event)">
+</mat-paginator>
