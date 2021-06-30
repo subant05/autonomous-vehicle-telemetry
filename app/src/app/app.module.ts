@@ -56,10 +56,12 @@ import { VehicleTopicComponent } from './pages/vehicles/pages/vehicle-topic/vehi
 import { VehicleLiveComponent } from './pages/vehicles/pages/vehicle-live/vehicle-live.component';
 import { StarfireComponent } from './components/topics/starfire/starfire.component';
 import { ImagePairComponent } from './components/topics/image-pair/image-pair.component';
-import { ImageComponent } from './components/image/image.component';
 import { ImageSegmentationComponent } from './components/topics/image-segmentation/image-segmentation.component';
 import { VehicleListComponent } from './pages/vehicles/pages/vehicle-list/vehicle-list.component';
 import { VehicleComponent } from './pages/vehicles/pages/vehicle/vehicle.component';
+import { PreviewComponent } from './components/topics/images/preview/preview.component';
+import { RgbImageComponent } from './components/images/rgb-image/rgb-image.component';
+import { SegmentationImageComponent } from './components/images/segmentation-image/segmentation-image.component';
 
 @NgModule({
   declarations: [
@@ -76,10 +78,12 @@ import { VehicleComponent } from './pages/vehicles/pages/vehicle/vehicle.compone
     VehicleLiveComponent,
     StarfireComponent,
     ImagePairComponent,
-    ImageComponent,
     ImageSegmentationComponent,
     VehicleListComponent,
     VehicleComponent,
+    PreviewComponent,
+    RgbImageComponent,
+    SegmentationImageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router'
+import {CurrentVehicleTopic } from '../vehicle/services/current-topic.service'
 
 @Component({
   selector: 'app-vehicle-topic',
@@ -9,8 +10,14 @@ import {ActivatedRoute} from '@angular/router'
 export class VehicleTopicComponent implements OnInit {
   currentRoute: string =  ""
   vehicleId: string=""
+  topicId: number | null = null
+  topicName: string = ""
 
-  constructor( private route: ActivatedRoute) { 
+  constructor( 
+    private route: ActivatedRoute
+    , private currentTopicService: CurrentVehicleTopic) { 
+    this.topicName = this.currentTopicService.topicInfo.name
+    this.topicId = this.currentTopicService.topicInfo.id
   }
 
   ngOnInit(): void {

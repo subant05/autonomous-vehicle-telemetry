@@ -1,0 +1,19 @@
+.images {
+    // width: 100%;
+
+    .image,
+    img {
+        // width: 100%;
+        height: auto;
+        min-width: 300px;
+        max-width: 1024px;
+        margin:auto;
+    }
+
+    .segmentation{
+        position:absolute;
+        // padding-right:20px;
+        margin:auto;
+
+    }
+}

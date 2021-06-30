@@ -4,11 +4,13 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { MenuService } from 'src/app/services/navigation/menu.service';
 import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { CurrentVehicleTopic } from './services/current-topic.service'
 
 @Component({
   selector: 'app-vehicle',
   templateUrl: './vehicle.component.html',
-  styleUrls: ['./vehicle.component.scss']
+  styleUrls: ['./vehicle.component.scss'],
+  providers:[CurrentVehicleTopic]
 })
 export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
 
@@ -21,7 +23,8 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
     private menuService: MenuService
     , private router: Router
     , private route: ActivatedRoute
-    , private graphqlQueryService: GqlQueryService) {
+    , private graphqlQueryService: GqlQueryService
+    , private currentVehicleTopicService : CurrentVehicleTopic) {
       this.paramSubscription = this.route.params.subscribe(data=>{
         this.vehicleId = data.id
       })
@@ -43,6 +46,7 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
             return {
               label: topicType.topic.name,
               callback:()=> {
+                this.currentVehicleTopicService.topicInfo = topicType
                 this.loadTopic(topicType.topic)
               }
             }
@@ -64,7 +68,9 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
     this.currentRoute =  (this.route.url as any).value.join("/")
     this.graphqlQueryService
       .getTopicsByVehicleId({id:this.vehicleId})
-      .subscribe(response=>this.loadMenu(response));
+      .subscribe(response=>
+        this.loadMenu(response)
+      );
   }
 
   ngOnDestroy(): void{

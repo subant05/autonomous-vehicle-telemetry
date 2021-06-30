@@ -29,8 +29,8 @@ function apiRouter({ pubsub, eventTypes, db }) {
     //   recorded = !recorded
     // }
 
-    // if(req.body.topic.includes('preview')){
-    //   fs.writeFile('helloworld.txt', JSON.stringify(req.body, null, " "), function (err) {
+    // if(req.body.topic.includes('segmentation')){
+    //   fs.writeFile('segmentation-example.json', JSON.stringify(req.body, null, " "), function (err) {
     //     if (err) return console.log(err);
     //     console.log('Hello World > helloworld.txt');
     //   });

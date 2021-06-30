@@ -86,7 +86,7 @@ export class ImageService {
       height,
       parsedData,
       {
-        bitDepth: 8,
+        bitDepth,
       }
     )
   }

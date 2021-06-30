@@ -1,0 +1,43 @@
+<mat-paginator [length]="pagesLength"
+    [pageSize]="pageSize"
+    (page)="getCurrentImage($event)">
+</mat-paginator>
+<div *ngIf="imageData; else loading;" >
+    <div class="grid gap images">
+        <!-- <div class="grid__cell" *ngIf="loadedSegmentations.length == 2; else segmentationLoader;">
+            <mat-slide-toggle 
+                class="segmentation-toggle"
+                [color]="segmentationToggle.color"
+                [checked]="segmentationToggle.checked"
+                [disabled]="loadedSegmentations.length < 2"
+                (change)="toggleSegmentation($event)">
+                Segmentation
+            </mat-slide-toggle>
+        </div> 
+        <ng-template #segmentationLoader>
+            <div class="grid__cell">
+                <mat-progress-bar mode="indeterminate">
+                    Segmentation
+                </mat-progress-bar>
+            </div>
+        </ng-template> -->
+        <div class="grid__cell">
+            <!-- <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} "> -->
+            <div class="segmentation">
+                <app-segmentation-image   [imageHeaderId]="imageHeaderId"></app-segmentation-image>
+            </div>
+            <div class="grid__cell--label">Preview Image</div>
+            <app-rgb-image [data]="imageData" [id]="imageId"></app-rgb-image>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <span *ngIf="noImage; else loader">
+        No image were found.
+    </span>
+    <ng-template #loader>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </ng-template>
+</ng-template>

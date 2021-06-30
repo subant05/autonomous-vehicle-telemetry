@@ -32,3 +32,4 @@ DROP TABLE images.image_data;
 DROP TABLE images.camera_message_header;
 DROP TABLE images.camera_message;
 DROP TABLE images.camera;
+DROP TABLE images.segmentation_map;

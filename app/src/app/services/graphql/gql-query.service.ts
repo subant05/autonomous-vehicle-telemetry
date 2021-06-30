@@ -55,5 +55,14 @@ export class GqlQueryService {
   getVehicleById(variables:any){
     return this.basicFilteredQuery(QueryQL.Vehicles.ById, variables)
   }
+
+  getSegmentationMapByHeaderId(variables:any){
+    return this.basicFilteredQuery(QueryQL.Images.SegmentationMapByHeaderId, variables)
+  }
+
+  getImagePreview(variables:any){
+    return this.basicFilteredQuery(QueryQL.Images.PreviewByVehicleIdTopicName, variables)
+
+  }
   
 }

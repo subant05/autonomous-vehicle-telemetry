@@ -51,5 +51,47 @@
     <div *ngSwitchCase="'front_right/segmentation_map'">
         <app-image-pair [topic]='"/"+currentRoute'></app-image-pair>
     </div> 
+    <div *ngSwitchCase="'side_left/left/preview'">
+        <app-preview 
+        [topic]='"/"+currentRoute'
+        [topicId]="topicId"
+        [vehicleId]="vehicleId"
+        ></app-preview>
+    </div>
+    <div *ngSwitchCase="'side_right/left/preview'">
+        <app-preview 
+        [topic]='"/"+currentRoute'
+        [topicId]="topicId"
+        [vehicleId]="vehicleId"
+        ></app-preview>
+    </div>
+    <div *ngSwitchCase="'rear/left/preview'">
+        <app-preview 
+        [topic]='"/"+currentRoute'
+        [topicId]="topicId"
+        [vehicleId]="vehicleId"
+        ></app-preview>
+    </div>
+    <div *ngSwitchCase="'front_left/left/preview'">
+        <app-preview 
+        [topic]='"/"+currentRoute'
+        [topicId]="topicId"
+        [vehicleId]="vehicleId"
+        ></app-preview>
+    </div>
+    <div *ngSwitchCase="'front_right/left/preview'">
+        <app-preview 
+        [topic]='"/"+currentRoute'
+        [topicId]="topicId"
+        [vehicleId]="vehicleId"
+        ></app-preview>
+    </div>
+    <div *ngSwitchCase="'/front_center/left/preview'">
+        <app-preview 
+        [topic]='"/"+currentRoute'
+        [topicId]="topicId"
+        [vehicleId]="vehicleId"
+        ></app-preview>
+    </div>
     <div *ngSwitchDefault>Coming Soon! {{currentRoute}}</div>
 </div>

@@ -7,6 +7,7 @@ query VehicleTopics($id:BigInt!){
             nodes{
                 topic{
                     name
+                    id
                 }
             }
       }
