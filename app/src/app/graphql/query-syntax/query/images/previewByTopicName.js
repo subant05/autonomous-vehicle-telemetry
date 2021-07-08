@@ -1,7 +1,7 @@
 import { gql } from 'apollo-angular';
 
 const previewByVehicleIdTopicName = gql`
-query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor:Int){
+query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor:Int, $size:Int){
     topics(filter: {
       name: {
           equalTo: $topicName 
@@ -9,7 +9,7 @@ query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor
     }){
       nodes{
         cameras(
-            first:1
+            first:$size
             offset: $cursor 
             orderBy: ID_DESC 
             condition: {
@@ -27,6 +27,21 @@ query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor
               msg{
                 header{
                   headerId
+                }
+                cameraMeta{
+                  cameraName
+                  leftExposure
+                  rightExposure
+                  leftGain
+                  rightGain
+                  leftRoi{
+                    xOffset
+                    yOffset
+                  }
+                  rightRoi{
+                    xOffset
+                    yOffset
+                  }
                 }
                 image{
                   isBigendian

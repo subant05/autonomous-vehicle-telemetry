@@ -15,12 +15,13 @@ export class PreviewComponent implements OnInit, OnDestroy {
   loadedSegmentations:boolean | null =null
   querySubscription: Subscription | null =null
   imageUrl: string = ""
-  imageData: any
+  imageData: any[] = []
   imageId: string = uuid()
   imageHeaderId: string | undefined
   segmentationTopic:string =""
   noImage:boolean = false
   pageSize:number = 1
+  pageSizeOptions: number[] = [1, 5, 10]
   pagesLength: number = 0
   segmentationTopic$ = new BehaviorSubject<string | null>(this.segmentationTopic);
   segmentationToggle = {
@@ -59,15 +60,12 @@ export class PreviewComponent implements OnInit, OnDestroy {
           vehicleId: this.vehicleId
           , topicName: this.topic
           , cursor: this.cursor
+          , size: this.pageSize
         })
         .subscribe(response=>{
           this.noImage = true
-          const cameraData = response.data.topics.nodes[0].cameras
-          this.pagesLength = cameraData.totalCount
-          const imageData = {...cameraData.nodes[0].msg.image, data : JSON.parse(cameraData.nodes[0].msg.image.data.data)}
-          this.imageUrl =  this.imageService.getDataURL(imageData)
-          this.imageHeaderId = cameraData.nodes[0].msg.header.headerId
-          this.imageData = {...cameraData.nodes[0].msg.image, data : JSON.parse(cameraData.nodes[0].msg.image.data.data)}
+          this.pagesLength = response.totalCount
+          this.imageData = response.images
         })
   }
 
@@ -77,10 +75,11 @@ export class PreviewComponent implements OnInit, OnDestroy {
   }
 
   getCurrentImage(event:PageEvent) {
-    if( this.cursor !== event.pageIndex ){
+    if( this.cursor !== event.pageIndex || event.pageSize !== this.pageSize ){
       this.cursor = event.pageIndex
-      this.imageData =null;
+      this.imageData =[];
       this.noImage =false;
+      this.pageSize = event.pageSize
       this.loadedSegmentations = null;
       this.getImage()
       console.log(event)

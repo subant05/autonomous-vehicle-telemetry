@@ -18,10 +18,36 @@
             </div>
         </ng-template>
         <div class="grid__cell center-cell-content">
-                <app-rgb-image [data]="imageData" [id]="imageId" class="images"></app-rgb-image>
+            <div *ngFor="let image of imageData; let i = index;" class="image-wrapper">
+                <div class="images__meta-data">
+                    <div class="images__meta-title"> #{{ (pageSize === 1 ? cursor : i)+1 }} : Meta Data </div>
+                    <ul>
+                        <li><b>Date:</b> {{image.timestamp}}</li>
+                        <li><b>Camera:</b> {{image.meta.cameraName}}</li>
+                        <li><b>Vehicle:</b> {{image.vehicle}}</li>
+                        <li><b>Encoding:</b> {{image.encoding}}</li>
+                        <li><b>Height:</b> {{image.height}}</li>
+                        <li><b>Width:</b> {{image.width}}</li>
+                        <li><b>Left Exposure:</b> {{image.meta.leftExposure}}</li>
+                        <li><b>Right Exposure:</b> {{image.meta.rightExposure}}</li>
+                        <li><b>Left Gain:</b> {{image.meta.leftGain}}</li>
+                        <li><b>Right Gain:</b> {{image.meta.rightGain}}</li>
+                        <li><b>Left ROI:</b>( x: {{image.meta.leftRoi.xOffset}}, y: {{image.meta.leftRoi.xOffset}})</li>
+                        <li><b>Right ROI:</b>( x: {{image.meta.rightRoi.xOffset}}, y: {{image.meta.rightRoi.xOffset}})</li>
+                    </ul>
+                </div>
+                <div class="images__render">
+                    <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
+                        <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="image.headerId"></app-segmentation-image>
+                    </div>
+                    <app-rgb-image [data]="image" [id]="image.imageId" class="images"></app-rgb-image>
+                </div>
+                
+            </div>
+                <!-- <app-rgb-image [data]="imageData" [id]="imageId" class="images"></app-rgb-image>
                 <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
                     <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="imageHeaderId"></app-segmentation-image>
-                </div>
+                </div> -->
         </div>
     </div>
 </div>
@@ -37,5 +63,6 @@
 <hr/>
 <mat-paginator [length]="pagesLength"
     [pageSize]="pageSize"
+    [pageSizeOptions] = "pageSizeOptions"
     (page)="getCurrentImage($event)">
 </mat-paginator>
