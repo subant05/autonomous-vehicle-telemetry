@@ -4,3 +4,4 @@
 /server/db
 /server/request.log
 request.log
+.env
