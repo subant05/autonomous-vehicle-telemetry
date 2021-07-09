@@ -1,7 +1,7 @@
 */node_modules
 .DS_Store
-/server/_devices
-/server/db
-/server/request.log
+*/server/_devices
+*/server/db
+*/server/request.log
 request.log
 .env
