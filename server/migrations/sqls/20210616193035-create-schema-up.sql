@@ -4,3 +4,4 @@ CREATE SCHEMA topics;
 CREATE SCHEMA messages;
 CREATE SCHEMA geolocation;
 CREATE SCHEMA images;
+CREATE SCHEMA notifications;

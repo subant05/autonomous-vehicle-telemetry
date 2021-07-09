@@ -262,7 +262,7 @@ CREATE TABLE IF NOT EXISTS images.camera_meta (
         REFERENCES images.stereo_extrinsics(id),
     CONSTRAINT fk_tractor_extrinsics
         FOREIGN KEY(tractor_extrinsics_id)
-        REFERENCES images.tractor_intrinsics(id),
+        REFERENCES images.tractor_extrinsics(id),
     CONSTRAINT fk_e
         FOREIGN KEY(e_id)
         REFERENCES images.camera_meta_e(id),

@@ -1,0 +1,63 @@
+Certificate Request:
+    Data:
+        Version: 0 (0x0)
+        Subject: C=US, ST=TX, L=McKinney, O=Blue River Tech, OU=Jupiter, CN=blueriver-jupiter.herokuapp.com/emailAddress=anthony.crawford@bluerivertech.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c7:d0:ff:bd:67:88:48:06:42:bd:14:2c:c9:39:
+                    d5:1b:49:71:1d:b1:9a:5c:17:50:7b:0d:02:a2:02:
+                    24:f7:b5:ff:43:fb:4c:b2:43:c7:24:19:c7:86:3d:
+                    9b:0c:5e:e2:07:9c:11:15:e9:8a:0e:83:0b:70:6c:
+                    ff:14:15:86:03:86:c9:40:39:d2:5d:9d:f5:bc:26:
+                    d7:25:af:6a:ac:e1:05:73:74:69:c6:d7:54:13:a3:
+                    bf:be:40:23:99:94:73:38:ad:6e:41:63:4a:04:c6:
+                    32:7c:4e:2f:0a:75:10:ea:84:50:c3:fe:7b:c1:d7:
+                    20:86:99:d5:77:d5:f4:b9:2a:4a:e3:47:e8:6a:56:
+                    bf:c0:d2:24:e8:96:7a:e6:2e:ad:77:ca:24:d4:c8:
+                    08:51:df:7a:3d:a6:77:16:be:40:66:cd:d5:fc:2f:
+                    5b:e3:27:6a:15:f6:e5:25:bf:c9:1b:5b:7e:06:66:
+                    13:0c:e9:af:48:cf:43:35:3e:e7:64:58:7f:d9:46:
+                    e3:9f:cb:32:d5:b8:d5:e5:00:05:52:a8:e1:40:ed:
+                    9a:ce:9c:2f:ce:a1:a1:89:d3:f9:fb:69:a5:79:66:
+                    7d:b9:05:05:ed:52:b3:57:75:05:ac:3b:56:79:5e:
+                    b1:65:87:71:6c:b2:45:1e:51:eb:12:0c:50:0a:e5:
+                    c2:73
+                Exponent: 65537 (0x10001)
+        Attributes:
+            a0:00
+    Signature Algorithm: sha256WithRSAEncryption
+         c6:32:0a:8e:76:97:d6:fa:62:0c:92:72:99:2f:a8:78:ef:10:
+         24:3b:87:47:f2:fe:7c:e9:99:ac:58:27:dc:9f:39:e7:d9:f6:
+         7b:d7:ed:a0:69:aa:5f:56:c6:d4:f8:e9:5f:64:93:ba:0c:fd:
+         9a:7f:64:b3:80:2b:5d:f9:0c:cf:14:d7:d0:e8:09:e1:35:fa:
+         bf:af:60:6b:e1:dd:71:71:a5:34:2c:e9:c9:a5:c0:5d:f8:fb:
+         ce:be:11:95:6f:ce:39:e2:9f:32:ca:1b:7e:ca:d6:92:0f:cb:
+         ea:5c:fd:0b:ce:c3:7a:6f:bc:98:79:0c:c6:29:eb:e2:92:7b:
+         c8:29:db:e8:85:4a:04:67:5d:73:d9:f0:36:b2:2b:0b:f3:cf:
+         86:b8:bf:96:07:c5:55:5c:96:b3:87:02:61:61:4b:c6:9d:a7:
+         4f:b8:ac:ad:6f:0c:40:93:3e:43:22:78:45:03:ca:b9:30:5e:
+         06:37:91:54:b8:69:5f:39:f1:40:b9:0a:ec:44:93:4d:c0:57:
+         28:cc:8a:b3:27:c2:45:44:09:73:81:30:30:2b:f3:1f:ed:09:
+         c2:b4:00:48:b1:ff:71:cd:24:47:2c:c2:e4:b0:5f:14:29:e3:
+         9f:4e:41:0f:5b:45:9e:3a:37:77:4c:c7:84:63:58:99:7e:8e:
+         6c:d0:55:4b
+-----BEGIN CERTIFICATE REQUEST-----
+MIIC/DCCAeQCAQAwgbYxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJUWDERMA8GA1UE
+BwwITWNLaW5uZXkxGDAWBgNVBAoMD0JsdWUgUml2ZXIgVGVjaDEQMA4GA1UECwwH
+SnVwaXRlcjEoMCYGA1UEAwwfYmx1ZXJpdmVyLWp1cGl0ZXIuaGVyb2t1YXBwLmNv
+bTExMC8GCSqGSIb3DQEJARYiYW50aG9ueS5jcmF3Zm9yZEBibHVlcml2ZXJ0ZWNo
+LmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMfQ/71niEgGQr0U
+LMk51RtJcR2xmlwXUHsNAqICJPe1/0P7TLJDxyQZx4Y9mwxe4gecERXpig6DC3Bs
+/xQVhgOGyUA50l2d9bwm1yWvaqzhBXN0acbXVBOjv75AI5mUczitbkFjSgTGMnxO
+Lwp1EOqEUMP+e8HXIIaZ1XfV9LkqSuNH6GpWv8DSJOiWeuYurXfKJNTICFHfej2m
+dxa+QGbN1fwvW+MnahX25SW/yRtbfgZmEwzpr0jPQzU+52RYf9lG45/LMtW41eUA
+BVKo4UDtms6cL86hoYnT+ftppXlmfbkFBe1Ss1d1Baw7VnlesWWHcWyyRR5R6xIM
+UArlwnMCAwEAAaAAMA0GCSqGSIb3DQEBCwUAA4IBAQDGMgqOdpfW+mIMknKZL6h4
+7xAkO4dH8v586ZmsWCfcnznn2fZ71+2gaapfVsbU+OlfZJO6DP2af2SzgCtd+QzP
+FNfQ6AnhNfq/r2Br4d1xcaU0LOnJpcBd+PvOvhGVb8454p8yyht+ytaSD8vqXP0L
+zsN6b7yYeQzGKeviknvIKdvohUoEZ11z2fA2sisL88+GuL+WB8VVXJazhwJhYUvG
+nadPuKytbwxAkz5DInhFA8q5MF4GN5FUuGlfOfFAuQrsRJNNwFcozIqzJ8JFRAlz
+gTAwK/Mf7QnCtABIsf9xzSRHLMLksF8UKeOfTkEPW0WeOjd3TMeEY1iZfo5s0FVL
+-----END CERTIFICATE REQUEST-----

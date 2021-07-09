@@ -38,7 +38,7 @@ The timestamp of topic added by the database';
 COMMENT ON COLUMN topics.topics.updated_at IS 'The timestamp of topic updated on the database';
 COMMENT ON COLUMN topics.topics.type_id IS 'The type of topic';
 
-CREATE INDEX idx_topics_typse_id
+CREATE INDEX idx_topics_types_id
     ON topics.topic_types(id);
 CREATE INDEX idx_topics_types_module
     ON topics.topic_types(module);

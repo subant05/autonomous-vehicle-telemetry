@@ -35,29 +35,33 @@ app.use(morgan('dev', {stream: requestLogStream }));
 app.use("/api", apiRouter({pubsub, eventTypes:EventContants, db }));
 app.use("/", express.static(path.join(__dirname, "./dist")));
 app.use(express.static('./dist'));
-app.use(
-  postgraphile(
-    process.env.DATABASE_URL,
-    ["vehicles","topics","images","geolocation"],
-    {
-      appendPlugins: [
-        PgSimplifyInflectorPlugin
-        , ConnectionFilterPlugin
-        , JupiterSubscriptionPlugin
-      ],
-      pluginHook,
-      watchPg: true,
-      enhanceGraphiql: true,
-      ignoreRBAC: false, // Role Based Access Control (RBAC)
-      extendedErrors: ["errcode", "detail", "hint"],
-      graphiql: true,
-      subscriptions: true,
-      simpleSubscriptions: true,
-      live:true
+  app.use(
+    postgraphile(
+      process.env.NODE_ENV === "development" ? process.env.DEV_DATABASE_URL : process.env.POSTGRAPHILE,
+      ["vehicles","topics","images","geolocation", "notifications"],
+      {
+        appendPlugins: [
+          PgSimplifyInflectorPlugin
+          , ConnectionFilterPlugin
+          , JupiterSubscriptionPlugin
+        ],
+        pluginHook,
+        ownerConnectionString: process.env.NODE_ENV === "development" ? process.env.DEV_DATABASE_URL : process.env.DATABASE_URL+"?ssl=true",
+        watchPg: true,
+        enhanceGraphiql: true,
+        ignoreRBAC: false, // Role Based Access Control (RBAC)
+        extendedErrors: ["errcode", "detail", "hint"],
+        graphiql: true,
+        subscriptions: true,
+        simpleSubscriptions: true,
+        live:true,
+        retryOnInitFail: true,
+        rejectUnauthorized: false,
+      }
+    )
+  );
 
-    }
-  )
-);
+
 app.get('*', function (req, res) {
     res.sendFile(path.join( `${__dirname}/dist/index.html`));
  });
