@@ -28,7 +28,10 @@ export class GqlSubscriptionService {
     return this.graphService.subscribe({
       query: SubscriptionQL.ONLINE_VEHICLES
     }).pipe(map((response:any)=>{
-      if(!response || !response.data || !response.data.listen.query.vehicles.nodes[0].vehiclesOnline)
+      if(!response 
+        || !response.data 
+        || !response.data.listen.query.vehicles.nodes.length
+        || !response.data.listen.query.vehicles.nodes[0].vehiclesOnline)
         return []
         
       return response.data.listen.query.vehicles.nodes.map((obj:any)=>{

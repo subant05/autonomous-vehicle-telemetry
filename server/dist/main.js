@@ -4147,7 +4147,10 @@ class GqlSubscriptionService {
         return this.graphService.subscribe({
             query: SubscriptionQL.ONLINE_VEHICLES
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
-            if (!response || !response.data || !response.data.listen.query.vehicles.nodes[0].vehiclesOnline)
+            if (!response
+                || !response.data
+                || !response.data.listen.query.vehicles.nodes.length
+                || !response.data.listen.query.vehicles.nodes[0].vehiclesOnline)
                 return [];
             return response.data.listen.query.vehicles.nodes.map((obj) => {
                 return { id: obj.vehiclesOnline.vehicleId, name: obj.vehiclesOnline.vehicle.name, type: obj.vehiclesOnline.vehicle.type.type };
