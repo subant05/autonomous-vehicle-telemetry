@@ -22,7 +22,7 @@ dotenv.config({ path: './.env' })
 const db = new Database(postgresDB);
 const pubsub = new PubSub();
 const app = express();
-const requestLogStream = fs.createWriteStream(path.join(__dirname, 'request.log'), { flags: 'a' })
+// const requestLogStream = fs.createWriteStream(path.join(__dirname, 'request.log'), { flags: 'a' })
 
 app.use(
   express.urlencoded({
@@ -31,7 +31,7 @@ app.use(
 )
 
 app.use(express.json({limit: '50mb', extended: true}))
-app.use(morgan('dev', {stream: requestLogStream }));
+// app.use(morgan('dev', {stream: requestLogStream }));
 app.use("/api", apiRouter({pubsub, eventTypes:EventContants, db }));
 app.use("/", express.static(path.join(__dirname, "./dist")));
 app.use(express.static('./dist'));
