@@ -14,8 +14,8 @@ class Postgres extends EventEmitter {
 
     create({query="",data=null,options={},callback=a=>a,event}){
         Geolocation.sqlInsertStarFire(query, data)
-        // Images.sqlInsertImagePreview(query, data)
-        // Images.sqlInsertSegmentationMap(query,data)
+        Images.sqlInsertImagePreview(query, data)
+        Images.sqlInsertSegmentationMap(query,data)
     }
 
     read(){}

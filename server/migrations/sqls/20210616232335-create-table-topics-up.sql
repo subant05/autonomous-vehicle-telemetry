@@ -6,6 +6,13 @@ CREATE TABLE IF NOT EXISTS  topics.topic_types(
     PRIMARY KEY(id)
 );
 
+CREATE INDEX idx_topics_types_id
+    ON topics.topic_types(id);
+CREATE INDEX idx_topics_types_module
+    ON topics.topic_types(module);
+CREATE INDEX idx_topics_types_class
+    ON topics.topic_types(class);
+
 COMMENT ON TABLE topics.topic_types IS '@omit delete
 This is the topics types table, which is related a topics type object passed from the vehicle';
 COMMENT ON COLUMN topics.topic_types.id IS '@omit create,update
@@ -38,12 +45,6 @@ The timestamp of topic added by the database';
 COMMENT ON COLUMN topics.topics.updated_at IS 'The timestamp of topic updated on the database';
 COMMENT ON COLUMN topics.topics.type_id IS 'The type of topic';
 
-CREATE INDEX idx_topics_types_id
-    ON topics.topic_types(id);
-CREATE INDEX idx_topics_types_module
-    ON topics.topic_types(module);
-CREATE INDEX idx_topics_types_class
-    ON topics.topic_types(class);
 CREATE INDEX idx_topics_topics_id
     ON topics.topics(id);
 CREATE INDEX idx_topics_topics_typeid
