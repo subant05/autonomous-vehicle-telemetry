@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS notifications.alerts(
         REFERENCES notifications.alert_types(id),
     CONSTRAINT fk_vehicle
         FOREIGN KEY  (vehicle_status_id)
-        REFERENCES vehicles.vehicle_status(id)
+        REFERENCES state.vehicle_status(id)
 );
 
 CREATE INDEX idx_alert_id 

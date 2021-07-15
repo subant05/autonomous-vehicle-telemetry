@@ -1,9 +1,8 @@
-import * as Topics from './queries/topics'
+import EventEmitter from 'events'
 import * as Geolocation from './queries/starfire'
 import * as ScheduledTasks from './queries/scheduled-tasks'
 import * as Images from './queries/images'
-import EventEmitter from 'events'
-import * as DB_EVENTS from '../../events'
+import * as State from './queries/state'
 
 class Postgres extends EventEmitter {
     constructor(){
@@ -16,6 +15,7 @@ class Postgres extends EventEmitter {
         Geolocation.sqlInsertStarFire(query, data)
         Images.sqlInsertImagePreview(query, data)
         Images.sqlInsertSegmentationMap(query,data)
+        State.sqlInsertVehicleStatus(query, data);
     }
 
     read(){}

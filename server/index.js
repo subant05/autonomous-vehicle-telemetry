@@ -38,7 +38,7 @@ app.use(express.static('./dist'));
   app.use(
     postgraphile(
       process.env.NODE_ENV === "development" ? process.env.DEV_DATABASE_URL : process.env.POSTGRAPHILE,
-      ["vehicles","topics","images","geolocation", "notifications"],
+      ["vehicles","topics","images","geolocation", "notifications", "state"],
       {
         appendPlugins: [
           PgSimplifyInflectorPlugin

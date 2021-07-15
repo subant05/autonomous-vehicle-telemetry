@@ -39,4 +39,17 @@ export class GqlSubscriptionService {
       })
     }))
   }
+
+  getAlerts(){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.NOTIFICATIONS.Alerts
+    }).pipe(map((response:any)=>{
+        const alert = response.data.sqlAlerts.alerts
+        const event = response.data.sqlAlerts.event
+       return {...alert
+              , event
+              , alertMessage:`${alert.vehicleStatus.topic.name } : ${alert.vehicleStatus.state.name}`
+            }
+    }))
+  }
 }

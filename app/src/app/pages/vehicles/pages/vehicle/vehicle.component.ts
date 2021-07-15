@@ -44,6 +44,9 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
               }
             },
             ...data.topics.nodes.map((vehicleTopic:any)=>{
+                if(!vehicleTopic.vehicleTopics.nodes.length)
+                  return {}
+
                 const topicType = vehicleTopic.vehicleTopics.nodes.map((topic:any)=>{
                       return topic
                   })[0]

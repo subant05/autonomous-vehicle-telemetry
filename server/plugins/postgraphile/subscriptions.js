@@ -19,6 +19,12 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         vehicle_status: VehicleStatus
         event: String
       }
+
+      type SQLAlertsPayload {
+        # (Subscription PAYLOAD Type )vehicle type data returned on this subscription type resolver below
+        alerts: Alert
+        event: String
+      }
   
       extend type Subscription {
         # (Subscription) will be triggered when the current starfire's data changes
@@ -30,6 +36,9 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         )})
         sqlVehicleStatus: SQLVehicleStatusPayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_vehicle_status`
+        )})
+        sqlAlerts: SQLAlertsPayload @pgSubscription(topic: ${embed(
+            ()=>`postgraphile:sql_alerts`
         )})
       }
     `,
@@ -94,7 +103,28 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                 { graphile: { selectGraphQLResultFromTable } }
             ) {
                 const rows = await selectGraphQLResultFromTable(
-                sql.fragment`vehicles.vehicle_status`,
+                sql.fragment`state.vehicle_status`,
+                (tableAlias, sqlBuilder) => {
+                    sqlBuilder.where(
+                    sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                    );
+                }
+                );
+                return rows[0];
+            },
+        },
+        SQLAlertsPayload: {
+            // This method finds the Alerts from the database based on the event
+            // published by PostgreSQL.
+            // (Type Resolver)
+            async alerts(
+                event,
+                _args,
+                _context,
+                { graphile: { selectGraphQLResultFromTable } }
+            ) {
+                const rows = await selectGraphQLResultFromTable(
+                sql.fragment`notifications.alerts`,
                 (tableAlias, sqlBuilder) => {
                     sqlBuilder.where(
                     sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`

@@ -1,5 +1,5 @@
 /* Replace with your SQL commands */
-CREATE OR REPLACE FUNCTION vehicles.vehicle_status_insert_update_notifcation()
+CREATE OR REPLACE FUNCTION  state.vehicle_status_insert_update_notifcation()
     RETURNS TRIGGER
     AS $$
 BEGIN
@@ -18,5 +18,5 @@ $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER vehicle_status_insert_update
-    AFTER INSERT OR UPDATE ON vehicles.vehicle_status FOR EACH ROW
-    EXECUTE PROCEDURE vehicles.vehicle_status_insert_update_notifcation();
+    AFTER INSERT OR UPDATE ON  state.vehicle_status FOR EACH ROW
+    EXECUTE PROCEDURE  state.vehicle_status_insert_update_notifcation();

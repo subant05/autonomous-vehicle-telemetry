@@ -1,0 +1,1 @@
+export {sqlInsertVehicleStatus} from './sqlInsertVehicleStatus'

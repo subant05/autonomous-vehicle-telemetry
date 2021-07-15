@@ -5,3 +5,4 @@ CREATE SCHEMA messages;
 CREATE SCHEMA geolocation;
 CREATE SCHEMA images;
 CREATE SCHEMA notifications;
+CREATE SCHEMA state;

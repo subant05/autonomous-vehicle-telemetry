@@ -28,12 +28,13 @@ function apiRouter({ pubsub, eventTypes, db }) {
     //   console.log(JSON.stringify(req.body, null, " "))
     //   recorded = !recorded
     // }
+    console.log(req.body)
 
-    // if(req.body.topic.includes('segmentation')){
-    //   fs.writeFile('segmentation-example.json', JSON.stringify(req.body, null, " "), function (err) {
-    //     if (err) return console.log(err);
-    //     console.log('Hello World > helloworld.txt');
-    //   });
+    // if(req.body.topic.includes('VehicleState')){
+      fs.appendFile('recent-request.json', JSON.stringify(req.body, null, " "), function (err) {
+        if (err) return console.log(err);
+        console.log('vehicle_state');
+      });
     // }
 
     try {

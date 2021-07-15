@@ -103,5 +103,10 @@ export class GqlQueryService {
       return {cameraData, totalCount, images }
     }))
   }
+  getAlerts(){
+    return this.graphService
+      .watchQuery<any>({ query: QueryQL.Notifications.Alerts })
+      .valueChanges
+  }
   
 }
