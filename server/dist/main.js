@@ -430,7 +430,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _segmentation_map__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./segmentation-map */ 67636);
 /* harmony import */ var _vehicles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./vehicles */ 85457);
 /* harmony import */ var _images__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./images */ 82262);
-/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./notifications */ 490);
+/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./notifications */ 75608);
 
 
 
@@ -443,7 +443,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 685:
+/***/ 31685:
 /*!********************************************************************!*\
   !*** ./src/app/graphql/query-syntax/query/notifications/alerts.js ***!
   \********************************************************************/
@@ -502,7 +502,7 @@ query Alerts{
 
 /***/ }),
 
-/***/ 490:
+/***/ 75608:
 /*!*******************************************************************!*\
   !*** ./src/app/graphql/query-syntax/query/notifications/index.js ***!
   \*******************************************************************/
@@ -513,7 +513,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Alerts": () => (/* reexport safe */ _alerts__WEBPACK_IMPORTED_MODULE_0__.default)
 /* harmony export */ });
-/* harmony import */ var _alerts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alerts */ 685);
+/* harmony import */ var _alerts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alerts */ 31685);
 
 
 
@@ -854,7 +854,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _device_message__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./device-message */ 11502);
 /* harmony import */ var _geolocation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geolocation */ 30758);
-/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./notifications */ 423);
+/* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./notifications */ 27423);
 /* harmony import */ var _vehicles_online__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vehicles-online */ 81000);
 
 
@@ -865,7 +865,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 910:
+/***/ 18910:
 /*!****************************************************************************!*\
   !*** ./src/app/graphql/query-syntax/subscriptions/notifications/alerts.js ***!
   \****************************************************************************/
@@ -922,7 +922,7 @@ subscription sqlAlerts {
 
 /***/ }),
 
-/***/ 423:
+/***/ 27423:
 /*!***************************************************************************!*\
   !*** ./src/app/graphql/query-syntax/subscriptions/notifications/index.js ***!
   \***************************************************************************/
@@ -933,7 +933,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Alerts": () => (/* reexport safe */ _alerts__WEBPACK_IMPORTED_MODULE_0__.default)
 /* harmony export */ });
-/* harmony import */ var _alerts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alerts */ 910);
+/* harmony import */ var _alerts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alerts */ 18910);
 
 
 
@@ -1552,7 +1552,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ 49976);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
-/* harmony import */ var src_app_services_notifications_alert_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/services/notifications/alert.service */ 481);
+/* harmony import */ var src_app_services_notifications_alert_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/services/notifications/alert.service */ 94481);
 /* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/snack-bar */ 77001);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 39895);
 /* harmony import */ var _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../navigation/navigation.component */ 60006);
@@ -4471,7 +4471,7 @@ MenuService.Éµprov = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_1__["É
 
 /***/ }),
 
-/***/ 481:
+/***/ 94481:
 /*!*********************************************************!*\
   !*** ./src/app/services/notifications/alert.service.ts ***!
   \*********************************************************/

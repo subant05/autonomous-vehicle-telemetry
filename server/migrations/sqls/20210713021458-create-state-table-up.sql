@@ -187,3 +187,35 @@ COMMENT ON COLUMN state.vehicle_status_detail.is_recoverable IS '@omit create,up
 This used to indicate if issue is recoverable';
 COMMENT ON COLUMN state.vehicle_status_detail.description IS '@omit create,update
 This used to give a descriptiom of the issue';
+
+CREATE TABLE IF NOT EXISTS state.vehicle_logs (
+    id BIGSERIAL,
+    vehicle_id BIGINT NOT NULL,
+    log text NOT NULL,
+    node VARCHAR(100) NOT NULL,
+    reading_at TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY(id),
+    CONSTRAINT fk_vehicles_id
+        FOREIGN KEY (vehicle_id)
+        REFERENCES vehicles.vehicles(id) 
+);
+
+CREATE INDEX idx_state_vehicle_logs_id
+    ON state.vehicle_logs(id);
+CREATE INDEX idx_state_vehicle_logs_vehicles_id
+    ON state.vehicle_logs(vehicle_id);
+
+COMMENT ON TABLE state.vehicle_logs IS 'This table stores the logs sent from a vehicle';
+COMMENT ON COLUMN state.vehicle_logs.id IS '@omit create,update
+Id is autoincremented by database';
+COMMENT ON COLUMN state.vehicle_logs.vehicle_id IS '@omit create,update
+This is the id of the vehicle that the log is associated with';
+COMMENT ON COLUMN state.vehicle_logs.log IS '@omit create,update
+The log text from the vehicle';
+COMMENT ON COLUMN state.vehicle_logs.node IS '@omit create,update
+Is the node the transmitted the log to the database';
+COMMENT ON COLUMN state.vehicle_logs.reading_at IS '@omit, create,update
+Is the timestamp of the log recorded by the vehicle';
+COMMENT ON COLUMN state.vehicle_logs.created_at IS '@omit, create,update
+Is the timestamp the log was inserted into the database';

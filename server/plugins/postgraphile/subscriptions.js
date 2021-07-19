@@ -25,6 +25,12 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         alerts: Alert
         event: String
       }
+
+      type SQLVehicleLogsPayload {
+        # (Subscription PAYLOAD Type )vehicle log data returned on this subscription type resolver below
+        log: VehicleLog
+        event: String
+      }
   
       extend type Subscription {
         # (Subscription) will be triggered when the current starfire's data changes
@@ -39,6 +45,9 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         )})
         sqlAlerts: SQLAlertsPayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_alerts`
+        )})
+        sqlVehicleLogs: SQLVehicleLogsPayload @pgSubscription(topic: ${embed(
+            ()=>`postgraphile:sql_vehicle_logs`
         )})
       }
     `,
@@ -125,6 +134,27 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
             ) {
                 const rows = await selectGraphQLResultFromTable(
                 sql.fragment`notifications.alerts`,
+                (tableAlias, sqlBuilder) => {
+                    sqlBuilder.where(
+                    sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                    );
+                }
+                );
+                return rows[0];
+            },
+        },
+        SQLVehicleLogsPayload: {
+            // This method finds the Vehicle Logs from the database based on the event
+            // published by PostgreSQL.
+            // (Type Resolver)
+            async alerts(
+                event,
+                _args,
+                _context,
+                { graphile: { selectGraphQLResultFromTable } }
+            ) {
+                const rows = await selectGraphQLResultFromTable(
+                sql.fragment`state.vehicle_logs`,
                 (tableAlias, sqlBuilder) => {
                     sqlBuilder.where(
                     sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
