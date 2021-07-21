@@ -21,18 +21,12 @@ const routes: Routes = [
         runGuardsAndResolvers: 'always',
         children: [
             {
+                // Main / Home Page
                 path: "",
-                component: DashboardComponent
-            },
-            {
-                path: "profile",
-                component: ProfileComponent
-            },
-            {
-                path: "vehicles",
-                component: VehiclesComponent,
-                children: [
+                component: VehiclesComponent
+                , children: [
                     {
+                        // Vehicle List is degailt page on Main / Home Page
                         path: "",
                         component: VehicleListComponent
                     },
@@ -51,6 +45,33 @@ const routes: Routes = [
                     }
                 ]
             },
+            {
+                path: "profile",
+                component: ProfileComponent
+            },
+            // {
+            //     path: "vehicles",
+            //     component: VehiclesComponent,
+            //     children: [
+            //         {
+            //             path: "",
+            //             component: VehicleListComponent
+            //         },
+            //         {
+            //             path: ":id",
+            //             component: VehicleComponent,
+            //             children:[
+            //                 {
+            //                     path:"",
+            //                     component:VehicleLiveComponent
+            //                 },
+            //                 {
+            //                     path: "**"
+            //                     , component: VehicleTopicComponent
+            //                 }]
+            //         }
+            //     ]
+            // },
         ]
     },
     {

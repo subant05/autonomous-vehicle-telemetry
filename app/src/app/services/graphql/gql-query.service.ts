@@ -58,6 +58,29 @@ export class GqlQueryService {
       }))
   }
 
+  getOnlineVehicles(){
+    return this.basicFilteredQuery(QueryQL.Vehicles.Online)
+      .pipe(map(response=>{
+        return response.data.vehiclesOnlines.nodes.map((vehicle:any)=>{
+          const result = {...vehicle.vehicle}
+          result.id = vehicle.id
+          result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0]
+          result.state = result.vehicleStatuses.nodes[0].state
+
+          return result
+        })
+      }))
+  }
+
+  getOfflineVehicles(){
+    return this.basicFilteredQuery(QueryQL.Vehicles.Offline)
+      .pipe(map(response=>{
+        return response.data.vehiclesOfflines.nodes.map((vehicle:any)=>{
+          return {...vehicle}
+        })
+      }))
+  }
+
   getVehicleById(variables:any){
     return this.basicFilteredQuery(QueryQL.Vehicles.ById, variables)
   }

@@ -8,3 +8,27 @@ th.mat-sort-header-sorted {
 tr.mat-row, tr.mat-footer-row{
     cursor: pointer;
 }
+
+.vehicles__online {
+
+    .icon {
+        font-size: 1.5rem;
+        width:24px;
+    }
+    .priority_high {
+        background-color: var(--critical);
+    }
+
+    .error {
+        background-color: var(--error);
+    }
+
+    .warning {
+        background-color: var(--warning);
+    }
+
+    .logging,
+    .information {
+        background-color: var(--success);
+    }
+}

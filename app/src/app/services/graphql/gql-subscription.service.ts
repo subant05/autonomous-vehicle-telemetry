@@ -26,17 +26,26 @@ export class GqlSubscriptionService {
 
   getOnlineVehicles(){
     return this.graphService.subscribe({
-      query: SubscriptionQL.ONLINE_VEHICLES
+      query: SubscriptionQL.VEHICLES.ONLINE
     }).pipe(map((response:any)=>{
-      if(!response 
-        || !response.data 
-        || !response.data.listen.query.vehicles.nodes.length
-        || !response.data.listen.query.vehicles.nodes[0].vehiclesOnline)
-        return []
-        
-      return response.data.listen.query.vehicles.nodes.map((obj:any)=>{
-        return{ id: obj.vehiclesOnline.vehicleId, name: obj.vehiclesOnline.vehicle.name, type: obj.vehiclesOnline.vehicle.type.type}
-      })
+      const vehicle =  response.data.sqlVehiclesOnline.vehicle_online ? 
+        response.data.sqlVehiclesOnline.vehicle_online.vehicle : null
+      const result:any = {
+        event: response.data.sqlVehiclesOnline.event
+        , id : response.data.sqlVehiclesOnline.row.id
+      }
+
+      if(vehicle) {
+        result.name   = vehicle.name
+        result.ip     = vehicle.ip
+        result.vehicle_id = vehicle.vehicle_id
+        result.type   = vehicle.type.type
+        result.alerts = vehicle.vehicleStatuses.nodes[0].alerts.nodes[0]
+        result.state = vehicle.vehicleStatuses.nodes[0].state
+      }
+      
+      return result
+
     }))
   }
 

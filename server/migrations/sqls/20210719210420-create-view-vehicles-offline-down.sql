@@ -1,0 +1,1 @@
+DROP VIEW vehicles.vehicles_offline;

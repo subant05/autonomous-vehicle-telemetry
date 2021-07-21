@@ -1,5 +1,5 @@
 const { client, pool } = require("../../connection.js")
-import {sqlInsertVehicle} from '../vehicles'
+import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import { sqlInsertTopic } from '../topics'
 import moment from 'moment';
 
@@ -10,6 +10,9 @@ export const sqlInsertVehicleStatus = async (argTopic, data) =>{
     try{
         const topic = await sqlInsertTopic(argTopic, data)
         const vehicle = await sqlInsertVehicle(data.vehicle)
+        const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
+        const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
+
 
         const {descriptor, vehicle_state, stop_reasons} = data.msg
 

@@ -1,7 +1,10 @@
 import { makeExtendSchemaPlugin, gql, embed } from 'graphile-utils';
+let run = false
 
 export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql }) => ({
     typeDefs: gql`
+
+
       type SQLStarfirePayload {
         # (Subscription PAYLOAD Type )Starfire type data retturned on this subscription type resolver below
         starfire(vehicleId:Float): Starfire
@@ -31,6 +34,13 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         log: VehicleLog
         event: String
       }
+
+      type SQLVehiclesOnlinePayload {
+        # (Subscription PAYLOAD Type )vehicle online data returned on this subscription type resolver below
+        vehicle_online: VehiclesOnline
+        row: VehiclesOnline
+        event: String
+      }
   
       extend type Subscription {
         # (Subscription) will be triggered when the current starfire's data changes
@@ -48,6 +58,9 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         )})
         sqlVehicleLogs: SQLVehicleLogsPayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_vehicle_logs`
+        )})
+        sqlVehiclesOnline: SQLVehiclesOnlinePayload @pgSubscription(topic: ${embed(
+            ()=>`postgraphile:sql_vehicles_online`
         )})
       }
     `,
@@ -147,7 +160,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
             // This method finds the Vehicle Logs from the database based on the event
             // published by PostgreSQL.
             // (Type Resolver)
-            async alerts(
+            async log(
                 event,
                 _args,
                 _context,
@@ -161,6 +174,28 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                     );
                 }
                 );
+                return rows[0];
+            },
+        },
+        SQLVehiclesOnlinePayload: {
+            // This method finds the Vehicle Logs from the database based on the event
+            // published by PostgreSQL.
+            // (Type Resolver)
+            async vehicle_online(
+                event,
+                _args,
+                _context,
+                { graphile: { selectGraphQLResultFromTable } }
+            ) {
+                const rows = await selectGraphQLResultFromTable(
+                    sql.fragment`vehicles.vehicles_online`,
+                    (tableAlias, sqlBuilder) => {
+                        sqlBuilder.where(
+                        sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                        );
+                    }
+                );
+
                 return rows[0];
             },
         },

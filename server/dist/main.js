@@ -671,12 +671,104 @@ query Topics{
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "All": () => (/* reexport safe */ _vehicles_all__WEBPACK_IMPORTED_MODULE_0__.default),
-/* harmony export */   "ById": () => (/* reexport safe */ _vehicle_by_id__WEBPACK_IMPORTED_MODULE_1__.default)
+/* harmony export */   "ById": () => (/* reexport safe */ _vehicle_by_id__WEBPACK_IMPORTED_MODULE_1__.default),
+/* harmony export */   "Online": () => (/* reexport safe */ _online__WEBPACK_IMPORTED_MODULE_2__.default),
+/* harmony export */   "Offline": () => (/* reexport safe */ _offline__WEBPACK_IMPORTED_MODULE_3__.default)
 /* harmony export */ });
 /* harmony import */ var _vehicles_all__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vehicles-all */ 47407);
 /* harmony import */ var _vehicle_by_id__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vehicle-by-id */ 22415);
+/* harmony import */ var _online__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./online */ 0);
+/* harmony import */ var _offline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./offline */ 762);
 
 
+
+
+
+
+
+/***/ }),
+
+/***/ 762:
+/*!****************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/vehicles/offline.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ offlineVehicles)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const offlineVehicles  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+query OfflineVehicles {
+    vehiclesOfflines{
+      nodes{
+        deviceId
+        id
+        vehicle_id: id
+        name
+        ip
+      }
+    }
+  }
+`
+
+
+
+/***/ }),
+
+/***/ 0:
+/*!***************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/vehicles/online.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ onlineVehicles)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const onlineVehicles  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+query OnlineVehicles {
+    vehiclesOnlines{
+      nodes{
+        id
+        vehicleId
+        vehicle{
+          vehicleStatuses(first:1,orderBy:ID_DESC) {
+            nodes{
+              alerts(first:1,orderBy:ID_DESC) {
+                nodes{
+                  alertType {
+                    name
+                  }
+                  message
+                  read
+                  dismissed
+                }
+              }
+              state {
+                description
+                name
+              }
+            }
+          }
+          id
+          vehicle_id: id
+          name
+          deviceId
+          ip
+        }
+      }
+    }
+  }
+`
 
 
 
@@ -850,12 +942,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "DEVICE_MESSAGE_SUBSCRIPTION": () => (/* reexport safe */ _device_message__WEBPACK_IMPORTED_MODULE_0__.default),
 /* harmony export */   "GEOGLOCATION": () => (/* reexport module object */ _geolocation__WEBPACK_IMPORTED_MODULE_1__),
 /* harmony export */   "ONLINE_VEHICLES": () => (/* reexport safe */ _vehicles_online__WEBPACK_IMPORTED_MODULE_3__.default),
-/* harmony export */   "NOTIFICATIONS": () => (/* reexport module object */ _notifications__WEBPACK_IMPORTED_MODULE_2__)
+/* harmony export */   "NOTIFICATIONS": () => (/* reexport module object */ _notifications__WEBPACK_IMPORTED_MODULE_2__),
+/* harmony export */   "VEHICLES": () => (/* reexport module object */ _vehicles__WEBPACK_IMPORTED_MODULE_4__)
 /* harmony export */ });
 /* harmony import */ var _device_message__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./device-message */ 11502);
 /* harmony import */ var _geolocation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./geolocation */ 30758);
 /* harmony import */ var _notifications__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./notifications */ 27423);
 /* harmony import */ var _vehicles_online__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vehicles-online */ 81000);
+/* harmony import */ var _vehicles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./vehicles */ 555);
 
 
 
@@ -974,6 +1068,93 @@ subscription {
     }
   }
 }
+`
+
+
+
+/***/ }),
+
+/***/ 555:
+/*!**********************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/subscriptions/vehicles/index.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ONLINE": () => (/* reexport safe */ _online__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _online__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./online */ 510);
+
+
+
+
+/***/ }),
+
+/***/ 510:
+/*!***********************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/subscriptions/vehicles/online.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ onlineDevices)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const onlineDevices  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+subscription sqlVehiclesOnline {
+    sqlVehiclesOnline {
+      event
+      row {
+        id
+      }
+      vehicle_online {
+        vehicle {
+          name
+          id
+          vehicle_id: id
+          ip
+          type{
+            type
+          }
+          vehicleStatuses(first:1,orderBy:ID_DESC) {
+            nodes{
+              alerts(first:1,orderBy:ID_DESC, condition:{dismissed:false, read:false}){
+                nodes{
+                    read
+                    dismissed
+                    message
+                    vehicleStatus{
+                        vehicleStatusDetails{
+                            nodes{
+                                description
+                                isActive
+                                isRecoverable
+                                id
+                            }
+                        }
+                    }
+                    alertType {
+                        name
+                    }
+                }
+              }
+              state {
+                description
+                code
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 `
 
 
@@ -1629,8 +1810,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const _c0 = function (a0, a1) { return { show: a0, hide: a1 }; };
 const _c1 = function () { return ["/"]; };
-const _c2 = function () { return { exact: true }; };
-const _c3 = function () { return ["/vehicles"]; };
+const _c2 = function () { return { exact: false }; };
 class NavigationComponent {
     constructor(socialAuthService, router) {
         this.socialAuthService = socialAuthService;
@@ -1651,7 +1831,7 @@ class NavigationComponent {
     }
 }
 NavigationComponent.ɵfac = function NavigationComponent_Factory(t) { return new (t || NavigationComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](angularx_social_login__WEBPACK_IMPORTED_MODULE_1__.SocialAuthService), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_2__.Router)); };
-NavigationComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: NavigationComponent, selectors: [["app-navigation"]], decls: 21, vars: 15, consts: [[1, "nav__side-nav", 3, "ngClass"], [1, "nav__side-nav--toggle-btn", 3, "ngClass", "click"], ["matSuffix", "", "aria-label", "toggle mobile menu view"], [3, "click"], ["routerLinkActive", "active", 1, "nav__side-nav--link", 3, "routerLink", "routerLinkActiveOptions"], [1, "example-tab-icon", "nav__side-nav--link-icon"], [1, "nav__side-nav--link-label"], ["routerLinkActive", "active", 1, "nav__side-nav--link", 3, "routerLink"], [1, "nav__side-nav--profile"]], template: function NavigationComponent_Template(rf, ctx) { if (rf & 1) {
+NavigationComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: NavigationComponent, selectors: [["app-navigation"]], decls: 15, vars: 13, consts: [[1, "nav__side-nav", 3, "ngClass"], [1, "nav__side-nav--toggle-btn", 3, "ngClass", "click"], ["matSuffix", "", "aria-label", "toggle mobile menu view"], [3, "click"], ["routerLinkActive", "active", 1, "nav__side-nav--link", 3, "routerLink", "routerLinkActiveOptions"], [1, "example-tab-icon", "nav__side-nav--link-icon"], [1, "nav__side-nav--link-label"], [1, "nav__side-nav--profile"]], template: function NavigationComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "nav", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "button", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function NavigationComponent_Template_button_click_1_listener() { return ctx.toggleSideNav(); });
@@ -1664,43 +1844,31 @@ NavigationComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "a", 4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "mat-list-item");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "mat-icon", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8, "bar_chart");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8, "agriculture");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "div", 6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10, "Dashboard");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "a", 7);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "mat-list-item");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "mat-icon", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](14, "agriculture");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "div", 6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Vehicles");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10, "Vehicles");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](17, "mat-list", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](18, "a", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function NavigationComponent_Template_a_click_18_listener() { return ctx.logOut(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](19, "mat-list-item");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](20, "LogOut");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "mat-list", 7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "a", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function NavigationComponent_Template_a_click_12_listener() { return ctx.logOut(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "mat-list-item");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](14, "LogOut");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction2"](6, _c0, ctx.showLeftNav === true, ctx.showLeftNav === false));
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction2"](5, _c0, ctx.showLeftNav === true, ctx.showLeftNav === false));
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction2"](9, _c0, ctx.showLeftNav === true, ctx.showLeftNav === false));
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction2"](8, _c0, ctx.showLeftNav === true, ctx.showLeftNav === false));
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](!ctx.showLeftNav ? "menu" : "menu_open");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](12, _c1))("routerLinkActiveOptions", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](13, _c2));
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](14, _c3));
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](11, _c1))("routerLinkActiveOptions", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](12, _c2));
     } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__.NgClass, _angular_material_icon__WEBPACK_IMPORTED_MODULE_4__.MatIcon, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_5__.MatSuffix, _angular_material_list__WEBPACK_IMPORTED_MODULE_6__.MatList, _angular_router__WEBPACK_IMPORTED_MODULE_2__.RouterLinkWithHref, _angular_router__WEBPACK_IMPORTED_MODULE_2__.RouterLinkActive, _angular_material_list__WEBPACK_IMPORTED_MODULE_6__.MatListItem], styles: [".nav__side-nav[_ngcontent-%COMP%] {\n  padding: 0 20px;\n  height: calc(100vh + 50px);\n  top: 0px;\n  border-right: 1px solid var(--lightgray);\n  overflow: hidden;\n  position: fixed;\n  left: -200px;\n  background-color: var(--white);\n  z-index: 2;\n  grid-column: 1;\n}\n.nav__side-nav.show[_ngcontent-%COMP%] {\n  left: 0px;\n  animation: show-left-navigation 500ms 1;\n}\n.nav__side-nav.hide[_ngcontent-%COMP%] {\n  left: -200px;\n  animation: hide-left-navigation 500ms 1;\n}\n.nav__side-nav[_ngcontent-%COMP%]   .nav__side-nav--profile[_ngcontent-%COMP%] {\n  position: fixed;\n  bottom: 20px;\n}\n.nav__side-nav[_ngcontent-%COMP%]   .nav__side-nav--profile[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n.nav__side-nav[_ngcontent-%COMP%]   .nav__side-nav--toggle-btn[_ngcontent-%COMP%] {\n  position: fixed;\n  top: 4px;\n  left: 10px;\n  z-index: 1;\n  background: var(--white);\n  border: none;\n  font-size: 2rem;\n  font-weight: lighter;\n  cursor: pointer;\n}\n.nav__side-nav[_ngcontent-%COMP%]   .nav__side-nav--toggle-btn.show[_ngcontent-%COMP%] {\n  left: 200px;\n  animation: move-right-main-hamburger 500ms 1;\n}\n.nav__side-nav[_ngcontent-%COMP%]   .nav__side-nav--toggle-btn.hide[_ngcontent-%COMP%] {\n  left: 10px;\n  animation: move-left-main-hamburger 500ms 1;\n}\n.nav__side-nav[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  display: block;\n  border-bottom: 1px solid var(--lightgray);\n}\n.nav__side-nav[_ngcontent-%COMP%]   a[_ngcontent-%COMP%]:last-of-type {\n  border: none;\n}\n.nav__side-nav[_ngcontent-%COMP%]   a.active[_ngcontent-%COMP%], .nav__side-nav[_ngcontent-%COMP%]   a[_ngcontent-%COMP%]:hover {\n  background-color: var(--blueriver);\n}\n.nav__side-nav[_ngcontent-%COMP%]   a.active[_ngcontent-%COMP%]   .mat-list-item[_ngcontent-%COMP%], .nav__side-nav[_ngcontent-%COMP%]   a[_ngcontent-%COMP%]:hover   .mat-list-item[_ngcontent-%COMP%] {\n  color: var(--white);\n}\n.nav__side-nav[_ngcontent-%COMP%]   a[_ngcontent-%COMP%]   .nav__side-nav--link-label[_ngcontent-%COMP%] {\n  width: 100%;\n}\n.nav__side-nav[_ngcontent-%COMP%]   a[_ngcontent-%COMP%]   .nav__side-nav--link-icon[_ngcontent-%COMP%] {\n  width: 50px;\n}\n@keyframes show-left-navigation {\n  0% {\n    left: -200px;\n  }\n  100% {\n    left: 0;\n  }\n}\n@keyframes hide-left-navigation {\n  0% {\n    left: 0;\n  }\n  100% {\n    left: -200;\n  }\n}\n@keyframes move-right-main-hamburger {\n  0% {\n    left: 10px;\n  }\n  100% {\n    left: 200px;\n  }\n}\n@keyframes move-left-main-hamburger {\n  0% {\n    left: 200px;\n  }\n  100% {\n    left: 10px;\n  }\n}\n@media screen and (min-width: 800px) {\n  .nav__side-nav[_ngcontent-%COMP%], .nav__side-nav.hide[_ngcontent-%COMP%], .nav__side-nav.show[_ngcontent-%COMP%] {\n    display: block;\n    position: sticky !important;\n    top: 50px;\n    animation: none;\n    background: transparent;\n    z-index: 0;\n    height: calc(100vh - 50px);\n  }\n  .nav__side-nav[_ngcontent-%COMP%]   .nav__side-nav--toggle-btn[_ngcontent-%COMP%], .nav__side-nav.hide[_ngcontent-%COMP%]   .nav__side-nav--toggle-btn[_ngcontent-%COMP%], .nav__side-nav.show[_ngcontent-%COMP%]   .nav__side-nav--toggle-btn[_ngcontent-%COMP%] {\n    display: none !important;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm5hdmlnYXRpb24uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxlQUFBO0VBQ0EsMEJBQUE7RUFDQSxRQUFBO0VBQ0Esd0NBQUE7RUFDQSxnQkFBQTtFQUNBLGVBQUE7RUFDQSxZQUFBO0VBQ0EsOEJBQUE7RUFDQSxVQUFBO0VBQ0EsY0FBQTtBQUNKO0FBQ0k7RUFDSSxTQUFBO0VBQ0EsdUNBQUE7QUFDUjtBQUNJO0VBQ0ksWUFBQTtFQUNBLHVDQUFBO0FBQ1I7QUFFSTtFQUNJLGVBQUE7RUFDQSxZQUFBO0FBQVI7QUFFUTtFQUNJLGVBQUE7QUFBWjtBQUtJO0VBQ0ksZUFBQTtFQUNBLFFBQUE7RUFDQSxVQUFBO0VBQ0EsVUFBQTtFQUNBLHdCQUFBO0VBQ0EsWUFBQTtFQUNBLGVBQUE7RUFDQSxvQkFBQTtFQUNBLGVBQUE7QUFIUjtBQUtRO0VBQ0ksV0FBQTtFQUNBLDRDQUFBO0FBSFo7QUFNUTtFQUNJLFVBQUE7RUFDQSwyQ0FBQTtBQUpaO0FBU0k7RUFDSSxjQUFBO0VBQ0EseUNBQUE7QUFQUjtBQVFRO0VBQ0ksWUFBQTtBQU5aO0FBUVE7RUFFSSxrQ0FBQTtBQVBaO0FBUVk7RUFDSSxtQkFBQTtBQU5oQjtBQVVRO0VBQ0ksV0FBQTtBQVJaO0FBVVE7RUFDSSxXQUFBO0FBUlo7QUFlSTtFQUNJO0lBQ0EsWUFBQTtFQWJOO0VBZU07SUFDQSxPQUFBO0VBYk47QUFDRjtBQWVJO0VBQ0k7SUFDQSxPQUFBO0VBYk47RUFlTTtJQUNBLFVBQUE7RUFiTjtBQUNGO0FBZ0JJO0VBQ0k7SUFDQSxVQUFBO0VBZE47RUFnQk07SUFDQSxXQUFBO0VBZE47QUFDRjtBQWdCSTtFQUNJO0lBQ0EsV0FBQTtFQWROO0VBZ0JNO0lBQ0EsVUFBQTtFQWROO0FBQ0Y7QUFtQkE7RUFFSTs7O0lBR0ksY0FBQTtJQUNBLDJCQUFBO0lBQ0EsU0FBQTtJQUNBLGVBQUE7SUFDQSx1QkFBQTtJQUNBLFVBQUE7SUFDQSwwQkFBQTtFQWpCTjtFQW9CTTs7O0lBQ0ksd0JBQUE7RUFoQlY7QUFDRiIsImZpbGUiOiJuYXZpZ2F0aW9uLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm5hdl9fc2lkZS1uYXZ7XG4gICAgcGFkZGluZzogMCAyMHB4O1xuICAgIGhlaWdodDogY2FsYygxMDB2aCArIDUwcHgpO1xuICAgIHRvcDogMHB4O1xuICAgIGJvcmRlci1yaWdodDogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgbGVmdDotMjAwcHg7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0td2hpdGUpO1xuICAgIHotaW5kZXg6IDI7XG4gICAgZ3JpZC1jb2x1bW46IDE7XG5cbiAgICAmLnNob3d7XG4gICAgICAgIGxlZnQ6MHB4O1xuICAgICAgICBhbmltYXRpb246IHNob3ctbGVmdC1uYXZpZ2F0aW9uIDUwMG1zIDE7XG4gICAgfVxuICAgICYuaGlkZXtcbiAgICAgICAgbGVmdDotMjAwcHg7XG4gICAgICAgIGFuaW1hdGlvbjogaGlkZS1sZWZ0LW5hdmlnYXRpb24gNTAwbXMgMTtcbiAgICB9XG5cbiAgICAubmF2X19zaWRlLW5hdi0tcHJvZmlsZXtcbiAgICAgICAgcG9zaXRpb246IGZpeGVkO1xuICAgICAgICBib3R0b206IDIwcHg7XG5cbiAgICAgICAgYSB7XG4gICAgICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIH1cblxuICAgIH1cblxuICAgIC5uYXZfX3NpZGUtbmF2LS10b2dnbGUtYnRue1xuICAgICAgICBwb3NpdGlvbjpmaXhlZDtcbiAgICAgICAgdG9wOjRweDtcbiAgICAgICAgbGVmdDoxMHB4O1xuICAgICAgICB6LWluZGV4OiAxO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS13aGl0ZSk7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgICAgZm9udC1zaXplOiAycmVtO1xuICAgICAgICBmb250LXdlaWdodDogbGlnaHRlcjtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuXG4gICAgICAgICYuc2hvd3tcbiAgICAgICAgICAgIGxlZnQ6MjAwcHg7XG4gICAgICAgICAgICBhbmltYXRpb246IG1vdmUtcmlnaHQtbWFpbi1oYW1idXJnZXIgNTAwbXMgMTtcblxuICAgICAgICB9XG4gICAgICAgICYuaGlkZXtcbiAgICAgICAgICAgIGxlZnQ6MTBweDtcbiAgICAgICAgICAgIGFuaW1hdGlvbjogbW92ZS1sZWZ0LW1haW4taGFtYnVyZ2VyIDUwMG1zIDE7XG4gICAgICAgIH1cblxuICAgIH1cblxuICAgIGEgeyBcbiAgICAgICAgZGlzcGxheTpibG9jaztcbiAgICAgICAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICAgICY6bGFzdC1vZi10eXBlIHtcbiAgICAgICAgICAgIGJvcmRlcjpub25lO1xuICAgICAgICB9XG4gICAgICAgICYuYWN0aXZlLFxuICAgICAgICAmOmhvdmVye1xuICAgICAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tYmx1ZXJpdmVyKTtcbiAgICAgICAgICAgIC5tYXQtbGlzdC1pdGVte1xuICAgICAgICAgICAgICAgIGNvbG9yOnZhcigtLXdoaXRlKTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuXG4gICAgICAgIC5uYXZfX3NpZGUtbmF2LS1saW5rLWxhYmVse1xuICAgICAgICAgICAgd2lkdGg6MTAwJTtcbiAgICAgICAgfVxuICAgICAgICAubmF2X19zaWRlLW5hdi0tbGluay1pY29ue1xuICAgICAgICAgICAgd2lkdGg6NTBweDtcbiAgICAgICAgfVxuXG4gICAgICAgIFxuICAgIH1cblxuICAgIFxuICAgIEBrZXlmcmFtZXMgc2hvdy1sZWZ0LW5hdmlnYXRpb24ge1xuICAgICAgICAwJXtcbiAgICAgICAgbGVmdDotMjAwcHg7XG4gICAgICAgIH1cbiAgICAgICAgMTAwJXtcbiAgICAgICAgbGVmdDowO1xuICAgICAgICB9XG4gICAgfVxuICAgIEBrZXlmcmFtZXMgaGlkZS1sZWZ0LW5hdmlnYXRpb24ge1xuICAgICAgICAwJXtcbiAgICAgICAgbGVmdDowO1xuICAgICAgICB9XG4gICAgICAgIDEwMCV7XG4gICAgICAgIGxlZnQ6LTIwMDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIEBrZXlmcmFtZXMgbW92ZS1yaWdodC1tYWluLWhhbWJ1cmdlciB7XG4gICAgICAgIDAle1xuICAgICAgICBsZWZ0OjEwcHg7XG4gICAgICAgIH1cbiAgICAgICAgMTAwJXtcbiAgICAgICAgbGVmdDoyMDBweDtcbiAgICAgICAgfVxuICAgIH1cbiAgICBAa2V5ZnJhbWVzIG1vdmUtbGVmdC1tYWluLWhhbWJ1cmdlciB7XG4gICAgICAgIDAle1xuICAgICAgICBsZWZ0OjIwMHB4O1xuICAgICAgICB9XG4gICAgICAgIDEwMCV7XG4gICAgICAgIGxlZnQ6MTBweDtcbiAgICAgICAgfVxuICAgIH1cbn1cblxuXG5AbWVkaWEgc2NyZWVuIGFuZCAobWluLXdpZHRoOjgwMHB4KSB7XG4gICAgXG4gICAgLm5hdl9fc2lkZS1uYXYsXG4gICAgLm5hdl9fc2lkZS1uYXYuaGlkZSxcbiAgICAubmF2X19zaWRlLW5hdi5zaG93e1xuICAgICAgICBkaXNwbGF5OmJsb2NrO1xuICAgICAgICBwb3NpdGlvbjpzdGlja3kgIWltcG9ydGFudDtcbiAgICAgICAgdG9wOjUwcHg7XG4gICAgICAgIGFuaW1hdGlvbjogbm9uZTtcbiAgICAgICAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7XG4gICAgICAgIHotaW5kZXg6MDtcbiAgICAgICAgaGVpZ2h0OiBjYWxjKDEwMHZoIC0gNTBweCk7XG5cblxuICAgICAgICAubmF2X19zaWRlLW5hdi0tdG9nZ2xlLWJ0bntcbiAgICAgICAgICAgIGRpc3BsYXk6IG5vbmUgIWltcG9ydGFudDtcbiAgICAgICAgfVxuICAgIH1cbn0iXX0= */"] });
 
 
@@ -3005,7 +3173,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/graphql/gql-query.service */ 91776);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 39895);
 /* harmony import */ var _angular_material_tabs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/tabs */ 65939);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 38583);
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/icon */ 76627);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 38583);
+
 
 
 
@@ -3015,109 +3185,128 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function VehicleListComponent_th_4_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "ID ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Alert ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
 function VehicleListComponent_td_5_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "mat-icon", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const col_r16 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", col_r16.id, " ");
-} }
-function VehicleListComponent_th_7_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Name ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function VehicleListComponent_td_8_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](2, "titlecase");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const col_r17 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r17.name), " ");
-} }
-function VehicleListComponent_th_10_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Type ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function VehicleListComponent_td_11_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](2, "titlecase");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const col_r18 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r18.type), " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"]("", col_r18.alerts.alertType.name, " ");
 } }
-function VehicleListComponent_tr_12_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "tr", 13);
-} }
-function VehicleListComponent_tr_13_Template(rf, ctx) { if (rf & 1) {
-    const _r21 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr", 14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function VehicleListComponent_tr_13_Template_tr_click_0_listener() { const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r21); const row_r19 = restoredCtx.$implicit; const ctx_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r20.onRowClick(row_r19); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function VehicleListComponent_th_17_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 11);
+function VehicleListComponent_th_7_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 14);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "ID ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
-function VehicleListComponent_td_18_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 12);
+function VehicleListComponent_td_8_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 15);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const col_r22 = ctx.$implicit;
+    const col_r19 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", col_r22.id, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", col_r19.vehicle_id, " ");
 } }
-function VehicleListComponent_th_20_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 11);
+function VehicleListComponent_th_10_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 14);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Name ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
-function VehicleListComponent_td_21_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 12);
+function VehicleListComponent_td_11_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 15);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](2, "titlecase");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const col_r23 = ctx.$implicit;
+    const col_r20 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r23.name), " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r20.name), " ");
+} }
+function VehicleListComponent_th_13_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "IP ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} }
+function VehicleListComponent_td_14_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](2, "titlecase");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const col_r21 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r21.ip), " ");
+} }
+function VehicleListComponent_tr_15_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "tr", 17);
+} }
+function VehicleListComponent_tr_16_Template(rf, ctx) { if (rf & 1) {
+    const _r24 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function VehicleListComponent_tr_16_Template_tr_click_0_listener() { const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r24); const row_r22 = restoredCtx.$implicit; const ctx_r23 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r23.onRowClick(row_r22); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const row_r22 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassMap"](row_r22.alerts.alertType.name);
+} }
+function VehicleListComponent_th_20_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "ID ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} }
+function VehicleListComponent_td_21_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const col_r25 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", col_r25.vehicle_id, " ");
 } }
 function VehicleListComponent_th_23_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Type ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "Name ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
 function VehicleListComponent_td_24_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 15);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](2, "titlecase");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const col_r24 = ctx.$implicit;
+    const col_r26 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r24.type), " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r26.name), " ");
 } }
-function VehicleListComponent_tr_25_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "tr", 13);
+function VehicleListComponent_th_26_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "th", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1, "IP ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
-function VehicleListComponent_tr_26_Template(rf, ctx) { if (rf & 1) {
-    const _r27 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr", 14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function VehicleListComponent_tr_26_Template_tr_click_0_listener() { const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r27); const row_r25 = restoredCtx.$implicit; const ctx_r26 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r26.onRowClick(row_r25); });
+function VehicleListComponent_td_27_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "td", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](2, "titlecase");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const col_r27 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](2, 1, col_r27.ip), " ");
+} }
+function VehicleListComponent_tr_28_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "tr", 17);
+} }
+function VehicleListComponent_tr_29_Template(rf, ctx) { if (rf & 1) {
+    const _r30 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function VehicleListComponent_tr_29_Template_tr_click_0_listener() { const restoredCtx = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r30); const row_r28 = restoredCtx.$implicit; const ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r29.onRowClick(row_r28); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
 class VehicleListComponent {
@@ -3126,88 +3315,128 @@ class VehicleListComponent {
         this.gqlQuery = gqlQuery;
         this.router = router;
         this.route = route;
-        this.vehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource([]);
+        this.trackedVehicles = {
+            online: [],
+            offline: []
+        };
+        this.offlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource([]);
         this.onlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource([]);
-        this.displayedColumns = ['id', 'name', 'type'];
+        this.displayedOnlineColumns = ['alert', 'id', 'name', 'ip'];
+        this.displayedOfflineColumns = ['id', 'name', 'ip'];
     }
     ngOnInit() {
-        this.onlineVehiclesSubscription = this.gqlSubscription
+        this.vehiclesOnlineSubscription = this.gqlQuery
             .getOnlineVehicles()
             .subscribe((response) => {
-            this.onlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(response);
+            console.log(response);
+            this.trackedVehicles.online = response;
+            this.onlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(this.trackedVehicles.online);
         });
-        this.vehiclesQuerySubscription = this.gqlQuery
-            .getAllVehicles()
+        this.vehiclesOfflineQuerySubscription = this.gqlQuery
+            .getOfflineVehicles()
             .subscribe((response) => {
-            this.vehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(response);
+            this.trackedVehicles.offline = response;
+            this.offlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(this.trackedVehicles.offline);
         });
+        this.liveOnlineVehicleSubscription = this.gqlSubscription
+            .getOnlineVehicles()
+            .subscribe(this.onlineVehicleSubscriptionHandler.bind(this));
     }
     ngAfterViewInit() {
     }
     ngOnDestroy() {
-        var _a, _b;
-        (_a = this.onlineVehiclesSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
-        (_b = this.vehiclesQuerySubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
+        var _a, _b, _c;
+        (_a = this.vehiclesOnlineSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        (_b = this.vehiclesOfflineQuerySubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
+        (_c = this.liveOnlineVehicleSubscription) === null || _c === void 0 ? void 0 : _c.unsubscribe();
     }
     onRowClick(row) {
-        console.log(row);
         this.router.navigate([row.id], { relativeTo: this.route });
+    }
+    onlineVehicleSubscriptionHandler(response) {
+        switch (response.event) {
+            case "INSERT":
+                this.trackedVehicles.online.push(response);
+                const offlineIndex = this.trackedVehicles.offline.findIndex((vehicle) => {
+                    return vehicle.vehicle_id === response.vehicle_id;
+                });
+                if (offlineIndex !== -1)
+                    this.trackedVehicles.offline.splice(offlineIndex, 1);
+                this.onlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(this.trackedVehicles.online);
+                this.offlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(this.trackedVehicles.offline);
+                break;
+            case "DELETE":
+                const onlineIndex = this.trackedVehicles.online.findIndex((vehicle) => {
+                    return vehicle.id === response.id;
+                });
+                if (onlineIndex !== -1) {
+                    const deletedVehicle = this.trackedVehicles.online.splice(onlineIndex, 1);
+                    this.trackedVehicles.offline.push(deletedVehicle[0]);
+                }
+                this.onlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(this.trackedVehicles.online);
+                this.offlineVehicles = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(this.trackedVehicles.offline);
+                break;
+        }
     }
 }
 VehicleListComponent.ɵfac = function VehicleListComponent_Factory(t) { return new (t || VehicleListComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__.Router), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__.ActivatedRoute)); };
-VehicleListComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: VehicleListComponent, selectors: [["app-vehicle-list"]], decls: 27, vars: 6, consts: [["mat-align-tabs", "center"], ["label", "Online"], ["mat-table", "", 3, "dataSource"], ["matColumnDef", "id"], ["mat-header-cell", "", "mat-sort-header", "", 4, "matHeaderCellDef"], ["mat-cell", "", 4, "matCellDef"], ["matColumnDef", "name"], ["matColumnDef", "type"], ["mat-header-row", "", 4, "matHeaderRowDef"], ["mat-row", "", 3, "click", 4, "matRowDef", "matRowDefColumns"], ["label", "All"], ["mat-header-cell", "", "mat-sort-header", ""], ["mat-cell", ""], ["mat-header-row", ""], ["mat-row", "", 3, "click"]], template: function VehicleListComponent_Template(rf, ctx) { if (rf & 1) {
+VehicleListComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: VehicleListComponent, selectors: [["app-vehicle-list"]], decls: 30, vars: 6, consts: [["mat-align-tabs", "center"], ["label", "Online"], ["mat-table", "", 1, "vehicles__online", 3, "dataSource"], ["matColumnDef", "alert"], ["mat-header-cell", "", "mat-sort-header", "", 4, "matHeaderCellDef"], ["mat-cell", "", 4, "matCellDef"], ["matColumnDef", "id"], ["matColumnDef", "name"], ["matColumnDef", "ip"], ["mat-header-row", "", 4, "matHeaderRowDef"], ["mat-row", "", 3, "class", "click", 4, "matRowDef", "matRowDefColumns"], ["label", "Offline"], ["mat-table", "", 1, "vehicles__offline", 3, "dataSource"], ["mat-row", "", 3, "click", 4, "matRowDef", "matRowDefColumns"], ["mat-header-cell", "", "mat-sort-header", ""], ["mat-cell", ""], ["inline", "", 1, "icon"], ["mat-header-row", ""], ["mat-row", "", 3, "click"]], template: function VehicleListComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "mat-tab-group", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "mat-tab", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "table", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](3, 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](4, VehicleListComponent_th_4_Template, 2, 0, "th", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](5, VehicleListComponent_td_5_Template, 2, 1, "td", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](5, VehicleListComponent_td_5_Template, 3, 1, "td", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](6, 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](7, VehicleListComponent_th_7_Template, 2, 0, "th", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, VehicleListComponent_td_8_Template, 3, 3, "td", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, VehicleListComponent_td_8_Template, 2, 1, "td", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](9, 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](10, VehicleListComponent_th_10_Template, 2, 0, "th", 4);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](11, VehicleListComponent_td_11_Template, 3, 3, "td", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](12, VehicleListComponent_tr_12_Template, 1, 0, "tr", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](13, VehicleListComponent_tr_13_Template, 1, 0, "tr", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](14, "mat-tab", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "table", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](16, 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](17, VehicleListComponent_th_17_Template, 2, 0, "th", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](18, VehicleListComponent_td_18_Template, 2, 1, "td", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](12, 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](13, VehicleListComponent_th_13_Template, 2, 0, "th", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](14, VehicleListComponent_td_14_Template, 3, 3, "td", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](15, VehicleListComponent_tr_15_Template, 1, 0, "tr", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](16, VehicleListComponent_tr_16_Template, 1, 2, "tr", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "mat-tab", 11);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "table", 12);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](19, 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](20, VehicleListComponent_th_20_Template, 2, 0, "th", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](21, VehicleListComponent_td_21_Template, 3, 3, "td", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](21, VehicleListComponent_td_21_Template, 2, 1, "td", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](22, 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](23, VehicleListComponent_th_23_Template, 2, 0, "th", 4);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](24, VehicleListComponent_td_24_Template, 3, 3, "td", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](25, VehicleListComponent_tr_25_Template, 1, 0, "tr", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, VehicleListComponent_tr_26_Template, 1, 0, "tr", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerStart"](25, 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, VehicleListComponent_th_26_Template, 2, 0, "th", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](27, VehicleListComponent_td_27_Template, 3, 3, "td", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementContainerEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](28, VehicleListComponent_tr_28_Template, 1, 0, "tr", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](29, VehicleListComponent_tr_29_Template, 1, 0, "tr", 13);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("dataSource", ctx.onlineVehicles);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matHeaderRowDef", ctx.displayedColumns);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matHeaderRowDef", ctx.displayedOnlineColumns);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matRowDefColumns", ctx.displayedColumns);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matRowDefColumns", ctx.displayedOnlineColumns);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("dataSource", ctx.vehicles);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("dataSource", ctx.offlineVehicles);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matHeaderRowDef", ctx.displayedColumns);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matHeaderRowDef", ctx.displayedOfflineColumns);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matRowDefColumns", ctx.displayedColumns);
-    } }, directives: [_angular_material_tabs__WEBPACK_IMPORTED_MODULE_5__.MatTabGroup, _angular_material_tabs__WEBPACK_IMPORTED_MODULE_5__.MatTab, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTable, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatColumnDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderCell, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatCell, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderRow, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatRow], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.TitleCasePipe], styles: [".mat-table[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\nth.mat-sort-header-sorted[_ngcontent-%COMP%] {\n  color: black;\n}\n\ntr.mat-row[_ngcontent-%COMP%], tr.mat-footer-row[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbGlzdC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUFDSjs7QUFFQTtFQUNJLFlBQUE7QUFDSjs7QUFDQTtFQUNJLGVBQUE7QUFFSiIsImZpbGUiOiJ2ZWhpY2xlLWxpc3QuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubWF0LXRhYmxlIHtcbiAgICB3aWR0aDogMTAwJTtcbn1cblxudGgubWF0LXNvcnQtaGVhZGVyLXNvcnRlZCB7XG4gICAgY29sb3I6IGJsYWNrO1xufVxudHIubWF0LXJvdywgdHIubWF0LWZvb3Rlci1yb3d7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufSJdfQ== */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("matRowDefColumns", ctx.displayedOfflineColumns);
+    } }, directives: [_angular_material_tabs__WEBPACK_IMPORTED_MODULE_5__.MatTabGroup, _angular_material_tabs__WEBPACK_IMPORTED_MODULE_5__.MatTab, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTable, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatColumnDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderCell, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatCell, _angular_material_icon__WEBPACK_IMPORTED_MODULE_6__.MatIcon, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatHeaderRow, _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatRow], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.TitleCasePipe], styles: [".mat-table[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\nth.mat-sort-header-sorted[_ngcontent-%COMP%] {\n  color: black;\n}\n\ntr.mat-row[_ngcontent-%COMP%], tr.mat-footer-row[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n\n.vehicles__online[_ngcontent-%COMP%]   .icon[_ngcontent-%COMP%] {\n  font-size: 1.5rem;\n  width: 24px;\n}\n\n.vehicles__online[_ngcontent-%COMP%]   .priority_high[_ngcontent-%COMP%] {\n  background-color: var(--critical);\n}\n\n.vehicles__online[_ngcontent-%COMP%]   .error[_ngcontent-%COMP%] {\n  background-color: var(--error);\n}\n\n.vehicles__online[_ngcontent-%COMP%]   .warning[_ngcontent-%COMP%] {\n  background-color: var(--warning);\n}\n\n.vehicles__online[_ngcontent-%COMP%]   .logging[_ngcontent-%COMP%], .vehicles__online[_ngcontent-%COMP%]   .information[_ngcontent-%COMP%] {\n  background-color: var(--success);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbGlzdC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUFDSjs7QUFFQTtFQUNJLFlBQUE7QUFDSjs7QUFDQTtFQUNJLGVBQUE7QUFFSjs7QUFHSTtFQUNJLGlCQUFBO0VBQ0EsV0FBQTtBQUFSOztBQUVJO0VBQ0ksaUNBQUE7QUFBUjs7QUFHSTtFQUNJLDhCQUFBO0FBRFI7O0FBSUk7RUFDSSxnQ0FBQTtBQUZSOztBQUtJOztFQUVJLGdDQUFBO0FBSFIiLCJmaWxlIjoidmVoaWNsZS1saXN0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1hdC10YWJsZSB7XG4gICAgd2lkdGg6IDEwMCU7XG59XG5cbnRoLm1hdC1zb3J0LWhlYWRlci1zb3J0ZWQge1xuICAgIGNvbG9yOiBibGFjaztcbn1cbnRyLm1hdC1yb3csIHRyLm1hdC1mb290ZXItcm93e1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLnZlaGljbGVzX19vbmxpbmUge1xuXG4gICAgLmljb24ge1xuICAgICAgICBmb250LXNpemU6IDEuNXJlbTtcbiAgICAgICAgd2lkdGg6MjRweDtcbiAgICB9XG4gICAgLnByaW9yaXR5X2hpZ2gge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1jcml0aWNhbCk7XG4gICAgfVxuXG4gICAgLmVycm9yIHtcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tZXJyb3IpO1xuICAgIH1cblxuICAgIC53YXJuaW5nIHtcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0td2FybmluZyk7XG4gICAgfVxuXG4gICAgLmxvZ2dpbmcsXG4gICAgLmluZm9ybWF0aW9uIHtcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tc3VjY2Vzcyk7XG4gICAgfVxufSJdfQ== */"] });
 
 
 /***/ }),
@@ -3874,19 +4103,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppRoutes": () => (/* binding */ AppRoutes)
 /* harmony export */ });
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/router */ 39895);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/router */ 39895);
 /* harmony import */ var _pages_login_login_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pages/login/login.component */ 24902);
-/* harmony import */ var _pages_dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/dashboard/dashboard.component */ 24789);
-/* harmony import */ var _pages_profile_profile_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/profile/profile.component */ 58220);
-/* harmony import */ var _components_layout_layout_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/layout/layout.component */ 39520);
-/* harmony import */ var _pages_vehicles_vehicles_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/vehicles/vehicles.component */ 2815);
-/* harmony import */ var _services_auth_auth_guard_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/auth/auth-guard.service */ 49404);
-/* harmony import */ var src_app_pages_vehicles_pages_vehicle_topic_vehicle_topic_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/pages/vehicles/pages/vehicle-topic/vehicle-topic.component */ 94266);
-/* harmony import */ var _pages_vehicles_pages_vehicle_live_vehicle_live_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle-live/vehicle-live.component */ 61095);
-/* harmony import */ var _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle-list/vehicle-list.component */ 78211);
-/* harmony import */ var _pages_vehicles_pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle/vehicle.component */ 92327);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37716);
-
+/* harmony import */ var _pages_profile_profile_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/profile/profile.component */ 58220);
+/* harmony import */ var _components_layout_layout_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/layout/layout.component */ 39520);
+/* harmony import */ var _pages_vehicles_vehicles_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/vehicles/vehicles.component */ 2815);
+/* harmony import */ var _services_auth_auth_guard_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/auth/auth-guard.service */ 49404);
+/* harmony import */ var src_app_pages_vehicles_pages_vehicle_topic_vehicle_topic_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/pages/vehicles/pages/vehicle-topic/vehicle-topic.component */ 94266);
+/* harmony import */ var _pages_vehicles_pages_vehicle_live_vehicle_live_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle-live/vehicle-live.component */ 61095);
+/* harmony import */ var _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle-list/vehicle-list.component */ 78211);
+/* harmony import */ var _pages_vehicles_pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle/vehicle.component */ 92327);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 37716);
 
 
 
@@ -3902,42 +4129,63 @@ __webpack_require__.r(__webpack_exports__);
 const routes = [
     {
         path: "",
-        component: _components_layout_layout_component__WEBPACK_IMPORTED_MODULE_3__.LayoutComponent,
-        canActivate: [_services_auth_auth_guard_service__WEBPACK_IMPORTED_MODULE_5__.AuthGuardService],
+        component: _components_layout_layout_component__WEBPACK_IMPORTED_MODULE_2__.LayoutComponent,
+        canActivate: [_services_auth_auth_guard_service__WEBPACK_IMPORTED_MODULE_4__.AuthGuardService],
         runGuardsAndResolvers: 'always',
         children: [
             {
+                // Main / Home Page
                 path: "",
-                component: _pages_dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_1__.DashboardComponent
-            },
-            {
-                path: "profile",
-                component: _pages_profile_profile_component__WEBPACK_IMPORTED_MODULE_2__.ProfileComponent
-            },
-            {
-                path: "vehicles",
-                component: _pages_vehicles_vehicles_component__WEBPACK_IMPORTED_MODULE_4__.VehiclesComponent,
+                component: _pages_vehicles_vehicles_component__WEBPACK_IMPORTED_MODULE_3__.VehiclesComponent,
                 children: [
                     {
+                        // Vehicle List is degailt page on Main / Home Page
                         path: "",
-                        component: _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_8__.VehicleListComponent
+                        component: _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_7__.VehicleListComponent
                     },
                     {
                         path: ":id",
-                        component: _pages_vehicles_pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_9__.VehicleComponent,
+                        component: _pages_vehicles_pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_8__.VehicleComponent,
                         children: [
                             {
                                 path: "",
-                                component: _pages_vehicles_pages_vehicle_live_vehicle_live_component__WEBPACK_IMPORTED_MODULE_7__.VehicleLiveComponent
+                                component: _pages_vehicles_pages_vehicle_live_vehicle_live_component__WEBPACK_IMPORTED_MODULE_6__.VehicleLiveComponent
                             },
                             {
                                 path: "**",
-                                component: src_app_pages_vehicles_pages_vehicle_topic_vehicle_topic_component__WEBPACK_IMPORTED_MODULE_6__.VehicleTopicComponent
+                                component: src_app_pages_vehicles_pages_vehicle_topic_vehicle_topic_component__WEBPACK_IMPORTED_MODULE_5__.VehicleTopicComponent
                             }
                         ]
                     }
                 ]
             },
+            {
+                path: "profile",
+                component: _pages_profile_profile_component__WEBPACK_IMPORTED_MODULE_1__.ProfileComponent
+            },
+            // {
+            //     path: "vehicles",
+            //     component: VehiclesComponent,
+            //     children: [
+            //         {
+            //             path: "",
+            //             component: VehicleListComponent
+            //         },
+            //         {
+            //             path: ":id",
+            //             component: VehicleComponent,
+            //             children:[
+            //                 {
+            //                     path:"",
+            //                     component:VehicleLiveComponent
+            //                 },
+            //                 {
+            //                     path: "**"
+            //                     , component: VehicleTopicComponent
+            //                 }]
+            //         }
+            //     ]
+            // },
         ]
     },
     {
@@ -3948,9 +4196,9 @@ const routes = [
 class AppRoutes {
 }
 AppRoutes.ɵfac = function AppRoutes_Factory(t) { return new (t || AppRoutes)(); };
-AppRoutes.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_10__["ɵɵdefineNgModule"]({ type: AppRoutes });
-AppRoutes.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_10__["ɵɵdefineInjector"]({ imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_11__.RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })], _angular_router__WEBPACK_IMPORTED_MODULE_11__.RouterModule] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_10__["ɵɵsetNgModuleScope"](AppRoutes, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_11__.RouterModule], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_11__.RouterModule] }); })();
+AppRoutes.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdefineNgModule"]({ type: AppRoutes });
+AppRoutes.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdefineInjector"]({ imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_10__.RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })], _angular_router__WEBPACK_IMPORTED_MODULE_10__.RouterModule] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵsetNgModuleScope"](AppRoutes, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_10__.RouterModule], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_10__.RouterModule] }); })();
 
 
 /***/ }),
@@ -4245,6 +4493,26 @@ class GqlQueryService {
             });
         }));
     }
+    getOnlineVehicles() {
+        return this.basicFilteredQuery(QueryQL.Vehicles.Online)
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
+            return response.data.vehiclesOnlines.nodes.map((vehicle) => {
+                const result = Object.assign({}, vehicle.vehicle);
+                result.id = vehicle.id;
+                result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0];
+                result.state = result.vehicleStatuses.nodes[0].state;
+                return result;
+            });
+        }));
+    }
+    getOfflineVehicles() {
+        return this.basicFilteredQuery(QueryQL.Vehicles.Offline)
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
+            return response.data.vehiclesOfflines.nodes.map((vehicle) => {
+                return Object.assign({}, vehicle);
+            });
+        }));
+    }
     getVehicleById(variables) {
         return this.basicFilteredQuery(QueryQL.Vehicles.ById, variables);
     }
@@ -4324,16 +4592,23 @@ class GqlSubscriptionService {
     }
     getOnlineVehicles() {
         return this.graphService.subscribe({
-            query: SubscriptionQL.ONLINE_VEHICLES
+            query: SubscriptionQL.VEHICLES.ONLINE
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
-            if (!response
-                || !response.data
-                || !response.data.listen.query.vehicles.nodes.length
-                || !response.data.listen.query.vehicles.nodes[0].vehiclesOnline)
-                return [];
-            return response.data.listen.query.vehicles.nodes.map((obj) => {
-                return { id: obj.vehiclesOnline.vehicleId, name: obj.vehiclesOnline.vehicle.name, type: obj.vehiclesOnline.vehicle.type.type };
-            });
+            const vehicle = response.data.sqlVehiclesOnline.vehicle_online ?
+                response.data.sqlVehiclesOnline.vehicle_online.vehicle : null;
+            const result = {
+                event: response.data.sqlVehiclesOnline.event,
+                id: response.data.sqlVehiclesOnline.row.id
+            };
+            if (vehicle) {
+                result.name = vehicle.name;
+                result.ip = vehicle.ip;
+                result.vehicle_id = vehicle.vehicle_id;
+                result.type = vehicle.type.type;
+                result.alerts = vehicle.vehicleStatuses.nodes[0].alerts.nodes[0];
+                result.state = vehicle.vehicleStatuses.nodes[0].state;
+            }
+            return result;
         }));
     }
     getAlerts() {
@@ -4496,12 +4771,6 @@ class AlertService {
         this.gqlSubscriptionService = gqlSubscriptionService;
         this.currentAlerts = [];
         this.alerts = new rxjs__WEBPACK_IMPORTED_MODULE_2__.Subject();
-        this.gqlQueryService
-            .getAlerts()
-            .subscribe(response => {
-            this.currentAlerts = response.data.alerts.nodes;
-            // this.alerts.next(this.currentAlerts)
-        });
         this.gqlSubscriptionService
             .getAlerts()
             .subscribe(response => {
@@ -4523,6 +4792,14 @@ class AlertService {
                     this.alerts.next(response);
                     break;
             }
+        });
+    }
+    getAlerts() {
+        this.gqlQueryService
+            .getAlerts()
+            .subscribe(response => {
+            this.currentAlerts = response.data.alerts.nodes;
+            // this.alerts.next(this.currentAlerts)
         });
     }
 }

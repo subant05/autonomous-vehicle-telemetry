@@ -8,7 +8,7 @@ class Postgres extends EventEmitter {
     constructor(){
         super()
         ScheduledTasks.removeOfflineVehicles()
-        ScheduledTasks.publishOnlineVehicles()
+        // ScheduledTasks.publishOnlineVehicles()
     }       
 
     create({query="",data=null,options={},callback=a=>a,event}){

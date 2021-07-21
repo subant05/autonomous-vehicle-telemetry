@@ -14,12 +14,6 @@ export class AlertService {
     private gqlQueryService: GqlQueryService,
     private gqlSubscriptionService: GqlSubscriptionService
     ) {
-      this.gqlQueryService
-        .getAlerts()
-        .subscribe(response=>{
-        this.currentAlerts = response.data.alerts.nodes
-        // this.alerts.next(this.currentAlerts)
-      })
       this.gqlSubscriptionService
         .getAlerts()
         .subscribe(response=>{
@@ -43,6 +37,15 @@ export class AlertService {
               break;
           }
         })
+  }
+
+  getAlerts(){
+      this.gqlQueryService
+        .getAlerts()
+        .subscribe(response=>{
+        this.currentAlerts = response.data.alerts.nodes
+        // this.alerts.next(this.currentAlerts)
+      })
   }
 
 }
