@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS notifications.alert_types(
     id BIGSERIAL,
     name VARCHAR(50) NOT NULL,
+    severity INT NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -15,6 +16,13 @@ COMMENT ON COLUMN notifications.alert_types.id IS '@omit create,update
 Id for the alert type assigned by database';
 COMMENT ON COLUMN notifications.alert_types.name IS 'The label for the alert type';
 
+
+INSERT INTO notifications.alert_types (name, severity)
+VALUES('critical', 1),
+('error', 2),
+('warning', 3),
+('information', 4),
+('logging', 5);
 
 CREATE TABLE IF NOT EXISTS notifications.alerts(
     id BIGSERIAL,

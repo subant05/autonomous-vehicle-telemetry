@@ -40,7 +40,7 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
             {
               label:"Live"
               , callback:()=>{
-                this.router.navigate(['vehicles',this.vehicleId])
+                this.router.navigate([this.vehicleId])
               }
             },
             ...data.topics.nodes.map((vehicleTopic:any)=>{
@@ -65,10 +65,10 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
 
   loadTopic(topic:any){
     // @ts-ignore
-    this.router.navigateByUrl(`/vehicles/${this.vehicleId}`, {skipLocationChange: false})
+    this.router.navigateByUrl(`/${this.vehicleId}`, {skipLocationChange: false})
     .then(() => {
       this.router.navigate(
-          ["vehicles", this.vehicleId, ...topic.name.replace(/\//,"").split("/")])
+          [this.vehicleId, ...topic.name.replace(/\//,"").split("/")])
       })
   }
 

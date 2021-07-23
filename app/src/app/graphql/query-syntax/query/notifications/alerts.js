@@ -7,6 +7,7 @@ query Alerts{
         id
         alertType{
           name
+          severity
         }
         read
         dismissed

@@ -13,6 +13,7 @@ query OnlineVehicles {
                 nodes{
                   alertType {
                     name
+                    severity
                   }
                   message
                   read

@@ -62,6 +62,8 @@ import { VehicleComponent } from './pages/vehicles/pages/vehicle/vehicle.compone
 import { PreviewComponent } from './components/topics/images/preview/preview.component';
 import { RgbImageComponent } from './components/images/rgb-image/rgb-image.component';
 import { SegmentationImageComponent } from './components/images/segmentation-image/segmentation-image.component';
+import { VehiclesOnlineComponent } from './components/vehicles/vehicles-online/vehicles-online.component';
+import { VehiclesOfflineComponent } from './components/vehicles/vehicles-offline/vehicles-offline.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +86,8 @@ import { SegmentationImageComponent } from './components/images/segmentation-ima
     PreviewComponent,
     RgbImageComponent,
     SegmentationImageComponent,
+    VehiclesOnlineComponent,
+    VehiclesOfflineComponent,
   ],
   imports: [
     BrowserModule,
