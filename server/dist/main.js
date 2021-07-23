@@ -3273,6 +3273,7 @@ class VehiclesOnlineComponent {
         switch (response.event) {
             case "INSERT":
                 this.trackedVehicles.push(response);
+                this.trackedVehicles.sort((a, b) => a.alerts.alertType.severity - b.alerts.alertType.severity);
                 this.onlineVehicleList = new _angular_material_table__WEBPACK_IMPORTED_MODULE_3__.MatTableDataSource(this.trackedVehicles);
                 this.onUpdate.emit(response);
                 break;

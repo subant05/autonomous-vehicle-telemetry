@@ -60,6 +60,9 @@ export class VehiclesOnlineComponent implements OnInit, AfterViewInit, OnDestroy
     switch (response.event) {
       case "INSERT":
         this.trackedVehicles.push(response)
+        this.trackedVehicles.sort((a:any, b:any)=>
+          a.alerts.alertType.severity - b.alerts.alertType.severity
+        )
         this.onlineVehicleList = new MatTableDataSource(this.trackedVehicles)
         this.onUpdate.emit(response)
         break;
