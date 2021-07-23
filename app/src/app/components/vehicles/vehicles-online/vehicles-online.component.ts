@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { GqlSubscriptionService } from 'src/app/services/graphql/gql-subscription.service'
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service'
+import {TableUtil} from '../../Table/table-utils'
 
 
 @Component({
@@ -12,13 +13,12 @@ import { GqlQueryService } from 'src/app/services/graphql/gql-query.service'
   templateUrl: './vehicles-online.component.html',
   styleUrls: ['./vehicles-online.component.scss']
 })
-export class VehiclesOnlineComponent implements OnInit, AfterViewInit, OnDestroy {
+export class VehiclesOnlineComponent extends TableUtil implements OnInit, AfterViewInit, OnDestroy {
 
   // Private
   private trackedVehicles: any = []
 
   // Public
-  onlineVehicleList = new MatTableDataSource([]);
   onlineVehiclesQuery: Subscription | undefined
   onlineVehicleSubscription: Subscription | undefined
   columns: string[] = ['alert', 'id', 'name', 'ip'];
@@ -30,7 +30,9 @@ export class VehiclesOnlineComponent implements OnInit, AfterViewInit, OnDestroy
   constructor(
     private gqlSubscription: GqlSubscriptionService,
     private gqlQuery: GqlQueryService,
-  ) { }
+  ) { 
+    super()
+  }
 
   ngOnInit(): void {
     // Query Vehicles Currently Online
@@ -38,7 +40,7 @@ export class VehiclesOnlineComponent implements OnInit, AfterViewInit, OnDestroy
       .getOnlineVehicles()
       .subscribe((response: any) => {
         this.trackedVehicles = response
-        this.onlineVehicleList = new MatTableDataSource(this.trackedVehicles)
+        this.updateList(this.trackedVehicles)
       })
     // Subscribe to Live onUpdates to Online Vehicles
     this.onlineVehicleSubscription = this.gqlSubscription
@@ -63,8 +65,18 @@ export class VehiclesOnlineComponent implements OnInit, AfterViewInit, OnDestroy
         this.trackedVehicles.sort((a:any, b:any)=>
           a.alerts.alertType.severity - b.alerts.alertType.severity
         )
-        this.onlineVehicleList = new MatTableDataSource(this.trackedVehicles)
+        this.updateList(this.trackedVehicles)
         this.onUpdate.emit(response)
+        break;
+      
+      case "UPDATE":
+        const foundIndex = this.trackedVehicles.findIndex((vehicle:any)=>vehicle.vehicle_id === response.vehicle_id)
+        if(foundIndex !== -1 
+          && JSON.stringify(this.trackedVehicles[foundIndex]) !== JSON.stringify(response)){
+          this.trackedVehicles[foundIndex] = response
+          this.updateList(this.trackedVehicles)
+        }
+
         break;
 
       case "DELETE":
@@ -78,21 +90,8 @@ export class VehiclesOnlineComponent implements OnInit, AfterViewInit, OnDestroy
           this.onUpdate.emit({ ...deletedVehicle[0] })
         }
 
-        this.onlineVehicleList = new MatTableDataSource(this.trackedVehicles)
+        this.updateList(this.trackedVehicles)
         break;
-    }
-  }
-
-  rowClick(row:any){
-    this.onClick.emit(row.vehicle_id || row.id)
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.onlineVehicleList.filter = filterValue.trim().toLowerCase();
-
-    if (this.onlineVehicleList.paginator) {
-      this.onlineVehicleList.paginator.firstPage();
     }
   }
 
