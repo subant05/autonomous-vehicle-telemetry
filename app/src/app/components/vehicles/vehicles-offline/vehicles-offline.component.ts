@@ -69,7 +69,7 @@ export class VehiclesOfflineComponent implements OnInit, AfterViewInit, OnDestro
 
 
   rowClick(row:any){
-    this.onClick.emit(row.id)
+    this.onClick.emit(row.vehicle_id || row.id)
   }
 
   applyFilter(event: Event) {

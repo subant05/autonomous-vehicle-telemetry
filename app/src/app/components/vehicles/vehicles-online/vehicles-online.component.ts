@@ -81,7 +81,7 @@ export class VehiclesOnlineComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   rowClick(row:any){
-    this.onClick.emit(row.vehicle_id)
+    this.onClick.emit(row.vehicle_id || row.id)
   }
 
   applyFilter(event: Event) {

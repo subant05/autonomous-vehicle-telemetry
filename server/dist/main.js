@@ -3074,7 +3074,7 @@ class VehiclesOfflineComponent {
         (_a = this.offlineVehiclesQuery) === null || _a === void 0 ? void 0 : _a.unsubscribe();
     }
     rowClick(row) {
-        this.onClick.emit(row.id);
+        this.onClick.emit(row.vehicle_id || row.id);
     }
     applyFilter(event) {
         const filterValue = event.target.value;
@@ -3290,7 +3290,7 @@ class VehiclesOnlineComponent {
         }
     }
     rowClick(row) {
-        this.onClick.emit(row.vehicle_id);
+        this.onClick.emit(row.vehicle_id || row.id);
     }
     applyFilter(event) {
         const filterValue = event.target.value;
