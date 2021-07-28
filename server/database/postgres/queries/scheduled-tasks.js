@@ -8,7 +8,7 @@ export const removeOfflineVehicles = async ()=>{
     `,
         [
             moment()
-            .subtract(3, 'minutes')
+            .subtract(1, 'minutes')
             .utc()
             .format('YYYY-MM-DD HH:mm:ssZZ')
         ]

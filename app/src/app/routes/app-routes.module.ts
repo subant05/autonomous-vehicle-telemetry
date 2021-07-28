@@ -11,7 +11,12 @@ import { ErrorComponent } from "src/app/pages/error/error.component"
 import { VehicleTopicComponent } from "src/app/pages/vehicles/pages/vehicle-topic/vehicle-topic.component"
 import { VehicleLiveComponent } from "../pages/vehicles/pages/vehicle-live/vehicle-live.component"
 import { VehicleListComponent } from "../pages/vehicles/pages/vehicle-list/vehicle-list.component"
-import { VehicleComponent } from "../pages/vehicles/pages/vehicle/vehicle.component"
+import { VehicleComponent } from "../pages/vehicle/vehicle.component"
+import { VehicleOverviewComponent } from '../pages/vehicle/pages/vehicle-overview/vehicle-overview.component';
+import { VehicleGeolocationComponent } from '../pages/vehicle/pages/vehicle-geolocation/vehicle-geolocation.component';
+import { VehicleImagesComponent } from '../pages/vehicle/pages/vehicle-images/vehicle-images.component';
+import { VehicleLoggingComponent } from '../pages/vehicle/pages/vehicle-logging/vehicle-logging.component';
+import { VehicleSystemComponent } from '../pages/vehicle/pages/vehicle-system/vehicle-system.component';
 
 const routes: Routes = [
     {
@@ -29,14 +34,133 @@ const routes: Routes = [
                         // Vehicle List is degailt page on Main / Home Page
                         path: "",
                         component: VehicleListComponent
+                        , data: {
+                            title: 'Vehicle List',
+                            breadcrumb: [
+                              {
+                                label: 'Vehices',
+                                url: ''
+                              }
+                            ]
+                        },
                     },
                     {
-                        path: ":id",
-                        component: VehicleComponent,
-                        children:[
+                        path: ":id"
+                        , component: VehicleComponent
+                        , data: {
+                            title: 'Vehicle',
+                            breadcrumb: [
+                              {
+                                label: 'Vehicle',
+                                url: ':id'
+                              }
+                            ]
+                          }
+                        , children:[
                             {
                                 path:"",
-                                component:VehicleLiveComponent
+                                component:VehicleOverviewComponent
+                                , data: {
+                                    title: 'Overview',
+                                    breadcrumb: [
+                                    {
+                                        label: 'Vehices',
+                                        url: '../'
+                                    },
+                                    {
+                                        label: 'Vehicle',
+                                        url: '/:id'
+                                      },
+                                      {
+                                        label: 'Overview',
+                                        url: ''
+                                      }
+                                    ]
+                                  },
+                            },
+                            {
+                                path:"geolocation",
+                                component:VehicleGeolocationComponent
+                                , data: {
+                                    title: 'Geolocation',
+                                    breadcrumb: [
+                                    {
+                                        label: 'Vehices',
+                                        url: '../'
+                                    },
+                                    {
+                                        label: 'Vehicle',
+                                        url: '/:id'
+                                    },
+                                    {
+                                        label: ' Geolocation',
+                                        url: ''
+                                      }
+                                    ]
+                                  },
+                            },
+                            {
+                                path:"images",
+                                component:VehicleImagesComponent
+                                , data: {
+                                    title: 'Images',
+                                    breadcrumb: [
+                                    {
+                                        label: 'Vehices',
+                                        url: '../'
+                                    },
+                                    {
+                                        label: 'Vehicle',
+                                        url: '/:id'
+                                    },
+                                    {
+                                        label: 'Images',
+                                        url: ''
+                                      }
+                                    ]
+                                  },
+                            },
+                            {
+                                path:"logging",
+                                component:VehicleLoggingComponent
+                                , data: {
+                                    title: 'Logging',
+                                    breadcrumb: [
+                                    {
+                                        label: 'Vehices',
+                                        url: '../'
+                                    }, 
+                                    {
+                                        label: 'Vehicle',
+                                        url: '/:id'
+                                    },                                      
+                                    {
+                                        label: 'Logging',
+                                        url: ''
+                                    }
+                                    ]
+                                  },
+                            },
+                            {
+                                path:"system",
+                                component:VehicleSystemComponent
+                                , data: {
+                                    title: 'Configuration',
+                                    breadcrumb: [
+                                    {
+                                        label: 'Vehices',
+                                        url: '../'
+                                    }, 
+                                    {
+                                        label: 'Vehicle',
+                                        url: '/:id'
+                                    },                                       
+                                      {
+                                        label: 'Configuration',
+                                        url: ''
+                                      }
+                                    ]
+                                  },
                             },
                             {
                                 path: "**"

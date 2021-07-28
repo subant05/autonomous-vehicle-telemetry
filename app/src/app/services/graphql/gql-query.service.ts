@@ -92,6 +92,18 @@ export class GqlQueryService {
       }))
   }
 
+  getVehicleOnlineStatus(variables:any){
+      return this.basicFilteredQuery(QueryQL.Vehicles.OnlineOrOfflineById, variables)
+        .pipe(map(response=>{
+          const results = response.data
+          return { online: !results.online.nodes.length ?
+                         null : {...results.online.nodes[0]}
+                   , offline: !results.offline.nodes.length ?
+                        null : {...results.offline.nodes[0]}
+                  }
+        }))  
+  }
+
   getVehicleById(variables:any){
     return this.basicFilteredQuery(QueryQL.Vehicles.ById, variables)
   }
@@ -137,10 +149,18 @@ export class GqlQueryService {
       return {cameraData, totalCount, images }
     }))
   }
+
   getAlerts(){
     return this.graphService
       .watchQuery<any>({ query: QueryQL.Notifications.Alerts })
       .valueChanges
+  }
+
+  getVehiclePreviousLocation(variables:any = {}){
+    return this.basicFilteredQuery(QueryQL.Geolocation.PreviousLocation, variables)
+    .pipe(map((response:any)=>{
+      return response.data.starfires.nodes.length ? response.data.starfires.nodes[0].msg : null
+    }))
   }
   
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, DoCheck, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, DoCheck, OnChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/navigation/menu.service';
 import { IMenu, IMenuLinks } from 'src/app/interfaces/navigation/menu'
@@ -12,11 +12,20 @@ const QueryQL = require("src/app/graphql/query-syntax/query")
 @Component({
   selector: 'app-vehicles',
   templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.scss']
+  styleUrls: ['./vehicles.component.scss'],
+  encapsulation: ViewEncapsulation.None
+
 })
 export class VehiclesComponent implements OnInit, OnDestroy, DoCheck, OnChanges {
 
   rootPath: string = "";
+  breadcrumbConfig: any = {
+    bgColor: 'inherit',
+    fontSize: 'inherit',
+    fontColor: 'inherit',
+    lastLinkColor: 'inherit',
+    symbol: ' > ',
+  }
 
   constructor(
      private menuService: MenuService

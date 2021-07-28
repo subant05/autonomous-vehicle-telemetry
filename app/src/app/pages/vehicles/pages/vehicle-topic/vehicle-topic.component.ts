@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router'
-import {CurrentVehicleTopic } from '../vehicle/services/current-topic.service'
+import {CurrentVehicleTopic } from '../../../vehicle/services/current-topic.service'
 
 @Component({
   selector: 'app-vehicle-topic',

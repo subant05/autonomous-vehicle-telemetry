@@ -31,5 +31,24 @@
         width:100%;
     }
     
-
 }
+
+
+.breadcrumb {
+    [class*='custom-bread-crumb'] {
+        color: var(--blueriver);
+        padding: 10px 0px !important;
+        font-size: 1rem;
+        span {
+            li{
+                &:last-of-type{
+                    span{
+                        color: var(--black) !important;
+                    }
+                }
+            }
+        }
+
+    }
+}
+

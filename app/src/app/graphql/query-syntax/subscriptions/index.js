@@ -1,12 +1,12 @@
-import DEVICE_MESSAGE_SUBSCRIPTION from './device-message'
-import * as GEOGLOCATION from './geolocation'
-import * as NOTIFICATIONS from './notifications'
-import ONLINE_VEHICLES from './vehicles-online'
-import * as VEHICLES from './vehicles';
+import DeviceMessageSubscription from './device-message'
+import * as Geolocation from './geolocation'
+import * as Notifications from './Notifications'
+import OnlineVehicles from './vehicles-online'
+import * as Vehicles from './vehicles';
 export {
-    DEVICE_MESSAGE_SUBSCRIPTION
-    , GEOGLOCATION
-    , ONLINE_VEHICLES
-    , NOTIFICATIONS
-    , VEHICLES
+    DeviceMessageSubscription
+    , Geolocation
+    , OnlineVehicles
+    , Notifications
+    , Vehicles
 }

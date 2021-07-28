@@ -1,5 +1,5 @@
 <nav class="nav__top">
-    <a [routerLink]='["/"]' class="nav__logo" >
+    <a [routerLink]='["/"]' routerLinkActive="active"  class="nav__logo" >
         <img src="/assets/brt-icon-sm.png"/>
     </a>
 
@@ -8,12 +8,14 @@
         <h5 *ngIf="menu.header">{{menu.header}}</h5>
         <ul *ngIf="menu.links.length" >
             <li *ngFor="let menuItem of menu.links">
-                <span *ngIf="menuItem.callback">
-                    <a mat-flat-button (click)="menuItem.callback($event); toggleSideNav()" tooltip="menuItem.tooltip"> {{menuItem.label}} </a>
-                </span>
-                <span *ngIf="menuItem.url">
-                    <a mat-flat-button [routerLink]="[menuItem.url]" (click)="toggleSideNav()" tooltip="menuItem.tooltip"> {{menuItem.label}} </a>
-                </span>
+                <a *ngIf="menuItem.callback" mat-flat-button (click)="menuItem.callback($event); toggleSideNav()" tooltip="menuItem.tooltip"> {{menuItem.label}} </a>
+                <a *ngIf="menuItem.url" 
+                    mat-flat-button 
+                    [routerLink]="[menuItem.url]" 
+                    routerLinkActive="active"  
+                    class="nav__side-nav--link" 
+                    [routerLinkActiveOptions]="{exact:true}"  
+                    tooltip="menuItem.tooltip"> {{menuItem.label}} </a>
             </li>
         </ul>
     </div>

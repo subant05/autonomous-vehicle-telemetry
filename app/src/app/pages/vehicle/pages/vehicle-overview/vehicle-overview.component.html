@@ -1,0 +1,33 @@
+<div class="header">
+    <div class="header__title">
+        <h2>
+            Overview
+        </h2>
+        <button
+             *ngIf="isVehicleOnline"
+            class="live-pulse"
+            mat-mini-fab color="warn" 
+            aria-label="Section is live">
+        </button>
+    </div>
+</div>
+<div class="grid gap">
+    <div class="grid__cell">
+        <div class="grid__cell--label">Geolocation</div>
+        <span *ngIf="vehiclesLastCoordinates.length">
+            <app-starfire  *ngIf="isVehicleOnline"
+                playback="live" 
+                [showTractor]=true 
+                [zoom]=20
+                [vehicleId]="vehicleId"
+                ></app-starfire>
+            <app-starfire  *ngIf="!isVehicleOnline"
+                playback="static" 
+                [showTractor]=true 
+                [zoom]=20
+                [vehicleId]="vehicleId"
+                [coordinates]="vehiclesLastCoordinates"
+                ></app-starfire>
+        </span>
+    </div>
+</div>

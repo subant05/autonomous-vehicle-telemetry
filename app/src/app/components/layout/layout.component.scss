@@ -22,3 +22,18 @@
         width: 100%;
     }
 }
+
+@media screen and (min-width:1100px) {
+    .container__content{
+        &.right_nav{
+            display: grid;
+            grid-template-columns: 200px auto 250px;
+            grid-template-areas: "side-nav main-content";
+            grid-auto-flow:dense;
+            grid-gap: 0px;
+            top: 50px;
+            position: absolute;
+            width: 100%;
+        }
+    }
+}

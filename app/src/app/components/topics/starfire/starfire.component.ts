@@ -48,7 +48,7 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
     const config = {
       container:this.mapNodeId
       , showTractor:this.showTractor
-      , coordinates:[]
+      , coordinates: this.coordinates || []
       , zoom:this.zoom
     }
 
@@ -84,6 +84,7 @@ export class StarfireComponent implements OnInit, OnDestroy,AfterViewInit {
           console.log(error);
         }
       )
+      
     })
   }
 

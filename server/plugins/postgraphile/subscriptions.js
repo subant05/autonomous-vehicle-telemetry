@@ -37,7 +37,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
 
       type SQLVehiclesOnlinePayload {
         # (Subscription PAYLOAD Type )vehicle online data returned on this subscription type resolver below
-        vehicle_online: VehiclesOnline
+        vehicle_online(vehicleId:BigInt): VehiclesOnline
         row: VehiclesOnline
         event: String
       }
@@ -183,7 +183,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
             // (Type Resolver)
             async vehicle_online(
                 event,
-                _args,
+                {vehicleId},
                 _context,
                 { graphile: { selectGraphQLResultFromTable } }
             ) {
@@ -191,8 +191,12 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                     sql.fragment`vehicles.vehicles_online`,
                     (tableAlias, sqlBuilder) => {
                         sqlBuilder.where(
-                        sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                            sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
                         );
+                        if(vehicleId)
+                            sqlBuilder.where(
+                                sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`
+                            );
                     }
                 );
 

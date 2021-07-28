@@ -20,10 +20,26 @@ The ID of topic type assigned by the database';
 COMMENT ON COLUMN topics.topic_types.module IS 'The module of topic type';
 COMMENT ON COLUMN topics.topic_types.class IS 'The class of topic type';
 
+CREATE TABLE IF NOT EXISTS topics.topic_category (
+    id BIGSERIAL,
+    name VARCHAR(50) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE INDEX idx_topic_category_id ON topics.topic_category (id);
+CREATE INDEX idx_topic_category_name ON topics.topic_category (name);
+
+COMMENT ON TABLE topics.topic_category IS 'Table consists of the categories each topic belongs to.';
+COMMENT ON COLUMN topics.topic_category.id IS '@omit create,update
+Autoincremented id of the category';
+COMMENT ON COLUMN topics.topic_category.name IS '@omit create,update
+The name of the category';
+
 
 CREATE TABLE IF NOT EXISTS  topics.topics (
     id BIGSERIAL,
     name text UNIQUE NOT NULL,
+    topic_category_id BIGINT NOT NULL,
     description text NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), 
@@ -31,7 +47,10 @@ CREATE TABLE IF NOT EXISTS  topics.topics (
     PRIMARY KEY(id),
     CONSTRAINT fk_topics_type
         FOREIGN KEY(type_id)
-        REFERENCES topics.topic_types(id)
+        REFERENCES topics.topic_types(id),
+    CONSTRAINT fk_topics_category
+        FOREIGN KEY (topic_category_id)
+        REFERENCES topics.topic_category(id)
 );
 
 COMMENT ON TABLE topics.topics IS '@omit delete

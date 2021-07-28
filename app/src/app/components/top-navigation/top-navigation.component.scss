@@ -48,6 +48,10 @@
                 right:10px;
                 animation: move-left-hamburger 500ms 1;
             }
+
+            @media screen and (min-width:1100px){
+                display: none;
+            }
         }
 
         .nav__top-menu {
@@ -79,7 +83,7 @@
 
                 li{
                     align-self: flex-start;
-                    border-bottom: 1px solid var(--lightgray);
+                    // border-bottom: 1px solid var(--lightgray);
                     width:100%;
 
                     &:last-of-type {
@@ -87,7 +91,26 @@
                     }
 
                     a{
+                        width: 100%;
                         white-space: pre-wrap;
+                        font-size: 1rem;
+                        text-align: left;
+
+                        &.active {
+                            background-color: var(--blueriver);
+                            color: var(--white);
+
+                            &::before{
+                                content: " ";
+                                width: 15px;
+                                margin-right: 10px;
+                                height: 36px;
+                                display: inline-block;
+                                background-color: var(--blueriver);
+                                position: relative;
+                                margin-left: -26px;
+                            }
+                        }
                     }
                 }
             }
@@ -99,6 +122,20 @@
             &.hide{
                 right:-250px;
                 animation: hide-right-navigation 500ms 1;
+            }
+
+            @media screen and (min-width:1100px){
+                    width:250px;
+                    top:50px;
+                    right:0px;
+                    background-color: transparent;
+                
+                    &.show,
+                    &.hide{
+                        right:0px;
+                        animation: none;
+                    }
+            
             }
         }
 
@@ -177,3 +214,6 @@
             // }
         }
     }
+
+
+

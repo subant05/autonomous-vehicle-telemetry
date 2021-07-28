@@ -13,20 +13,20 @@ export class GqlSubscriptionService {
 
   getDeviceStream(){
     return this.graphService.subscribe({
-      query: SubscriptionQL.DEVICE_MESSAGE_SUBSCRIPTION
+      query: SubscriptionQL.DeviceMessageSubscription
     })
   }
 
   getGeolocationStream(variables={}){
     return this.graphService.subscribe({
-      query: SubscriptionQL.GEOGLOCATION.Vehicles
+      query: SubscriptionQL.Geolocation.Vehicles
       , variables
     })
   }
 
   getOnlineVehicles(){
     return this.graphService.subscribe({
-      query: SubscriptionQL.VEHICLES.ONLINE
+      query: SubscriptionQL.Vehicles.Online
     }).pipe(map((response:any)=>{
       const vehicle =  response.data.sqlVehiclesOnline.vehicle_online ? 
         response.data.sqlVehiclesOnline.vehicle_online.vehicle : null
@@ -49,9 +49,32 @@ export class GqlSubscriptionService {
     }))
   }
 
+  getVehicleOnlineStatus(variables={}){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.Vehicles.OnlineOrOfflineById
+      , variables
+    }).pipe(map((response:any)=>{
+      const result = response.data.sqlVehiclesOnline
+      switch(result.event){
+        case "INSERT":
+        case "UPDATE":
+          return {
+            online:true
+            , rowId: result.row.id
+            , vehicleId: result.vehicle_online.vehicleid
+            , name : result.vehicle_online.vehicle.name
+          }
+          break;
+        default:
+          return {online:false}
+          break;
+      }
+    }))
+  }
+
   getAlerts(){
     return this.graphService.subscribe({
-      query: SubscriptionQL.NOTIFICATIONS.Alerts
+      query: SubscriptionQL.Notifications.Alerts
     }).pipe(map((response:any)=>{
         const alert = response.data.sqlAlerts.alerts
         const event = response.data.sqlAlerts.event

@@ -35,13 +35,32 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
   
       if (!loading)
         this.menuService.menu.next({
-          header: "Device Topics",
+          header: `Vehicle: ${this.vehicleId }`,
           links: [
             {
-              label:"Live"
-              , callback:()=>{
-                this.router.navigate([this.vehicleId])
-              }
+              label:"Overview"
+              , url:`/${this.vehicleId}`
+              , tooltip:`Vehicle: ${this.vehicleId} Overview Page`
+            },
+            {
+              label:"Geolocation"
+              , url:`/${this.vehicleId}/geolocation`
+              , tooltip:`Vehicle: ${this.vehicleId} Geolocation Page`
+            },
+            {
+              label:"Images"
+              , url:`/${this.vehicleId}/images`
+              , tooltip:`Vehicle: ${this.vehicleId} Images Page`
+            },
+            {
+              label:"Logging"
+              , url:`/${this.vehicleId}/logging`
+              , tooltip:`Vehicle: ${this.vehicleId} Logging Page`
+            },
+            {
+              label:"System"
+              , url:`/${this.vehicleId}/system`
+              , tooltip:`Vehicle: ${this.vehicleId} System Page`
             },
             ...data.topics.nodes.map((vehicleTopic:any)=>{
                 if(!vehicleTopic.vehicleTopics.nodes.length)

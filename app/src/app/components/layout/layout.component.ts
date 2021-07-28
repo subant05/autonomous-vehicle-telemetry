@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { faBars} from '@fortawesome/free-solid-svg-icons';
 import { AlertService } from 'src/app/services/notifications/alert.service'
+import {MenuService} from "../../services/navigation/menu.service"
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+
 import { Subscription } from 'rxjs';
 
 
@@ -23,11 +25,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private alertService: AlertService
+    , private menuService: MenuService
     , private _snackBar: MatSnackBar
   ) { 
   }
 
   ngOnInit(): void {
+    this.menuService.menu.subscribe((data)=>{
+      this.showRightNav = data ? true : false;
+    })
     this.alertSubscription = this.alertService.alerts.subscribe(data=>{
       this._snackBar.open(data.alertMessage , 'Dismiss', {
          duration: 1000,

@@ -3,6 +3,7 @@
         <h1>
             Vehicles  
         </h1>
+
     </div>
       <ng-template #topic>
           <div class="header__topic">
@@ -10,6 +11,15 @@
           </div>
       </ng-template>
 </div>
+<app-ng-dynamic-breadcrumb
+[bgColor]="breadcrumbConfig['bgColor']"
+[fontSize]="breadcrumbConfig['fontSize']"
+[fontColor]="breadcrumbConfig['fontColor']"
+[lastLinkColor]="breadcrumbConfig['lastLinkColor']"
+[symbol]="breadcrumbConfig['symbol']"
+[ngClass]="{'breadcrumb':true}"
+>
+</app-ng-dynamic-breadcrumb>
 <hr/>
 <router-outlet></router-outlet>
 

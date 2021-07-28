@@ -1,7 +1,7 @@
 const {client, pool} = require("../../connection.js")
 
 
-export const sqlInsertTopicType = async (type)=>{
+export const sqlInsertTopicType = async (type, category)=>{
     try{
         const topicTypes =  await client.query(`            
             INSERT INTO topics.topic_types( module, class)
@@ -39,8 +39,11 @@ export const sqlInsertTopic = async (argTopic, argData) => {
     try{
         const type = await sqlInsertTopicType(argData.type)
         const topics = await client.query(`
-                INSERT INTO topics.topics(type_id, name)
-                select id, '${argTopic}' 
+                INSERT INTO topics.topics(type_id, name, topic_category_id)
+                select 
+                    id
+                    , '${argTopic}' 
+                    , (select id from topics.topic_category where name ='${argData.category.toLowerCase()}')
                 from topics.topic_types 
                 where module ='${type.module}' 
                 and class='${type.class}'

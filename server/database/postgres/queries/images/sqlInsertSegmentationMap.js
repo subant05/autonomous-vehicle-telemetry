@@ -11,7 +11,7 @@ export const sqlInsertSegmentationMap = async (argTopic, data, cb=a=>a) =>{
     }
 
     try {
-        const topic = await sqlInsertTopic(argTopic, data)
+        const topic = await sqlInsertTopic(argTopic, {category:"images", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)

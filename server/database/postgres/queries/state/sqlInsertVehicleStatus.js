@@ -4,13 +4,13 @@ import { sqlInsertTopic } from '../topics'
 import moment from 'moment';
 
 export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
-    if(!argTopic.includes('/stop_reasons') || !data){
+    if(!(argTopic.includes('/stop_reasons') || argTopic.includes('/autonomy_state')) || !data){
         cb(null, "ignored")
         return;
     }
     
     try{
-        const topic = await sqlInsertTopic(argTopic, data)
+        const topic = await sqlInsertTopic(argTopic, {category:"status", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
@@ -102,3 +102,44 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
 
     return null
 }
+
+
+// const sqlBatchGenerator = (topic, batch=[]) => {
+//     function *gen(){
+//         try{
+//             const length = batch.length 
+//             let count = 0
+
+//             if(!length)
+//                 return null;
+
+//             do{
+//                 yield sqlInsertVehicleStatus(topic, batch[count] )
+                
+//             }while(++count < length)
+
+//         } catch(err){
+//             console.log("INSERT STATUS BATCH ERROR MESSAGE: ", e.message)
+//             console.log("INSERT STATUS BATCH ERROR STACK: ", e.stack)
+//             return null;
+//         }
+
+//     }
+
+//     return {
+//             [Symbol.asyncIterator]:gen
+//         }
+// }
+
+// export const sqlInsertVehicleStatusBatch = (topic,batch=[]) =>{
+//     try{
+//         for await (const success of sqlBatchGenerator(topic, batch)){
+//             console.log(success)
+//         }
+//     } catch(e){
+//         console.log("INSERT STATUS BATCH LOOP ERROR MESSAGE: ", e.message)
+//         console.log("INSERT STATUS BATCH LOOP ERROR STACK: ", e.stack)
+//         return null
+//     }
+
+// }
