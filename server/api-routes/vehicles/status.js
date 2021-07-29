@@ -6,7 +6,11 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     setDefaultVehicle(req)
-    // State.sqlInsertVehicleStatus(req.body.topic, req.body, responseCallback(res))
+    State.sqlInsertVehicleStatus(req.body.topic, req.body, responseCallback(res))
+})
+
+router.post("/batch", async (req, res) => {
+    setDefaultVehicle(req)
     State.sqlInsertVehicleStatusBatch(req.body,responseCallback(res))
 })
 

@@ -14,7 +14,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {NgDynamicBreadcrumbModule} from "ng-dynamic-breadcrumb";
+import { NgDynamicBreadcrumbModule } from "ng-dynamic-breadcrumb";
 import { ErrorComponent } from './pages/error/error.component';
 import { VehicleTopicComponent } from './pages/vehicles/pages/vehicle-topic/vehicle-topic.component';
 import { VehicleLiveComponent } from './pages/vehicles/pages/vehicle-live/vehicle-live.component';
@@ -33,7 +33,7 @@ import { VehicleGeolocationComponent } from './pages/vehicle/pages/vehicle-geolo
 import { VehicleImagesComponent } from './pages/vehicle/pages/vehicle-images/vehicle-images.component';
 import { VehicleLoggingComponent } from './pages/vehicle/pages/vehicle-logging/vehicle-logging.component';
 import { VehicleSystemComponent } from './pages/vehicle/pages/vehicle-system/vehicle-system.component';
-
+import { TableUtil } from './components/Table/table-utils';
 
 // Enviornment Variables
 import { environment } from '../environments/environment';
@@ -60,6 +60,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -71,6 +73,7 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 // Service
 import { MenuService } from './services/navigation/menu.service'
 import { GeolocationService } from './services/geolocation/geolocation.service';
+import { VehicleStatusComponent } from './components/vehicles/vehicle-status/vehicle-status.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +103,8 @@ import { GeolocationService } from './services/geolocation/geolocation.service';
     VehicleImagesComponent,
     VehicleLoggingComponent,
     VehicleSystemComponent,
+    VehicleStatusComponent,
+    TableUtil,
   ],
   imports: [
     BrowserModule,
@@ -123,6 +128,8 @@ import { GeolocationService } from './services/geolocation/geolocation.service';
     MatTableModule,
     MatButtonToggleModule,
     MatTabsModule,
+    MatExpansionModule,
+    MatDialogModule,
     // 
     GraphQLModule,
     SocialLoginModule,

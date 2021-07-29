@@ -1,0 +1,30 @@
+.mat-table {
+    width: 100%;
+}
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+.vehicles__status {
+
+    .icon {
+        font-size: 1.5rem;
+        width:24px;
+    }
+    .priority_high {
+        background-color: var(--critical);
+    }
+
+    .error {
+        background-color: var(--error);
+    }
+
+    .warning {
+        background-color: var(--warning);
+    }
+
+    .logging,
+    .information {
+        background-color: var(--success);
+    }
+}

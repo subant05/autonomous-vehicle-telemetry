@@ -13,12 +13,12 @@ query PreviewByVehicleId ($vehicleId:BigInt, $topicId: BigInt, $cursor:Int) {
         ){
 
         pageInfo{
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
         }
-            totalCount
+        totalCount
         edges{
         cursor
         }

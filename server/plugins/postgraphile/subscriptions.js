@@ -19,7 +19,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
   
       type SQLVehicleStatusPayload {
         # (Subscription PAYLOAD Type )vehicle type data retturned on this subscription type resolver below
-        vehicle_status: VehicleStatus
+        vehicle_status(vehicleId:BigInt): VehicleStatus
         event: String
       }
 
@@ -120,7 +120,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
             // (Type Resolver)
             async vehicle_status(
                 event,
-                _args,
+                {vehicleId},
                 _context,
                 { graphile: { selectGraphQLResultFromTable } }
             ) {
@@ -128,8 +128,12 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                 sql.fragment`state.vehicle_status`,
                 (tableAlias, sqlBuilder) => {
                     sqlBuilder.where(
-                    sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                        sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
                     );
+                    if(vehicleId)
+                        sqlBuilder.where(
+                            sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`
+                        );
                 }
                 );
                 return rows[0];

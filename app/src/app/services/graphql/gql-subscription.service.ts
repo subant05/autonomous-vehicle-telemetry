@@ -84,4 +84,13 @@ export class GqlSubscriptionService {
             }
     }))
   }
+
+  getVehicleState(variables={}){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.Vehicles.State
+      , variables
+    }).pipe(map((response:any)=>{
+      return response.data.sqlVehicleStatus
+    }))
+  }
 }

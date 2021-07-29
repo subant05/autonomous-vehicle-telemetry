@@ -5,6 +5,7 @@ import SegmentationMap from './segmentation-map'
 import * as Vehicles from './vehicles'
 import * as Images from './images'
 import * as Notifications from './notifications'
+import * as Status from './status'
 
 export {
     Topics
@@ -14,4 +15,5 @@ export {
     , Vehicles
     , Images
     , Notifications
+    , Status
 }

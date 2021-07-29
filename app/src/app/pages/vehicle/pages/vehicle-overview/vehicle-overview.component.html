@@ -11,7 +11,7 @@
         </button>
     </div>
 </div>
-<div class="grid gap">
+<div class="grid gap col-2">
     <div class="grid__cell">
         <div class="grid__cell--label">Geolocation</div>
         <span *ngIf="vehiclesLastCoordinates.length">
@@ -29,5 +29,11 @@
                 [coordinates]="vehiclesLastCoordinates"
                 ></app-starfire>
         </span>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Status</div>
+        <app-vehicle-status
+            [vehicleId]="vehicleId"
+        ></app-vehicle-status>
     </div>
 </div>

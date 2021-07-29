@@ -2887,10 +2887,10 @@ a {
 .grid .grid__cell .grid__cell--label {
   font-weight: bold;
   padding: 20px;
-  position: absolute;
+  margin-bottom: 5px;
   color: white;
   z-index: 1;
-  background-color: rgba(100, 100, 100, 0.5);
+  background-color: var(--blueriver);
 }
 
 .grid .grid__cell .grid__cell--label.left-align-label {

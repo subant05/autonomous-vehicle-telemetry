@@ -162,5 +162,28 @@ export class GqlQueryService {
       return response.data.starfires.nodes.length ? response.data.starfires.nodes[0].msg : null
     }))
   }
-  
+
+  getVehicleStatus(variables:any){
+    return this.basicFilteredQuery(QueryQL.Status.Vehicle, variables)
+    .pipe(map((response:any)=>{
+      const nodes =  response.data.vehicleStatuses.edges.map((results:any)=>{
+        const node = results.node
+        return {
+            id:node.id
+            , timestamp:node.statusMessage.header.readingat
+            , node: node.statusMessage.header.node
+            , topic: node.topic.name
+            , state: node.state
+            , alerts: node.alerts.nodes
+            , vehicleStatusDetails: node.vehicleStatusDetails.nodes
+          }
+      })
+      return {
+        ...response.data.vehicleStatuses.pageInfo
+        ,totalCount: response.data.vehicleStatuses.totalCount
+        , nodes
+      }
+    }))
+  }
+
 }
