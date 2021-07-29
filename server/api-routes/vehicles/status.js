@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     setDefaultVehicle(req)
-    console.log("TOPIC",req.body.topic)
-    State.sqlInsertVehicleStatus(req.body.topic, req.body, responseCallback(res))
+    // State.sqlInsertVehicleStatus(req.body.topic, req.body, responseCallback(res))
+    State.sqlInsertVehicleStatusBatch(req.body,responseCallback(res))
 })
 
 router.get("/test", async (req, res) => {

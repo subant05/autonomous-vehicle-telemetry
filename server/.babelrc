@@ -1,7 +1,15 @@
 {
-  "presets" : ["env"],
+  "presets" : [["@babel/preset-env"]],
   "plugins": [
-    "transform-object-rest-spread"
-    // , "@babel/plugin-proposal-async-generator-functions"
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      },
+      "@babel/preset-env"
+    ]
   ]
+    // "transform-object-rest-spread"
+    // , "syntax-async-generators"
+  
 }
