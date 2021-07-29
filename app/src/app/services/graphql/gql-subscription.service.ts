@@ -90,7 +90,13 @@ export class GqlSubscriptionService {
       query: SubscriptionQL.Vehicles.State
       , variables
     }).pipe(map((response:any)=>{
-      return response.data.sqlVehicleStatus
+      const results =  response.data.sqlVehicleStatus.vehicle_status
+      return {
+        ...results
+        , status:results.state.name
+        , timestamp: results.statusMessage.header.readingat
+        , state:results.state
+        , alerts:results.alerts.nodes.length ? results.alerts.nodes[0] : null}
     }))
   }
 }

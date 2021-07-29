@@ -3484,7 +3484,7 @@ class VehicleStatusComponent extends src_app_components_Table_table_utils__WEBPA
         this.gqlOnlineSubscription = this.graphQLSubscription
             .getVehicleState({ vehicleId: this.vehicleId })
             .subscribe((response) => {
-            this.statusList.unshift(Object.assign(Object.assign({}, response.vehicle_status), { status: response.vehicle_status.state.name, timestamp: response.vehicle_status.statusMessage.header.readingat, state: response.vehicle_status.state, alerts: response.vehicle_status.alerts.nodes.length ? response.vehicle_status.alerts.nodes[0] : null }));
+            this.statusList.unshift(response);
             this.statusList.pop();
             this.updateList(this.statusList);
         });
@@ -5668,7 +5668,7 @@ class GqlQueryService {
     getOnlineVehicles({ sort = "" } = {}) {
         return this.basicFilteredQuery(QueryQL.Vehicles.Online)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
-            const results = response.data.vehiclesOnlines.nodes.map((vehicle) => {
+            const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle) => {
                 const result = Object.assign({}, vehicle.vehicle);
                 result.id = vehicle.id;
                 result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0];
@@ -5862,7 +5862,8 @@ class GqlSubscriptionService {
             query: SubscriptionQL.Vehicles.State,
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
-            return response.data.sqlVehicleStatus;
+            const results = response.data.sqlVehicleStatus.vehicle_status;
+            return Object.assign(Object.assign({}, results), { status: results.state.name, timestamp: results.statusMessage.header.readingat, state: results.state, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
         }));
     }
 }

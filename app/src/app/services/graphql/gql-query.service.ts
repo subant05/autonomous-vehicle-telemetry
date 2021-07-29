@@ -61,7 +61,7 @@ export class GqlQueryService {
   getOnlineVehicles({sort=""}={}){
     return this.basicFilteredQuery(QueryQL.Vehicles.Online)
       .pipe(map(response=>{
-        const results = response.data.vehiclesOnlines.nodes.map((vehicle:any)=>{
+        const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle:any)=>{
           const result = {...vehicle.vehicle}
           result.id = vehicle.id
           result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0]
