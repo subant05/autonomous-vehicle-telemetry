@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS  topics.topic_types(
     id BIGSERIAL,
     module VARCHAR(255) NOT NULL,
     class VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    CONSTRAINT topic_types_module_key 
+        UNIQUE (module);
 );
 
 CREATE INDEX idx_topics_types_id
