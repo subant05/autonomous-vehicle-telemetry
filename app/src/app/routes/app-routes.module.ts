@@ -24,6 +24,7 @@ const routes: Routes = [
         component: LayoutComponent,
         canActivate: [AuthGuardService],
         runGuardsAndResolvers: 'always',
+        pathMatch: 'full',
         children: [
             {
                 // Main / Home Page

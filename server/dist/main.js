@@ -5427,6 +5427,7 @@ const routes = [
         component: _components_layout_layout_component__WEBPACK_IMPORTED_MODULE_2__.LayoutComponent,
         canActivate: [_services_auth_auth_guard_service__WEBPACK_IMPORTED_MODULE_4__.AuthGuardService],
         runGuardsAndResolvers: 'always',
+        pathMatch: 'full',
         children: [
             {
                 // Main / Home Page
