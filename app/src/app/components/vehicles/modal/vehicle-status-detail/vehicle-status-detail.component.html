@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{data.status}}</h2>
 <mat-dialog-content class="mat-typography">
-  <div class="grid gap col-3">
+  <div class="grid gap col-2" [ngClass]="{'col-3': data.alerts}">
     <div class="grid__cell">
         <div class="grid__cell--label">State</div>
         <mat-list>
@@ -30,7 +30,7 @@
             </mat-list-item>
         </mat-list>
     </div>
-    <div class="grid__cell">
+    <div class="grid__cell" *ngIf="data.alerts">
         <div class="grid__cell--label">Alerts</div>
         <mat-list>
             <mat-list-item> 
@@ -77,11 +77,11 @@
     </div>
     <div class="grid__cell">
         <div class="grid__cell--label">Reasons</div>
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let reason of data.vehicleStatusDetails">
+        <mat-accordion class="reasons">
+            <mat-expansion-panel *ngFor="let reason of data.vehicleStatusDetails" [ngClass]="{active:reason.isActive}">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        Reason {{reason.vehicleStatusReasonId}}
+                        <mat-icon *ngIf="reason.isActive" >priority_high</mat-icon>{{reason.reason.name}}
                       </mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-list>

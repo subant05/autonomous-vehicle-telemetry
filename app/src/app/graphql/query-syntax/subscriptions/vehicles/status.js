@@ -27,7 +27,11 @@ subscription sqlVehicleStatus($vehicleId:BigInt) {
              isActive
              isRecoverable
              description
-                vehicleStatusReasonId
+             vehicleStatusReasonId
+             reason: vehicleStatusReason{
+                name
+                code
+            }
            }
          }
         alerts{

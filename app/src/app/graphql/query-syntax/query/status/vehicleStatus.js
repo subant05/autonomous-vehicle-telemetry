@@ -32,7 +32,11 @@ query VehicleStatus($vehicle_id:BigInt, $cursor:Int, $size:Int) {
            isActive
            isRecoverable
            description
-              vehicleStatusReasonId
+           vehicleStatusReasonId
+           reason: vehicleStatusReason{
+            name
+            code
+           }
          }
        }
          createdAt

@@ -13,8 +13,6 @@ export class VehicleStatusDetailComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    if(this.data)
-      console.log(this.data)
   }
 
 }
