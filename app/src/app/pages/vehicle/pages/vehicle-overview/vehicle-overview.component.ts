@@ -30,7 +30,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnInit(): void {
     this.vehicleId = (this.route.parent as any).snapshot.params.id
     this.gqlPreviousCoordinateSubscription = this.graphQLQuery
-      .getVehiclePreviousLocation({id:this.vehicleId})
+      .getVehiclePreviousLocation({vehicle_id:this.vehicleId})
       .subscribe((response:any)=>{
         if(response)
           this.vehiclesLastCoordinates = [[response.longitude, response.latitude]]

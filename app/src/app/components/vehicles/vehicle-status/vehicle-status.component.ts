@@ -6,6 +6,8 @@ import {ActivatedRoute} from '@angular/router'
 import { TableUtil } from 'src/app/components/Table/table-utils';
 import { PageEvent } from '@angular/material/paginator';
 import { throwServerError } from '@apollo/client/core';
+import {MatDialog} from '@angular/material/dialog';
+import {VehicleStatusDetailComponent} from 'src/app/components/vehicles/modal/vehicle-status-detail/vehicle-status-detail.component'
 
 @Component({
   selector: 'app-vehicle-status',
@@ -18,8 +20,8 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
 
   statusList:any[] = []
   columns: string[] = ['alerts','status','timestamp'];
-  pageSize:number = 7
-  pageSizeOptions: number[] = [7]
+  pageSize:number = 5
+  pageSizeOptions: number[] = [5]
   pagesLength: number = 0
   isDataLoaded: boolean = false
 
@@ -30,7 +32,8 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
   constructor(   
     private graphQLSubscription: GqlSubscriptionService
     , private graphQLQuery: GqlQueryService
-    , private route: ActivatedRoute) { 
+    , private route: ActivatedRoute
+    , public dialog: MatDialog) { 
       super()
     }
 
@@ -89,6 +92,11 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
 
   openDialog(row:any): void{
     console.log(row)
+    const dialogRef = this.dialog.open(VehicleStatusDetailComponent, {data:row});
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog closed: ${result}`);
+    });
   }
 
 }

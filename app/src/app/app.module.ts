@@ -74,6 +74,7 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 import { MenuService } from './services/navigation/menu.service'
 import { GeolocationService } from './services/geolocation/geolocation.service';
 import { VehicleStatusComponent } from './components/vehicles/vehicle-status/vehicle-status.component';
+import { VehicleStatusDetailComponent } from './components/vehicles/modal/vehicle-status-detail/vehicle-status-detail.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { VehicleStatusComponent } from './components/vehicles/vehicle-status/veh
     VehicleSystemComponent,
     VehicleStatusComponent,
     TableUtil,
+    VehicleStatusDetailComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,120 @@
+<h2 mat-dialog-title>{{data.status}}</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="grid gap col-3">
+    <div class="grid__cell">
+        <div class="grid__cell--label">State</div>
+        <mat-list>
+            <mat-list-item> 
+                <div mat-line>
+                    <b>Node </b> 
+                </div>
+                <div mat-line>
+                    {{data.node}}
+                </div> 
+            </mat-list-item>
+            <mat-list-item>
+                <div mat-line>
+                    <b>Topic </b> 
+                </div>
+                <div mat-line>
+                    {{data.topic}}
+                </div>
+            </mat-list-item> 
+            <mat-list-item> 
+                <div mat-line>
+                    <b>Timestamp </b> 
+                </div>
+                <div mat-line>
+                    {{data.timestamp | date:'medium'}}
+                </div> 
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Alerts</div>
+        <mat-list>
+            <mat-list-item> 
+                <div mat-line>
+                    <b>Type </b> 
+                </div>
+                <div mat-line>
+                    {{data.alerts.alertType.name}} 
+                </div> 
+            </mat-list-item>
+            <mat-list-item> 
+                <div mat-line>
+                    <b>Severity </b> 
+                </div>
+                <div mat-line>
+                    {{data.alerts.alertType.severity}} 
+                </div> 
+            </mat-list-item>
+            <mat-list-item>
+                <div mat-line>
+                    <b>Dismissed </b> 
+                </div>
+                <div mat-line>
+                    {{data.alerts.dismissed}}
+                </div>
+            </mat-list-item>
+            <mat-list-item>
+                <div mat-line>
+                    <b>Acknowledged </b> 
+                </div>
+                <div mat-line>
+                    {{data.alerts.read}}
+                </div>
+            </mat-list-item>
+            <mat-list-item> 
+                <div mat-line>
+                    <b>Description </b> 
+                </div>
+                <div mat-line>
+                    {{data.alerts.message}}
+                </div>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Reasons</div>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let reason of data.vehicleStatusDetails">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Reason {{reason.vehicleStatusReasonId}}
+                      </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item> 
+                        <div mat-line>
+                            <b>isActive</b> 
+                        </div>
+                        <div mat-line>
+                            {{reason.isActive}} 
+                        </div> 
+                    </mat-list-item>
+                    <mat-list-item> 
+                        <div mat-line>
+                            <b>isRecoverable</b> 
+                        </div>
+                        <div mat-line>
+                            {{reason.isRecoverable}} 
+                        </div> 
+                    </mat-list-item>
+                    <mat-list-item> 
+                        <div mat-line>
+                            <b>Description</b> 
+                        </div>
+                        <div mat-line>
+                            {{reason.description}} 
+                        </div> 
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
