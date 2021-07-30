@@ -3720,7 +3720,7 @@ class VehicleStatusComponent extends src_app_components_Table_table_utils__WEBPA
             this.updateList(this.statusList);
         });
         this.gqlOnlineSubscription = this.graphQLSubscription
-            .getVehicleState({ vehicleId: this.vehicleId })
+            .getVehicleStatus({ vehicleId: this.vehicleId })
             .subscribe((response) => {
             this.statusList.unshift(response);
             this.statusList.pop();
@@ -6097,13 +6097,13 @@ class GqlSubscriptionService {
             return Object.assign(Object.assign({}, alert), { event, alertMessage: `${alert.vehicleStatus.topic.name} : ${alert.vehicleStatus.state.name}` });
         }));
     }
-    getVehicleState(variables = {}) {
+    getVehicleStatus(variables = {}) {
         return this.graphService.subscribe({
             query: SubscriptionQL.Vehicles.State,
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
             const results = response.data.sqlVehicleStatus.vehicle_status;
-            return Object.assign(Object.assign({}, results), { status: results.state.name, timestamp: results.statusMessage.header.readingat, state: results.state, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
+            return Object.assign(Object.assign({}, results), { status: results.state.name, timestamp: results.statusMessage.header.readingat, state: results.state, vehicleStatusDetails: results.vehicleStatusDetails.nodes, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
         }));
     }
 }

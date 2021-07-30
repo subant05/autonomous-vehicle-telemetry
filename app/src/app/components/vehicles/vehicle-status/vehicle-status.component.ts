@@ -57,7 +57,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
       })
     
     this.gqlOnlineSubscription = this.graphQLSubscription
-        .getVehicleState({vehicleId:this.vehicleId})
+        .getVehicleStatus({vehicleId:this.vehicleId})
         .subscribe((response:any)=>{
           this.statusList.unshift(response)
           this.statusList.pop()

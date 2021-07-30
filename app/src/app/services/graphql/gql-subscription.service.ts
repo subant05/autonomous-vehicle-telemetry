@@ -85,7 +85,7 @@ export class GqlSubscriptionService {
     }))
   }
 
-  getVehicleState(variables={}){
+  getVehicleStatus(variables={}){
     return this.graphService.subscribe({
       query: SubscriptionQL.Vehicles.State
       , variables
@@ -96,6 +96,7 @@ export class GqlSubscriptionService {
         , status:results.state.name
         , timestamp: results.statusMessage.header.readingat
         , state:results.state
+        , vehicleStatusDetails: results.vehicleStatusDetails.nodes
         , alerts:results.alerts.nodes.length ? results.alerts.nodes[0] : null}
     }))
   }
