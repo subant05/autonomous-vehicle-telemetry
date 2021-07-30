@@ -22,9 +22,8 @@ const routes: Routes = [
     {
         path: "",
         component: LayoutComponent,
-        canActivate: [AuthGuardService],
-        runGuardsAndResolvers: 'always',
-        pathMatch: 'full',
+        // canActivate: [AuthGuardService],
+        // runGuardsAndResolvers: 'always',
         children: [
             {
                 // Main / Home Page
