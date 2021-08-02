@@ -4730,43 +4730,43 @@ class VehicleComponent {
                 links: [
                     {
                         label: "Overview",
-                        url: `/${this.vehicleId}`,
+                        url: `/vehicles/${this.vehicleId}`,
                         tooltip: `Vehicle: ${this.vehicleId} Overview Page`
                     },
                     {
                         label: "Geolocation",
-                        url: `/${this.vehicleId}/geolocation`,
+                        url: `/vehicles/${this.vehicleId}/geolocation`,
                         tooltip: `Vehicle: ${this.vehicleId} Geolocation Page`
                     },
                     {
                         label: "Images",
-                        url: `/${this.vehicleId}/images`,
+                        url: `/vehicles/${this.vehicleId}/images`,
                         tooltip: `Vehicle: ${this.vehicleId} Images Page`
                     },
                     {
                         label: "Logging",
-                        url: `/${this.vehicleId}/logging`,
+                        url: `/vehicles/${this.vehicleId}/logging`,
                         tooltip: `Vehicle: ${this.vehicleId} Logging Page`
                     },
                     {
                         label: "System",
-                        url: `/${this.vehicleId}/system`,
+                        url: `/vehicles/${this.vehicleId}/system`,
                         tooltip: `Vehicle: ${this.vehicleId} System Page`
                     },
-                    ...data.topics.nodes.map((vehicleTopic) => {
-                        if (!vehicleTopic.vehicleTopics.nodes.length)
-                            return {};
-                        const topicType = vehicleTopic.vehicleTopics.nodes.map((topic) => {
-                            return topic;
-                        })[0];
-                        return {
-                            label: topicType.topic.name,
-                            callback: () => {
-                                this.currentVehicleTopicService.topicInfo = topicType;
-                                this.loadTopic(topicType.topic);
-                            }
-                        };
-                    })
+                    // ...data.topics.nodes.map((vehicleTopic:any)=>{
+                    //     if(!vehicleTopic.vehicleTopics.nodes.length)
+                    //       return {}
+                    //     const topicType = vehicleTopic.vehicleTopics.nodes.map((topic:any)=>{
+                    //           return topic
+                    //       })[0]
+                    //     return  {
+                    //       label: topicType.topic.name,
+                    //       callback:()=> {
+                    //         this.currentVehicleTopicService.topicInfo = topicType
+                    //         this.loadTopic(topicType.topic)
+                    //       }
+                    //     }
+                    //   })
                 ]
             });
     }
