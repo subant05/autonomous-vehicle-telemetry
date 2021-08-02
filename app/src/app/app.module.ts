@@ -18,22 +18,22 @@ import { NgDynamicBreadcrumbModule } from "ng-dynamic-breadcrumb";
 import { ErrorComponent } from './pages/error/error.component';
 import { VehicleTopicComponent } from './pages/vehicles/pages/vehicle-topic/vehicle-topic.component';
 import { VehicleLiveComponent } from './pages/vehicles/pages/vehicle-live/vehicle-live.component';
-import { StarfireComponent } from './components/topics/starfire/starfire.component';
-import { ImagePairComponent } from './components/topics/image-pair/image-pair.component';
-import { ImageSegmentationComponent } from './components/topics/image-segmentation/image-segmentation.component';
+import { StarfireComponent } from './components/topics/geolocation/starfire/starfire.component';
+import { ImagePairComponent } from './components/topics/images/image-pair/image-pair.component';
+import { ImageSegmentationComponent } from './components/topics/images/image-segmentation/image-segmentation.component';
 import { VehicleListComponent } from './pages/vehicles/pages/vehicle-list/vehicle-list.component';
 import { VehicleComponent } from './pages/vehicle/vehicle.component';
 import { PreviewComponent } from './components/topics/images/preview/preview.component';
 import { RgbImageComponent } from './components/images/rgb-image/rgb-image.component';
 import { SegmentationImageComponent } from './components/images/segmentation-image/segmentation-image.component';
-import { VehiclesOnlineComponent } from './components/vehicles/vehicles-online/vehicles-online.component';
-import { VehiclesOfflineComponent } from './components/vehicles/vehicles-offline/vehicles-offline.component';
+import { VehiclesOnlineComponent } from './components/topics/vehicles/vehicles-online/vehicles-online.component';
+import { VehiclesOfflineComponent } from './components/topics/vehicles/vehicles-offline/vehicles-offline.component';
 import { VehicleOverviewComponent } from './pages/vehicle/pages/vehicle-overview/vehicle-overview.component';
 import { VehicleGeolocationComponent } from './pages/vehicle/pages/vehicle-geolocation/vehicle-geolocation.component';
 import { VehicleImagesComponent } from './pages/vehicle/pages/vehicle-images/vehicle-images.component';
 import { VehicleLoggingComponent } from './pages/vehicle/pages/vehicle-logging/vehicle-logging.component';
 import { VehicleSystemComponent } from './pages/vehicle/pages/vehicle-system/vehicle-system.component';
-import { TableUtil } from './components/Table/table-utils';
+import { TableUtil } from './components/table/table-utils';
 
 // Enviornment Variables
 import { environment } from '../environments/environment';
@@ -73,8 +73,8 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 // Service
 import { MenuService } from './services/navigation/menu.service'
 import { GeolocationService } from './services/geolocation/geolocation.service';
-import { VehicleStatusComponent } from './components/vehicles/vehicle-status/vehicle-status.component';
-import { VehicleStatusDetailComponent } from './components/vehicles/modal/vehicle-status-detail/vehicle-status-detail.component';
+import { VehicleStatusComponent } from './components/topics/vehicles/vehicle-status/vehicle-status.component';
+import { VehicleStatusDetailComponent } from './components/modals/vehicle-status-detail/vehicle-status-detail.component';
 
 @NgModule({
   declarations: [

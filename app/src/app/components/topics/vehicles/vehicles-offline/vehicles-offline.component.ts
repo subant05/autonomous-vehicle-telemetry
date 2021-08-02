@@ -5,7 +5,7 @@ import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
-import {TableUtil} from 'src/app/components/Table/table-utils'
+import {TableUtil} from 'src/app/components/table/table-utils'
 
 
 @Component({

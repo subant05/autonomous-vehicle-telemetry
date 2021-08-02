@@ -22,12 +22,21 @@ const routes: Routes = [
     {
         path: "",
         component: LayoutComponent,
-        // canActivate: [AuthGuardService],
-        // runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuardService],
+        runGuardsAndResolvers: 'always',
         children: [
             {
-                // Main / Home Page
                 path: "",
+                redirectTo:"vehicles",
+                pathMatch:"full"
+            },
+            {
+                path: "profile",
+                component: ProfileComponent
+            },
+            {
+                // Main / Home Page
+                path: "vehicles",
                 component: VehiclesComponent
                 , children: [
                     {
@@ -168,10 +177,6 @@ const routes: Routes = [
                             }]
                     }
                 ]
-            },
-            {
-                path: "profile",
-                component: ProfileComponent
             },
             // {
             //     path: "vehicles",

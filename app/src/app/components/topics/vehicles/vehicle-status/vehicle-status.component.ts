@@ -3,11 +3,11 @@ import { Subscription } from 'rxjs';
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
 import {ActivatedRoute} from '@angular/router'
-import { TableUtil } from 'src/app/components/Table/table-utils';
+import { TableUtil } from 'src/app/components/table/table-utils';
 import { PageEvent } from '@angular/material/paginator';
 import { throwServerError } from '@apollo/client/core';
 import {MatDialog} from '@angular/material/dialog';
-import {VehicleStatusDetailComponent} from 'src/app/components/vehicles/modal/vehicle-status-detail/vehicle-status-detail.component'
+import {VehicleStatusDetailComponent} from 'src/app/components/modals/vehicle-status-detail/vehicle-status-detail.component'
 
 @Component({
   selector: 'app-vehicle-status',
