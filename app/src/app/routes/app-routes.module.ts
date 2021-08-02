@@ -68,6 +68,11 @@ const routes: Routes = [
                         , children:[
                             {
                                 path:"",
+                                redirectTo:"overview",
+                                pathMatch: "full"
+                            },
+                            {
+                                path:"overview",
                                 component:VehicleOverviewComponent
                                 , data: {
                                     title: 'Overview',
@@ -76,10 +81,6 @@ const routes: Routes = [
                                         label: 'Vehices',
                                         url: '../'
                                     },
-                                    {
-                                        label: 'Vehicle',
-                                        url: '/:id'
-                                      },
                                       {
                                         label: 'Overview',
                                         url: ''
@@ -96,10 +97,6 @@ const routes: Routes = [
                                     {
                                         label: 'Vehices',
                                         url: '../'
-                                    },
-                                    {
-                                        label: 'Vehicle',
-                                        url: '/:id'
                                     },
                                     {
                                         label: ' Geolocation',
@@ -119,10 +116,6 @@ const routes: Routes = [
                                         url: '../'
                                     },
                                     {
-                                        label: 'Vehicle',
-                                        url: '/:id'
-                                    },
-                                    {
                                         label: 'Images',
                                         url: ''
                                       }
@@ -138,10 +131,6 @@ const routes: Routes = [
                                     {
                                         label: 'Vehices',
                                         url: '../'
-                                    }, 
-                                    {
-                                        label: 'Vehicle',
-                                        url: '/:id'
                                     },                                      
                                     {
                                         label: 'Logging',
@@ -159,10 +148,6 @@ const routes: Routes = [
                                     {
                                         label: 'Vehices',
                                         url: '../'
-                                    }, 
-                                    {
-                                        label: 'Vehicle',
-                                        url: '/:id'
                                     },                                       
                                       {
                                         label: 'Configuration',

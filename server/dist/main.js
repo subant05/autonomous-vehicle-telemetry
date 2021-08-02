@@ -5499,6 +5499,11 @@ const routes = [
                         children: [
                             {
                                 path: "",
+                                redirectTo: "overview",
+                                pathMatch: "full"
+                            },
+                            {
+                                path: "overview",
                                 component: _pages_vehicle_pages_vehicle_overview_vehicle_overview_component__WEBPACK_IMPORTED_MODULE_8__.VehicleOverviewComponent,
                                 data: {
                                     title: 'Overview',
@@ -5506,10 +5511,6 @@ const routes = [
                                         {
                                             label: 'Vehices',
                                             url: '../'
-                                        },
-                                        {
-                                            label: 'Vehicle',
-                                            url: '/:id'
                                         },
                                         {
                                             label: 'Overview',
@@ -5529,10 +5530,6 @@ const routes = [
                                             url: '../'
                                         },
                                         {
-                                            label: 'Vehicle',
-                                            url: '/:id'
-                                        },
-                                        {
                                             label: ' Geolocation',
                                             url: ''
                                         }
@@ -5548,10 +5545,6 @@ const routes = [
                                         {
                                             label: 'Vehices',
                                             url: '../'
-                                        },
-                                        {
-                                            label: 'Vehicle',
-                                            url: '/:id'
                                         },
                                         {
                                             label: 'Images',
@@ -5571,10 +5564,6 @@ const routes = [
                                             url: '../'
                                         },
                                         {
-                                            label: 'Vehicle',
-                                            url: '/:id'
-                                        },
-                                        {
                                             label: 'Logging',
                                             url: ''
                                         }
@@ -5590,10 +5579,6 @@ const routes = [
                                         {
                                             label: 'Vehices',
                                             url: '../'
-                                        },
-                                        {
-                                            label: 'Vehicle',
-                                            url: '/:id'
                                         },
                                         {
                                             label: 'Configuration',
