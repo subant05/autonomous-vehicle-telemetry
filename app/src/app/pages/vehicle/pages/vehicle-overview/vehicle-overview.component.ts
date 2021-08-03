@@ -16,6 +16,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
   onlineStatusSubscription:Subscription | null = null
   previousCoordinatesQuery:Subscription | null = null
   previewImagesSubscription:Subscription | null = null
+  imageSubscriptions:Subscription[]  = []
   vehiclesLastCoordinates:number[][] = []
   vehicleImages:any[] =[]
   vehicleId: string=""
@@ -50,10 +51,17 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
         this.isVehicleOnline = response.online
       })
 
-      this.previewImagesSubscription = this.graphQLSubscription
+      this.previewImagesSubscription = this.graphQLQuery
       .getVehiclePreviewImages({id:this.vehicleId})
       .subscribe((response:any)=>{
         this.vehicleImages = response
+        this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
+          this.imageSubscriptions[index]  =  
+            this.graphQLSubscription.getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
+            .subscribe((response:any)=>{
+              array[index] = response
+            })
+        })
       })
   }
 
@@ -62,6 +70,9 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
     this.onlineStatusQuery?.unsubscribe()
     this.previousCoordinatesQuery?.unsubscribe()
     this.previewImagesSubscription?.unsubscribe()
+    this.imageSubscriptions.forEach(subscription=>{
+      subscription.unsubscribe()
+    })
   }
 
   ngAfterViewInit() :void{

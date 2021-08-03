@@ -186,4 +186,23 @@ export class GqlQueryService {
     }))
   }
 
+  getVehiclePreviewImages(variables={}){
+    return this.basicFilteredQuery(QueryQL.Images.PreviewDetailsByVehicleId, variables)
+    .pipe(map((response:any)=>{
+      return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
+          const preview = item.cameras.nodes[0]
+          const cameraMessages = preview.msg.image.cameraMessages.nodes[0]
+          const image = cameraMessages.image
+          const header = cameraMessages.header
+          return {
+            topic: preview.topic.name
+            , topicId: preview.topic.id
+            , image: {...image, data: JSON.parse(image.data.data)}
+            , header: header
+          }
+      })
+    }))
+
+  }
+
 }

@@ -121,4 +121,22 @@ export class GqlSubscriptionService {
       })
     }))
   }
+
+  getPreviewImageByVehicleIdTopicId(variables={}){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.Images.PreviewImagesByVehicleIdTopicId
+      , variables
+    }).pipe(map((response:any)=>{
+      const topic = response.data.sqlCamera.camera.vehicle.vehicleTopics.nodes[0].topic
+      const msg = topic.cameras.nodes[0].msg
+      const image = msg.image
+      const header =  msg.header
+      return {
+        topic: topic.name
+        , topicId: topic.id
+        , image: {...image, data: JSON.parse(image.data.data) }
+        , header 
+      }
+    }))
+  }
 }

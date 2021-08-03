@@ -3,8 +3,6 @@ let run = false
 
 export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql }) => ({
     typeDefs: gql`
-
-
       type SQLStarfirePayload {
         # (Subscription PAYLOAD Type )Starfire type data retturned on this subscription type resolver below
         starfire(vehicleId:Float): Starfire
@@ -41,6 +39,12 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         row: VehiclesOnline
         event: String
       }
+      
+      type SQLCameraPayload {
+        # (Subscription PAYLOAD Type ) camera data returned on this subscription type resolver below
+          camera(vehicleId: BigInt): Camera
+          event:String
+      }
   
       extend type Subscription {
         # (Subscription) will be triggered when the current starfire's data changes
@@ -61,6 +65,9 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         )})
         sqlVehiclesOnline: SQLVehiclesOnlinePayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_vehicles_online`
+        )})
+        sqlCamera: SQLCameraPayload @pgSubscription(topic: ${embed(
+            ()=>`postgraphile:sql_camera`
         )})
       }
     `,
@@ -193,6 +200,32 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
             ) {
                 const rows = await selectGraphQLResultFromTable(
                     sql.fragment`vehicles.vehicles_online`,
+                    (tableAlias, sqlBuilder) => {
+                        sqlBuilder.where(
+                            sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                        );
+                        if(vehicleId)
+                            sqlBuilder.where(
+                                sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`
+                            );
+                    }
+                );
+
+                return rows[0];
+            },
+        },
+        SQLCameraPayload: {
+            // This method finds the Vehicle Logs from the database based on the event
+            // published by PostgreSQL.
+            // (Type Resolver)
+            async camera(
+                event,
+                {vehicleId},
+                _context,
+                { graphile: { selectGraphQLResultFromTable } }
+            ) {
+                const rows = await selectGraphQLResultFromTable(
+                    sql.fragment`images.camera`,
                     (tableAlias, sqlBuilder) => {
                         sqlBuilder.where(
                             sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`

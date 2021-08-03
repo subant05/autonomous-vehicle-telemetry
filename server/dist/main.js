@@ -188,12 +188,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "PreviewImageByVehicleId": () => (/* reexport safe */ _previewByVehicleId__WEBPACK_IMPORTED_MODULE_0__.default),
 /* harmony export */   "PreviewByVehicleIdTopicId": () => (/* reexport safe */ _previewByVehicleIdTopicId__WEBPACK_IMPORTED_MODULE_1__.default),
 /* harmony export */   "PreviewByVehicleIdTopicName": () => (/* reexport safe */ _previewByTopicName__WEBPACK_IMPORTED_MODULE_2__.default),
-/* harmony export */   "SegmentationMapByHeaderId": () => (/* reexport safe */ _segmentationMapByHeaderId__WEBPACK_IMPORTED_MODULE_3__.default)
+/* harmony export */   "SegmentationMapByHeaderId": () => (/* reexport safe */ _segmentationMapByHeaderId__WEBPACK_IMPORTED_MODULE_3__.default),
+/* harmony export */   "PreviewDetailsByVehicleId": () => (/* reexport safe */ _previewDetailsByVehicleId__WEBPACK_IMPORTED_MODULE_4__.default)
 /* harmony export */ });
 /* harmony import */ var _previewByVehicleId__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./previewByVehicleId */ 9348);
 /* harmony import */ var _previewByVehicleIdTopicId__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./previewByVehicleIdTopicId */ 55516);
 /* harmony import */ var _previewByTopicName__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./previewByTopicName */ 18201);
 /* harmony import */ var _segmentationMapByHeaderId__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./segmentationMapByHeaderId */ 34443);
+/* harmony import */ var _previewDetailsByVehicleId__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./previewDetailsByVehicleId */ 793);
+
 
 
 
@@ -403,6 +406,69 @@ query PreviewByVehicleId ($vehicleId:BigInt, $topicId: BigInt, $cursor:Int) {
 }
 `
 
+
+
+/***/ }),
+
+/***/ 793:
+/*!********************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/images/previewDetailsByVehicleId.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PreviewDetailsByVehicleId)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const PreviewDetailsByVehicleId  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+query PreviewImagesByVehicleId($id: BigInt) {
+    topicCategories(condition:{name:"images"}){
+      nodes{
+        topics(filter:{name:{includes:"left/preview"} }){
+          nodes{
+            cameras(last:1 condition:{vehicleId:$id}){
+              totalCount
+              nodes {
+                id
+                topic{
+                  name
+                  id
+                }
+                msg{
+                  image {
+                    cameraMessages{
+                      nodes{
+                        header{
+                          readingat
+                          headerId
+                        }
+  
+                        image{
+                          width
+                          height
+                          step
+                          isBigendian
+                          encoding
+                          data {
+                            data
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 
 /***/ }),
@@ -1207,10 +1273,71 @@ subscription VehicleGeographicCoordinates($vehicleId:Float) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PreviewImagesByVehicleId": () => (/* reexport safe */ _previewImagesByVehicleId__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */   "PreviewImagesByVehicleId": () => (/* reexport safe */ _previewImagesByVehicleId__WEBPACK_IMPORTED_MODULE_0__.default),
+/* harmony export */   "PreviewImagesByVehicleIdTopicId": () => (/* reexport safe */ _previewImageByVehicleIdTopicId__WEBPACK_IMPORTED_MODULE_1__.default)
 /* harmony export */ });
 /* harmony import */ var _previewImagesByVehicleId__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./previewImagesByVehicleId */ 72080);
+/* harmony import */ var _previewImageByVehicleIdTopicId__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./previewImageByVehicleIdTopicId */ 496);
 
+
+
+
+
+/***/ }),
+
+/***/ 496:
+/*!*********************************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/subscriptions/images/previewImageByVehicleIdTopicId.js ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ previewImagesByVehicleIdTopicId)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const previewImagesByVehicleIdTopicId  =apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:BigInt) {
+    sqlCamera {
+      camera(vehicleId: $vehicleId) {
+        vehicle {
+          vehicleTopics(condition:{topicId:$topicId}) {
+            nodes {
+              topic{
+                name
+                id
+                cameras(first:1 orderBy:ID_DESC){
+                  nodes{
+                    readingat
+                    msg {
+                      header{
+                        headerId
+                        readingat
+                      }
+                      image{
+                        width
+                        height
+                        encoding
+                        isBigendian
+                        step
+                        data{
+                          data
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 
 
@@ -4902,6 +5029,7 @@ class VehicleOverviewComponent {
         this.onlineStatusSubscription = null;
         this.previousCoordinatesQuery = null;
         this.previewImagesSubscription = null;
+        this.imageSubscriptions = [];
         this.vehiclesLastCoordinates = [];
         this.vehicleImages = [];
         this.vehicleId = "";
@@ -4925,10 +5053,17 @@ class VehicleOverviewComponent {
             .subscribe((response) => {
             this.isVehicleOnline = response.online;
         });
-        this.previewImagesSubscription = this.graphQLSubscription
+        this.previewImagesSubscription = this.graphQLQuery
             .getVehiclePreviewImages({ id: this.vehicleId })
             .subscribe((response) => {
             this.vehicleImages = response;
+            this.vehicleImages.forEach((image, index, array) => {
+                this.imageSubscriptions[index] =
+                    this.graphQLSubscription.getPreviewImageByVehicleIdTopicId({ vehicleId: this.vehicleId, topicId: image.topicId })
+                        .subscribe((response) => {
+                        array[index] = response;
+                    });
+            });
         });
     }
     ngOnDestroy() {
@@ -4937,6 +5072,9 @@ class VehicleOverviewComponent {
         (_b = this.onlineStatusQuery) === null || _b === void 0 ? void 0 : _b.unsubscribe();
         (_c = this.previousCoordinatesQuery) === null || _c === void 0 ? void 0 : _c.unsubscribe();
         (_d = this.previewImagesSubscription) === null || _d === void 0 ? void 0 : _d.unsubscribe();
+        this.imageSubscriptions.forEach(subscription => {
+            subscription.unsubscribe();
+        });
     }
     ngAfterViewInit() {
     }
@@ -6381,6 +6519,23 @@ class GqlQueryService {
             return Object.assign(Object.assign({}, response.data.vehicleStatuses.pageInfo), { totalCount: response.data.vehicleStatuses.totalCount, nodes });
         }));
     }
+    getVehiclePreviewImages(variables = {}) {
+        return this.basicFilteredQuery(QueryQL.Images.PreviewDetailsByVehicleId, variables)
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            return response.data.topicCategories.nodes[0].topics.nodes.map((item) => {
+                const preview = item.cameras.nodes[0];
+                const cameraMessages = preview.msg.image.cameraMessages.nodes[0];
+                const image = cameraMessages.image;
+                const header = cameraMessages.header;
+                return {
+                    topic: preview.topic.name,
+                    topicId: preview.topic.id,
+                    image: Object.assign(Object.assign({}, image), { data: JSON.parse(image.data.data) }),
+                    header: header
+                };
+            });
+        }));
+    }
 }
 GqlQueryService.ɵfac = function GqlQueryService_Factory(t) { return new (t || GqlQueryService)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](apollo_angular__WEBPACK_IMPORTED_MODULE_4__.Apollo), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_0__.ImageService)); };
 GqlQueryService.ɵprov = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjectable"]({ token: GqlQueryService, factory: GqlQueryService.ɵfac, providedIn: 'root' });
@@ -6498,6 +6653,23 @@ class GqlSubscriptionService {
                     header: header
                 };
             });
+        }));
+    }
+    getPreviewImageByVehicleIdTopicId(variables = {}) {
+        return this.graphService.subscribe({
+            query: SubscriptionQL.Images.PreviewImagesByVehicleIdTopicId,
+            variables
+        }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
+            const topic = response.data.sqlCamera.camera.vehicle.vehicleTopics.nodes[0].topic;
+            const msg = topic.cameras.nodes[0].msg;
+            const image = msg.image;
+            const header = msg.header;
+            return {
+                topic: topic.name,
+                topicId: topic.id,
+                image: Object.assign(Object.assign({}, image), { data: JSON.parse(image.data.data) }),
+                header
+            };
         }));
     }
 }
