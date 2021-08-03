@@ -40,7 +40,7 @@
         <div class="grid__cell--label">Status</div>
         <div class="preview-images">
             <div class="preview-images__img" *ngFor="let imageInfo of vehicleImages" >
-                <div>
+                <div *ngIf="imageInfo">
                     <div class="grid__cell--label">{{imageInfo.topic}}</div>
                     <app-image [data]="imageInfo.image" [label]="imageInfo.topic" [headerId]="imageInfo.header.headerId"></app-image>
                 </div>

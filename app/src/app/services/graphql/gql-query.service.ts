@@ -191,6 +191,9 @@ export class GqlQueryService {
     .pipe(map((response:any)=>{
       return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
           const preview = item.cameras.nodes[0]
+          if(!preview)
+            return null
+            
           const cameraMessages = preview.msg.image.cameraMessages.nodes[0]
           const image = cameraMessages.image
           const header = cameraMessages.header

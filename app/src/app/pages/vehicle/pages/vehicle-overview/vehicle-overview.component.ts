@@ -56,8 +56,12 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
       .subscribe((response:any)=>{
         this.vehicleImages = response
         this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
+          if(!image)
+            return;
+
           this.imageSubscriptions[index]  =  
-            this.graphQLSubscription.getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
+            this.graphQLSubscription
+            .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
             .subscribe((response:any)=>{
               array[index] = response
             })

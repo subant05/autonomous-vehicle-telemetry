@@ -17,6 +17,15 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
 
 
         const {descriptor, vehicle_state, stop_reasons} = data.msg
+        const errorAlert = stop_reasons.filter(reason=>{
+            return reason.is_active
+        })
+        const criticalError = stop_reasons.filter(reason=>{
+            return reason.is_active && !reason.is_recoverable
+        })
+
+        const alertType = criticalError.length ? "critical" : errorAlert.length ?  "error" : "information"
+        const alertMessage= criticalError.length ? criticalError[0].description : errorAlert.length ?  errorAlert[0].description  : ""
 
         const queryResult =  await client.query(`
             WITH ins_status_messge_header as (
@@ -66,6 +75,28 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
                 from jsonb_array_elements($8::jsonb) t
     
                 RETURNING id
+            ),
+
+            select_alert_status as (
+                select 
+                    case 
+                        WHEN state != '' THEN state
+                        ELSE 'information'
+                    end as name
+                    , description as message
+                from (SELECT
+                    id,
+                    CASE
+                        WHEN is_active = true THEN 'error'
+                        WHEN is_recoverable = true THEN 'critical'
+                        ELSE 'information'
+                    END AS state
+                    , description
+                    FROM state.vehicle_status_detail
+                    WHERE state.vehicle_status_detail.vehicle_status_id in (select id from ins_vehicle_status)
+                    AND description != ''
+                    ORDER BY state ASC
+                    LIMIT 1) AS temp_vehicle_status_detail
             )
 
             INSERT INTO notifications.alerts(
@@ -74,8 +105,8 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
                 , vehicle_status_id
             )
             VALUES (
-                ''
-                , (select id from notifications.alert_types where name ='information')
+                $9
+                , (select id from notifications.alert_types where name  = $10)
                 , (select id from ins_vehicle_status)
             )
 
@@ -90,6 +121,8 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
             , vehicle.rows[0].id
             , vehicle_state.state
             , JSON.stringify(stop_reasons)
+            , alertMessage
+            , alertType
         ])
         cb(null, JSON.stringify(queryResult) )
         return queryResult
