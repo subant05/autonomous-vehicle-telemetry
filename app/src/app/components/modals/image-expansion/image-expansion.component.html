@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{data.label}}</h2>
+<mat-dialog-content>
+    <div class="grid gap images">
+        <div class="grid__cell center-cell-content" *ngIf="loadSegmentation()">
+            <mat-slide-toggle 
+                class="segmentation-toggle"
+                [color]="segmentationToggle.color"
+                [checked]="segmentationToggle.checked"
+                [disabled]="!loadedSegmentations"
+                (change)="toggleSegmentation($event)">
+                Segmentation
+            </mat-slide-toggle>
+            <div *ngIf="!loadSegmentation()">
+                <mat-progress-bar mode="indeterminate">
+                    Segmentation
+                </mat-progress-bar>
+            </div>
+        </div>
+        <div class="grid__cell center-cell-content" >
+            <div class="segmentation" [ngStyle]="{display: segmentationToggle.checked ? 'inline-block' : 'none'} ">
+                <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="data.headerId"></app-segmentation-image>
+            </div>
+            <img [src]="data.imageUrl" [id]=id [class]="class" [ngClass]="{segmented: segmentationToggle.checked}">
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>

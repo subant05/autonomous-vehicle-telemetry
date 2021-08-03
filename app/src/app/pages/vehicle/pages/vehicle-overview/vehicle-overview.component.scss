@@ -1,5 +1,28 @@
 .grid__cell {
     height:400px;
+
+    .preview-images{
+        display:flex;
+        flex-wrap:wrap;
+
+        .preview-images__img {
+            width: 100%;
+            padding:10px;
+        }
+
+
+        @media screen and (min-width:570px) {
+            .preview-images__img{
+                width: 50%;
+            }
+        }
+
+        @media screen and (min-width:1024px) {
+            .preview-images__img{
+                width: 33.3%;
+            }
+        }
+    }
 }
 
 .header {
@@ -32,4 +55,6 @@
             }
         }
     }
+
 }
+

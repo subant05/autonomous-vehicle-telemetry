@@ -75,6 +75,8 @@ import { MenuService } from './services/navigation/menu.service'
 import { GeolocationService } from './services/geolocation/geolocation.service';
 import { VehicleStatusComponent } from './components/topics/vehicles/vehicle-status/vehicle-status.component';
 import { VehicleStatusDetailComponent } from './components/modals/vehicle-status-detail/vehicle-status-detail.component';
+import { ImageComponent } from './components/images/image/image.component';
+import { ImageExpansionComponent } from './components/modals/image-expansion/image-expansion.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +109,8 @@ import { VehicleStatusDetailComponent } from './components/modals/vehicle-status
     VehicleStatusComponent,
     TableUtil,
     VehicleStatusDetailComponent,
+    ImageComponent,
+    ImageExpansionComponent,
   ],
   imports: [
     BrowserModule,

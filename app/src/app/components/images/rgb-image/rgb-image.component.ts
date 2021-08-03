@@ -107,6 +107,7 @@ export class RgbImageComponent implements OnInit, AfterViewInit, AfterViewChecke
   }
   ngOnInit(): void {
     let parsedData;
+
     try{
       switch(typeof this.data){
         case "string":

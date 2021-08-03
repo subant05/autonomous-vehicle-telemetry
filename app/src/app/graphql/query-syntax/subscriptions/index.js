@@ -3,6 +3,8 @@ import * as Geolocation from './geolocation'
 import * as Notifications from './Notifications'
 import OnlineVehicles from './vehicles-online'
 import * as Vehicles from './vehicles';
+import * as Images from './images';
+
 
 export {
     DeviceMessageSubscription
@@ -10,4 +12,5 @@ export {
     , OnlineVehicles
     , Notifications
     , Vehicles
+    , Images
 }

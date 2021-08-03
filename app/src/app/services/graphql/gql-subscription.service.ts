@@ -102,4 +102,23 @@ export class GqlSubscriptionService {
         , alerts:results.alerts.nodes.length ? results.alerts.nodes[0] : null}
     }))
   }
+
+  getVehiclePreviewImages(variables={}){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.Images.PreviewImagesByVehicleId
+      , variables
+    }).pipe(map((response:any)=>{
+      return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
+          const preview = item.cameras.nodes[0]
+          const cameraMessages = preview.msg.image.cameraMessages.nodes[0]
+          const image = cameraMessages.image
+          const header = cameraMessages.header
+          return {
+            topic: preview.topic.name
+            , image: {...image, data: JSON.parse(image.data.data)}
+            , header: header
+          }
+      })
+    }))
+  }
 }

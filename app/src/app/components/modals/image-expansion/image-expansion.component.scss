@@ -1,0 +1,19 @@
+img {
+    width:65vw;
+    &.segmented{
+        margin-top: calc(-50% + -5px);
+
+    }
+
+    @media screen and (min-width:730px) {
+        width:75vw;
+    }
+ }
+
+ .segmentation {
+    width:65vw;
+
+    @media screen and (min-width:730px) {
+        width:75vw;
+    }
+ }

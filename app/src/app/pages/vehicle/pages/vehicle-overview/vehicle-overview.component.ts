@@ -12,10 +12,12 @@ import {ActivatedRoute} from '@angular/router'
 })
 export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   geoUpdateSubscription:Subscription | null = null
-  gqlOnlineQuery:Subscription | null = null
-  gqlOnlineSubscription:Subscription | null = null
-  gqlPreviousCoordinateSubscription:Subscription | null = null
+  onlineStatusQuery:Subscription | null = null
+  onlineStatusSubscription:Subscription | null = null
+  previousCoordinatesQuery:Subscription | null = null
+  previewImagesSubscription:Subscription | null = null
   vehiclesLastCoordinates:number[][] = []
+  vehicleImages:any[] =[]
   vehicleId: string=""
   isVehicleOnline: boolean = false;
 
@@ -29,29 +31,37 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnInit(): void {
     this.vehicleId = (this.route.parent as any).snapshot.params.id
-    this.gqlPreviousCoordinateSubscription = this.graphQLQuery
+    this.previousCoordinatesQuery = this.graphQLQuery
       .getVehiclePreviousLocation({vehicle_id:this.vehicleId})
       .subscribe((response:any)=>{
         if(response)
           this.vehiclesLastCoordinates = [[response.longitude, response.latitude]]
       })
 
-    this.gqlOnlineQuery = this.graphQLQuery
+    this.onlineStatusQuery = this.graphQLQuery
       .getVehicleOnlineStatus({id:this.vehicleId})
       .subscribe((response:any)=>{
           this.isVehicleOnline = response.online ? true : false
       })
 
-    this.gqlOnlineSubscription = this.graphQLSubscription.getVehicleOnlineStatus({id:this.vehicleId})
+    this.onlineStatusSubscription = this.graphQLSubscription
+      .getVehicleOnlineStatus({id:this.vehicleId})
       .subscribe((response:any)=>{
         this.isVehicleOnline = response.online
+      })
+
+      this.previewImagesSubscription = this.graphQLSubscription
+      .getVehiclePreviewImages({id:this.vehicleId})
+      .subscribe((response:any)=>{
+        this.vehicleImages = response
       })
   }
 
   ngOnDestroy() :void{
-    this.gqlOnlineSubscription?.unsubscribe()
-    this.gqlOnlineQuery?.unsubscribe()
-    this.gqlPreviousCoordinateSubscription?.unsubscribe()
+    this.onlineStatusSubscription?.unsubscribe()
+    this.onlineStatusQuery?.unsubscribe()
+    this.previousCoordinatesQuery?.unsubscribe()
+    this.previewImagesSubscription?.unsubscribe()
   }
 
   ngAfterViewInit() :void{

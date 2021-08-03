@@ -119,13 +119,12 @@
     .nav__side-nav.hide,
     .nav__side-nav.show{
         display:block;
-        position:sticky !important;
         top:50px;
         animation: none;
         background: transparent;
         z-index:0;
         height: calc(100vh - 50px);
-
+        left:0 !important;
 
         .nav__side-nav--toggle-btn{
             display: none !important;

@@ -36,4 +36,15 @@
             [vehicleId]="vehicleId"
         ></app-vehicle-status>
     </div>
+    <div class="grid__cell grid__cell__full-width">
+        <div class="grid__cell--label">Status</div>
+        <div class="preview-images">
+            <div class="preview-images__img" *ngFor="let imageInfo of vehicleImages" >
+                <div>
+                    <div class="grid__cell--label">{{imageInfo.topic}}</div>
+                    <app-image [data]="imageInfo.image" [label]="imageInfo.topic" [headerId]="imageInfo.header.headerId"></app-image>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
