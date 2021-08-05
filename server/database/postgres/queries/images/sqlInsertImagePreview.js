@@ -5,7 +5,7 @@ import {sqlInsertCameraMessage} from './sqlInsertCameraMessage'
 const { client, pool } = require("../../connection.js")
 
 export const sqlInsertImagePreview = async (argTopic, data, cb=a=>a) =>{
-    if(!argTopic.includes('/preview') || !data){
+    if(!argTopic || !argTopic.includes('/preview') || !data){
         cb(null, "ignored")
         return;
     }

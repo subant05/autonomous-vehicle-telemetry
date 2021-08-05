@@ -39,7 +39,7 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
           links: [
             {
               label:"Overview"
-              , url:`/vehicles/${this.vehicleId}`
+              , url:`/vehicles/${this.vehicleId}/overview`
               , tooltip:`Vehicle: ${this.vehicleId} Overview Page`
             },
             // {
@@ -52,11 +52,11 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
             //   , url:`/vehicles/${this.vehicleId}/images`
             //   , tooltip:`Vehicle: ${this.vehicleId} Images Page`
             // },
-            // {
-            //   label:"Logging"
-            //   , url:`/vehicles/${this.vehicleId}/logging`
-            //   , tooltip:`Vehicle: ${this.vehicleId} Logging Page`
-            // },
+            {
+              label:"Logging"
+              , url:`/vehicles/${this.vehicleId}/logging`
+              , tooltip:`Vehicle: ${this.vehicleId} Logging Page`
+            },
             // {
             //   label:"System"
             //   , url:`/vehicles/${this.vehicleId}/system`

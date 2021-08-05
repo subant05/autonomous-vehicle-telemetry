@@ -1,8 +1,10 @@
 :root{
     --white: #fff;
     --black: #000;
+    --light-gray: #ccc;
     --blueriver: #003E85;
     --blueriver-hover: #003e8593;
+    --blueriver-dark: #00173193;
     --lightgray: #ccc;
     --critical: #e53959;
     --critical-hover: #e53959c2;
@@ -15,3 +17,5 @@
     --success: #D2E290;
     --success-hover: #b8c77f;
 }
+$border-radius: 5px;
+$box-shadow: 3px 0px 4px 1px rgb(0 0 0 / 10%);

@@ -1,0 +1,23 @@
+nav{
+  box-shadow: $box-shadow;  
+}
+.container__content-main{
+    box-shadow: $box-shadow;  
+}
+
+a,
+button{
+    border-radius: $border-radius;
+}
+
+.custom-bread-crumb{
+        margin: 0px !important;
+        padding:0px !important;
+}
+.header {
+    .header__title {
+        h1 {
+            margin: 20px 0 0px;
+        }
+    }
+}

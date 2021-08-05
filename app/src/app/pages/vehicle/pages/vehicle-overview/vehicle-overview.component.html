@@ -14,35 +14,44 @@
 <div class="grid gap col-2">
     <div class="grid__cell">
         <div class="grid__cell--label">Geolocation</div>
-        <span *ngIf="vehiclesLastCoordinates.length">
-            <app-starfire  *ngIf="isVehicleOnline"
-                playback="live" 
-                [showTractor]=true 
-                [zoom]=20
-                [vehicleId]="vehicleId"
-                ></app-starfire>
-            <app-starfire  *ngIf="!isVehicleOnline"
-                playback="static" 
-                [showTractor]=true 
-                [zoom]=20
-                [vehicleId]="vehicleId"
-                [coordinates]="vehiclesLastCoordinates"
-                ></app-starfire>
-        </span>
+        <div class="grid__cell--content">
+            <div *ngIf="vehiclesLastCoordinates.length"  class="map" >
+                <app-starfire  *ngIf="isVehicleOnline"
+                    playback="live" 
+                    [showTractor]=true 
+                    [zoom]=20
+                    [vehicleId]="vehicleId"
+                    ></app-starfire>
+                <app-starfire  *ngIf="!isVehicleOnline"
+                    playback="static" 
+                    [showTractor]=true 
+                    [zoom]=20
+                    [vehicleId]="vehicleId"
+                    [coordinates]="vehiclesLastCoordinates"
+                    ></app-starfire>
+            </div>
+        </div>
+
     </div>
     <div class="grid__cell">
         <div class="grid__cell--label">Status</div>
-        <app-vehicle-status
+        <div class="grid__cell--content">
+            <app-vehicle-status
             [vehicleId]="vehicleId"
-        ></app-vehicle-status>
+            ></app-vehicle-status>
+        </div>
     </div>
     <div class="grid__cell grid__cell__full-width">
-        <div class="grid__cell--label">Status</div>
+        <mat-divider class="divider"></mat-divider>
+    </div>
+    <div class="grid__cell grid__cell__full-width">
         <div class="preview-images">
             <div class="preview-images__img" *ngFor="let imageInfo of vehicleImages" >
                 <div *ngIf="imageInfo">
                     <div class="grid__cell--label">{{imageInfo.topic}}</div>
-                    <app-image [data]="imageInfo.image" [label]="imageInfo.topic" [headerId]="imageInfo.header.headerId"></app-image>
+                    <div class="grid__cell--content">
+                        <app-image [data]="imageInfo.image" [label]="imageInfo.topic" [headerId]="imageInfo.header.headerId"></app-image>
+                    </div>
                 </div>
             </div>
         </div>

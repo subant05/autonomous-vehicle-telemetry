@@ -2850,8 +2850,10 @@ a {
 :root {
   --white: #fff;
   --black: #000;
+  --light-gray: #ccc;
   --blueriver: #003E85;
   --blueriver-hover: #003e8593;
+  --blueriver-dark: #00173193;
   --lightgray: #ccc;
   --critical: #e53959;
   --critical-hover: #e53959c2;
@@ -2891,16 +2893,36 @@ a {
 
 .grid .grid__cell .grid__cell--label {
   font-weight: bold;
-  padding: 20px;
-  margin-bottom: 5px;
+  padding: 15px;
   color: white;
   z-index: 1;
-  background-color: var(--blueriver);
+  background: var(--blueriver);
+  box-shadow: 3px 0px 4px 1px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 2px solid var(--blueriver);
 }
 
 .grid .grid__cell .grid__cell--label.left-align-label {
   align-self: left;
   justify-self: flex-start;
+}
+
+.grid .grid__cell .grid__cell--content {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid var(--light-gray);
+  padding: 10px;
+  box-shadow: 3px 0px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+.grid .grid__cell .grid__cell--content img,
+.grid .grid__cell .grid__cell--content ul,
+.grid .grid__cell .grid__cell--content li:last-of-type,
+.grid .grid__cell .grid__cell--content table,
+.grid .grid__cell .grid__cell--content div {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 @media screen and (min-width: 800px) {
@@ -2927,6 +2949,28 @@ a {
 .mapboxgl-ctrl-bottom-left,
 .mapboxgl-ctrl-bottom-right {
   display: none !important;
+}
+
+nav {
+  box-shadow: 3px 0px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+.container__content-main {
+  box-shadow: 3px 0px 4px 1px rgba(0, 0, 0, 0.1);
+}
+
+a,
+button {
+  border-radius: 5px;
+}
+
+.custom-bread-crumb {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.header .header__title h1 {
+  margin: 20px 0 0px;
 }
 
 /*# sourceMappingURL=styles.css.map*/
