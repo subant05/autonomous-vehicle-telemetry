@@ -2955,10 +2955,6 @@ nav {
   box-shadow: 3px 0px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
-.container__content-main {
-  box-shadow: 3px 0px 4px 1px rgba(0, 0, 0, 0.1);
-}
-
 a,
 button {
   border-radius: 5px;
