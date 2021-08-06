@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{data.status}}</h2>
 <mat-dialog-content class="mat-typography">
-  <div class="grid gap col-2" [ngClass]="{'col-3': data.alerts}">
+  <div class="grid gap col-3" [ngClass]="{'col-4': data.alerts}">
     <div class="grid__cell">
         <div class="grid__cell--label">State</div>
         <div class="grid__cell--content">
@@ -30,6 +30,12 @@
                     </div> 
                 </mat-list-item>
             </mat-list>
+        </div>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Images</div>
+        <div class="grid__cell--content">
+            Image
         </div>
     </div>
     <div class="grid__cell" *ngIf="data.alerts">

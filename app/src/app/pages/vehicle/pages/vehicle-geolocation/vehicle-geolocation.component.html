@@ -1,1 +1,95 @@
-<p>vehicle-geolocation works!</p>
+<form class="geolocation__form" 
+    *ngIf="fgGeolocationFilter" 
+    [formGroup]="fgGeolocationFilter"
+    (submit)="onSubmit()"
+    >
+    <div class="geolocation__form--field">
+        <mat-form-field class="example-form-field datetime" appearance="fill">
+            <mat-label>Start</mat-label>
+            <input matInput type="datetime-local" 
+                [disabled]="fgGeolocationFilter.get('isLive').value"
+                formControlName="startDateTime">
+            <button matSuffix mat-icon-button aria-label="Clear" >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+    </div>
+    <div class="geolocation__form--field">
+        <mat-form-field class="example-form-field datetime" appearance="fill">
+            <mat-label>End</mat-label>
+            <input matInput type="datetime-local" 
+                [disabled]="fgGeolocationFilter.get('isLive').value"
+                formControlName="endDateTime">
+            <button matSuffix mat-icon-button aria-label="Clear" >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+    </div>
+    <div class="geolocation__form--field">
+        <mat-radio-group aria-label="Change Map View" 
+            formControlName="map"
+            [disabled]="fgGeolocationFilter.get('isLive').value">
+            <mat-radio-button value="static" 
+                class="geolocation__form--radio" >
+                    Static
+            </mat-radio-button>
+            <mat-radio-button value="replay" 
+                class="geolocation__form--radio">
+                Replay
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <div class="geolocation__form--field">
+        <mat-slide-toggle formControlName="isLive">Live</mat-slide-toggle>
+    </div>
+    <div class="geolocation__form--field">
+        <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+</form>
+
+
+<div class="grid gap" *ngIf="!refresh; else loader" >
+
+    <div class="grid__cell map" *ngIf="fgGeolocationFilter.get('isLive').value; else history">
+        <div class="grid__cell--label">Live</div>
+        <div class="grid__cell--content">
+            <app-starfire
+            playback="live" 
+            [showTractor]=true 
+            [zoom]=20
+            [vehicleId]="vehicleId"
+            ></app-starfire>
+        </div>
+    </div>
+    <ng-template #history>
+        <div class="grid__cell map" *ngIf="fgGeolocationFilter.get('map').value==='static'">
+            <div class="grid__cell--label">Static</div>
+            <div class="grid__cell--content">
+                <app-starfire 
+                [startDateTime]="startDateTime"
+                [endDateTime]="endDateTime"
+                [showTractor]=true 
+                [zoom]=20 
+                [vehicleId]="vehicleId" ></app-starfire>
+            </div>
+        </div>
+        <div class="grid__cell map"  *ngIf="fgGeolocationFilter.get('map').value==='replay'">
+            <div class="grid__cell--label">Replay</div>
+            <div class="grid__cell--content">
+                <app-starfire 
+                [startDateTime]="startDateTime"
+                [endDateTime]="endDateTime"
+                playback="replay" 
+                [showTractor]=true 
+                [zoom]=20 
+                [vehicleId]="vehicleId"></app-starfire>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+<ng-template #loader>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

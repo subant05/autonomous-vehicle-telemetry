@@ -62,6 +62,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatRadioModule} from '@angular/material/radio';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -136,6 +137,7 @@ import { ImageExpansionComponent } from './components/modals/image-expansion/ima
     MatTabsModule,
     MatExpansionModule,
     MatDialogModule,
+    MatRadioModule,
     // 
     GraphQLModule,
     SocialLoginModule,

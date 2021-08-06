@@ -42,11 +42,11 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
               , url:`/vehicles/${this.vehicleId}/overview`
               , tooltip:`Vehicle: ${this.vehicleId} Overview Page`
             },
-            // {
-            //   label:"Geolocation"
-            //   , url:`/vehicles/${this.vehicleId}/geolocation`
-            //   , tooltip:`Vehicle: ${this.vehicleId} Geolocation Page`
-            // },
+            {
+              label:"Geolocation"
+              , url:`/vehicles/${this.vehicleId}/geolocation`
+              , tooltip:`Vehicle: ${this.vehicleId} Geolocation Page`
+            },
             // {
             //   label:"Images"
             //   , url:`/vehicles/${this.vehicleId}/images`

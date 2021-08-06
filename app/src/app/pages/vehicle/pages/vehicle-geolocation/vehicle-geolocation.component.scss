@@ -1,0 +1,28 @@
+.geolocation__form{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width:100%;
+    flex-wrap: wrap;
+
+    .geolocation__form--field {
+        margin-right: 10px;
+
+        &:last-of-type {
+            margin-right: 0px;
+        }
+
+        .geolocation__form--radio{
+            margin-right: 10px;
+        }
+    }
+}
+.map {
+    .grid__cell--content{
+        height:400px;
+    }
+}
+
+.datetime{
+    width:280px;
+}

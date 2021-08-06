@@ -95,6 +95,7 @@ export class GqlSubscriptionService {
         ...results
         , topic: results.topic.name
         , node: results.statusMessage.header.node
+        , headerId: results.statusMessage.header.headerid
         , status:results.state.name
         , timestamp: results.statusMessage.header.readingat
         , state:results.state

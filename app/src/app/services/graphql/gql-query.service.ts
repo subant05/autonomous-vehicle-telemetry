@@ -36,9 +36,14 @@ export class GqlQueryService {
   }
 
   getGeolocaton(variables:any){
-    return this.graphService
-      .watchQuery<any>({ query: QueryQL.Geolocation.ById,variables })
-      .valueChanges
+    // return this.graphService
+    //   .watchQuery<any>({ query: QueryQL.Geolocation.ById,variables })
+    //   .valueChanges
+
+      return this.basicFilteredQuery(QueryQL.Geolocation.ById, variables)
+      .pipe(map((response:any)=>{
+        return response.data.starfires.nodes
+      }))
   }
 
   getImagePair(variables:any){
@@ -171,6 +176,7 @@ export class GqlQueryService {
         return {
             id:node.id
             , timestamp:node.statusMessage.header.readingat
+            , headerId: node.statusMessage.header.headerid
             , node: node.statusMessage.header.node
             , topic: node.topic.name
             , state: node.state
@@ -205,7 +211,22 @@ export class GqlQueryService {
           }
       })
     }))
+  }
 
+  getVehicleLocationByDateTimestamp(variables={}){
+    return this.basicFilteredQuery(QueryQL.Geolocation.ByVehicleIdDateTimestamp, variables)
+    .pipe(map((response:any)=>{
+      return response.data.starfires.nodes 
+      // ? null :
+      //   response.data.starfires.nodes.map((geo:any)=>{
+      //     return {
+      //       readingat: geo.readingat
+      //       , id : geo.id
+      //       , ...geo.msg
+      //       , headerId: geo.msg.headerId
+      //     }
+      //   })
+    }))
   }
 
 }
