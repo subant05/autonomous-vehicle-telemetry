@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms'
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Event} from '@angular/router'
 
 @Component({
   selector: 'app-vehicle-geolocation',
@@ -41,6 +41,20 @@ export class VehicleGeolocationComponent implements OnInit {
     this.refresh = !this.refresh
     setTimeout(()=>this.refresh = !this.refresh, 0)
     
+  }
+
+  onLiveToggle(event:any){
+    const isLive = !event.currentTarget.querySelector("input").checked
+    if(isLive){
+      this.fgGeolocationFilter.controls.startDateTime.disable()
+      this.fgGeolocationFilter.controls.endDateTime.disable()
+      this.fgGeolocationFilter.controls.map.disable()
+    }
+    else {
+      this.fgGeolocationFilter.controls.startDateTime.enable()
+      this.fgGeolocationFilter.controls.endDateTime.enable()
+      this.fgGeolocationFilter.controls.map.enable()
+    }
   }
 
   onSubmit(): void{

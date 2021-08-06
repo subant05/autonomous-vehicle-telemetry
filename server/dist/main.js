@@ -5070,6 +5070,7 @@ function VehicleGeolocationComponent_form_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](23, "div", 4);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](24, "mat-slide-toggle", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function VehicleGeolocationComponent_form_0_Template_mat_slide_toggle_click_24_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵrestoreView"](_r5); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](); return ctx_r6.onLiveToggle($event); });
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](25, "Live");
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
@@ -5084,12 +5085,6 @@ function VehicleGeolocationComponent_form_0_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("formGroup", ctx_r0.fgGeolocationFilter);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", ctx_r0.fgGeolocationFilter.get("isLive").value);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", ctx_r0.fgGeolocationFilter.get("isLive").value);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", ctx_r0.fgGeolocationFilter.get("isLive").value);
 } }
 function VehicleGeolocationComponent_div_1_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 17);
@@ -5101,9 +5096,9 @@ function VehicleGeolocationComponent_div_1_div_1_Template(rf, ctx) { if (rf & 1)
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](2);
+    const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("showTractor", true)("zoom", 20)("vehicleId", ctx_r6.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("showTractor", true)("zoom", 20)("vehicleId", ctx_r7.vehicleId);
 } }
 function VehicleGeolocationComponent_div_1_ng_template_2_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 17);
@@ -5115,9 +5110,9 @@ function VehicleGeolocationComponent_div_1_ng_template_2_div_0_Template(rf, ctx)
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](3);
+    const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("startDateTime", ctx_r9.startDateTime)("endDateTime", ctx_r9.endDateTime)("showTractor", true)("zoom", 20)("vehicleId", ctx_r9.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("startDateTime", ctx_r10.startDateTime)("endDateTime", ctx_r10.endDateTime)("showTractor", true)("zoom", 20)("vehicleId", ctx_r10.vehicleId);
 } }
 function VehicleGeolocationComponent_div_1_ng_template_2_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 17);
@@ -5129,18 +5124,18 @@ function VehicleGeolocationComponent_div_1_ng_template_2_div_1_Template(rf, ctx)
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](3);
+    const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("startDateTime", ctx_r10.startDateTime)("endDateTime", ctx_r10.endDateTime)("showTractor", true)("zoom", 20)("vehicleId", ctx_r10.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("startDateTime", ctx_r11.startDateTime)("endDateTime", ctx_r11.endDateTime)("showTractor", true)("zoom", 20)("vehicleId", ctx_r11.vehicleId);
 } }
 function VehicleGeolocationComponent_div_1_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](0, VehicleGeolocationComponent_div_1_ng_template_2_div_0_Template, 5, 5, "div", 21);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](1, VehicleGeolocationComponent_div_1_ng_template_2_div_1_Template, 5, 5, "div", 21);
 } if (rf & 2) {
-    const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx_r8.fgGeolocationFilter.get("map").value === "static");
+    const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx_r9.fgGeolocationFilter.get("map").value === "static");
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx_r8.fgGeolocationFilter.get("map").value === "replay");
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx_r9.fgGeolocationFilter.get("map").value === "replay");
 } }
 function VehicleGeolocationComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 14);
@@ -5148,10 +5143,10 @@ function VehicleGeolocationComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](2, VehicleGeolocationComponent_div_1_ng_template_2_Template, 2, 2, "ng-template", null, 16, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplateRefExtractor"]);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const _r7 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵreference"](3);
+    const _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵreference"](3);
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx_r1.fgGeolocationFilter.get("isLive").value)("ngIfElse", _r7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx_r1.fgGeolocationFilter.get("isLive").value)("ngIfElse", _r8);
 } }
 function VehicleGeolocationComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "mat-progress-bar", 24);
@@ -5184,6 +5179,19 @@ class VehicleGeolocationComponent {
         this.refresh = !this.refresh;
         setTimeout(() => this.refresh = !this.refresh, 0);
     }
+    onLiveToggle(event) {
+        const isLive = !event.currentTarget.querySelector("input").checked;
+        if (isLive) {
+            this.fgGeolocationFilter.controls.startDateTime.disable();
+            this.fgGeolocationFilter.controls.endDateTime.disable();
+            this.fgGeolocationFilter.controls.map.disable();
+        }
+        else {
+            this.fgGeolocationFilter.controls.startDateTime.enable();
+            this.fgGeolocationFilter.controls.endDateTime.enable();
+            this.fgGeolocationFilter.controls.map.enable();
+        }
+    }
     onSubmit() {
         this.startDateTime = this.fgGeolocationFilter.value.startDateTime;
         this.endDateTime = this.fgGeolocationFilter.value.endDateTime;
@@ -5191,8 +5199,8 @@ class VehicleGeolocationComponent {
     }
 }
 VehicleGeolocationComponent.ɵfac = function VehicleGeolocationComponent_Factory(t) { return new (t || VehicleGeolocationComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__.ActivatedRoute)); };
-VehicleGeolocationComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: VehicleGeolocationComponent, selectors: [["app-vehicle-geolocation"]], decls: 4, vars: 3, consts: [["class", "geolocation__form", 3, "formGroup", "submit", 4, "ngIf"], ["class", "grid gap", 4, "ngIf", "ngIfElse"], ["loader", ""], [1, "geolocation__form", 3, "formGroup", "submit"], [1, "geolocation__form--field"], ["appearance", "fill", 1, "example-form-field", "datetime"], ["matInput", "", "type", "datetime-local", "formControlName", "startDateTime", 3, "disabled"], ["matSuffix", "", "mat-icon-button", "", "aria-label", "Clear"], ["matInput", "", "type", "datetime-local", "formControlName", "endDateTime", 3, "disabled"], ["aria-label", "Change Map View", "formControlName", "map", 3, "disabled"], ["value", "static", 1, "geolocation__form--radio"], ["value", "replay", 1, "geolocation__form--radio"], ["formControlName", "isLive"], ["mat-mini-fab", "", "color", "primary", "aria-label", "Example icon button with a menu icon"], [1, "grid", "gap"], ["class", "grid__cell map", 4, "ngIf", "ngIfElse"], ["history", ""], [1, "grid__cell", "map"], [1, "grid__cell--label"], [1, "grid__cell--content"], ["playback", "live", 3, "showTractor", "zoom", "vehicleId"], ["class", "grid__cell map", 4, "ngIf"], [3, "startDateTime", "endDateTime", "showTractor", "zoom", "vehicleId"], ["playback", "replay", 3, "startDateTime", "endDateTime", "showTractor", "zoom", "vehicleId"], ["mode", "indeterminate"]], template: function VehicleGeolocationComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](0, VehicleGeolocationComponent_form_0_Template, 30, 4, "form", 0);
+VehicleGeolocationComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: VehicleGeolocationComponent, selectors: [["app-vehicle-geolocation"]], decls: 4, vars: 3, consts: [["class", "geolocation__form", 3, "formGroup", "submit", 4, "ngIf"], ["class", "grid gap", 4, "ngIf", "ngIfElse"], ["loader", ""], [1, "geolocation__form", 3, "formGroup", "submit"], [1, "geolocation__form--field"], ["appearance", "fill", 1, "example-form-field", "datetime"], ["matInput", "", "type", "datetime-local", "formControlName", "startDateTime"], ["matSuffix", "", "mat-icon-button", "", "aria-label", "Clear"], ["matInput", "", "type", "datetime-local", "formControlName", "endDateTime"], ["aria-label", "Change Map View", "formControlName", "map"], ["value", "static", 1, "geolocation__form--radio"], ["value", "replay", 1, "geolocation__form--radio"], ["formControlName", "isLive", 3, "click"], ["mat-mini-fab", "", "color", "primary", "aria-label", "Example icon button with a menu icon"], [1, "grid", "gap"], ["class", "grid__cell map", 4, "ngIf", "ngIfElse"], ["history", ""], [1, "grid__cell", "map"], [1, "grid__cell--label"], [1, "grid__cell--content"], ["playback", "live", 3, "showTractor", "zoom", "vehicleId"], ["class", "grid__cell map", 4, "ngIf"], [3, "startDateTime", "endDateTime", "showTractor", "zoom", "vehicleId"], ["playback", "replay", 3, "startDateTime", "endDateTime", "showTractor", "zoom", "vehicleId"], ["mode", "indeterminate"]], template: function VehicleGeolocationComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](0, VehicleGeolocationComponent_form_0_Template, 30, 1, "form", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](1, VehicleGeolocationComponent_div_1_Template, 4, 2, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](2, VehicleGeolocationComponent_ng_template_2_Template, 1, 0, "ng-template", null, 2, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {

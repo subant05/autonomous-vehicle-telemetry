@@ -7,7 +7,6 @@
         <mat-form-field class="example-form-field datetime" appearance="fill">
             <mat-label>Start</mat-label>
             <input matInput type="datetime-local" 
-                [disabled]="fgGeolocationFilter.get('isLive').value"
                 formControlName="startDateTime">
             <button matSuffix mat-icon-button aria-label="Clear" >
               <mat-icon>close</mat-icon>
@@ -18,7 +17,6 @@
         <mat-form-field class="example-form-field datetime" appearance="fill">
             <mat-label>End</mat-label>
             <input matInput type="datetime-local" 
-                [disabled]="fgGeolocationFilter.get('isLive').value"
                 formControlName="endDateTime">
             <button matSuffix mat-icon-button aria-label="Clear" >
               <mat-icon>close</mat-icon>
@@ -27,8 +25,7 @@
     </div>
     <div class="geolocation__form--field">
         <mat-radio-group aria-label="Change Map View" 
-            formControlName="map"
-            [disabled]="fgGeolocationFilter.get('isLive').value">
+            formControlName="map">
             <mat-radio-button value="static" 
                 class="geolocation__form--radio" >
                     Static
@@ -40,7 +37,10 @@
         </mat-radio-group>
     </div>
     <div class="geolocation__form--field">
-        <mat-slide-toggle formControlName="isLive">Live</mat-slide-toggle>
+        <mat-slide-toggle 
+        formControlName="isLive"
+        (click)="onLiveToggle($event)"
+        >Live</mat-slide-toggle>
     </div>
     <div class="geolocation__form--field">
         <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
