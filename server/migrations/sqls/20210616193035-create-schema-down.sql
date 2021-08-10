@@ -5,4 +5,5 @@ DROP SCHEMA messages;
 DROP SCHEMA geolocation;
 DROP SCHEMA images;
 DROP SCHEMA notifications;
+Drop SCHEMA detection;
 DROP SCHEMA state;

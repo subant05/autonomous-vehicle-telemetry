@@ -17,10 +17,10 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
 
 
         const {descriptor, vehicle_state, stop_reasons} = data.msg
-        const errorAlert = stop_reasons.filter(reason=>{
+        const errorAlert = stop_reasons.stop_reasons.filter(reason=>{
             return reason.is_active
         })
-        const criticalError = stop_reasons.filter(reason=>{
+        const criticalError = stop_reasons.stop_reasons.filter(reason=>{
             return reason.is_active && !reason.is_recoverable
         })
 
@@ -120,7 +120,7 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
             , topic.rows[0].id
             , vehicle.rows[0].id
             , vehicle_state.state
-            , JSON.stringify(stop_reasons)
+            , JSON.stringify(stop_reasons.stop_reasons)
             , alertMessage
             , alertType
         ])

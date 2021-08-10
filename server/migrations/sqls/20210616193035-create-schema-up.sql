@@ -5,4 +5,5 @@ CREATE SCHEMA logging;
 CREATE SCHEMA geolocation;
 CREATE SCHEMA images;
 CREATE SCHEMA notifications;
+CREATE SCHEMA detection;
 CREATE SCHEMA state;

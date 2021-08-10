@@ -1,1 +1,21 @@
 /* Replace with your SQL commands */
+DROP TABLE detection.objects;
+DROP TABLE detection.object_message_vertices;
+DROP TABLE detection.object_message;
+DROP TABLE detection.object_message_circle_center;
+DROP TABLE detection.object_message_centroid_location;
+DROP TABLE detection.object_message_field_origin;
+DROP TABLE detection.object_message_ecef;
+DROP TABLE detection.object_message_enu;
+DROP TABLE detection.object_message_lla;
+DROP TABLE detection.object_message_xyz_starfire;
+DROP TABLE detection.object_message_xyz_camera;
+DROP TABLE detection.object_message_centroid_rpy;
+DROP TABLE detection.object_message_detection;
+DROP TABLE detection.object_message_detection_roi;
+DROP TABLE detection.object_message_detection_cuboid;
+DROP TABLE detection.object_message_detection_cuboid_orientation;
+DROP TABLE detection.object_message_detection_cuboid_dimension;
+DROP TABLE detection.object_message_detection_cuboid_centroid;
+DROP TABLE detection.object_message_detection_header;
+DROP TABLE detection.object_message_header;
