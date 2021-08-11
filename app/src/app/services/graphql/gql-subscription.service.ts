@@ -55,6 +55,9 @@ export class GqlSubscriptionService {
       , variables
     }).pipe(map((response:any)=>{
       const result = response.data.sqlVehiclesOnline
+      if(!result.vehicle_online)
+        return null;
+
       switch(result.event){
         case "INSERT":
         case "UPDATE":
@@ -109,17 +112,24 @@ export class GqlSubscriptionService {
       query: SubscriptionQL.Images.PreviewImagesByVehicleId
       , variables
     }).pipe(map((response:any)=>{
-      return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
-          const preview = item.cameras.nodes[0]
-          const cameraMessages = preview.msg.image.cameraMessages.nodes[0]
-          const image = cameraMessages.image
-          const header = cameraMessages.header
-          return {
-            topic: preview.topic.name
-            , image: {...image, data: JSON.parse(image.data.data)}
-            , header: header
-          }
-      })
+      return {
+        topic: response.data.sqlCamera.camera.topic.name
+        , topicId: response.data.sqlCamera.camera.topic.id
+        , image: {...response.data.sqlCamera.camera.msg.image, data: JSON.parse(response.data.sqlCamera.camera.msg.image.data.data)}
+        , header:response.data.sqlCamera.camera.msg.header
+      }
+
+      // return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
+      //     const preview = item.cameras.nodes[0]
+      //     const cameraMessages = preview.msg.image.cameraMessages.nodes[0]
+      //     const image = cameraMessages.image
+      //     const header = cameraMessages.header
+      //     return {
+      //       topic: preview.topic.name
+      //       , image: {...image, data: JSON.parse(image.data.data)}
+      //       , header: header
+      //     }
+      // })
     }))
   }
 

@@ -196,7 +196,7 @@ export class GqlQueryService {
     return this.basicFilteredQuery(QueryQL.Images.PreviewDetailsByVehicleId, variables)
     .pipe(map((response:any)=>{
       return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
-          const preview = item.cameras.nodes[0]
+        const preview = item.cameras.nodes[0]
           if(!preview)
             return null
             

@@ -4,6 +4,7 @@ import {GeolocationService} from 'src/app/services/geolocation/geolocation.servi
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
 import {ActivatedRoute} from '@angular/router'
+import { toPublicName } from '@angular/compiler/src/i18n/serializers/xmb';
 
 @Component({
   selector: 'app-vehicle-overview',
@@ -17,8 +18,10 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
   previousCoordinatesQuery:Subscription | null = null
   previewImagesSubscription:Subscription | null = null
   imageSubscriptions:Subscription[]  = []
+  allImageSubscriptions:Subscription  | null = null
   vehiclesLastCoordinates:number[][] = []
   vehicleImages:any[] =[]
+  isImageRefresh:boolean = false
   vehicleId: string=""
   isVehicleOnline: boolean = false;
 
@@ -48,7 +51,8 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
     this.onlineStatusSubscription = this.graphQLSubscription
       .getVehicleOnlineStatus({id:this.vehicleId})
       .subscribe((response:any)=>{
-        this.isVehicleOnline = response.online
+        if(response)
+          this.isVehicleOnline = response.online
       })
 
       this.previewImagesSubscription = this.graphQLQuery
@@ -67,6 +71,33 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
             })
         })
       })
+
+      this.allImageSubscriptions = 
+        this.graphQLSubscription
+        .getVehiclePreviewImages({vehicleId:this.vehicleId})
+        .subscribe((response:any)=>{
+          const imageIndex = this.vehicleImages.findIndex((image:any)=>{
+            return !image ? false : image.topicId === response.topicId
+          }) 
+
+          if(imageIndex === -1){
+            this.vehicleImages.push(response)
+            this.imageSubscriptions.push( 
+              this.graphQLSubscription
+              .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:response.topicId})
+              .subscribe((response:any)=>{
+                this.vehicleImages[this.vehicleImages.length-1] = response
+              })
+            )
+            this.refreshImages()
+          }
+
+        })
+  }
+
+  refreshImages(){
+    this.isImageRefresh = true
+    setTimeout(()=>this.isImageRefresh = false, 500)
   }
 
   ngOnDestroy() :void{
@@ -74,6 +105,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
     this.onlineStatusQuery?.unsubscribe()
     this.previousCoordinatesQuery?.unsubscribe()
     this.previewImagesSubscription?.unsubscribe()
+    this.allImageSubscriptions?.unsubscribe()
     this.imageSubscriptions.forEach(subscription=>{
       subscription.unsubscribe()
     })
@@ -82,6 +114,4 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
   ngAfterViewInit() :void{
 
   }
-
-
 }

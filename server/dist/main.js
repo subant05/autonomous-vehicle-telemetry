@@ -1404,50 +1404,79 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
 
 
-const previewImagesByVehicleId  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
-subscription PreviewImagesByVehicleId($id: BigInt) {
-    topicCategories(condition:{name:"images"}){
-      nodes{
-        topics(filter:{name:{includes:"left/preview"} }){
-          nodes{
-            cameras(last:1 condition:{vehicleId:$id}){
-              totalCount
-              nodes {
-                id
-                topic{
-                  name
-                }
-                msg{
-                  image {
-                    cameraMessages{
-                      nodes{
-                        header{
-                          readingat
-                          headerId
-                        }
+// const previewImagesByVehicleId  = gql`
+// subscription PreviewImagesByVehicleId($id: BigInt) {
+//     topicCategories(condition:{name:"images"}){
+//       nodes{
+//         topics(filter:{name:{includes:"left/preview"} }){
+//           nodes{
+//             cameras(last:1 condition:{vehicleId:$id}){
+//               totalCount
+//               nodes {
+//                 id
+//                 topic{
+//                   name
+//                 }
+//                 msg{
+//                   image {
+//                     cameraMessages{
+//                       nodes{
+//                         header{
+//                           readingat
+//                           headerId
+//                         }
   
-                        image{
-                          width
-                          height
-                          step
-                          isBigendian
-                          encoding
-                          data {
-                            data
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
+//                         image{
+//                           width
+//                           height
+//                           step
+//                           isBigendian
+//                           encoding
+//                           data {
+//                             data
+//                           }
+//                         }
+//                       }
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `
+
+const previewImagesByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`subscription PreviewImagesByVehicleId($id: BigInt)  {
+  sqlCamera {
+    camera(vehicleId:$id){
+        topic{
+          name
+          id
+        }
+        msg {
+          header{
+            id
+            seq
+            readingat
+            node
           }
+          image{
+            width
+            height
+            step
+            isBigendian
+            encoding
+            data {
+              data
+            }
         }
       }
     }
   }
-`
+}`
 
 
 /***/ }),
@@ -5345,8 +5374,10 @@ class VehicleOverviewComponent {
         this.previousCoordinatesQuery = null;
         this.previewImagesSubscription = null;
         this.imageSubscriptions = [];
+        this.allImageSubscriptions = null;
         this.vehiclesLastCoordinates = [];
         this.vehicleImages = [];
+        this.isImageRefresh = false;
         this.vehicleId = "";
         this.isVehicleOnline = false;
     }
@@ -5366,7 +5397,8 @@ class VehicleOverviewComponent {
         this.onlineStatusSubscription = this.graphQLSubscription
             .getVehicleOnlineStatus({ id: this.vehicleId })
             .subscribe((response) => {
-            this.isVehicleOnline = response.online;
+            if (response)
+                this.isVehicleOnline = response.online;
         });
         this.previewImagesSubscription = this.graphQLQuery
             .getVehiclePreviewImages({ id: this.vehicleId })
@@ -5383,13 +5415,35 @@ class VehicleOverviewComponent {
                     });
             });
         });
+        this.allImageSubscriptions =
+            this.graphQLSubscription
+                .getVehiclePreviewImages({ vehicleId: this.vehicleId })
+                .subscribe((response) => {
+                const imageIndex = this.vehicleImages.findIndex((image) => {
+                    return !image ? false : image.topicId === response.topicId;
+                });
+                if (imageIndex === -1) {
+                    this.vehicleImages.push(response);
+                    this.imageSubscriptions.push(this.graphQLSubscription
+                        .getPreviewImageByVehicleIdTopicId({ vehicleId: this.vehicleId, topicId: response.topicId })
+                        .subscribe((response) => {
+                        this.vehicleImages[this.vehicleImages.length - 1] = response;
+                    }));
+                    this.refreshImages();
+                }
+            });
+    }
+    refreshImages() {
+        this.isImageRefresh = true;
+        setTimeout(() => this.isImageRefresh = false, 500);
     }
     ngOnDestroy() {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
         (_a = this.onlineStatusSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
         (_b = this.onlineStatusQuery) === null || _b === void 0 ? void 0 : _b.unsubscribe();
         (_c = this.previousCoordinatesQuery) === null || _c === void 0 ? void 0 : _c.unsubscribe();
         (_d = this.previewImagesSubscription) === null || _d === void 0 ? void 0 : _d.unsubscribe();
+        (_e = this.allImageSubscriptions) === null || _e === void 0 ? void 0 : _e.unsubscribe();
         this.imageSubscriptions.forEach(subscription => {
             subscription.unsubscribe();
         });
@@ -6947,6 +7001,8 @@ class GqlSubscriptionService {
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
             const result = response.data.sqlVehiclesOnline;
+            if (!result.vehicle_online)
+                return null;
             switch (result.event) {
                 case "INSERT":
                 case "UPDATE":
@@ -6986,17 +7042,23 @@ class GqlSubscriptionService {
             query: SubscriptionQL.Images.PreviewImagesByVehicleId,
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
-            return response.data.topicCategories.nodes[0].topics.nodes.map((item) => {
-                const preview = item.cameras.nodes[0];
-                const cameraMessages = preview.msg.image.cameraMessages.nodes[0];
-                const image = cameraMessages.image;
-                const header = cameraMessages.header;
-                return {
-                    topic: preview.topic.name,
-                    image: Object.assign(Object.assign({}, image), { data: JSON.parse(image.data.data) }),
-                    header: header
-                };
-            });
+            return {
+                topic: response.data.sqlCamera.camera.topic.name,
+                topicId: response.data.sqlCamera.camera.topic.id,
+                image: Object.assign(Object.assign({}, response.data.sqlCamera.camera.msg.image), { data: JSON.parse(response.data.sqlCamera.camera.msg.image.data.data) }),
+                header: response.data.sqlCamera.camera.msg.header
+            };
+            // return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
+            //     const preview = item.cameras.nodes[0]
+            //     const cameraMessages = preview.msg.image.cameraMessages.nodes[0]
+            //     const image = cameraMessages.image
+            //     const header = cameraMessages.header
+            //     return {
+            //       topic: preview.topic.name
+            //       , image: {...image, data: JSON.parse(image.data.data)}
+            //       , header: header
+            //     }
+            // })
         }));
     }
     getPreviewImageByVehicleIdTopicId(variables = {}) {
