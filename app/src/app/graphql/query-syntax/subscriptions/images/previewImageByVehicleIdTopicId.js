@@ -4,7 +4,9 @@ const previewImagesByVehicleIdTopicId  =gql`
 subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:BigInt) {
     sqlCamera {
       camera(vehicleId: $vehicleId) {
+        id: nodeId
         vehicle {
+          id: nodeId
           vehicleTopics(condition:{topicId:$topicId}) {
             nodes {
               topic{
@@ -12,6 +14,7 @@ subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:
                 id
                 cameras(first:1 orderBy:ID_DESC){
                   nodes{
+                    id: nodeId
                     readingat
                     msg {
                       header{

@@ -58,7 +58,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
       this.previewImagesSubscription = this.graphQLQuery
       .getVehiclePreviewImages({id:this.vehicleId})
       .subscribe((response:any)=>{
-        this.vehicleImages = response
+        this.vehicleImages = response.filter((item:any)=>!!item)
         this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
           if(!image)
             return;
@@ -82,11 +82,13 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
 
           if(imageIndex === -1){
             this.vehicleImages.push(response)
+            const index = this.vehicleImages.length-1
+            
             this.imageSubscriptions.push( 
               this.graphQLSubscription
               .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:response.topicId})
               .subscribe((response:any)=>{
-                this.vehicleImages[this.vehicleImages.length-1] = response
+                this.vehicleImages[index] = response
               })
             )
             this.refreshImages()

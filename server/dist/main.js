@@ -1350,7 +1350,9 @@ const previewImagesByVehicleIdTopicId  =apollo_angular__WEBPACK_IMPORTED_MODULE_
 subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:BigInt) {
     sqlCamera {
       camera(vehicleId: $vehicleId) {
+        id: nodeId
         vehicle {
+          id: nodeId
           vehicleTopics(condition:{topicId:$topicId}) {
             nodes {
               topic{
@@ -1358,6 +1360,7 @@ subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:
                 id
                 cameras(first:1 orderBy:ID_DESC){
                   nodes{
+                    id: nodeId
                     readingat
                     msg {
                       header{
@@ -5403,7 +5406,7 @@ class VehicleOverviewComponent {
         this.previewImagesSubscription = this.graphQLQuery
             .getVehiclePreviewImages({ id: this.vehicleId })
             .subscribe((response) => {
-            this.vehicleImages = response;
+            this.vehicleImages = response.filter((item) => !!item);
             this.vehicleImages.forEach((image, index, array) => {
                 if (!image)
                     return;
@@ -5424,10 +5427,11 @@ class VehicleOverviewComponent {
                 });
                 if (imageIndex === -1) {
                     this.vehicleImages.push(response);
+                    const index = this.vehicleImages.length - 1;
                     this.imageSubscriptions.push(this.graphQLSubscription
                         .getPreviewImageByVehicleIdTopicId({ vehicleId: this.vehicleId, topicId: response.topicId })
                         .subscribe((response) => {
-                        this.vehicleImages[this.vehicleImages.length - 1] = response;
+                        this.vehicleImages[index] = response;
                     }));
                     this.refreshImages();
                 }
