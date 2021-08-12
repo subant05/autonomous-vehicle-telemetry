@@ -21,7 +21,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
   allImageSubscriptions:Subscription  | null = null
   vehiclesLastCoordinates:number[][] = []
   vehicleImages:any[] =[]
-  isImageRefresh:boolean = false
+  isImagesLoaded:boolean = false
   vehicleId: string=""
   isVehicleOnline: boolean = false;
 
@@ -70,6 +70,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
               array[index] = response
             })
         })
+        this.isImagesLoaded = true
       })
 
       this.allImageSubscriptions = 
@@ -91,15 +92,9 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
                 this.vehicleImages[index] = response
               })
             )
-            this.refreshImages()
           }
 
         })
-  }
-
-  refreshImages(){
-    this.isImageRefresh = true
-    setTimeout(()=>this.isImageRefresh = false, 500)
   }
 
   ngOnDestroy() :void{

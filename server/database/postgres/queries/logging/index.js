@@ -1,0 +1,1 @@
+export {sqlInsertVehicleLogs} from './sqlInsertVehicleLogs'

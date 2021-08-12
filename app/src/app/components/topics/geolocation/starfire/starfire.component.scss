@@ -4,14 +4,20 @@
 }
 
 .nomap{
-    background: url("/assets/location_off_black_24dp.svg") no-repeat center center;
-    background-size:contain;
+    // background: url("/assets/location_off_black_24dp.svg") no-repeat center center;
+    // background-size:contain;
+    // width: 100px;
+    // height: 100px;
+    // /* Center vertically and horizontally */
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // margin: 50px 0 0 -50px;
+    // opacity: 50%;
+
+    background: url(/assets/location_off_black_24dp.svg) no-repeat center center;
+    background-size: contain;
     width: 100px;
     height: 100px;
-    /* Center vertically and horizontally */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: 50px 0 0 -50px;
     opacity: 50%;
 }

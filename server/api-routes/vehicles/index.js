@@ -4,6 +4,7 @@ import Images from './images'
 import Geolocation  from './geolocation'
 import Status from './status'
 import Objects from './object'
+import Logging from './logging'
 
 const childRouter = express.Router();
 const parentRouter = express.Router();
@@ -14,6 +15,7 @@ try{
     childRouter.use('/geolocation', Geolocation);
     childRouter.use('/status', Status);
     childRouter.use('/object', Objects);
+    childRouter.use('/logging', Logging);
 
     parentRouter.use('/', childRouter)
 

@@ -562,6 +562,9 @@ CREATE TABLE IF NOT EXISTS detection.object_message_vertices(
     field_origin_id BIGINT NOT NULL,
     ecef_id BIGINT NOT NULL,
     PRIMARY KEY(id),
+    CONSTRAINT fk_object_message_id
+        FOREIGN KEY (object_message_id)
+        REFERENCES detection.object_message(id),
     CONSTRAINT fk_object_message_xyz_camera
         FOREIGN KEY(xyz_camera_id)
         REFERENCES detection.object_message_xyz_camera(id),
