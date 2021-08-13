@@ -13,5 +13,4 @@ router.post("/test", async (req, res) => {
     res.send("success")
 })
 
-
 export default router;
