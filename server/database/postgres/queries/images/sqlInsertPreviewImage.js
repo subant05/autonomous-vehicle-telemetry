@@ -1,6 +1,7 @@
 import { sqlInsertTopic } from '../topics'
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import {formatDateTime} from '../_utils'
+import {sqlInsertCameraMessage} from './sqlInsertCameraMessage'
 const { client, pool } = require("../../connection.js")
 
 export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
@@ -409,9 +410,8 @@ export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
         return queryResult
 
     }catch(e){
-        // console.log("INSERT CAMERA DATA MESSAGE: ", e.message)
-        // console.log("INSERT CAMERA DATA STACK: ", e.stack)
-        console.log("VEHICLES", vehicle)
+        console.log("INSERT CAMERA DATA MESSAGE: ", e.message)
+        console.log("INSERT CAMERA DATA STACK: ", e.stack)
         cb(e)
         return null
     }
