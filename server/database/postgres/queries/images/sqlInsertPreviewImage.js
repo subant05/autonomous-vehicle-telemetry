@@ -1,7 +1,6 @@
 import { sqlInsertTopic } from '../topics'
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import {formatDateTime} from '../_utils'
-import {sqlInsertCameraMessage} from './sqlInsertCameraMessage'
 const { client, pool } = require("../../connection.js")
 
 export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
@@ -11,7 +10,7 @@ export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
         cb(null, JSON.stringify("Data Sent") )
 
         const topic = await sqlInsertTopic(argTopic, {category:"images", ...data})
-        // const vehicle = await sqlInsertVehicle(data.vehicle)
+        const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         
