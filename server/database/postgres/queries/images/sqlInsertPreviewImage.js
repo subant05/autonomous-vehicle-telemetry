@@ -11,7 +11,7 @@ export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
         cb(null, JSON.stringify("Data Sent") )
 
         const topic = await sqlInsertTopic(argTopic, {category:"images", ...data})
-        const vehicle = await sqlInsertVehicle(data.vehicle)
+        // const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         
@@ -410,10 +410,9 @@ export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
         return queryResult
 
     }catch(e){
-        console.log("INSERT CAMERA DATA MESSAGE: ", e.message)
-        console.log("INSERT CAMERA DATA STACK: ", e.stack)
-        console.log("Vehicles", vehicle)
-        console.log("Topic", topic)
+        // console.log("INSERT CAMERA DATA MESSAGE: ", e.message)
+        // console.log("INSERT CAMERA DATA STACK: ", e.stack)
+        console.log("VEHICLES", vehicle)
         cb(e)
         return null
     }

@@ -39,8 +39,8 @@ export const sqlInsertSegmentationMap = async (argTopic, data, cb=a=>a) =>{
         // cb(null, JSON.stringify(queryResult) )
         return queryResult
     }catch(e){
-        console.log("INSERT CAMERA DATA MESSAGE: ", e.message)
-        console.log("INSERT CAMERA DATA STACK: ", e.stack)
+        console.log("INSERT SEGMENTATION CAMERA DATA MESSAGE: ", e.message)
+        console.log("INSERT SEGMENTATION CAMERA DATA STACK: ", e.stack)
         cb(e)
         return null
     }
