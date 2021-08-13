@@ -64,7 +64,7 @@
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Alert </th>
                       <td mat-cell *matCellDef="let col"> 
                           <mat-icon class="icon" inline>
-                              {{renderAlertsolumn(col)}} 
+                              {{renderAlertsColumn(col)}} 
                         </mat-icon></td>
                     </ng-container>
                     <ng-container matColumnDef="type">
@@ -81,7 +81,7 @@
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="columns"></tr>
                     <tr mat-row 
-                      [class]= "renderAlertsolumn(row)" 
+                      [class]= "renderAlertsColumn(row)" 
                       *matRowDef="let row; columns: columns;"
                       (click)="openDialog(row)"
                     ></tr>

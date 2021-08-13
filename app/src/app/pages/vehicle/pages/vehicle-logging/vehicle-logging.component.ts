@@ -71,10 +71,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         else
           this.savedResults = response   
       
-
-      debugger;
-      this.updateList(this.savedResults)
-        
+      this.updateList(this.savedResults)        
     })
   }
 
@@ -152,7 +149,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
 
-  renderAlertsolumn(col:any){
+  renderAlertsColumn(col:any){
     switch(col.__typename){
       case "VehicleStatus":
           return col.alerts.nodes[0].alertType.name

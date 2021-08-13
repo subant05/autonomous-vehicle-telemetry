@@ -1,0 +1,9 @@
+<div class="medallion">
+    <div *ngIf="title" class="medallion__title">
+        {{title}}
+    </div>
+    <div *ngIf="content" class="medallion__content">
+        {{content}}
+    </div>
+    <ng-content></ng-content>
+</div>

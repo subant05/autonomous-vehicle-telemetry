@@ -69,8 +69,10 @@ export class GqlQueryService {
         const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle:any)=>{
           const result = {...vehicle.vehicle}
           result.id = vehicle.id
-          result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0]
-          result.state = result.vehicleStatuses.nodes[0].state
+          if(result.vehicleStatuses.nodes.length){
+            result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0]
+            result.state = result.vehicleStatuses.nodes[0].state
+          }
 
           return result
         })

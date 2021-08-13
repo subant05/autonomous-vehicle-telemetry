@@ -99,4 +99,8 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
     });
   }
 
+  renderAlertsColumn(row:any){
+    row.alerts ? row.alerts.alertType.name : 'information'
+  }
+
 }

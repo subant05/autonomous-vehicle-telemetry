@@ -40,8 +40,10 @@ export class GqlSubscriptionService {
         result.ip     = vehicle.ip
         result.vehicle_id = vehicle.vehicle_id
         result.type   = vehicle.type.type
-        result.alerts = vehicle.vehicleStatuses.nodes[0].alerts.nodes[0]
-        result.state = vehicle.vehicleStatuses.nodes[0].state
+        if(vehicle.vehicleStatuses.nodes.length){
+          result.alerts =  vehicle.vehicleStatuses.nodes[0].alerts.nodes[0]
+          result.state = vehicle.vehicleStatuses.nodes[0].state
+        }
       }
       
       return result

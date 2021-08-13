@@ -12,7 +12,62 @@
     </div>
 </div>
 <div class="grid gap col-2">
+    <div class="grid__cell production">
+        <app-medallion 
+            class="stats"
+            title="Uptime"
+            content="24 hrs"
+            >
+        </app-medallion>
+        <app-medallion 
+            class="stats"
+            title="Done"
+            content="9 ac"
+            >
+        </app-medallion>
+        <app-medallion 
+            class="stats"
+            title="Moving"
+            content="7 %"
+            >
+        </app-medallion>
+        <app-medallion 
+            class="stats medium"
+            title="Telesupport"
+            content="3 %"
+            >
+        </app-medallion>
+        <app-medallion 
+            class="stats medium"
+            title="# False positive"
+            content="4 ac"
+            >
+        </app-medallion>
+        <app-medallion 
+            class="stats medium"
+            title="Support"
+            content="2 ac"
+            >
+        </app-medallion>
+        <app-medallion 
+            class="stats medium"
+            title="Mission Start"
+            content="8 hrs"
+            >
+        </app-medallion>
+    </div>
     <div class="grid__cell">
+        <div class="grid__cell--label">Status</div>
+        <div class="grid__cell--content">
+            <app-vehicle-status
+            [vehicleId]="vehicleId"
+            ></app-vehicle-status>
+        </div>
+    </div>
+    <div class="grid__cell grid__cell__full-width">
+        <mat-divider class="divider"></mat-divider>
+    </div>
+    <div class="grid__cell grid__cell__full-width">
         <div class="grid__cell--label">Geolocation</div>
         <div class="grid__cell--content">
             <div *ngIf="vehiclesLastCoordinates.length; else emptymap"  class="map" >
@@ -42,15 +97,6 @@
                     ></app-starfire>
                 </div>
             </ng-template>
-        </div>
-
-    </div>
-    <div class="grid__cell">
-        <div class="grid__cell--label">Status</div>
-        <div class="grid__cell--content">
-            <app-vehicle-status
-            [vehicleId]="vehicleId"
-            ></app-vehicle-status>
         </div>
     </div>
     <div class="grid__cell grid__cell__full-width">

@@ -5,8 +5,14 @@ import {setDefaultVehicle,responseCallback} from './_utils'
 const router = express.Router();
 
 router.post("/", async (req, res) => {
+    res.send("Data Recieved" )
+
     setDefaultVehicle(req)
-    Logging.sqlInsertVehicleLogs(req.body[0].topic, req.body, responseCallback(res))
+    Logging.sqlInsertVehicleLogs(req.body[0].topic, req.body)
+})
+
+router.post("/test", async (req, res) => {
+    res.send("success")
 })
 
 export default router;

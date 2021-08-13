@@ -80,6 +80,7 @@ import { VehicleStatusComponent } from './components/topics/vehicles/vehicle-sta
 import { VehicleStatusDetailComponent } from './components/modals/vehicle-status-detail/vehicle-status-detail.component';
 import { ImageComponent } from './components/images/image/image.component';
 import { ImageExpansionComponent } from './components/modals/image-expansion/image-expansion.component';
+import { MedallionComponent } from './components/core/medallion/medallion.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { ImageExpansionComponent } from './components/modals/image-expansion/ima
     VehicleStatusDetailComponent,
     ImageComponent,
     ImageExpansionComponent,
+    MedallionComponent,
   ],
   imports: [
     BrowserModule,

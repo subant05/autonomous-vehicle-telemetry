@@ -7,7 +7,11 @@
     <!-- Position Column -->
     <ng-container matColumnDef="alert">
     <th mat-header-cell *matHeaderCellDef>Alert </th>
-    <td mat-cell *matCellDef="let col"> <mat-icon class="icon" inline>{{col.alerts.alertType.name}} </mat-icon></td>
+    <td mat-cell *matCellDef="let col"> 
+        <mat-icon class="icon" inline>
+            {{renderAlertsColumn(col)}} 
+        </mat-icon>
+    </td>
     </ng-container>
 
     <ng-container matColumnDef="id">
@@ -27,7 +31,7 @@
     
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row 
-    [class]= "row.alerts.alertType.name" 
+    [class]= "renderAlertsColumn(row)" 
     *matRowDef="let row; columns: columns;"
     (click)="rowClick(row)"
     ></tr>
