@@ -34,6 +34,7 @@ import { VehicleImagesComponent } from './pages/vehicle/pages/vehicle-images/veh
 import { VehicleLoggingComponent } from './pages/vehicle/pages/vehicle-logging/vehicle-logging.component';
 import { VehicleSystemComponent } from './pages/vehicle/pages/vehicle-system/vehicle-system.component';
 import { TableUtil } from './components/table/table-utils';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 // Enviornment Variables
 import { environment } from '../environments/environment';
@@ -63,6 +64,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
 // 
 
 import { ProfileComponent } from './pages/profile/profile.component';
@@ -138,10 +140,12 @@ import { ImageExpansionComponent } from './components/modals/image-expansion/ima
     MatExpansionModule,
     MatDialogModule,
     MatRadioModule,
+    MatSelectModule,
     // 
     GraphQLModule,
     SocialLoginModule,
     NgDynamicBreadcrumbModule,
+    InfiniteScrollModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

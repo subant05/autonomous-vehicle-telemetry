@@ -13,6 +13,8 @@ export const sqlInsertObjectDetection = async (argTopic, data, cb = a => a) => {
     }
 
     try{
+        cb(null, "Data Recieved" )
+
         const topic = await sqlInsertTopic(argTopic, { category: "status", ...data })
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
@@ -46,7 +48,7 @@ export const sqlInsertObjectDetection = async (argTopic, data, cb = a => a) => {
             , objectMessage.rows[0].id
         ])
     
-        cb(null, JSON.stringify(queryResult) )
+        // cb(null, JSON.stringify(queryResult) )
         return queryResult
 
     }catch(e){

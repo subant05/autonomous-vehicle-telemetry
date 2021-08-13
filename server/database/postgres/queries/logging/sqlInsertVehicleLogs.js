@@ -4,12 +4,15 @@ import { sqlInsertTopic } from '../topics'
 const { client, pool } = require("../../connection.js")
 
 export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
-    // if (!argTopic || !argTopic.includes('/rosout') || !data) {
-    //     cb(null, "ignored")
-    //     return;
-    // }
+    if (!argTopic || !argTopic.includes('/rosout') || !data) {
+        cb(null, "ignored")
+        return;
+    }
 
     try{
+
+        cb(null, "Data Recieved" )
+
         const topic = await sqlInsertTopic(argTopic, { category: "status", ...data[0] })
         const vehicle = await sqlInsertVehicle(data[0].vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
@@ -72,9 +75,7 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
             // , formatDateTime(data.timestamp)
         ])
 
-        cb(null, JSON.stringify(queryResult) )
         return queryResult
-
     }catch(e){
         console.log("INSERT VEHICLE LOG ERROR MESSAGE: ", e.message)
         console.log("INSERT VEHICLE LOG ERROR STACK: ", e.stack)

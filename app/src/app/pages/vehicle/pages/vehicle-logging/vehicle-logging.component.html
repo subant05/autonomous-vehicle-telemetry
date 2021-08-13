@@ -1,1 +1,92 @@
-<p>vehicle-logging works!</p>
+<form class="logging__form" 
+    *ngIf="fgLoggingFilter" 
+    [formGroup]="fgLoggingFilter"
+    (submit)="onSubmit()"
+    >
+    <div class="logging__form--field">
+        <mat-form-field class="example-form-field datetime" appearance="fill">
+            <mat-label>Start</mat-label>
+            <input matInput type="datetime-local" 
+                formControlName="startDateTime">
+            <button matSuffix mat-icon-button aria-label="Clear" >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+    </div>
+    <div class="logging__form--field">
+        <mat-form-field class="example-form-field datetime" appearance="fill">
+            <mat-label>End</mat-label>
+            <input matInput type="datetime-local" 
+                formControlName="endDateTime">
+            <button matSuffix mat-icon-button aria-label="Clear" >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+    </div>
+    <!-- <div class="logging__form--field">
+        <mat-form-field appearance="fill">
+            <mat-label>A Log Type</mat-label>
+            <mat-select formControlName="logType">
+                <mat-option *ngFor="let opts of logTypeOptions">
+                    {{opts.label}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div class="logging__form--field">
+        <mat-form-field class="example-form-field" appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput type="text" formControlName="description">
+            <button *ngIf="fgLoggingFilter.get('description').value" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+    </div> -->
+    <div class="logging__form--field">
+        <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+</form>
+<div class="grid gap">
+    <div class="grid__cell table">
+        <div class="grid__cell--label">Logs</div>
+        <div class="grid__cell--content scollable">
+            <div *ngIf="savedResults.length; else loader;">
+                <table  mat-table  class="vehicles__status"  [dataSource]="tableList" >
+                    <!-- Position Column -->
+            
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
+                        <td mat-cell *matCellDef="let col"> {{col.id}} </td>
+                    </ng-container>        
+                    <!-- <ng-container matColumnDef="alerts">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alert </th>
+                      <td mat-cell *matCellDef="let col"> <mat-icon *ngIf="col.alerts" class="icon" inline>{{col.alerts[0].alertType.name}} </mat-icon></td>
+                    </ng-container> -->
+                    <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type </th>
+                        <td mat-cell *matCellDef="let col"> {{col.__typename}} </td>
+                      </ng-container>
+                    <ng-container matColumnDef="timestamp">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Timestamp </th>
+                        <td mat-cell *matCellDef="let col"> {{col.readingat | date:'medium' }} </td>
+                      </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <tr mat-row 
+                      *matRowDef="let row; columns: columns;"
+                      (click)="openDialog(row)"
+                    ></tr>
+                </table>
+            </div>
+            <ng-template #loader>
+                <div>
+                    No Data
+                </div>
+              </ng-template>
+              <div *ngIf="isScrollDataLoading">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </div>
+        </div>
+    </div>
+</div>

@@ -114,6 +114,8 @@ export const sqlInsertStarFire = async (argTopic, data, cb=a=>a) => {
     }
 
     try{
+        cb(null, "Data Recieved" )
+
         const topic = await sqlInsertTopic(argTopic, {category:"geolocation", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
@@ -139,7 +141,8 @@ export const sqlInsertStarFire = async (argTopic, data, cb=a=>a) => {
             , starFireMessage.rows[0].id
             , vehicle.rows[0].id
         ])
-        cb(null, JSON.stringify(queryResult) )
+        
+        // cb(null, JSON.stringify(queryResult) )
         return queryResult
     }catch(e){
         console.log("STARFIRE INSERT ERROR: ", e.message)

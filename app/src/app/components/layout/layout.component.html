@@ -1,5 +1,9 @@
 <div class="container__content" [ngClass]="{'right_nav':showRightNav}">
-    <div class="container__content-main">
+    <div class="container__content-main" 
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll()">
         <router-outlet></router-outlet>
     </div>
     <app-navigation></app-navigation>

@@ -47,11 +47,11 @@ export class GqlQueryService {
   }
 
   getImagePair(variables:any){
-    return this.basicFilteredQuery(QueryQL.ImagePair, variables)
+    return this.basicFilteredQuery(QueryQL.Images.ImagePair, variables)
   }
 
   getSegmentationMap(variables:any){
-    return this.basicFilteredQuery(QueryQL.SegmentationMap, variables)
+    return this.basicFilteredQuery(QueryQL.Images.SegmentationMap, variables)
   }
 
   getAllVehicles(){
@@ -227,6 +227,20 @@ export class GqlQueryService {
       //     }
       //   })
     }))
+  }
+
+  getAllVehicleLogsStatusDetection(variables={}){
+    return this.basicFilteredQuery(QueryQL.Logging.All, variables)
+    .pipe(map((response:any)=>{
+        return [
+          ...response.data.logging.nodes
+          , ...response.data.objectDetection.nodes
+          , ...response.data.vehicleStatus.nodes  
+        ]
+         .sort((a,b)=>new Date(a.readingat).valueOf() - new Date(b.readingat).valueOf())
+    }))
+
+
   }
 
 }

@@ -1,0 +1,32 @@
+.logging__form{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width:100%;
+    flex-wrap: wrap;
+    padding: 20px;
+
+    .logging__form--field {
+        margin-right: 10px;
+
+        &:last-of-type {
+            margin-right: 0px;
+        }
+
+        .logging__form--radio{
+            margin-right: 10px;
+        }
+    }
+}
+
+.datetime{
+    width:280px;
+}
+
+.mat-table {
+    width: 100%;
+
+    .mat-row {
+        cursor: pointer;
+    }
+}

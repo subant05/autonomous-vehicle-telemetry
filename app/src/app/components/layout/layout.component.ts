@@ -7,8 +7,8 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-
 import { Subscription } from 'rxjs';
+import {ScrollService} from 'src/app/services/layout/scroll.service'
 
 
 @Component({
@@ -27,6 +27,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private alertService: AlertService
     , private menuService: MenuService
     , private _snackBar: MatSnackBar
+    , private scollService: ScrollService
   ) { 
   }
 
@@ -49,6 +50,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   toggleSideNav(){
     this.showRightNav = !this.showRightNav;
+  }
+
+  onScroll(){
+    this.scollService.contentScroll.next(true)
+    console.log("content scrolled")
   }
 
 }

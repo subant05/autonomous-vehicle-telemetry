@@ -1,7 +1,7 @@
 const { client, pool } = require("../../connection.js")
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import { sqlInsertTopic } from '../topics'
-import moment from 'moment';
+import {formatDateTime} from '../_utils/index'
 
 export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
     if(!(argTopic.includes('/stop_reasons') || argTopic.includes('/autonomy_state')) || !data){
@@ -10,6 +10,8 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
     }
     
     try{
+        cb(null, "Data Recieved" )
+
         const topic = await sqlInsertTopic(argTopic, {category:"status", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
@@ -46,12 +48,13 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
             ),
             ins_vehicle_status as (
                 INSERT INTO state.vehicle_status
-                ( topic_id, vehicle_id, status_message_id, state_id)
+                ( topic_id, vehicle_id, status_message_id, state_id, readingat)
                 VALUES(
                     $5
                     , $6
                     , (select id from ins_status_message)
                     , (select id from state.vehicle_states where code = CAST($7 as BIGINT) )
+                    , $8
                 )
 
                 RETURNING id
@@ -72,7 +75,7 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
                     , t ->> 'description'
                     , CAST(t ->> 'is_active' as BOOLEAN)
                     , CAST(t ->> 'is_recoverable' as BOOLEAN)
-                from jsonb_array_elements($8::jsonb) t
+                from jsonb_array_elements($9::jsonb) t
     
                 RETURNING id
             ),
@@ -105,8 +108,8 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
                 , vehicle_status_id
             )
             VALUES (
-                $9
-                , (select id from notifications.alert_types where name  = $10)
+                $10
+                , (select id from notifications.alert_types where name  = $11)
                 , (select id from ins_vehicle_status)
             )
 
@@ -114,17 +117,19 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
 
         `,[
             descriptor.id
-            , moment(descriptor.timestamp/1000000).utc().format('YYYY-MM-DD HH:mm:ssZZ')
+            , formatDateTime(descriptor.timestamp)
             , descriptor.seq 
             , descriptor.node
             , topic.rows[0].id
             , vehicle.rows[0].id
             , vehicle_state.state
+            , formatDateTime(data.timestamp)
             , JSON.stringify(stop_reasons.stop_reasons)
             , alertMessage
             , alertType
         ])
-        cb(null, JSON.stringify(queryResult) )
+        
+        // cb(null, JSON.stringify(queryResult) )
         return queryResult
     }catch(e){
         console.log("INSERT STATUS ERROR MESSAGE: ", e.message)

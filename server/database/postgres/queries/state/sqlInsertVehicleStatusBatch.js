@@ -3,6 +3,8 @@ import { sqlInsertVehicleStatus } from "."
 const getsSqlBatchGenerator = (topic, batch=[], cb=a=>a) => {
     return {
                 async* [Symbol.asyncIterator](){
+                    cb(null, "Data Recieved" )
+
                     try{
                         const length = batch.length 
                         let count = 0
@@ -18,7 +20,8 @@ const getsSqlBatchGenerator = (topic, batch=[], cb=a=>a) => {
                     } catch(err){
                         console.log("INSERT STATUS BATCH ERROR MESSAGE: ", e.message)
                         console.log("INSERT STATUS BATCH ERROR STACK: ", e.stack)
-                        cb("Status Batch Upload Failed")
+
+                        // cb("Status Batch Upload Failed")
                         return null;
                     }
 

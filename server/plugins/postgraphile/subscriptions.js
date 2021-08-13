@@ -27,12 +27,6 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         event: String
       }
 
-      type SQLVehicleLogsPayload {
-        # (Subscription PAYLOAD Type )vehicle log data returned on this subscription type resolver below
-        log: VehicleLog
-        event: String
-      }
-
       type SQLVehiclesOnlinePayload {
         # (Subscription PAYLOAD Type )vehicle online data returned on this subscription type resolver below
         vehicle_online(vehicleId:BigInt): VehiclesOnline
@@ -46,6 +40,18 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
           event:String
       }
   
+      type SQLObjectDetectionPayload {
+        # (Subscription PAYLOAD Type ) camera data returned on this subscription type resolver below
+          object(vehicleId: BigInt): Object
+          event:String
+      }
+
+      type SQLVehicleLoggingPayload {
+        # (Subscription PAYLOAD Type ) camera data returned on this subscription type resolver below
+          vehicle_logs(vehicleId: BigInt): VehicleLog
+          event:String
+      }
+
       extend type Subscription {
         # (Subscription) will be triggered when the current starfire's data changes
         sqlStarfire: SQLStarfirePayload @pgSubscription(topic: ${embed(
@@ -60,14 +66,17 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         sqlAlerts: SQLAlertsPayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_alerts`
         )})
-        sqlVehicleLogs: SQLVehicleLogsPayload @pgSubscription(topic: ${embed(
-            ()=>`postgraphile:sql_vehicle_logs`
-        )})
         sqlVehiclesOnline: SQLVehiclesOnlinePayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_vehicles_online`
         )})
         sqlCamera: SQLCameraPayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_camera`
+        )})
+        sqlObjectDetection: SQLObjectDetectionPayload @pgSubscription(topic: ${embed(
+            ()=>`postgraphile:sql_detection_objects`
+        )})
+        sqlVehicleLogging: SQLVehicleLoggingPayload @pgSubscription(topic: ${embed(
+            ()=>`postgraphile:sql_vehicle_logs`
         )})
       }
     `,
@@ -167,27 +176,6 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                 return rows[0];
             },
         },
-        SQLVehicleLogsPayload: {
-            // This method finds the Vehicle Logs from the database based on the event
-            // published by PostgreSQL.
-            // (Type Resolver)
-            async log(
-                event,
-                _args,
-                _context,
-                { graphile: { selectGraphQLResultFromTable } }
-            ) {
-                const rows = await selectGraphQLResultFromTable(
-                sql.fragment`state.vehicle_logs`,
-                (tableAlias, sqlBuilder) => {
-                    sqlBuilder.where(
-                    sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
-                    );
-                }
-                );
-                return rows[0];
-            },
-        },
         SQLVehiclesOnlinePayload: {
             // This method finds the Vehicle Logs from the database based on the event
             // published by PostgreSQL.
@@ -226,6 +214,58 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
             ) {
                 const rows = await selectGraphQLResultFromTable(
                     sql.fragment`images.camera`,
+                    (tableAlias, sqlBuilder) => {
+                        sqlBuilder.where(
+                            sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                        );
+                        if(vehicleId)
+                            sqlBuilder.where(
+                                sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`
+                            );
+                    }
+                );
+
+                return rows[0];
+            },
+        },
+        SQLObjectDetectionPayload: {
+            // This method finds the Vehicle Logs from the database based on the event
+            // published by PostgreSQL.
+            // (Type Resolver)
+            async object(
+                event,
+                {vehicleId},
+                _context,
+                { graphile: { selectGraphQLResultFromTable } }
+            ) {
+                const rows = await selectGraphQLResultFromTable(
+                    sql.fragment`detection.objects`,
+                    (tableAlias, sqlBuilder) => {
+                        sqlBuilder.where(
+                            sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                        );
+                        if(vehicleId)
+                            sqlBuilder.where(
+                                sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`
+                            );
+                    }
+                );
+
+                return rows[0];
+            },
+        },
+        SQLVehicleLoggingPayload: {
+            // This method finds the Vehicle Logs from the database based on the event
+            // published by PostgreSQL.
+            // (Type Resolver)
+            async vehicle_logs(
+                event,
+                {vehicleId},
+                _context,
+                { graphile: { selectGraphQLResultFromTable } }
+            ) {
+                const rows = await selectGraphQLResultFromTable(
+                    sql.fragment`logging.vehicle_logs`,
                     (tableAlias, sqlBuilder) => {
                         sqlBuilder.where(
                             sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
