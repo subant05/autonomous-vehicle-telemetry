@@ -30,3 +30,40 @@
         cursor: pointer;
     }
 }
+
+.vehicles__status {
+    .icon {
+        font-size: 1.5rem;
+        width:24px;
+    }
+
+    .priority_high {
+        background-color: var(--critical);
+        &:hover{
+            background-color: var(--critical-hover);
+        }
+    }
+
+    .error {
+        background-color: var(--error);
+        &:hover{
+            background-color: var(--error-hover);
+        }
+    }
+
+    .warning {
+        background-color: var(--warning);
+        &:hover{
+            background-color: var(--warning-hover);
+        }
+    }
+
+    .logging,
+    .information {
+        background-color: var(--success);
+        &:hover{
+            background-color: var(--success-hover);
+        }
+    }
+
+}

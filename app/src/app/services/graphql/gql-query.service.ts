@@ -237,7 +237,7 @@ export class GqlQueryService {
           , ...response.data.objectDetection.nodes
           , ...response.data.vehicleStatus.nodes  
         ]
-         .sort((a,b)=>new Date(a.readingat).valueOf() - new Date(b.readingat).valueOf())
+         .sort((a,b)=>new Date(b.readingat).valueOf() - new Date(a.readingat).valueOf())
     }))
 
 

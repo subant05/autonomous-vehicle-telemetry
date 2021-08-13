@@ -29,7 +29,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     {value: 'alerts-2', label: 'Alerts'},
     {value: 'detection-2', label: 'Detection'}
   ]
-  columns: string[] = ['id', 'type','timestamp'];
+  columns: string[] = ['id', 'status','type','desc','timestamp'];
   cursor:number = 0
   isScrollDataLoading:boolean = false
   savedResults: any[] =[]
@@ -132,10 +132,36 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
           break;
       case "VehicleLog":
           break;
-      
     }
 
-
   }
+
+
+  renderDescriptionColumn(col:any){
+      switch(col.__typename){
+        case "VehicleStatus":
+            return col.state.name
+              break;
+          case "Object":
+              return col.message.header.node
+              break;
+          case "VehicleLog":
+              return col.message.name
+              break;
+      }
+  }
+
+
+  renderAlertsolumn(col:any){
+    switch(col.__typename){
+      case "VehicleStatus":
+          return col.alerts.nodes[0].alertType.name
+            break;
+        case "Object":
+        case "VehicleLog":
+            return "info"
+            break;
+    }
+}
   
 }
