@@ -5789,13 +5789,12 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         })
             .subscribe((response) => {
             this.isScrollDataLoading = false;
-            if (response.length) {
-                if (scroll)
-                    this.savedResults = this.savedResults.concat(response);
-                else
-                    this.savedResults = response;
-                this.updateList(this.savedResults);
-            }
+            if (scroll)
+                this.savedResults = this.savedResults.concat(response);
+            else
+                this.savedResults = response;
+            debugger;
+            this.updateList(this.savedResults);
         });
     }
     ngOnInit() {

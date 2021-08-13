@@ -66,14 +66,14 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     .subscribe((response:any)=>{
       this.isScrollDataLoading = false
 
-      if(response.length){
         if(scroll)
           this.savedResults = this.savedResults.concat(response)
         else
-          this.savedResults = response
-          
-        this.updateList(this.savedResults)
-      }
+          this.savedResults = response   
+      
+
+      debugger;
+      this.updateList(this.savedResults)
         
     })
   }
