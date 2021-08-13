@@ -5,16 +5,16 @@ import {setDefaultVehicle,responseCallback} from './_utils'
 const router = express.Router();
 
 router.post("/preview", async (req, res) => {
-    res.send("Data Recieved" )
+    console.log("IMAGES:",req.body.topic)
 
     setDefaultVehicle(req)
-    Images.sqlInsertPreviewImage(req.body.topic, req.body)
+    Images.sqlInsertPreviewImage(req.body.topic, req.body, responseCallback(res))
 }) 
 router.post("/segmentation", async (req, res) => {
-    res.send("Data Recieved" )
+    console.log("SEGMENTATION:",req.body.topic)
 
     setDefaultVehicle(req)
-    Images.sqlInsertSegmentationMap(req.body.topic, req.body)
+    Images.sqlInsertSegmentationMap(req.body.topic, req.body, responseCallback(res))
 })
 
 router.post("/test", async (req, res) => {

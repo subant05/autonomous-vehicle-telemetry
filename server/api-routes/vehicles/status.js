@@ -5,21 +5,22 @@ import {setDefaultVehicle,responseCallback} from './_utils'
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-    res.send("Data Recieved" )
-
     setDefaultVehicle(req)
-    State.sqlInsertVehicleStatus(req.body.topic, req.body)
+    State.sqlInsertVehicleStatus(req.body.topic, req.body, responseCallback(res))
 })
 
 router.post("/batch", async (req, res) => {
-    res.send("Data Recieved" )
-
     setDefaultVehicle(req)
-    State.sqlInsertVehicleStatusBatch(req.body)
+    State.sqlInsertVehicleStatusBatch(req.body,responseCallback(res))
+})
+
+router.get("/test", async (req, res) => {
+    res.send("test positive")
 })
 
 router.post("/test", async (req, res) => {
     res.send("success")
 })
+
 
 export default router;

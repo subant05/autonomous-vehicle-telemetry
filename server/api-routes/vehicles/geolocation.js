@@ -5,14 +5,13 @@ import {setDefaultVehicle, responseCallback} from './_utils'
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-    res.send("Data Recieved" )
-
     setDefaultVehicle(req)
-    Geolocation.sqlInsertStarFire(req.body.topic, req.body)
+    console.log("GEOLOCATION:",req.body.topic)
+    Geolocation.sqlInsertStarFire(req.body.topic, req.body, responseCallback(res))
 })
 
 router.post("/test", async (req, res) => {
-    res.send("success")
+    res.send("test positive")
 })
 
 export default router;
