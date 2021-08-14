@@ -4702,6 +4702,7 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
         });
     }
     renderAlertsColumn(row) {
+        debugger;
         row.alerts ? row.alerts.alertType.name : 'information';
     }
 }
@@ -5072,7 +5073,7 @@ class VehiclesOnlineComponent extends src_app_components_table_table_utils__WEBP
         }
     }
     renderAlertsColumn(row) {
-        row.alerts ? row.alerts.alertType.name : 'information';
+        return row.alerts ? row.alerts.alertType.name : 'information';
     }
 }
 VehiclesOnlineComponent.ɵfac = function VehiclesOnlineComponent_Factory(t) { return new (t || VehiclesOnlineComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService)); };
