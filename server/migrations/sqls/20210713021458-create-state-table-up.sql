@@ -93,18 +93,73 @@ COMMENT ON COLUMN state.status_message_header.node IS '@omit create,update
 IS the node responsible for the recording of telemetry';
 
 
+CREATE TABLE IF NOT EXISTS state.status_message_mission_stats(
+    id BIGSERIAL,
+    duration_autonomy_stopped  BIGINT NOT NULL, 
+    duration_autonomy_driving  BIGINT NOT NULL,
+    duration_no_autonomy  BIGINT NOT NULL,
+    duration_teleop  BIGINT NOT NULL,
+    autonomy_distance_travelled_m  DECIMAL NOT NULL,
+    autonomy_area_travelled_sqm  DECIMAL NOT NULL,
+    num_stops  BIGINT NOT NULL,
+    num_state_demotion  BIGINT NOT NULL,
+    num_true_positives  BIGINT NOT NULL,
+    num_false_positives  BIGINT NOT NULL,
+    num_teleop_queries  BIGINT NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE INDEX idx_status_mission_stats
+    ON state.status_message_mission_stats(id);
+
+COMMENT ON TABLE state.status_message_mission_stats IS '@omit create,update
+Table is used to store the mission stats for a vehicle';
+COMMENT ON COLUMN state.status_message_mission_stats.id IS '@omit create,update
+Column is auto incremented by databased';
+COMMENT ON COLUMN state.status_message_mission_stats.duration_autonomy_stopped IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.duration_autonomy_driving IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.duration_no_autonomy IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.duration_teleop IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.autonomy_distance_travelled_m IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.autonomy_area_travelled_sqm IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.num_stops IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.num_state_demotion IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.num_true_positives IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.num_false_positives IS '@omit create,update
+';
+COMMENT ON COLUMN state.status_message_mission_stats.num_teleop_queries IS '@omit create,update
+';
+
+
 CREATE TABLE IF NOT EXISTS state.status_message (
     id BIGSERIAL,
     header_id BIGINT NOT NULL,
+    mission_stats_id BIGINT NOT NULL DEFAULT 0,
     PRIMARY KEY(id),
     CONSTRAINT fk_status_message_header
         FOREIGN KEY (header_id)
         REFERENCES state.status_message_header(id)
+    CONSTRAINT fk_status_message_mission_stats
+        FOREIGN KEY(mission_stats_id)
+        REFERENCES state.status_message_mission_stats(id)
 );
 
 
 CREATE INDEX idx_status_message_id
     ON state.status_message (id);
+CREATE INDEX idx_status_mission_stats_id
+    ON state.status_message(mission_stats_id);
+CREATE INDEX idx_status_message_header_id
+    ON state.status_message(header_id);
 
 COMMENT ON TABLE state.status_message IS '@omit create,update
 Table is used to store the message for a status that was recieved from vehicle';

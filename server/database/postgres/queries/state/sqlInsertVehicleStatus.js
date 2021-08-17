@@ -18,7 +18,7 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
 
 
-        const {descriptor, vehicle_state, stop_reasons} = data.msg
+        const {descriptor, vehicle_state, stop_reasons, mission_stats} = data.msg
         const errorAlert = stop_reasons.stop_reasons.filter(reason=>{
             return reason.is_active
         })
@@ -37,11 +37,45 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
 
                 RETURNING id
             ),
+
+            ins_mission_stats as (
+                INSERT INTO state.status_message_mission_stats
+                (
+                    duration_autonomy_stopped, 
+                    duration_autonomy_driving,
+                    duration_no_autonomy,
+                    duration_teleop,
+                    autonomy_distance_travelled_m,
+                    autonomy_area_travelled_sqm,
+                    num_stops,
+                    num_state_demotion,
+                    num_true_positives,
+                    num_false_positives,
+                    num_teleop_queries
+                )
+                VALUES(
+                    $12
+                    , $13
+                    , $14
+                    , $15
+                    , $16
+                    , $17
+                    , $18
+                    , $19
+                    , $20
+                    , $21
+                    , $22
+                )
+
+                RETURNING id
+            ),
+
             ins_status_message as (
                 INSERT INTO state.status_message
-                (header_id) 
+                (header_id, mission_stats_id) 
                 VALUES(
                     (select id from ins_status_messge_header)
+                    , (select id from ins_mission_stats)
                 )
 
                 RETURNING id
@@ -127,6 +161,17 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
             , JSON.stringify(stop_reasons.stop_reasons)
             , alertMessage
             , alertType
+            , mission_stats.duration_autonomy_stopped
+            , mission_stats.duration_autonomy_driving
+            , mission_stats.duration_no_autonomy
+            , mission_stats.duration_teleop
+            , mission_stats.autonomy_distance_travelled_m
+            , mission_stats.autonomy_area_travelled_sqm
+            , mission_stats.num_stops
+            , mission_stats.num_state_demotion
+            , mission_stats.num_true_positives
+            , mission_stats.num_false_positives
+            , mission_stats.num_teleop_queries
         ])
         
         // cb(null, JSON.stringify(queryResult) )
