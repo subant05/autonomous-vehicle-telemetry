@@ -67,6 +67,37 @@
     <div class="grid__cell grid__cell__full-width">
         <mat-divider class="divider"></mat-divider>
     </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Stop Images</div>
+        <div class="grid__cell--content">
+            <app-stop-images 
+            [vehicleId]="vehicleId"
+            [live]=true
+            ></app-stop-images>
+        </div>
+    </div>
+    <div class="grid__cell">
+        <div class="preview-images" *ngIf="isImagesLoaded; else loader">
+            <div class="preview-images__img" 
+                *ngFor="let imageInfo of vehicleImages" >
+                <div *ngIf="imageInfo">
+                    <div class="grid__cell--label">{{imageInfo.topic.replace("/left/preview","").replace("/", "").replace("/","").replace("_"," ") | titlecase}}</div>
+                    <div class="grid__cell--content">
+                        <app-image [data]="imageInfo.image" 
+                            [label]="imageInfo.topic" 
+                            [headerId]="imageInfo.header.headerId">
+                        </app-image>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #loader>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </ng-template>
+    </div>
+    <div class="grid__cell grid__cell__full-width">
+        <mat-divider class="divider"></mat-divider>
+    </div>
     <div class="grid__cell grid__cell__full-width">
         <div class="grid__cell--label">Geolocation</div>
         <div class="grid__cell--content">
@@ -98,27 +129,5 @@
                 </div>
             </ng-template>
         </div>
-    </div>
-    <div class="grid__cell grid__cell__full-width">
-        <mat-divider class="divider"></mat-divider>
-    </div>
-    <div class="grid__cell grid__cell__full-width">
-        <div class="preview-images" *ngIf="isImagesLoaded; else loader">
-            <div class="preview-images__img" 
-                *ngFor="let imageInfo of vehicleImages" >
-                <div *ngIf="imageInfo">
-                    <div class="grid__cell--label">{{imageInfo.topic}}</div>
-                    <div class="grid__cell--content">
-                        <app-image [data]="imageInfo.image" 
-                            [label]="imageInfo.topic" 
-                            [headerId]="imageInfo.header.headerId">
-                        </app-image>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <ng-template #loader>
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </ng-template>
     </div>
 </div>

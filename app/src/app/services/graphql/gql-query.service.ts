@@ -231,14 +231,23 @@ export class GqlQueryService {
     }))
   }
 
-  getAllVehicleLogsStatusDetection(variables:any={logType:[], paginationRange:25}){
-    return this.basicFilteredQuery(QueryQL.Logging.QueryBuilder(variables.logType, variables.paginationRange), variables)
-    .pipe(map((response:any)=>{
-        return [].concat(response.data.logging ? response.data.logging.nodes : [])
-          .concat(response.data.objectDetection ? response.data.objectDetection.nodes : [])
-          .concat(response.data.vehicleStatus ? response.data.vehicleStatus.nodes : [])
-          .sort((a,b)=>new Date((b as any).readingat).valueOf() - new Date((a as any).readingat).valueOf())
-    }))
+  getAllVehicleLogsStatusDetection(variables:any={logType:[], paginationRange:25, nodes:[]}){
+    return this.basicFilteredQuery(
+          QueryQL.Logging.QueryBuilder(
+                  variables.logType
+                  , variables.paginationRange
+                  , variables.nodes
+                )
+              , variables)
+          .pipe(map((response:any)=>{
+            const logging:any = []
+              response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
+
+              return [].concat(logging || [])
+                .concat(response.data.objectDetection ? response.data.objectDetection.nodes : [])
+                .concat(response.data.vehicleStatus ? response.data.vehicleStatus.nodes : [])
+                .sort((a,b)=>new Date((b as any).readingat).valueOf() - new Date((a as any).readingat).valueOf())
+          }))
   }
 
   getPreviewImageByCameraMessageHeaderId(variables={}){
@@ -248,14 +257,26 @@ export class GqlQueryService {
             return null
 
           const header =  response.data.cameraMessageHeaders.nodes[0]
-          const image = header.cameraMessagesByHeaderId.nodes[0]
-          return {
-            seq: header.seq
-            , node: header.node
-            , readingat: header.readingat
-            , ...image
-          }
+          const image = {
+              ...header.cameraMessagesByHeaderId.nodes[0].image
+              , data: JSON.parse(header.cameraMessagesByHeaderId.nodes[0].image.data.data)
+            }
+
+            return {
+              seq: header.seq
+              , node: header.node
+              , readingat: header.readingat
+              , ...image
+            }
         }))
+  }
+
+  getObjectDetectionByVehicleId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Detection.ByVehicleId, variables)
+    .pipe(map((response:any)=>{
+      return response.data.objects
+    }))
+
   }
 
 }

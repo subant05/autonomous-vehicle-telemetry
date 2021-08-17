@@ -25,8 +25,19 @@
     </div>
     <div class="logging__form--field">
         <mat-form-field appearance="fill">
+            <mat-label>Results / type</mat-label>
+            <mat-select formControlName="paginationRange">
+                <mat-option *ngFor="let opts of paginationRange"
+                    [value]="opts">
+                    {{opts}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div class="logging__form--field">
+        <mat-form-field appearance="fill">
             <mat-label>Log Type</mat-label>
-            <mat-select formControlName="logType" multiple>
+            <mat-select formControlName="logType" multiple (selectionChange)="onTypeChange()">
                 <mat-option *ngFor="let opts of logTypeOptions"
                     [value]="opts.value">
                     {{opts.label}}
@@ -37,8 +48,8 @@
     <div class="logging__form--field"
         *ngIf="fgLoggingFilter.get('logType').value.indexOf('logging') > -1">
         <mat-form-field appearance="fill">
-            <mat-label>Node</mat-label>
-            <mat-select formControlName="node" multiple>
+            <mat-label>Nodes</mat-label>
+            <mat-select formControlName="nodes" multiple>
                 <mat-option *ngFor="let opts of nodes"
                     [value]="opts">
                     {{opts}}
@@ -47,15 +58,10 @@
           </mat-form-field>
     </div>
     <div class="logging__form--field">
-        <mat-form-field appearance="fill">
-            <mat-label>Results / type</mat-label>
-            <mat-select formControlName="paginationRange">
-                <mat-option *ngFor="let opts of paginationRange"
-                    [value]="opts">
-                    {{opts}}
-                </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <mat-slide-toggle 
+        formControlName="isLive"
+        (click)="onLiveToggle($event)"
+        >Live</mat-slide-toggle>
     </div>
     <!-- <div class="logging__form--field">
         <mat-form-field class="example-form-field" appearance="fill">
@@ -67,7 +73,10 @@
           </mat-form-field>
     </div> -->
     <div class="logging__form--field">
-        <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+        <button 
+            [disabled]="fgLoggingFilter.get('isLive').value"
+            mat-mini-fab color="primary" 
+            aria-label="Submit logging filter">
             <mat-icon>search</mat-icon>
         </button>
     </div>

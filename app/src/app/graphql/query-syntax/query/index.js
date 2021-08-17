@@ -5,6 +5,7 @@ import * as Images from './images'
 import * as Notifications from './notifications'
 import * as Status from './status'
 import * as Logging from './logging'
+import * as Detection from './detection'
 
 export {
     Topics
@@ -14,4 +15,5 @@ export {
     , Notifications
     , Status
     , Logging
+    , Detection
 }

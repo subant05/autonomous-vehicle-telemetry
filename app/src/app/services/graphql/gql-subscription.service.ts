@@ -95,7 +95,7 @@ export class GqlSubscriptionService {
       query: SubscriptionQL.Vehicles.State
       , variables
     }).pipe(map((response:any)=>{
-      const results =  response.data.sqlVehicleStatus.vehicle_status
+      const results =  response.data.sqlVehicleStatus.vehicle_status      
       return {
         ...results
         , topic: results.topic.name
@@ -150,6 +150,24 @@ export class GqlSubscriptionService {
         , image: {...image, data: JSON.parse(image.data.data) }
         , header 
       }
+    }))
+  }
+
+  getLoggingByVehicleId(variables={}){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.Logging.ByVehicleId
+      , variables
+    }).pipe(map((response:any)=>{
+      return response.data.sqlVehicleLogging.vehicle_logs
+    }))
+  }
+
+  getObjectDetectionByVehicleId(variables={}){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.Detection.ByVehicleId
+      ,variables
+    }).pipe(map((response:any)=>{
+      return response.data.sqlObjectDetection.object
     }))
   }
 }

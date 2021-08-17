@@ -7,6 +7,7 @@ subscription sqlVehicleStatus($vehicleId:BigInt) {
       vehicle_status(vehicleId:$vehicleId){
         id
         createdAt
+        readingat
         statusMessage{
           header{
             headerid

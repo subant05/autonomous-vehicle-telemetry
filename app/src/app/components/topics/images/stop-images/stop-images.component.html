@@ -1,0 +1,15 @@
+<app-image 
+    *ngIf="image; else loader"
+    [data]="image" 
+    [label]="label" 
+    [headerId]="headerid">
+</app-image>
+<mat-paginator [length]="pagesLength"
+    [pageSize]="pageSize"
+    [pageIndex]="page"
+    (page)="getCurrentImage($event)">
+</mat-paginator>
+<ng-template #loader>
+    <mat-icon aria-hidden="false" class="no-image" aria-label="No Image">image_not_supported</mat-icon>
+    <mat-progress-bar *ngIf="!isImageLoaded" mode="indeterminate"></mat-progress-bar>
+</ng-template>

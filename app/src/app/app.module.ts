@@ -83,6 +83,7 @@ import { ImageComponent } from './components/images/image/image.component';
 import { ImageExpansionComponent } from './components/modals/image-expansion/image-expansion.component';
 import { MedallionComponent } from './components/core/medallion/medallion.component';
 import { ObjectDetectionDetailComponent } from './components/modals/object-detection-detail/object-detection-detail.component';
+import { StopImagesComponent } from './components/topics/images/stop-images/stop-images.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +120,7 @@ import { ObjectDetectionDetailComponent } from './components/modals/object-detec
     ImageExpansionComponent,
     MedallionComponent,
     ObjectDetectionDetailComponent,
+    StopImagesComponent,
   ],
   imports: [
     BrowserModule,

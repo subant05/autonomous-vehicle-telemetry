@@ -43,7 +43,9 @@
         >Live</mat-slide-toggle>
     </div>
     <div class="geolocation__form--field">
-        <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+        <button 
+            [disabled]="fgGeolocationFilter.get('isLive').value"
+            mat-mini-fab color="primary" aria-label="Submit geolocation query">
             <mat-icon>search</mat-icon>
         </button>
     </div>

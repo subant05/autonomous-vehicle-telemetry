@@ -16,7 +16,11 @@ import {ScrollService} from 'src/app/services/layout/scroll.service'
   styleUrls: ['./vehicle-logging.component.scss']
 })
 export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDestroy, AfterViewInit {
-  logQuery:Subscription | null = null
+  private logQuery:Subscription | null = null
+  private loggingSubscription: Subscription | null = null
+  private objectSubscription: Subscription | null = null
+  private statusSubscription: Subscription | null = null
+
   fgLoggingFilter: any 
   vehicleId: string=""
   startDateTime:string = "" 
@@ -31,6 +35,11 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     {value: "status", label: "Autonomy State"},
     {value: "object", label: "Object Detection"}
   ]
+  nodes: string[] = [
+    "stereo_to_disparity"
+    , "message_cache"
+  ]
+  isLive:boolean= false;
   columns: string[] = [
     'status'
     , 'timestamp'
@@ -42,10 +51,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   savedResults: any[] =[]
   pagination: number = 20
   paginationRange: number[] = [10, 25, 50, 100]
-  nodes: string[] = [
-    "stereo_to_disparity"
-    , "message_cache"
-  ]
+
   
   constructor(
     private graphQLSubscription: GqlSubscriptionService
@@ -56,6 +62,26 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   ) { 
     super()
     this.formatTimestampForInputs()
+  }
+
+  private updateTable({data, action} = {data:[], action:"replace"}){
+    switch(action){
+      case "concat":
+        this.savedResults = this.savedResults.concat(data)
+        break;
+      case "prepend":
+        this.savedResults.unshift(data)
+        break;
+      case "append":
+        this.savedResults.push(data)
+        break;
+      case "replace":
+      default:
+          this.savedResults = data
+          break;
+    }
+
+    this.updateList(this.savedResults)    
   }
 
   private formatTimestampForInputs(){
@@ -78,19 +104,70 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       , endDateTime: this.endDateTime
       , logType: this.fgLoggingFilter.value.logType
       , paginationRange: this.fgLoggingFilter.value.paginationRange
+      , nodes: this.fgLoggingFilter.value.nodes
+
     })
     .subscribe((response:any)=>{
       this.isScrollDataLoading = false
 
         if(scroll)
-          this.savedResults = this.savedResults.concat(response)
+          this.updateTable({data:response, action:"concat"})
         else
-          this.savedResults = response   
-      
-      this.updateList(this.savedResults)        
+          this.updateTable({data:response, action:"replace"})      
     })
   }
 
+
+  private initiateLiveSubscriptions(){
+    this.fgLoggingFilter.value.logType.forEach((type:any)=>{
+      switch(type){
+        case "logging":
+          if(this.loggingSubscription && !this.loggingSubscription.closed)
+            this.loggingSubscription?.unsubscribe()
+
+          this.loggingSubscription = this.graphQLSubscription
+            .getLoggingByVehicleId({vehicleId:this.vehicleId})
+            .subscribe((response:any)=>{
+              if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1)
+                this.updateTable({data:response, action:"prepend"})   
+            })
+            break;
+        case "status":
+          if(this.statusSubscription && !this.statusSubscription.closed)
+            this.statusSubscription?.unsubscribe()
+
+          this.statusSubscription = this.graphQLSubscription
+            .getVehicleStatus({vehicleId:this.vehicleId})
+            .subscribe((response:any)=>{
+              this.updateTable({data:response, action:"prepend"})  
+            })
+            break;
+        case "object":
+            if(this.objectSubscription && !this.objectSubscription.closed)
+              this.objectSubscription?.unsubscribe()
+
+            this.objectSubscription = this.graphQLSubscription
+              .getObjectDetectionByVehicleId({vehicleId:this.vehicleId})
+              .subscribe((response:any)=>{
+                this.updateTable({data:response, action:"prepend"})  
+              })
+          break;
+      }
+    })
+  }
+
+  private unsubscribeLiveSubscriptions(){
+    this.loggingSubscription?.unsubscribe()
+    this.objectSubscription?.unsubscribe()
+    this.statusSubscription?.unsubscribe()
+  }
+
+
+  onTypeChange(){
+    if(this.fgLoggingFilter.value.isLive)
+      this.initiateLiveSubscriptions()
+  }
+  
   ngOnInit(): void {
     this.vehicleId = (this.route.parent as any).snapshot.params.id
     this.fgLoggingFilter = new FormGroup({
@@ -98,10 +175,12 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       , endDateTime: new FormControl(this.endDateTime,[Validators.required])
       , logType: new FormControl(this.logType, [Validators.required])
       , paginationRange: new FormControl(this.paginationRange[1], [Validators.required])
-      , node: new FormControl(this.nodes, [Validators.required])
+      , nodes: new FormControl(this.nodes, [Validators.required])
+      , isLive: new FormControl(this.isLive, [Validators.required])
 
       // , description: new FormControl(this.description,[Validators.required])
     })
+  
     this.loadData()
     this.scrollService.contentScroll.subscribe((scrolled:any)=>{
       if(scrolled){
@@ -113,6 +192,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
 
   ngOnDestroy():void {
     this.logQuery?.unsubscribe()
+    this.unsubscribeLiveSubscriptions()
   }
 
   ngAfterViewInit(): void{}
@@ -120,6 +200,22 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   refreshMap(){
     this.refresh = !this.refresh
     setTimeout(()=>this.refresh = !this.refresh, 0)
+  }
+
+  onLiveToggle(event:any){
+    const isLive = !event.currentTarget.querySelector("input").checked
+    if(isLive){
+      this.fgLoggingFilter.controls.startDateTime.disable()
+      this.fgLoggingFilter.controls.endDateTime.disable()
+      this.fgLoggingFilter.controls.paginationRange.disable()
+      this.initiateLiveSubscriptions()
+    }
+    else {
+      this.fgLoggingFilter.controls.startDateTime.enable()
+      this.fgLoggingFilter.controls.endDateTime.enable()
+      this.fgLoggingFilter.controls.paginationRange.enable()
+      this.unsubscribeLiveSubscriptions()
+    }
   }
 
   onSubmit(): void{
@@ -164,7 +260,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   renderNodeColumn(col:any){
       switch(col.__typename){
         case "VehicleStatus":
-            return col.message.header.node
+            return (col.message || col.statusMessage).header.node
               break;
           case "Object":
               return col.message.header.node
@@ -178,7 +274,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   renderDescriptionColumn(col:any){
     switch(col.__typename){
       case "VehicleStatus":
-          const reason = col.vehicleStatusDetails.nodes.filter((item:any)=>{
+          const reason = (col.vehicleStatusDetails.nodes || col.vehicleStatusDetails).filter((item:any)=>{
             return item.isActive
           })
           return `${col.state.name}  ${reason.length ? "(" + reason[0].reason.name + ")" : ""}`
@@ -212,7 +308,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   renderAlertsColumn(col:any){
     switch(col.__typename){
       case "VehicleStatus":
-          return col.alerts.nodes[0].alertType.name
+          return (col.alerts.alertType || col.alerts.nodes[0].alertType).name
             break;
         case "Object":
         case "VehicleLog":

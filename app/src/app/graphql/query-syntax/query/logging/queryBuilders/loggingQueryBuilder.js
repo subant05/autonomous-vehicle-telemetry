@@ -8,13 +8,13 @@ const checkForType = (type, typeList)=>{
     return typeList.indexOf(type) > -1 || !typeList.length
 }
 
-const loggingQueryBuilder = (types=[], paginationRange=25)=>{    
+const loggingQueryBuilder = (types=[], paginationRange=25, nodes=[])=>{    
     if(!types)
         types = []
         
     return gql`
             query Logging ($cursor:Int $vehicleId:BigInt $startDateTime:Datetime $endDateTime:Datetime){ 
-            ${ checkForType("logging",types) ? logging(paginationRange) : `` }
+            ${ checkForType("logging",types) ? logging(paginationRange,nodes) : `` }
             ${ checkForType("object",types) ? objectDetection(paginationRange) : `` }
             ${ checkForType("status",types) ? vehicleStatus(paginationRange) : `` }
             }`
