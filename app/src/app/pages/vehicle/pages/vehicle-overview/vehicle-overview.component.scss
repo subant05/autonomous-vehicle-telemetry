@@ -79,32 +79,3 @@
     background-color: #777;
     margin: 15px 0;
 }
-
-.production{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .stats{
-        margin-right: 10px;
-        margin-bottom: 10px;
-        width: calc(50% -10px);
-        height: auto;
-        &:last-of-type{
-            margin-right: 0px;
-        }
-    }
-
-    @media screen and (min-width:400px) {
-        .stats{
-            width: 30%;
-            &.medium {
-                min-width: 175px;
-            }
-    
-            &.large {
-                min-width: 200px;
-            }
-        }
-    }
-}

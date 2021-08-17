@@ -84,6 +84,7 @@ import { ImageExpansionComponent } from './components/modals/image-expansion/ima
 import { MedallionComponent } from './components/core/medallion/medallion.component';
 import { ObjectDetectionDetailComponent } from './components/modals/object-detection-detail/object-detection-detail.component';
 import { StopImagesComponent } from './components/topics/images/stop-images/stop-images.component';
+import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehicle-mission-stats/vehicle-mission-stats.component';
 
 @NgModule({
   declarations: [
@@ -121,6 +122,7 @@ import { StopImagesComponent } from './components/topics/images/stop-images/stop
     MedallionComponent,
     ObjectDetectionDetailComponent,
     StopImagesComponent,
+    VehicleMissionStatsComponent,
   ],
   imports: [
     BrowserModule,

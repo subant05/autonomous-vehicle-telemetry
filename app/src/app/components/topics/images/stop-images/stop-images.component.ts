@@ -49,7 +49,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       .subscribe((response:any)=>{
         this.isImageLoaded = true
         this.image = response
-        this.label = stopInfo.topic.name
+        this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
         this.headerid = stopInfo.message.header.headerid
         console.log(response)
       })

@@ -74,6 +74,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
 
   ngOnDestroy() :void{
     this.gqlOnlineQuery?.unsubscribe()
+    this.gqlOnlineSubscription?.unsubscribe()
   }
 
   ngAfterViewInit(): void{}
