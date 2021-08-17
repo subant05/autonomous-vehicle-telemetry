@@ -7,6 +7,7 @@ BEGIN
             'postgraphile:sql_camera',
             json_build_object(
             'event', TG_OP,
+            'id', NEW.ID,
             '__node__', json_build_array(
                 NEW.ID
             )

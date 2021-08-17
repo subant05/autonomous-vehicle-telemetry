@@ -7,6 +7,7 @@ import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.
 import { TableUtil } from 'src/app/components/table/table-utils';
 import {MatDialog} from '@angular/material/dialog';
 import {VehicleStatusDetailComponent} from 'src/app/components/modals/vehicle-status-detail/vehicle-status-detail.component'
+import {ObjectDetectionDetailComponent} from 'src/app/components/modals/object-detection-detail/object-detection-detail.component'
 import {ScrollService} from 'src/app/services/layout/scroll.service'
 
 @Component({
@@ -20,26 +21,38 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   vehicleId: string=""
   startDateTime:string = "" 
   endDateTime:string  = "" 
-  logType:string=""
+  logType:string[]=[
+    "logging"
+  ]
   refresh: boolean = false
   description: string =""
   logTypeOptions: any= [
-    {value: 'logs-0', label: 'Logs'},
-    {value: 'status-1', label: 'Status'},
-    {value: 'alerts-2', label: 'Alerts'},
-    {value: 'detection-2', label: 'Detection'}
+    {value: "logging", label: "Logs"},
+    {value: "status", label: "Autonomy State"},
+    {value: "object", label: "Object Detection"}
   ]
-  columns: string[] = ['id', 'status','type','desc','timestamp'];
+  columns: string[] = [
+    'status'
+    , 'timestamp'
+    , 'type'
+    , 'node'
+    , 'description'];
   cursor:number = 0
   isScrollDataLoading:boolean = false
   savedResults: any[] =[]
+  pagination: number = 20
+  paginationRange: number[] = [10, 25, 50, 100]
+  nodes: string[] = [
+    "stereo_to_disparity"
+    , "message_cache"
+  ]
   
   constructor(
     private graphQLSubscription: GqlSubscriptionService
     , private graphQLQuery: GqlQueryService
     , private route: ActivatedRoute 
     , public dialog: MatDialog
-    , private scollService: ScrollService
+    , private scrollService: ScrollService
   ) { 
     super()
     this.formatTimestampForInputs()
@@ -56,12 +69,15 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       this.logQuery.unsubscribe()
     
     this.isScrollDataLoading = true
+
     this.logQuery = this.graphQLQuery
     .getAllVehicleLogsStatusDetection({
       vehicleId: this.vehicleId
       , cursor: this.cursor
       , startDateTime: this.startDateTime
       , endDateTime: this.endDateTime
+      , logType: this.fgLoggingFilter.value.logType
+      , paginationRange: this.fgLoggingFilter.value.paginationRange
     })
     .subscribe((response:any)=>{
       this.isScrollDataLoading = false
@@ -80,13 +96,16 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.fgLoggingFilter = new FormGroup({
       startDateTime: new FormControl(this.startDateTime,[Validators.required])
       , endDateTime: new FormControl(this.endDateTime,[Validators.required])
-      // , logType: new FormControl(this.logType,[Validators.required])
+      , logType: new FormControl(this.logType, [Validators.required])
+      , paginationRange: new FormControl(this.paginationRange[1], [Validators.required])
+      , node: new FormControl(this.nodes, [Validators.required])
+
       // , description: new FormControl(this.description,[Validators.required])
     })
     this.loadData()
-    this.scollService.contentScroll.subscribe((scrolled:any)=>{
+    this.scrollService.contentScroll.subscribe((scrolled:any)=>{
       if(scrolled){
-        this.cursor  = 10 * ++this.cursor
+        this.cursor  = this.pagination * ++this.cursor
         this.loadData(scrolled)
       }
     })
@@ -104,6 +123,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   onSubmit(): void{
+    this.cursor = 0
     this.startDateTime = this.fgLoggingFilter.value.startDateTime
     this.endDateTime = this.fgLoggingFilter.value.endDateTime
     this.loadData()
@@ -111,9 +131,10 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
    }
 
    openDialog(row:any): void{
+    let dialogRef;
     switch(row.__typename){
       case "VehicleStatus":
-          const dialogRef = this.dialog.open(VehicleStatusDetailComponent, {
+          dialogRef = this.dialog.open(VehicleStatusDetailComponent, {
             data:{
                  node: row.message.header.node
                 , topic: row.topic.name
@@ -126,6 +147,12 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
           });
           break;
       case "Object":
+          dialogRef = this.dialog.open(ObjectDetectionDetailComponent, {
+            data:row
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog closed: ${result}`);
+          });
           break;
       case "VehicleLog":
           break;
@@ -134,10 +161,10 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
 
-  renderDescriptionColumn(col:any){
+  renderNodeColumn(col:any){
       switch(col.__typename){
         case "VehicleStatus":
-            return col.state.name
+            return col.message.header.node
               break;
           case "Object":
               return col.message.header.node
@@ -148,6 +175,39 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       }
   }
 
+  renderDescriptionColumn(col:any){
+    switch(col.__typename){
+      case "VehicleStatus":
+          const reason = col.vehicleStatusDetails.nodes.filter((item:any)=>{
+            return item.isActive
+          })
+          return `${col.state.name}  ${reason.length ? "(" + reason[0].reason.name + ")" : ""}`
+            break;
+        case "Object":
+            return col.message.header.node
+            break;
+        case "VehicleLog":
+            return col.message.msg
+            break;
+    }
+  }
+
+  renderTypeColumn(col:any){
+    let type = ""
+    switch(col.__typename){
+      case "VehicleStatus":
+            type = "Autonomy"
+            break;
+        case "Object":
+            type =  "Object"
+            break;
+        case "VehicleLog":
+            type = "Log"
+            break;
+    }
+
+    return type
+  }
 
   renderAlertsColumn(col:any){
     switch(col.__typename){
@@ -159,6 +219,5 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
             return "info"
             break;
     }
-}
-  
+  }
 }

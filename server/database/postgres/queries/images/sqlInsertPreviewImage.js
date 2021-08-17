@@ -5,7 +5,11 @@ import {sqlInsertCameraMessage} from './sqlInsertCameraMessage'
 const { client, pool } = require("../../connection.js")
 
 export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
-
+    if(!argTopic || !argTopic.includes('/preview') || !data){
+        cb(null, "ignored")
+        return;
+    }
+    
     try{
         // Vehicle should not wait for response
         cb(null, JSON.stringify("Data Sent") )

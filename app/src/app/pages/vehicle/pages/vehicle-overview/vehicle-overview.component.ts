@@ -82,6 +82,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
           }) 
 
           if(imageIndex === -1){
+           console.log("Insert")
             this.vehicleImages.push(response)
             const index = this.vehicleImages.length-1
             

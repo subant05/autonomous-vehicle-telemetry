@@ -107,6 +107,24 @@
             &.grid__cell__full-width {
                 grid-column: 1 / span 2;
             }
+
+            &.sticky{
+                .grid__cell--label
+                , .grid__cell--content{
+                    position: sticky;
+                    top: 0px;
+                }
+                .grid__cell--content{
+                    top:54px;
+                }
+            }
+
+            .grid__cell--label{
+                &.sticky{
+                    position: sticky;
+                    top: 0px;
+                }
+            }
         }
     }
 }

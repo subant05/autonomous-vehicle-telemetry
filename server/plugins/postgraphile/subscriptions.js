@@ -37,6 +37,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
       type SQLCameraPayload {
         # (Subscription PAYLOAD Type ) camera data returned on this subscription type resolver below
           camera(vehicleId: BigInt): Camera
+          id:BigInt
           event:String
       }
   

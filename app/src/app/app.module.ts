@@ -35,6 +35,7 @@ import { VehicleLoggingComponent } from './pages/vehicle/pages/vehicle-logging/v
 import { VehicleSystemComponent } from './pages/vehicle/pages/vehicle-system/vehicle-system.component';
 import { TableUtil } from './components/table/table-utils';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 // Enviornment Variables
 import { environment } from '../environments/environment';
@@ -81,6 +82,7 @@ import { VehicleStatusDetailComponent } from './components/modals/vehicle-status
 import { ImageComponent } from './components/images/image/image.component';
 import { ImageExpansionComponent } from './components/modals/image-expansion/image-expansion.component';
 import { MedallionComponent } from './components/core/medallion/medallion.component';
+import { ObjectDetectionDetailComponent } from './components/modals/object-detection-detail/object-detection-detail.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +118,7 @@ import { MedallionComponent } from './components/core/medallion/medallion.compon
     ImageComponent,
     ImageExpansionComponent,
     MedallionComponent,
+    ObjectDetectionDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -123,6 +126,7 @@ import { MedallionComponent } from './components/core/medallion/medallion.compon
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgxJsonViewerModule,
     // Material
     MatListModule,
     MatCardModule,

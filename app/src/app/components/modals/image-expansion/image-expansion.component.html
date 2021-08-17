@@ -17,13 +17,12 @@
             </div>
         </div>
         <div class="grid__cell center-cell-content" >
-            <!-- Uncomment WHen testing Segmentation -->
-            <!-- <div class="segmentation" [ngStyle]="{display: segmentationToggle.checked ? 'inline-block' : 'none'} ">
+            <div class="segmentation" [ngStyle]="{display: segmentationToggle.checked ? 'inline-block' : 'none'} ">
                 <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="data.headerId"></app-segmentation-image>
             </div>
-            <img [src]="data.imageUrl" [id]=id [class]="class" [ngClass]="{segmented: segmentationToggle.checked}"> -->
+            <img [src]="data.imageUrl" [id]=id [class]="class" [ngClass]="{segmented: segmentationToggle.checked}">
             
-            <img [src]="data.imageUrl" [id]=id [class]="class" >
+            <!-- <img [src]="data.imageUrl" [id]=id [class]="class" > -->
 
         </div>
     </div>

@@ -3,6 +3,7 @@ import { gql } from 'apollo-angular';
 const previewImagesByVehicleIdTopicId  =gql`
 subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:BigInt) {
     sqlCamera {
+      event
       camera(vehicleId: $vehicleId) {
         id: nodeId
         vehicle {

@@ -32,6 +32,21 @@
 }
 
 .vehicles__status {
+    td{
+        padding:5px;
+        &.description{
+            max-width: 300px;
+        }
+
+        &.node{
+            padding:5px
+        }
+        
+        &.type{
+            min-width: 50px;
+        }
+
+    }
     .icon {
         font-size: 1.5rem;
         width:24px;

@@ -23,17 +23,41 @@
             </button>
           </mat-form-field>
     </div>
-    <!-- <div class="logging__form--field">
+    <div class="logging__form--field">
         <mat-form-field appearance="fill">
-            <mat-label>A Log Type</mat-label>
-            <mat-select formControlName="logType">
-                <mat-option *ngFor="let opts of logTypeOptions">
+            <mat-label>Log Type</mat-label>
+            <mat-select formControlName="logType" multiple>
+                <mat-option *ngFor="let opts of logTypeOptions"
+                    [value]="opts.value">
                     {{opts.label}}
                 </mat-option>
             </mat-select>
           </mat-form-field>
     </div>
+    <div class="logging__form--field"
+        *ngIf="fgLoggingFilter.get('logType').value.indexOf('logging') > -1">
+        <mat-form-field appearance="fill">
+            <mat-label>Node</mat-label>
+            <mat-select formControlName="node" multiple>
+                <mat-option *ngFor="let opts of nodes"
+                    [value]="opts">
+                    {{opts}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
     <div class="logging__form--field">
+        <mat-form-field appearance="fill">
+            <mat-label>Results / type</mat-label>
+            <mat-select formControlName="paginationRange">
+                <mat-option *ngFor="let opts of paginationRange"
+                    [value]="opts">
+                    {{opts}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <!-- <div class="logging__form--field">
         <mat-form-field class="example-form-field" appearance="fill">
             <mat-label>Description</mat-label>
             <input matInput type="text" formControlName="description">
@@ -56,29 +80,34 @@
                 <table  mat-table  class="vehicles__status"  [dataSource]="tableList" >
                     <!-- Position Column -->
             
-                    <ng-container matColumnDef="id">
+                    <!-- <ng-container matColumnDef="id">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
                         <td mat-cell *matCellDef="let col"> {{col.id}} </td>
-                    </ng-container>        
+                    </ng-container>         -->
                     <ng-container matColumnDef="status">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alert </th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header >Status </th>
                       <td mat-cell *matCellDef="let col"> 
                           <mat-icon class="icon" inline>
                               {{renderAlertsColumn(col)}} 
                         </mat-icon></td>
                     </ng-container>
-                    <ng-container matColumnDef="type">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type </th>
-                        <td mat-cell *matCellDef="let col"> {{col.__typename}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="desc">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID </th>
-                        <td mat-cell *matCellDef="let col"> {{renderDescriptionColumn(col)}} </td>
-                    </ng-container>        
                     <ng-container matColumnDef="timestamp">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Timestamp </th>
                         <td mat-cell *matCellDef="let col"> {{col.readingat | date:'medium' }} </td>
                     </ng-container>
+                    <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type </th>
+                        <td mat-cell *matCellDef="let col" class="type"> {{renderTypeColumn(col)}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="node">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Node </th>
+                        <td mat-cell *matCellDef="let col" class="node"> {{renderNodeColumn(col)}} </td>
+                    </ng-container>       
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description </th>
+                        <td mat-cell *matCellDef="let col" class="description"> {{renderDescriptionColumn(col)}} </td>
+                    </ng-container>   
+
                     <tr mat-header-row *matHeaderRowDef="columns"></tr>
                     <tr mat-row 
                       [class]= "renderAlertsColumn(row)" 

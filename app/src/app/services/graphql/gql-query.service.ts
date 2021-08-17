@@ -231,18 +231,31 @@ export class GqlQueryService {
     }))
   }
 
-  getAllVehicleLogsStatusDetection(variables={}){
-    return this.basicFilteredQuery(QueryQL.Logging.All, variables)
+  getAllVehicleLogsStatusDetection(variables:any={logType:[], paginationRange:25}){
+    return this.basicFilteredQuery(QueryQL.Logging.QueryBuilder(variables.logType, variables.paginationRange), variables)
     .pipe(map((response:any)=>{
-        return [
-          ...response.data.logging.nodes
-          , ...response.data.objectDetection.nodes
-          , ...response.data.vehicleStatus.nodes  
-        ]
-         .sort((a,b)=>new Date(b.readingat).valueOf() - new Date(a.readingat).valueOf())
+        return [].concat(response.data.logging ? response.data.logging.nodes : [])
+          .concat(response.data.objectDetection ? response.data.objectDetection.nodes : [])
+          .concat(response.data.vehicleStatus ? response.data.vehicleStatus.nodes : [])
+          .sort((a,b)=>new Date((b as any).readingat).valueOf() - new Date((a as any).readingat).valueOf())
     }))
+  }
 
+  getPreviewImageByCameraMessageHeaderId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Images.PreviewByMessageHeaderId, variables)
+        .pipe(map((response:any)=>{
+          if(!response.data.cameraMessageHeaders.nodes.length)
+            return null
 
+          const header =  response.data.cameraMessageHeaders.nodes[0]
+          const image = header.cameraMessagesByHeaderId.nodes[0]
+          return {
+            seq: header.seq
+            , node: header.node
+            , readingat: header.readingat
+            , ...image
+          }
+        }))
   }
 
 }

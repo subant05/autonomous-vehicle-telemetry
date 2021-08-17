@@ -33,6 +33,7 @@
     "mapbox-gl": "^2.2.0",
     "ng-dynamic-breadcrumb": "^6.0.0",
     "ngx-infinite-scroll": "^10.0.1",
+    "ngx-json-viewer": "^3.0.2",
     "rxjs": "~6.6.0",
     "subscriptions-transport-ws": "^0.9.18",
     "tslib": "^2.1.0",

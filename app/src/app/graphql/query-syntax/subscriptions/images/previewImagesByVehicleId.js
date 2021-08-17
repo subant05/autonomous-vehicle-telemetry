@@ -47,12 +47,18 @@ import { gql } from 'apollo-angular';
 
 const previewImagesByVehicleId = gql`subscription PreviewImagesByVehicleId($id: BigInt)  {
   sqlCamera {
+    event
+    id
     camera(vehicleId:$id){
+        id
+        nodeId
         topic{
           name
           id
         }
         msg {
+          id
+          nodeId
           header{
             id
             seq
@@ -60,12 +66,16 @@ const previewImagesByVehicleId = gql`subscription PreviewImagesByVehicleId($id: 
             node
           }
           image{
+            id
+            nodeId
             width
             height
             step
             isBigendian
             encoding
             data {
+              id
+              nodeId
               data
             }
         }

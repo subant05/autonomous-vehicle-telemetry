@@ -2944,6 +2944,17 @@ a {
   .grid .grid__cell.grid__cell__full-width {
     grid-column: 1/span 2;
   }
+  .grid .grid__cell.sticky .grid__cell--label, .grid .grid__cell.sticky .grid__cell--content {
+    position: sticky;
+    top: 0px;
+  }
+  .grid .grid__cell.sticky .grid__cell--content {
+    top: 54px;
+  }
+  .grid .grid__cell .grid__cell--label.sticky {
+    position: sticky;
+    top: 0px;
+  }
 }
 
 .mapboxgl-ctrl-bottom-left,
