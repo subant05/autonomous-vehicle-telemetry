@@ -98,6 +98,7 @@ export class GqlSubscriptionService {
       const results =  response.data.sqlVehicleStatus.vehicle_status      
       return {
         ...results
+        , missionStats: results.statusMessage.missionStats
         , topic: results.topic.name
         , node: results.statusMessage.header.node
         , headerId: results.statusMessage.header.headerid

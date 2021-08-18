@@ -14,6 +14,20 @@ subscription sqlVehicleStatus($vehicleId:BigInt) {
             readingat
             node
           }
+          missionStats{
+            missionStartTime
+            durationAutonomyStopped 
+            durationAutonomyDriving
+            durationNoAutonomy
+            durationTeleop
+            autonomyDistanceTravelledM 
+            autonomyAreaTravelledSqm
+            numStops
+            numStateDemotion
+            numTruePositives
+            numFalsePositives
+            numTeleopQueries
+          }
         }
         state{
           name

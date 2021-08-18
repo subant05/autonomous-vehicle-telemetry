@@ -33,69 +33,77 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
     , private route: ActivatedRoute
     ) { }
 
-  ngOnInit(): void {
-    this.vehicleId = (this.route.parent as any).snapshot.params.id
-    this.previousCoordinatesQuery = this.graphQLQuery
-      .getVehiclePreviousLocation({vehicle_id:this.vehicleId})
-      .subscribe((response:any)=>{
-        if(response)
-          this.vehiclesLastCoordinates = [[response.longitude, response.latitude]]
-      })
+  
+  private setupLiveImageSubscription(){
+    this.allImageSubscriptions = 
+    this.graphQLSubscription
+    .getVehiclePreviewImages({vehicleId:this.vehicleId})
+    .subscribe((response:any)=>{
+      const imageIndex = this.vehicleImages.findIndex((image:any)=>{
+        return !image ? false : image.topicId === response.topicId
+      }) 
 
-    this.onlineStatusQuery = this.graphQLQuery
-      .getVehicleOnlineStatus({id:this.vehicleId})
-      .subscribe((response:any)=>{
-          this.isVehicleOnline = response.online ? true : false
+      if(imageIndex === -1){
+        this.previewImageQuery()
+      }
+    })
+  }
+
+  private previewImageQuery(){
+    this.previewImagesSubscription?.unsubscribe()
+    this.imageSubscriptions.forEach(subscription=>{
+      subscription.unsubscribe()
+    })
+
+    this.previewImagesSubscription = this.graphQLQuery
+    .getVehiclePreviewImages({id:this.vehicleId})
+    .subscribe((response:any)=>{
+      this.vehicleImages = response.filter((item:any)=>!!item)
+      this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
+        if(!image)
+          return;
+
+        this.imageSubscriptions[index]  =  
+          this.graphQLSubscription
+          .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
+          .subscribe((response:any)=>{
+            array[index] = response
+          })
       })
+      this.isImagesLoaded = true
+    })
+  }
+
+  private setupOnlineSubscription(){
+    this.onlineStatusQuery = this.graphQLQuery
+    .getVehicleOnlineStatus({id:this.vehicleId})
+    .subscribe((response:any)=>{
+        this.isVehicleOnline = response.online ? true : false
+    })
 
     this.onlineStatusSubscription = this.graphQLSubscription
-      .getVehicleOnlineStatus({id:this.vehicleId})
-      .subscribe((response:any)=>{
-        if(response)
-          this.isVehicleOnline = response.online
-      })
+    .getVehicleOnlineStatus({id:this.vehicleId})
+    .subscribe((response:any)=>{
+      if(response)
+        this.isVehicleOnline = response.online
+    })
+  }
 
-      this.previewImagesSubscription = this.graphQLQuery
-      .getVehiclePreviewImages({id:this.vehicleId})
-      .subscribe((response:any)=>{
-        this.vehicleImages = response.filter((item:any)=>!!item)
-        this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
-          if(!image)
-            return;
+  private setupVehicleGeolocationSubscription(){
+    this.previousCoordinatesQuery = this.graphQLQuery
+    .getVehiclePreviousLocation({vehicle_id:this.vehicleId})
+    .subscribe((response:any)=>{
+      if(response)
+        this.vehiclesLastCoordinates = [[response.longitude, response.latitude]]
+    })
+  }
 
-          this.imageSubscriptions[index]  =  
-            this.graphQLSubscription
-            .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
-            .subscribe((response:any)=>{
-              array[index] = response
-            })
-        })
-        this.isImagesLoaded = true
-      })
-
-      this.allImageSubscriptions = 
-        this.graphQLSubscription
-        .getVehiclePreviewImages({vehicleId:this.vehicleId})
-        .subscribe((response:any)=>{
-          const imageIndex = this.vehicleImages.findIndex((image:any)=>{
-            return !image ? false : image.topicId === response.topicId
-          }) 
-
-          if(imageIndex === -1){
-           console.log("Insert")
-            this.vehicleImages.push(response)
-            const index = this.vehicleImages.length-1
-            
-            this.imageSubscriptions.push( 
-              this.graphQLSubscription
-              .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:response.topicId})
-              .subscribe((response:any)=>{
-                this.vehicleImages[index] = response
-              })
-            )
-          }
-
-        })
+  ngOnInit(): void {
+    this.vehicleId = (this.route.parent as any).snapshot.params.id
+    this.setupVehicleGeolocationSubscription()
+    this.setupOnlineSubscription()
+    this.previewImageQuery()
+    this.setupLiveImageSubscription()
   }
 
   ngOnDestroy() :void{

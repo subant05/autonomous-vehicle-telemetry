@@ -51,7 +51,8 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
                     num_state_demotion,
                     num_true_positives,
                     num_false_positives,
-                    num_teleop_queries
+                    num_teleop_queries,
+                    mission_start_time
                 )
                 VALUES(
                     $12
@@ -65,6 +66,7 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
                     , $20
                     , $21
                     , $22
+                    , $23
                 )
 
                 RETURNING id
@@ -172,6 +174,7 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
             , mission_stats.num_true_positives
             , mission_stats.num_false_positives
             , mission_stats.num_teleop_queries
+            , formatDateTime(mission_stats.mission_start_time)
         ])
         
         // cb(null, JSON.stringify(queryResult) )

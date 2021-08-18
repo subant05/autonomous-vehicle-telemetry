@@ -177,6 +177,7 @@ export class GqlQueryService {
         const node = results.node
         return {
             id:node.id
+            , missionStats: node.statusMessage.missionStats
             , timestamp:node.statusMessage.header.readingat
             , headerId: node.statusMessage.header.headerid
             , node: node.statusMessage.header.node

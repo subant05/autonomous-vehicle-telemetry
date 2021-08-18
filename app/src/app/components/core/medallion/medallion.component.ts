@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class MedallionComponent implements OnInit {
 
   @Input() title: string =""
-  @Input() content: string =""
+  @Input() content: any =""
   constructor() { }
 
   ngOnInit(): void {

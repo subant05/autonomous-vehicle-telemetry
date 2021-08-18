@@ -95,6 +95,7 @@ IS the node responsible for the recording of telemetry';
 
 CREATE TABLE IF NOT EXISTS state.status_message_mission_stats(
     id BIGSERIAL,
+    mission_start_time TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     duration_autonomy_stopped  BIGINT NOT NULL, 
     duration_autonomy_driving  BIGINT NOT NULL,
     duration_no_autonomy  BIGINT NOT NULL,
@@ -143,7 +144,7 @@ COMMENT ON COLUMN state.status_message_mission_stats.num_teleop_queries IS '@omi
 CREATE TABLE IF NOT EXISTS state.status_message (
     id BIGSERIAL,
     header_id BIGINT NOT NULL,
-    mission_stats_id BIGINT NOT NULL DEFAULT 0,
+    mission_stats_id BIGINT NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_status_message_header
         FOREIGN KEY (header_id)

@@ -51,7 +51,6 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
         this.image = response
         this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
         this.headerid = stopInfo.message.header.headerid
-        console.log(response)
       })
   }
 
@@ -64,6 +63,9 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       , size: this.pageSize
     })
       .subscribe((response:any)=>{
+        if(!response.nodes.length)
+          this.isImageLoaded = true
+
         this.pagesLength = response.totalCount
         this.stopImageQuery = response.nodes.map((stopInfo:any)=>this.imageHandler(stopInfo))
       })

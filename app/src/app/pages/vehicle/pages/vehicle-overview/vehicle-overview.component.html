@@ -13,7 +13,9 @@
 </div>
 <div class="grid gap col-2">
     <div class="grid__cell">
-        <app-vehicle-mission-stats></app-vehicle-mission-stats>
+        <app-vehicle-mission-stats
+            [vehicleId]="vehicleId"
+        ></app-vehicle-mission-stats>
     </div>
     <div class="grid__cell">
         <div class="grid__cell--label">Status</div>

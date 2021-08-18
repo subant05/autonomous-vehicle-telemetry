@@ -1,12 +1,12 @@
 .grid__cell {
 
-    &:nth-child(odd){
-        &:not(.grid__cell__full-width){
-            @media screen and (min-width:1024px) {
-                border-right: 1px solid var(--lightgray);
-            }
-        }
-    }
+    // &:nth-child(odd){
+    //     &:not(.grid__cell__full-width){
+    //         @media screen and (min-width:1024px) {
+    //             border-right: 1px solid var(--lightgray);
+    //         }
+    //     }
+    // }
     .grid__cell--content {
         .map{
             height: 352px;          
@@ -32,7 +32,7 @@
 
         @media screen and (min-width:1024px) {
             .preview-images__img{
-                width: calc(33.3% - 10px);
+                width: calc(50% - 10px);
             }
         }
     }

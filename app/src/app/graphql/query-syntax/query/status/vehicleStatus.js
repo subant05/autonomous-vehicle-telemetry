@@ -22,6 +22,20 @@ query VehicleStatus($vehicle_id:BigInt, $cursor:Int, $size:Int) {
             readingat
             node
           }
+          missionStats{
+            missionStartTime
+            durationAutonomyStopped 
+            durationAutonomyDriving
+            durationNoAutonomy
+            durationTeleop
+            autonomyDistanceTravelledM 
+            autonomyAreaTravelledSqm
+            numStops
+            numStateDemotion
+            numTruePositives
+            numFalsePositives
+            numTeleopQueries
+           }
         }
         topic{
           name

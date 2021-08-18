@@ -1,44 +1,85 @@
-<div class="mission-stats">
-        <app-medallion 
-            class="stats"
-            title="Uptime"
-            content="24 hrs"
-            >
-        </app-medallion>
-        <app-medallion 
-            class="stats"
-            title="Done"
-            content="9 ac"
-            >
-        </app-medallion>
-        <app-medallion 
-            class="stats"
-            title="Moving"
-            content="7 %"
-            >
-        </app-medallion>
-        <app-medallion 
-            class="stats medium"
-            title="Telesupport"
-            content="3 %"
-            >
-        </app-medallion>
-        <app-medallion 
-            class="stats medium"
-            title="# False positive"
-            content="4 ac"
-            >
-        </app-medallion>
-        <app-medallion 
-            class="stats medium"
-            title="Support"
-            content="2 ac"
-            >
-        </app-medallion>
-        <app-medallion 
-            class="stats medium"
-            title="Mission Start"
-            content="8 hrs"
-            >
-        </app-medallion>
+<div class="mission-stats" *ngIf="missionStats; else nostats">
+    <app-medallion 
+        *ngIf="missionStats.missionStartTime"
+        class="stats large"
+        title="Mission Start"
+        [content]="getMissionStartTime()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="Uptime"
+        [content]="getUpTime()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="Done"
+        [content]="getAreaDone()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="Moving"
+        [content]="getMovingPercentage()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="Auto Stop"
+        [content]="getAutonomyStopped()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="Auto Driving"
+        [content]="getAutonomyDriving()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="Stops"
+        [content]="getStops()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats medium"
+        title="Telesupport Duration"
+        [content]="getTeleopDuration()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats medium"
+        title="Telesupport"
+        content=" ? %"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="# False positive"
+        [content]="getFalsePositives()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="# True positive"
+        [content]="getFalsePositives()"
+        >
+    </app-medallion>
+    <app-medallion 
+        class="stats"
+        title="Support"
+        content="2 ac"
+        >
+    </app-medallion>
 </div>
+<ng-template #nostats>
+    <div class="mission-stats" >
+        <app-medallion 
+            class="stats large"
+            title="No stats for vehicle."
+            content=""
+            >
+        </app-medallion>
+    </div>
+</ng-template>

@@ -1580,6 +1580,20 @@ query VehicleStatus($vehicle_id:BigInt, $cursor:Int, $size:Int) {
             readingat
             node
           }
+          missionStats{
+            missionStartTime
+            durationAutonomyStopped 
+            durationAutonomyDriving
+            durationNoAutonomy
+            durationTeleop
+            autonomyDistanceTravelledM 
+            autonomyAreaTravelledSqm
+            numStops
+            numStateDemotion
+            numTruePositives
+            numFalsePositives
+            numTeleopQueries
+           }
         }
         topic{
           name
@@ -2660,6 +2674,20 @@ subscription sqlVehicleStatus($vehicleId:BigInt) {
             headerid
             readingat
             node
+          }
+          missionStats{
+            missionStartTime
+            durationAutonomyStopped 
+            durationAutonomyDriving
+            durationNoAutonomy
+            durationTeleop
+            autonomyDistanceTravelledM 
+            autonomyAreaTravelledSqm
+            numStops
+            numStateDemotion
+            numTruePositives
+            numFalsePositives
+            numTeleopQueries
           }
         }
         state{
@@ -5379,17 +5407,21 @@ function StopImagesComponent_app_image_0_Template(rf, ctx) { if (rf & 1) {
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("data", ctx_r0.image)("label", ctx_r0.label)("headerId", ctx_r0.headerid);
 } }
-function StopImagesComponent_ng_template_2_mat_progress_bar_2_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 6);
-} }
-function StopImagesComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-icon", 4);
+function StopImagesComponent_ng_template_2_mat_icon_0_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-icon", 6);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1, "image_not_supported");
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, StopImagesComponent_ng_template_2_mat_progress_bar_2_Template, 1, 0, "mat-progress-bar", 5);
+} }
+function StopImagesComponent_ng_template_2_mat_progress_bar_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 7);
+} }
+function StopImagesComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, StopImagesComponent_ng_template_2_mat_icon_0_Template, 2, 0, "mat-icon", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, StopImagesComponent_ng_template_2_mat_progress_bar_1_Template, 1, 0, "mat-progress-bar", 5);
 } if (rf & 2) {
     const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r2.isImageLoaded);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx_r2.isImageLoaded);
 } }
 class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_IMPORTED_MODULE_0__.TableUtil {
@@ -5424,7 +5456,6 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
             this.image = response;
             this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat)}`;
             this.headerid = stopInfo.message.header.headerid;
-            console.log(response);
         });
     }
     getImage() {
@@ -5436,6 +5467,8 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
             size: this.pageSize
         })
             .subscribe((response) => {
+            if (!response.nodes.length)
+                this.isImageLoaded = true;
             this.pagesLength = response.totalCount;
             this.stopImageQuery = response.nodes.map((stopInfo) => this.imageHandler(stopInfo));
         });
@@ -5475,12 +5508,12 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
     }
 }
 StopImagesComponent.ɵfac = function StopImagesComponent_Factory(t) { return new (t || StopImagesComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService)); };
-StopImagesComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: StopImagesComponent, selectors: [["app-stop-images"]], inputs: { vehicleId: "vehicleId", live: "live" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 4, vars: 5, consts: [[3, "data", "label", "headerId", 4, "ngIf", "ngIfElse"], [3, "length", "pageSize", "pageIndex", "page"], ["loader", ""], [3, "data", "label", "headerId"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function StopImagesComponent_Template(rf, ctx) { if (rf & 1) {
+StopImagesComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: StopImagesComponent, selectors: [["app-stop-images"]], inputs: { vehicleId: "vehicleId", live: "live" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 4, vars: 5, consts: [[3, "data", "label", "headerId", 4, "ngIf", "ngIfElse"], [3, "length", "pageSize", "pageIndex", "page"], ["loader", ""], [3, "data", "label", "headerId"], ["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function StopImagesComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, StopImagesComponent_app_image_0_Template, 1, 3, "app-image", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](1, "mat-paginator", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("page", function StopImagesComponent_Template_mat_paginator_page_1_listener($event) { return ctx.getCurrentImage($event); });
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, StopImagesComponent_ng_template_2_Template, 3, 1, "ng-template", null, 2, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, StopImagesComponent_ng_template_2_Template, 2, 2, "ng-template", null, 2, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
         const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵreference"](3);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.image)("ngIfElse", _r1);
@@ -5505,11 +5538,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
 /* harmony import */ var src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/services/graphql/gql-subscription.service */ 86427);
 /* harmony import */ var src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/graphql/gql-query.service */ 91776);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 38583);
 /* harmony import */ var _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../core/medallion/medallion.component */ 24229);
 
 
 
 
+
+function VehicleMissionStatsComponent_div_0_app_medallion_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "app-medallion", 15);
+} if (rf & 2) {
+    const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r3.getMissionStartTime());
+} }
+function VehicleMissionStatsComponent_div_0_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_div_0_app_medallion_1_Template, 1, 1, "app-medallion", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "app-medallion", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](3, "app-medallion", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](4, "app-medallion", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](5, "app-medallion", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](6, "app-medallion", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](7, "app-medallion", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](8, "app-medallion", 10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](9, "app-medallion", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](10, "app-medallion", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](11, "app-medallion", 13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](12, "app-medallion", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx_r0.missionStats.missionStartTime);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getUpTime());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getAreaDone());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getMovingPercentage());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getAutonomyStopped());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getAutonomyDriving());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getStops());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getTeleopDuration());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getFalsePositives());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getFalsePositives());
+} }
+function VehicleMissionStatsComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "app-medallion", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+} }
 class VehicleMissionStatsComponent {
     constructor(graphQLSubscription, graphQLQuery) {
         this.graphQLSubscription = graphQLSubscription;
@@ -5519,22 +5603,76 @@ class VehicleMissionStatsComponent {
         this.cursor = 0;
         this.isDataLoaded = false;
     }
+    convertNanoSeconds(time) {
+        return ((time * 1.0E-9) / 1000).toFixed(2);
+    }
+    formatData(data = {}) {
+        const missionStats = data.missionStats;
+        return Object.assign({}, missionStats);
+    }
     getStatus() {
         if (this.gqlOnlineQuery)
             this.gqlOnlineQuery.unsubscribe();
         this.gqlOnlineQuery = this.graphQLQuery
             .getVehicleStatus({ vehicle_id: this.vehicleId, cursor: this.cursor, size: 1 })
             .subscribe((response) => {
-            this.mission_stats = response.nodes.map((result) => {
-                return Object.assign(Object.assign({}, result), { status: result.state.name, alerts: result.alerts.length ? result.alerts[0] : null });
+            this.missionStats = response.nodes
+                .map((result) => {
+                return this.formatData(result);
             })[0];
             this.isDataLoaded = true;
         });
         this.gqlOnlineSubscription = this.graphQLSubscription
             .getVehicleStatus({ vehicleId: this.vehicleId })
             .subscribe((response) => {
-            this.mission_stats = response;
+            this.missionStats = this.formatData(response);
         });
+    }
+    getUpTime() {
+        const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
+        const totalTime = (+(durationAutonomyDriving) + +(durationAutonomyStopped));
+        return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`;
+    }
+    getMissionStartTime() {
+        return new Date(this.missionStats.missionStartTime).toLocaleString();
+    }
+    getAcresDone() {
+        const metersPerAcre = 4047;
+        const { numFalsePositives } = this.missionStats;
+        if (numFalsePositives < metersPerAcre)
+            return "0";
+        return `${this.missionStats.numFalsePositives / metersPerAcre} ac`;
+    }
+    getFalsePositives() {
+        return this.missionStats.numFalsePositives;
+    }
+    getTruePositives() {
+        return this.missionStats.numTruePositives;
+    }
+    getStops() {
+        return this.missionStats.numStops;
+    }
+    getAreaDone() {
+        const metersPerAcre = 4047;
+        const { autonomyAreaTravelledSqm } = this.missionStats;
+        if (autonomyAreaTravelledSqm < metersPerAcre)
+            return "0";
+        return `${(autonomyAreaTravelledSqm / metersPerAcre).toFixed(2)} ac`;
+    }
+    getTeleopDuration() {
+        return this.convertNanoSeconds(this.missionStats.durationTeleop);
+    }
+    getMovingPercentage() {
+        const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
+        const totalTime = durationAutonomyDriving + durationAutonomyStopped;
+        const driveTimePerc = (durationAutonomyDriving * 100) / totalTime;
+        return `${driveTimePerc.toFixed(2)} % `;
+    }
+    getAutonomyStopped() {
+        return this.convertNanoSeconds(this.missionStats.durationAutonomyStopped);
+    }
+    getAutonomyDriving() {
+        return this.convertNanoSeconds(this.missionStats.durationAutonomyDriving);
     }
     ngOnInit() {
         if (!isNaN(this.vehicleId)) {
@@ -5548,17 +5686,13 @@ class VehicleMissionStatsComponent {
     }
 }
 VehicleMissionStatsComponent.ɵfac = function VehicleMissionStatsComponent_Factory(t) { return new (t || VehicleMissionStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };
-VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 8, vars: 0, consts: [[1, "mission-stats"], ["title", "Uptime", "content", "24 hrs", 1, "stats"], ["title", "Done", "content", "9 ac", 1, "stats"], ["title", "Moving", "content", "7 %", 1, "stats"], ["title", "Telesupport", "content", "3 %", 1, "stats", "medium"], ["title", "# False positive", "content", "4 ac", 1, "stats", "medium"], ["title", "Support", "content", "2 ac", 1, "stats", "medium"], ["title", "Mission Start", "content", "8 hrs", 1, "stats", "medium"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "app-medallion", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "app-medallion", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](3, "app-medallion", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](4, "app-medallion", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](5, "app-medallion", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](6, "app-medallion", 6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](7, "app-medallion", 7);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    } }, directives: [_core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__.MedallionComponent], styles: [".mission-stats[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n  margin-right: 10px;\n  margin-bottom: 10px;\n  width: calc(50% -10px);\n  height: auto;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n@media screen and (min-width: 400px) {\n  .mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n    width: 30%;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium[_ngcontent-%COMP%] {\n    min-width: 175px;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.large[_ngcontent-%COMP%] {\n    min-width: 200px;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLGVBQUE7QUFDSjtBQUFJO0VBQ0ksa0JBQUE7RUFDQSxtQkFBQTtFQUNBLHNCQUFBO0VBQ0EsWUFBQTtBQUVSO0FBRFE7RUFDSSxpQkFBQTtBQUdaO0FBQ0k7RUFDSTtJQUNJLFVBQUE7RUFDVjtFQUFVO0lBQ0ksZ0JBQUE7RUFFZDtFQUNVO0lBQ0ksZ0JBQUE7RUFDZDtBQUNGIiwiZmlsZSI6InZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5taXNzaW9uLXN0YXRze1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAgLnN0YXRze1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDEwcHg7XG4gICAgICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gICAgICAgIHdpZHRoOiBjYWxjKDUwJSAtMTBweCk7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgICAgJjpsYXN0LW9mLXR5cGV7XG4gICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6NDAwcHgpIHtcbiAgICAgICAgLnN0YXRze1xuICAgICAgICAgICAgd2lkdGg6IDMwJTtcbiAgICAgICAgICAgICYubWVkaXVtIHtcbiAgICAgICAgICAgICAgICBtaW4td2lkdGg6IDE3NXB4O1xuICAgICAgICAgICAgfVxuICAgIFxuICAgICAgICAgICAgJi5sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAyMDBweDtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cbn0iXX0= */"] });
+VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 3, vars: 2, consts: [["class", "mission-stats", 4, "ngIf", "ngIfElse"], ["nostats", ""], [1, "mission-stats"], ["class", "stats large", "title", "Mission Start", 3, "content", 4, "ngIf"], ["title", "Uptime", 1, "stats", 3, "content"], ["title", "Done", 1, "stats", 3, "content"], ["title", "Moving", 1, "stats", 3, "content"], ["title", "Auto Stop", 1, "stats", 3, "content"], ["title", "Auto Driving", 1, "stats", 3, "content"], ["title", "Stops", 1, "stats", 3, "content"], ["title", "Telesupport Duration", 1, "stats", "medium", 3, "content"], ["title", "Telesupport", "content", " ? %", 1, "stats", "medium"], ["title", "# False positive", 1, "stats", 3, "content"], ["title", "# True positive", 1, "stats", 3, "content"], ["title", "Support", "content", "2 ac", 1, "stats"], ["title", "Mission Start", 1, "stats", "large", 3, "content"], ["title", "No stats for vehicle.", "content", "", 1, "stats", "large"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, VehicleMissionStatsComponent_div_0_Template, 13, 10, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_Template, 2, 0, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
+    } if (rf & 2) {
+        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.missionStats)("ngIfElse", _r1);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__.MedallionComponent], styles: [".mission-stats[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n  margin-right: 10px;\n  margin-bottom: 10px;\n  width: calc(50% -10px);\n  height: auto;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n@media screen and (min-width: 400px) {\n  .mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n    width: 30%;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium[_ngcontent-%COMP%] {\n    min-width: 175px;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.large[_ngcontent-%COMP%] {\n    min-width: 300px;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLGVBQUE7QUFDSjtBQUFJO0VBQ0ksa0JBQUE7RUFDQSxtQkFBQTtFQUNBLHNCQUFBO0VBQ0EsWUFBQTtBQUVSO0FBRFE7RUFDSSxpQkFBQTtBQUdaO0FBQ0k7RUFDSTtJQUNJLFVBQUE7RUFDVjtFQUFVO0lBQ0ksZ0JBQUE7RUFFZDtFQUNVO0lBQ0ksZ0JBQUE7RUFDZDtBQUNGIiwiZmlsZSI6InZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5taXNzaW9uLXN0YXRze1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAgLnN0YXRze1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDEwcHg7XG4gICAgICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gICAgICAgIHdpZHRoOiBjYWxjKDUwJSAtMTBweCk7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgICAgJjpsYXN0LW9mLXR5cGV7XG4gICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6NDAwcHgpIHtcbiAgICAgICAgLnN0YXRze1xuICAgICAgICAgICAgd2lkdGg6IDMwJTtcbiAgICAgICAgICAgICYubWVkaXVtIHtcbiAgICAgICAgICAgICAgICBtaW4td2lkdGg6IDE3NXB4O1xuICAgICAgICAgICAgfVxuICAgIFxuICAgICAgICAgICAgJi5sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAzMDBweDtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cbn0iXX0= */"] });
 
 
 /***/ }),
@@ -7298,11 +7432,11 @@ function VehicleOverviewComponent_button_4_Template(rf, ctx) { if (rf & 1) {
 } }
 function VehicleOverviewComponent_div_21_div_1_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](1, "div", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](1, "div", 6);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵpipe"](3, "titlecase");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](4, "div", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](4, "div", 7);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](5, "app-image", 20);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
@@ -7392,24 +7526,24 @@ class VehicleOverviewComponent {
         this.vehicleId = "";
         this.isVehicleOnline = false;
     }
-    ngOnInit() {
-        this.vehicleId = this.route.parent.snapshot.params.id;
-        this.previousCoordinatesQuery = this.graphQLQuery
-            .getVehiclePreviousLocation({ vehicle_id: this.vehicleId })
-            .subscribe((response) => {
-            if (response)
-                this.vehiclesLastCoordinates = [[response.longitude, response.latitude]];
-        });
-        this.onlineStatusQuery = this.graphQLQuery
-            .getVehicleOnlineStatus({ id: this.vehicleId })
-            .subscribe((response) => {
-            this.isVehicleOnline = response.online ? true : false;
-        });
-        this.onlineStatusSubscription = this.graphQLSubscription
-            .getVehicleOnlineStatus({ id: this.vehicleId })
-            .subscribe((response) => {
-            if (response)
-                this.isVehicleOnline = response.online;
+    setupLiveImageSubscription() {
+        this.allImageSubscriptions =
+            this.graphQLSubscription
+                .getVehiclePreviewImages({ vehicleId: this.vehicleId })
+                .subscribe((response) => {
+                const imageIndex = this.vehicleImages.findIndex((image) => {
+                    return !image ? false : image.topicId === response.topicId;
+                });
+                if (imageIndex === -1) {
+                    this.previewImageQuery();
+                }
+            });
+    }
+    previewImageQuery() {
+        var _a;
+        (_a = this.previewImagesSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        this.imageSubscriptions.forEach(subscription => {
+            subscription.unsubscribe();
         });
         this.previewImagesSubscription = this.graphQLQuery
             .getVehiclePreviewImages({ id: this.vehicleId })
@@ -7427,24 +7561,34 @@ class VehicleOverviewComponent {
             });
             this.isImagesLoaded = true;
         });
-        this.allImageSubscriptions =
-            this.graphQLSubscription
-                .getVehiclePreviewImages({ vehicleId: this.vehicleId })
-                .subscribe((response) => {
-                const imageIndex = this.vehicleImages.findIndex((image) => {
-                    return !image ? false : image.topicId === response.topicId;
-                });
-                if (imageIndex === -1) {
-                    console.log("Insert");
-                    this.vehicleImages.push(response);
-                    const index = this.vehicleImages.length - 1;
-                    this.imageSubscriptions.push(this.graphQLSubscription
-                        .getPreviewImageByVehicleIdTopicId({ vehicleId: this.vehicleId, topicId: response.topicId })
-                        .subscribe((response) => {
-                        this.vehicleImages[index] = response;
-                    }));
-                }
-            });
+    }
+    setupOnlineSubscription() {
+        this.onlineStatusQuery = this.graphQLQuery
+            .getVehicleOnlineStatus({ id: this.vehicleId })
+            .subscribe((response) => {
+            this.isVehicleOnline = response.online ? true : false;
+        });
+        this.onlineStatusSubscription = this.graphQLSubscription
+            .getVehicleOnlineStatus({ id: this.vehicleId })
+            .subscribe((response) => {
+            if (response)
+                this.isVehicleOnline = response.online;
+        });
+    }
+    setupVehicleGeolocationSubscription() {
+        this.previousCoordinatesQuery = this.graphQLQuery
+            .getVehiclePreviousLocation({ vehicle_id: this.vehicleId })
+            .subscribe((response) => {
+            if (response)
+                this.vehiclesLastCoordinates = [[response.longitude, response.latitude]];
+        });
+    }
+    ngOnInit() {
+        this.vehicleId = this.route.parent.snapshot.params.id;
+        this.setupVehicleGeolocationSubscription();
+        this.setupOnlineSubscription();
+        this.previewImageQuery();
+        this.setupLiveImageSubscription();
     }
     ngOnDestroy() {
         var _a, _b, _c, _d, _e;
@@ -7461,7 +7605,7 @@ class VehicleOverviewComponent {
     }
 }
 VehicleOverviewComponent.ɵfac = function VehicleOverviewComponent_Factory(t) { return new (t || VehicleOverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_geolocation_geolocation_service__WEBPACK_IMPORTED_MODULE_0__.GeolocationService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_9__.ActivatedRoute)); };
-VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineComponent"]({ type: VehicleOverviewComponent, selectors: [["app-vehicle-overview"]], decls: 33, vars: 8, consts: [[1, "header"], [1, "header__title"], ["class", "live-pulse", "mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 4, "ngIf"], [1, "grid", "gap", "col-2"], [1, "grid__cell"], [1, "grid__cell--label"], [1, "grid__cell--content"], [3, "vehicleId"], [1, "grid__cell", "grid__cell__full-width"], [1, "divider"], [3, "vehicleId", "live"], ["class", "preview-images", 4, "ngIf", "ngIfElse"], ["loader", ""], ["class", "map", 4, "ngIf", "ngIfElse"], ["emptymap", ""], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "preview-images"], ["class", "preview-images__img", 4, "ngFor", "ngForOf"], [1, "preview-images__img"], [4, "ngIf"], [3, "data", "label", "headerId"], ["mode", "indeterminate"], [1, "map"], ["playback", "live", 3, "showTractor", "zoom", "vehicleId", 4, "ngIf"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "coordinates", "lastPosition", 4, "ngIf"], ["playback", "live", 3, "showTractor", "zoom", "vehicleId"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "coordinates", "lastPosition"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "lastPosition", 4, "ngIf"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "lastPosition"]], template: function VehicleOverviewComponent_Template(rf, ctx) { if (rf & 1) {
+VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineComponent"]({ type: VehicleOverviewComponent, selectors: [["app-vehicle-overview"]], decls: 33, vars: 9, consts: [[1, "header"], [1, "header__title"], ["class", "live-pulse", "mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 4, "ngIf"], [1, "grid", "gap", "col-2"], [1, "grid__cell"], [3, "vehicleId"], [1, "grid__cell--label"], [1, "grid__cell--content"], [1, "grid__cell", "grid__cell__full-width"], [1, "divider"], [3, "vehicleId", "live"], ["class", "preview-images", 4, "ngIf", "ngIfElse"], ["loader", ""], ["class", "map", 4, "ngIf", "ngIfElse"], ["emptymap", ""], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "preview-images"], ["class", "preview-images__img", 4, "ngFor", "ngForOf"], [1, "preview-images__img"], [4, "ngIf"], [3, "data", "label", "headerId"], ["mode", "indeterminate"], [1, "map"], ["playback", "live", 3, "showTractor", "zoom", "vehicleId", 4, "ngIf"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "coordinates", "lastPosition", 4, "ngIf"], ["playback", "live", 3, "showTractor", "zoom", "vehicleId"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "coordinates", "lastPosition"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "lastPosition", 4, "ngIf"], ["playback", "static", 3, "showTractor", "zoom", "vehicleId", "lastPosition"]], template: function VehicleOverviewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](2, "h2");
@@ -7472,24 +7616,24 @@ VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_M
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](5, "div", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](6, "div", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](7, "app-vehicle-mission-stats");
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](7, "app-vehicle-mission-stats", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](8, "div", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](9, "div", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](9, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](10, "Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](11, "div", 6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](12, "app-vehicle-status", 7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](11, "div", 7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](12, "app-vehicle-status", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](13, "div", 8);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](14, "mat-divider", 9);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](15, "div", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](16, "div", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](16, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](17, "Stop Images");
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](18, "div", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](18, "div", 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](19, "app-stop-images", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
@@ -7501,10 +7645,10 @@ VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_M
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](25, "mat-divider", 9);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](26, "div", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](27, "div", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](27, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](28, "Geolocation");
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](29, "div", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](29, "div", 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](30, VehicleOverviewComponent_div_30_Template, 3, 2, "div", 13);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](31, VehicleOverviewComponent_ng_template_31_Template, 2, 1, "ng-template", null, 14, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplateRefExtractor"]);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
@@ -7515,7 +7659,9 @@ VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_M
         const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵreference"](32);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.isVehicleOnline);
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("vehicleId", ctx.vehicleId);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](5);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("vehicleId", ctx.vehicleId);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](7);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("vehicleId", ctx.vehicleId)("live", true);
@@ -7523,7 +7669,7 @@ VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_M
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.isImagesLoaded)("ngIfElse", _r2);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](9);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.vehiclesLastCoordinates.length)("ngIfElse", _r5);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_10__.NgIf, _components_topics_vehicles_vehicle_mission_stats_vehicle_mission_stats_component__WEBPACK_IMPORTED_MODULE_3__.VehicleMissionStatsComponent, _components_topics_vehicles_vehicle_status_vehicle_status_component__WEBPACK_IMPORTED_MODULE_4__.VehicleStatusComponent, _angular_material_divider__WEBPACK_IMPORTED_MODULE_11__.MatDivider, _components_topics_images_stop_images_stop_images_component__WEBPACK_IMPORTED_MODULE_5__.StopImagesComponent, _angular_material_button__WEBPACK_IMPORTED_MODULE_12__.MatButton, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgForOf, _components_images_image_image_component__WEBPACK_IMPORTED_MODULE_6__.ImageComponent, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_13__.MatProgressBar, _components_topics_geolocation_starfire_starfire_component__WEBPACK_IMPORTED_MODULE_7__.StarfireComponent], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_10__.TitleCasePipe], styles: ["@media screen and (min-width: 1024px) {\n  .grid__cell[_ngcontent-%COMP%]:nth-child(odd):not(.grid__cell__full-width) {\n    border-right: 1px solid var(--lightgray);\n  }\n}\n.grid__cell[_ngcontent-%COMP%]   .grid__cell--content[_ngcontent-%COMP%]   .map[_ngcontent-%COMP%] {\n  height: 352px;\n}\n.grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n}\n.grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%]   .preview-images__img[_ngcontent-%COMP%] {\n  width: 100%;\n  padding: 10px;\n}\n@media screen and (min-width: 570px) {\n  .grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%]   .preview-images__img[_ngcontent-%COMP%] {\n    width: calc(50% - 10px);\n  }\n}\n@media screen and (min-width: 1024px) {\n  .grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%]   .preview-images__img[_ngcontent-%COMP%] {\n    width: calc(33.3% - 10px);\n  }\n}\n.grid__cell[_ngcontent-%COMP%]   .loader[_ngcontent-%COMP%] {\n  min-height: 150px;\n}\n.header[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  word-break: break-all;\n}\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%] {\n  width: 100%;\n}\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%]   h2[_ngcontent-%COMP%] {\n  display: inline-block;\n}\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%]   .live-pulse[_ngcontent-%COMP%] {\n  margin-left: 20px;\n  animation: pulse 1000ms infinite;\n  position: relative;\n  top: -5px;\n}\n@keyframes pulse {\n  0% {\n    transform: scale(0);\n    box-shadow: 0 0 0 1px solid red;\n  }\n  100% {\n    transform: scale(1);\n    box-shadow: 1 2 3 20px solid red;\n  }\n}\n.divider[_ngcontent-%COMP%] {\n  background-color: #777;\n  margin: 15px 0;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtb3ZlcnZpZXcuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBSVk7RUFESjtJQUVRLHdDQUFBO0VBRmQ7QUFDRjtBQU1RO0VBQ0ksYUFBQTtBQUpaO0FBU0k7RUFDSSxhQUFBO0VBQ0EsZUFBQTtBQVBSO0FBU1E7RUFDSSxXQUFBO0VBQ0EsYUFBQTtBQVBaO0FBV1E7RUFDSTtJQUNJLHVCQUFBO0VBVGQ7QUFDRjtBQVlRO0VBQ0k7SUFDSSx5QkFBQTtFQVZkO0FBQ0Y7QUFjSTtFQUNJLGlCQUFBO0FBWlI7QUFnQkE7RUFDSSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxxQkFBQTtBQWJKO0FBZUk7RUFDSSxXQUFBO0FBYlI7QUFlUTtFQUNDLHFCQUFBO0FBYlQ7QUFnQlE7RUFDSSxpQkFBQTtFQUNBLGdDQUFBO0VBQ0Esa0JBQUE7RUFDQSxTQUFBO0FBZFo7QUFpQlE7RUFDSTtJQUNJLG1CQUFBO0lBQ0EsK0JBQUE7RUFmZDtFQWlCVTtJQUNJLG1CQUFBO0lBQ0EsZ0NBQUE7RUFmZDtBQUNGO0FBcUJBO0VBQ0ksc0JBQUE7RUFDQSxjQUFBO0FBbEJKIiwiZmlsZSI6InZlaGljbGUtb3ZlcnZpZXcuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZ3JpZF9fY2VsbCB7XG5cbiAgICAmOm50aC1jaGlsZChvZGQpe1xuICAgICAgICAmOm5vdCguZ3JpZF9fY2VsbF9fZnVsbC13aWR0aCl7XG4gICAgICAgICAgICBAbWVkaWEgc2NyZWVuIGFuZCAobWluLXdpZHRoOjEwMjRweCkge1xuICAgICAgICAgICAgICAgIGJvcmRlci1yaWdodDogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICB9XG4gICAgLmdyaWRfX2NlbGwtLWNvbnRlbnQge1xuICAgICAgICAubWFwe1xuICAgICAgICAgICAgaGVpZ2h0OiAzNTJweDsgICAgICAgICAgXG4gICAgICAgIH1cbiAgICB9XG5cblxuICAgIC5wcmV2aWV3LWltYWdlc3tcbiAgICAgICAgZGlzcGxheTpmbGV4O1xuICAgICAgICBmbGV4LXdyYXA6d3JhcDtcblxuICAgICAgICAucHJldmlldy1pbWFnZXNfX2ltZyB7XG4gICAgICAgICAgICB3aWR0aDogMTAwJTtcbiAgICAgICAgICAgIHBhZGRpbmc6MTBweDtcbiAgICAgICAgfVxuXG5cbiAgICAgICAgQG1lZGlhIHNjcmVlbiBhbmQgKG1pbi13aWR0aDo1NzBweCkge1xuICAgICAgICAgICAgLnByZXZpZXctaW1hZ2VzX19pbWd7XG4gICAgICAgICAgICAgICAgd2lkdGg6IGNhbGMoNTAlIC0gMTBweCk7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cblxuICAgICAgICBAbWVkaWEgc2NyZWVuIGFuZCAobWluLXdpZHRoOjEwMjRweCkge1xuICAgICAgICAgICAgLnByZXZpZXctaW1hZ2VzX19pbWd7XG4gICAgICAgICAgICAgICAgd2lkdGg6IGNhbGMoMzMuMyUgLSAxMHB4KTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cblxuICAgIC5sb2FkZXIge1xuICAgICAgICBtaW4taGVpZ2h0OiAxNTBweDtcbiAgICB9XG59XG5cbi5oZWFkZXIge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICB3b3JkLWJyZWFrOiBicmVhay1hbGw7XG5cbiAgICAuaGVhZGVyX190aXRsZXtcbiAgICAgICAgd2lkdGg6MTAwJTtcblxuICAgICAgICBoMntcbiAgICAgICAgIGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuICAgICAgICB9XG5cbiAgICAgICAgLmxpdmUtcHVsc2V7XG4gICAgICAgICAgICBtYXJnaW4tbGVmdDogMjBweDtcbiAgICAgICAgICAgIGFuaW1hdGlvbjogcHVsc2UgMTAwMG1zIGluZmluaXRlO1xuICAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgICAgICAgdG9wOiAtNXB4O1xuICAgICAgICB9XG4gICAgXG4gICAgICAgIEBrZXlmcmFtZXMgcHVsc2Uge1xuICAgICAgICAgICAgMCV7XG4gICAgICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwKTtcbiAgICAgICAgICAgICAgICBib3gtc2hhZG93OjAgMCAwIDFweCBzb2xpZCByZ2JhKDI1NSwwLDAsMSk7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAxMDAle1xuICAgICAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7XG4gICAgICAgICAgICAgICAgYm94LXNoYWRvdzoxIDIgMyAyMHB4IHNvbGlkIHJnYmEoMjU1LDAsMCwxKTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cblxufVxuXG4uZGl2aWRlcntcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjNzc3O1xuICAgIG1hcmdpbjogMTVweCAwO1xufSJdfQ== */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_10__.NgIf, _components_topics_vehicles_vehicle_mission_stats_vehicle_mission_stats_component__WEBPACK_IMPORTED_MODULE_3__.VehicleMissionStatsComponent, _components_topics_vehicles_vehicle_status_vehicle_status_component__WEBPACK_IMPORTED_MODULE_4__.VehicleStatusComponent, _angular_material_divider__WEBPACK_IMPORTED_MODULE_11__.MatDivider, _components_topics_images_stop_images_stop_images_component__WEBPACK_IMPORTED_MODULE_5__.StopImagesComponent, _angular_material_button__WEBPACK_IMPORTED_MODULE_12__.MatButton, _angular_common__WEBPACK_IMPORTED_MODULE_10__.NgForOf, _components_images_image_image_component__WEBPACK_IMPORTED_MODULE_6__.ImageComponent, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_13__.MatProgressBar, _components_topics_geolocation_starfire_starfire_component__WEBPACK_IMPORTED_MODULE_7__.StarfireComponent], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_10__.TitleCasePipe], styles: [".grid__cell[_ngcontent-%COMP%]   .grid__cell--content[_ngcontent-%COMP%]   .map[_ngcontent-%COMP%] {\n  height: 352px;\n}\n.grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n}\n.grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%]   .preview-images__img[_ngcontent-%COMP%] {\n  width: 100%;\n  padding: 10px;\n}\n@media screen and (min-width: 570px) {\n  .grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%]   .preview-images__img[_ngcontent-%COMP%] {\n    width: calc(50% - 10px);\n  }\n}\n@media screen and (min-width: 1024px) {\n  .grid__cell[_ngcontent-%COMP%]   .preview-images[_ngcontent-%COMP%]   .preview-images__img[_ngcontent-%COMP%] {\n    width: calc(50% - 10px);\n  }\n}\n.grid__cell[_ngcontent-%COMP%]   .loader[_ngcontent-%COMP%] {\n  min-height: 150px;\n}\n.header[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  word-break: break-all;\n}\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%] {\n  width: 100%;\n}\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%]   h2[_ngcontent-%COMP%] {\n  display: inline-block;\n}\n.header[_ngcontent-%COMP%]   .header__title[_ngcontent-%COMP%]   .live-pulse[_ngcontent-%COMP%] {\n  margin-left: 20px;\n  animation: pulse 1000ms infinite;\n  position: relative;\n  top: -5px;\n}\n@keyframes pulse {\n  0% {\n    transform: scale(0);\n    box-shadow: 0 0 0 1px solid red;\n  }\n  100% {\n    transform: scale(1);\n    box-shadow: 1 2 3 20px solid red;\n  }\n}\n.divider[_ngcontent-%COMP%] {\n  background-color: #777;\n  margin: 15px 0;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtb3ZlcnZpZXcuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBVVE7RUFDSSxhQUFBO0FBVFo7QUFjSTtFQUNJLGFBQUE7RUFDQSxlQUFBO0FBWlI7QUFjUTtFQUNJLFdBQUE7RUFDQSxhQUFBO0FBWlo7QUFnQlE7RUFDSTtJQUNJLHVCQUFBO0VBZGQ7QUFDRjtBQWlCUTtFQUNJO0lBQ0ksdUJBQUE7RUFmZDtBQUNGO0FBbUJJO0VBQ0ksaUJBQUE7QUFqQlI7QUFxQkE7RUFDSSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxxQkFBQTtBQWxCSjtBQW9CSTtFQUNJLFdBQUE7QUFsQlI7QUFvQlE7RUFDQyxxQkFBQTtBQWxCVDtBQXFCUTtFQUNJLGlCQUFBO0VBQ0EsZ0NBQUE7RUFDQSxrQkFBQTtFQUNBLFNBQUE7QUFuQlo7QUFzQlE7RUFDSTtJQUNJLG1CQUFBO0lBQ0EsK0JBQUE7RUFwQmQ7RUFzQlU7SUFDSSxtQkFBQTtJQUNBLGdDQUFBO0VBcEJkO0FBQ0Y7QUEwQkE7RUFDSSxzQkFBQTtFQUNBLGNBQUE7QUF2QkoiLCJmaWxlIjoidmVoaWNsZS1vdmVydmlldy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ncmlkX19jZWxsIHtcblxuICAgIC8vICY6bnRoLWNoaWxkKG9kZCl7XG4gICAgLy8gICAgICY6bm90KC5ncmlkX19jZWxsX19mdWxsLXdpZHRoKXtcbiAgICAvLyAgICAgICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6MTAyNHB4KSB7XG4gICAgLy8gICAgICAgICAgICAgYm9yZGVyLXJpZ2h0OiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAvLyAgICAgICAgIH1cbiAgICAvLyAgICAgfVxuICAgIC8vIH1cbiAgICAuZ3JpZF9fY2VsbC0tY29udGVudCB7XG4gICAgICAgIC5tYXB7XG4gICAgICAgICAgICBoZWlnaHQ6IDM1MnB4OyAgICAgICAgICBcbiAgICAgICAgfVxuICAgIH1cblxuXG4gICAgLnByZXZpZXctaW1hZ2Vze1xuICAgICAgICBkaXNwbGF5OmZsZXg7XG4gICAgICAgIGZsZXgtd3JhcDp3cmFwO1xuXG4gICAgICAgIC5wcmV2aWV3LWltYWdlc19faW1nIHtcbiAgICAgICAgICAgIHdpZHRoOiAxMDAlO1xuICAgICAgICAgICAgcGFkZGluZzoxMHB4O1xuICAgICAgICB9XG5cblxuICAgICAgICBAbWVkaWEgc2NyZWVuIGFuZCAobWluLXdpZHRoOjU3MHB4KSB7XG4gICAgICAgICAgICAucHJldmlldy1pbWFnZXNfX2ltZ3tcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYyg1MCUgLSAxMHB4KTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuXG4gICAgICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6MTAyNHB4KSB7XG4gICAgICAgICAgICAucHJldmlldy1pbWFnZXNfX2ltZ3tcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYyg1MCUgLSAxMHB4KTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cblxuICAgIC5sb2FkZXIge1xuICAgICAgICBtaW4taGVpZ2h0OiAxNTBweDtcbiAgICB9XG59XG5cbi5oZWFkZXIge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICB3b3JkLWJyZWFrOiBicmVhay1hbGw7XG5cbiAgICAuaGVhZGVyX190aXRsZXtcbiAgICAgICAgd2lkdGg6MTAwJTtcblxuICAgICAgICBoMntcbiAgICAgICAgIGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuICAgICAgICB9XG5cbiAgICAgICAgLmxpdmUtcHVsc2V7XG4gICAgICAgICAgICBtYXJnaW4tbGVmdDogMjBweDtcbiAgICAgICAgICAgIGFuaW1hdGlvbjogcHVsc2UgMTAwMG1zIGluZmluaXRlO1xuICAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgICAgICAgdG9wOiAtNXB4O1xuICAgICAgICB9XG4gICAgXG4gICAgICAgIEBrZXlmcmFtZXMgcHVsc2Uge1xuICAgICAgICAgICAgMCV7XG4gICAgICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwKTtcbiAgICAgICAgICAgICAgICBib3gtc2hhZG93OjAgMCAwIDFweCBzb2xpZCByZ2JhKDI1NSwwLDAsMSk7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAxMDAle1xuICAgICAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7XG4gICAgICAgICAgICAgICAgYm94LXNoYWRvdzoxIDIgMyAyMHB4IHNvbGlkIHJnYmEoMjU1LDAsMCwxKTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgIH1cblxufVxuXG4uZGl2aWRlcntcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjNzc3O1xuICAgIG1hcmdpbjogMTVweCAwO1xufSJdfQ== */"] });
 
 
 /***/ }),
@@ -8917,6 +9063,7 @@ class GqlQueryService {
                 const node = results.node;
                 return {
                     id: node.id,
+                    missionStats: node.statusMessage.missionStats,
                     timestamp: node.statusMessage.header.readingat,
                     headerId: node.statusMessage.header.headerid,
                     node: node.statusMessage.header.node,
@@ -9092,7 +9239,7 @@ class GqlSubscriptionService {
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
             const results = response.data.sqlVehicleStatus.vehicle_status;
-            return Object.assign(Object.assign({}, results), { topic: results.topic.name, node: results.statusMessage.header.node, headerId: results.statusMessage.header.headerid, status: results.state.name, timestamp: results.statusMessage.header.readingat, state: results.state, vehicleStatusDetails: results.vehicleStatusDetails.nodes, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
+            return Object.assign(Object.assign({}, results), { missionStats: results.statusMessage.missionStats, topic: results.topic.name, node: results.statusMessage.header.node, headerId: results.statusMessage.header.headerid, status: results.state.name, timestamp: results.statusMessage.header.readingat, state: results.state, vehicleStatusDetails: results.vehicleStatusDetails.nodes, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
         }));
     }
     getVehiclePreviewImages(variables = {}) {
