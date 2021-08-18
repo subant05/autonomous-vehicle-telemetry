@@ -68,7 +68,7 @@ export const sqlInsertVehicle = async (data) => {
                 AND name = $2
                 `,[
                     id
-                    , name.toLowerCase().trim()
+                    , name.toString().toLowerCase().trim()
                 ])
         } else {
             console.log("INSERT VECHILE ERROR", e.message)
