@@ -95,6 +95,9 @@ export class GqlSubscriptionService {
       query: SubscriptionQL.Vehicles.State
       , variables
     }).pipe(map((response:any)=>{
+      if(!response.data.sqlVehicleStatus.vehicle_status )
+        return null
+
       const results =  response.data.sqlVehicleStatus.vehicle_status      
       return {
         ...results
@@ -141,6 +144,9 @@ export class GqlSubscriptionService {
       query: SubscriptionQL.Images.PreviewImagesByVehicleIdTopicId
       , variables
     }).pipe(map((response:any)=>{
+      if(!response.data.sqlCamera.camera)
+        return null;
+
       const topic = response.data.sqlCamera.camera.vehicle.vehicleTopics.nodes[0].topic
       const msg = topic.cameras.nodes[0].msg
       const image = msg.image

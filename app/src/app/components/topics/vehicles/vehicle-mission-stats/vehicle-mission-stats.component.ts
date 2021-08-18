@@ -64,7 +64,10 @@ export class VehicleMissionStatsComponent implements OnInit {
     
     this.gqlOnlineSubscription = this.graphQLSubscription
         .getVehicleStatus({vehicleId:this.vehicleId})
-        .subscribe((response:any)=>{
+        .subscribe((response:any):void | null=>{
+          if(!response)
+            return
+
           this.missionStats = this.formatData(response)
         })
     

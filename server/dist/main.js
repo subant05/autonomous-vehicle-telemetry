@@ -5743,6 +5743,8 @@ class VehicleMissionStatsComponent {
         this.gqlOnlineSubscription = this.graphQLSubscription
             .getVehicleStatus({ vehicleId: this.vehicleId })
             .subscribe((response) => {
+            if (!response)
+                return;
             this.missionStats = this.formatData(response);
         });
     }
@@ -5985,6 +5987,8 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
         this.gqlOnlineSubscription = this.graphQLSubscription
             .getVehicleStatus({ vehicleId: this.vehicleId })
             .subscribe((response) => {
+            if (!response)
+                return;
             this.statusList.unshift(response);
             this.statusList.pop();
             this.updateList(this.statusList);
@@ -7361,6 +7365,8 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                     this.statusSubscription = this.graphQLSubscription
                         .getVehicleStatus({ vehicleId: this.vehicleId })
                         .subscribe((response) => {
+                        if (!response)
+                            return null;
                         this.updateTable({ data: response, action: "prepend" });
                     });
                     break;
@@ -7713,6 +7719,8 @@ class VehicleOverviewComponent {
                     this.graphQLSubscription
                         .getPreviewImageByVehicleIdTopicId({ vehicleId: this.vehicleId, topicId: image.topicId })
                         .subscribe((response) => {
+                        if (!response)
+                            return null;
                         array[index] = response;
                     });
             });
@@ -9399,6 +9407,8 @@ class GqlSubscriptionService {
             query: SubscriptionQL.Vehicles.State,
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
+            if (!response.data.sqlVehicleStatus.vehicle_status)
+                return null;
             const results = response.data.sqlVehicleStatus.vehicle_status;
             return Object.assign(Object.assign({}, results), { missionStats: results.statusMessage.missionStats, topic: results.topic.name, node: results.statusMessage.header.node, headerId: results.statusMessage.header.headerid, status: results.state.name, timestamp: results.statusMessage.header.readingat, state: results.state, vehicleStatusDetails: results.vehicleStatusDetails.nodes, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
         }));
@@ -9432,6 +9442,8 @@ class GqlSubscriptionService {
             query: SubscriptionQL.Images.PreviewImagesByVehicleIdTopicId,
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
+            if (!response.data.sqlCamera.camera)
+                return null;
             const topic = response.data.sqlCamera.camera.vehicle.vehicleTopics.nodes[0].topic;
             const msg = topic.cameras.nodes[0].msg;
             const image = msg.image;

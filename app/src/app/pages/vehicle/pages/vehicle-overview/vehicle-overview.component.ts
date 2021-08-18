@@ -66,7 +66,10 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
         this.imageSubscriptions[index]  =  
           this.graphQLSubscription
           .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
-          .subscribe((response:any)=>{
+          .subscribe((response:any): void | null=>{
+            if(!response)
+              return null;
+
             array[index] = response
           })
       })

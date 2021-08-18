@@ -138,7 +138,10 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
 
           this.statusSubscription = this.graphQLSubscription
             .getVehicleStatus({vehicleId:this.vehicleId})
-            .subscribe((response:any)=>{
+            .subscribe((response:any):void | null=> {
+              if(!response)
+                return null
+
               this.updateTable({data:response, action:"prepend"})  
             })
             break;
