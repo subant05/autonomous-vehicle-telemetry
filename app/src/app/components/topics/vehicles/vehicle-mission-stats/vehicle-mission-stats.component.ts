@@ -23,9 +23,22 @@ export class VehicleMissionStatsComponent implements OnInit {
     , private graphQLQuery: GqlQueryService
   ) { }
 
-  private convertNanoSeconds(time:any){
-    return ((time  * 1.0E-9)/1000 ).toFixed(2)
+  private convertToMilliSeconds(time:any): any{
+    return parseFloat(((time  * 1.0E-9)/1000 ).toFixed(2))
   }
+
+  private convertToSeconds(time:any): any{
+    return +((this.convertToMilliSeconds(parseFloat(time))/1000).toFixed(2))
+  }
+
+  private convertToMinutes(time:any): any{
+    return +((this.convertToSeconds(parseFloat(time))/60).toFixed(2))
+  }
+
+  private convertToHours(time:any){
+    return +((this.convertToMinutes(parseFloat(time))/60).toFixed(2))
+  }
+  
   private formatData(data:any={}){
     const missionStats =  data.missionStats
     return {
@@ -59,8 +72,9 @@ export class VehicleMissionStatsComponent implements OnInit {
 
   getUpTime(){
     const {durationAutonomyDriving,durationAutonomyStopped, durationNoAutonomy} = this.missionStats
-    const totalTime =  (+(durationAutonomyDriving) + +(durationAutonomyStopped))
-    return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
+    const totalTimeSeconds =  +(durationAutonomyDriving) + +(durationAutonomyStopped)
+    return `${this.convertToSeconds(totalTimeSeconds)} sec`
+    // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
   }
 
   getMissionStartTime(){
@@ -99,21 +113,34 @@ export class VehicleMissionStatsComponent implements OnInit {
   }
 
   getTeleopDuration(){
-    return  this.convertNanoSeconds(this.missionStats.durationTeleop)
+    return  `${this.convertToSeconds(this.missionStats.durationTeleop)} sec`
   }
 
   getMovingPercentage(){
-    const {durationAutonomyDriving,durationAutonomyStopped, durationNoAutonomy} = this.missionStats
-    const totalTime = durationAutonomyDriving + durationAutonomyStopped
-    const driveTimePerc =  (durationAutonomyDriving*100) / totalTime
-    return `${driveTimePerc.toFixed(2)} % `
+    // Add All 3
+    const {durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy} = this.missionStats
+    const totalTime = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy)
+    const driveTimePerc =  this.convertToSeconds((durationAutonomyDriving*100) / +(totalTime))
+    return `${driveTimePerc} % `
   }
 
   getAutonomyStopped(){
-    return this.convertNanoSeconds(this.missionStats.durationAutonomyStopped)
+    return `${this.convertToSeconds(this.missionStats.durationAutonomyStopped) } sec`
   }
+
   getAutonomyDriving(){
-    return this.convertNanoSeconds(this.missionStats.durationAutonomyDriving)
+    return `${this.convertToSeconds(this.missionStats.durationAutonomyDriving) } sec`
+  }
+
+  getTelesupport(){
+    const {durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy} = this.missionStats
+    const totalTime = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy)
+    return `${ (+(this.missionStats.durationTeleop)*100 / +(totalTime) ).toFixed(2)} %`
+  }
+
+  getSupport(){
+    const support =  (parseFloat(this.getAreaDone()) /  +(this.missionStats.numTeleopQueries))
+    return support
   }
 
   ngOnInit(): void {

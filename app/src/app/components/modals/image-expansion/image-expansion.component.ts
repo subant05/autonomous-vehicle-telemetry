@@ -37,7 +37,6 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
   }
 
   toggleSegmentation(event:MatSlideToggleChange){
-    console.log(event)
     this.segmentationToggle.checked = event.checked
   }
 
@@ -48,6 +47,7 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
     switch(event){
       case "loaded":
           this.loadedSegmentations = true
+          this.segmentationToggle.checked = this.segmentationToggle.checked 
           break;
       case "no segmentation":
       case "unloaded":

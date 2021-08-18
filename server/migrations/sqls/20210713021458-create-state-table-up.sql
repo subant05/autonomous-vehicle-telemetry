@@ -29,8 +29,8 @@ COMMENT ON COLUMN state.vehicle_states.updated_at IS 'The date of vehicle state 
 INSERT INTO state.vehicle_states 
 (name, code)
 VALUES
-('UNINITIALIZED', 0),
-('MOVING', 1),
+('NO_AUTONOMY', 0),
+('DRIVING', 1),
 ('STOPPED', 2);
 
 CREATE TABLE IF NOT EXISTS state.vehicle_state_reason(

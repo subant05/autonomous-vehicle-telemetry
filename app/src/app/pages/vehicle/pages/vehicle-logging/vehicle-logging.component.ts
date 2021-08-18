@@ -37,10 +37,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     {value: "status", label: "Autonomy State"},
     {value: "object", label: "Object Detection"}
   ]
-  nodes: string[] = [
-    "stereo_to_disparity"
-    , "message_cache"
-  ]
+  nodes: string[] = []
   isLive:boolean= false;
   columns: string[] = [
     'status'

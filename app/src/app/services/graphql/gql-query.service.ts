@@ -121,7 +121,7 @@ export class GqlQueryService {
       .pipe(map(response=>{
         if(!response.data.cameraMessageHeaders)
           return []
-          
+
         return response.data.cameraMessageHeaders.nodes.filter((msg:any) =>{
           if(!msg.cameraMessagesByHeaderId.nodes.length)
             return false
@@ -245,6 +245,9 @@ export class GqlQueryService {
               , variables)
           .pipe(map((response:any)=>{
             const logging:any = []
+              if(!response || !response.data)
+                return logging
+
               response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
 
               return [].concat(logging || [])

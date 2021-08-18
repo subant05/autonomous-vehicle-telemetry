@@ -60,6 +60,9 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
   }
 
   private updateObjectDetection(data:any){
+    if(!data)
+      return;
+      
     this.coordinates= [[]]
     this.objectDetection = data
     const centroid_location = data.message.centroidLocation

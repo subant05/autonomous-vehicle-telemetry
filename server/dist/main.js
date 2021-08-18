@@ -3722,7 +3722,6 @@ class ImageExpansionComponent {
     ngOnDestroy() {
     }
     toggleSegmentation(event) {
-        console.log(event);
         this.segmentationToggle.checked = event.checked;
     }
     loadSegmentation() {
@@ -3732,6 +3731,7 @@ class ImageExpansionComponent {
         switch (event) {
             case "loaded":
                 this.loadedSegmentations = true;
+                this.segmentationToggle.checked = this.segmentationToggle.checked;
                 break;
             case "no segmentation":
             case "unloaded":
@@ -5538,6 +5538,8 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
         });
     }
     updateObjectDetection(data) {
+        if (!data)
+            return;
         this.coordinates = [[]];
         this.objectDetection = data;
         const centroid_location = data.message.centroidLocation;
@@ -5687,10 +5689,14 @@ function VehicleMissionStatsComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getStops());
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getTeleopDuration());
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getFalsePositives());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getTelesupport());
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getFalsePositives());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getTruePositives());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getSupport());
 } }
 function VehicleMissionStatsComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 2);
@@ -5706,8 +5712,17 @@ class VehicleMissionStatsComponent {
         this.cursor = 0;
         this.isDataLoaded = false;
     }
-    convertNanoSeconds(time) {
-        return ((time * 1.0E-9) / 1000).toFixed(2);
+    convertToMilliSeconds(time) {
+        return parseFloat(((time * 1.0E-9) / 1000).toFixed(2));
+    }
+    convertToSeconds(time) {
+        return +((this.convertToMilliSeconds(parseFloat(time)) / 1000).toFixed(2));
+    }
+    convertToMinutes(time) {
+        return +((this.convertToSeconds(parseFloat(time)) / 60).toFixed(2));
+    }
+    convertToHours(time) {
+        return +((this.convertToMinutes(parseFloat(time)) / 60).toFixed(2));
     }
     formatData(data = {}) {
         const missionStats = data.missionStats;
@@ -5733,8 +5748,9 @@ class VehicleMissionStatsComponent {
     }
     getUpTime() {
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
-        const totalTime = (+(durationAutonomyDriving) + +(durationAutonomyStopped));
-        return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`;
+        const totalTimeSeconds = +(durationAutonomyDriving) + +(durationAutonomyStopped);
+        return `${this.convertToSeconds(totalTimeSeconds)} sec`;
+        // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
     }
     getMissionStartTime() {
         return new Date(this.missionStats.missionStartTime).toLocaleString();
@@ -5763,19 +5779,29 @@ class VehicleMissionStatsComponent {
         return `${(autonomyAreaTravelledSqm / metersPerAcre).toFixed(2)} ac`;
     }
     getTeleopDuration() {
-        return this.convertNanoSeconds(this.missionStats.durationTeleop);
+        return `${this.convertToSeconds(this.missionStats.durationTeleop)} sec`;
     }
     getMovingPercentage() {
+        // Add All 3
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
-        const totalTime = durationAutonomyDriving + durationAutonomyStopped;
-        const driveTimePerc = (durationAutonomyDriving * 100) / totalTime;
-        return `${driveTimePerc.toFixed(2)} % `;
+        const totalTime = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy);
+        const driveTimePerc = this.convertToSeconds((durationAutonomyDriving * 100) / +(totalTime));
+        return `${driveTimePerc} % `;
     }
     getAutonomyStopped() {
-        return this.convertNanoSeconds(this.missionStats.durationAutonomyStopped);
+        return `${this.convertToSeconds(this.missionStats.durationAutonomyStopped)} sec`;
     }
     getAutonomyDriving() {
-        return this.convertNanoSeconds(this.missionStats.durationAutonomyDriving);
+        return `${this.convertToSeconds(this.missionStats.durationAutonomyDriving)} sec`;
+    }
+    getTelesupport() {
+        const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
+        const totalTime = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy);
+        return `${(+(this.missionStats.durationTeleop) * 100 / +(totalTime)).toFixed(2)} %`;
+    }
+    getSupport() {
+        const support = (parseFloat(this.getAreaDone()) / +(this.missionStats.numTeleopQueries));
+        return support;
     }
     ngOnInit() {
         if (!isNaN(this.vehicleId)) {
@@ -5789,8 +5815,8 @@ class VehicleMissionStatsComponent {
     }
 }
 VehicleMissionStatsComponent.ɵfac = function VehicleMissionStatsComponent_Factory(t) { return new (t || VehicleMissionStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };
-VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 3, vars: 2, consts: [["class", "mission-stats", 4, "ngIf", "ngIfElse"], ["nostats", ""], [1, "mission-stats"], ["class", "stats large", "title", "Mission Start", 3, "content", 4, "ngIf"], ["title", "Uptime", 1, "stats", 3, "content"], ["title", "Done", 1, "stats", 3, "content"], ["title", "Moving", 1, "stats", 3, "content"], ["title", "Auto Stop", 1, "stats", 3, "content"], ["title", "Auto Driving", 1, "stats", 3, "content"], ["title", "Stops", 1, "stats", 3, "content"], ["title", "Telesupport Duration", 1, "stats", "medium", 3, "content"], ["title", "Telesupport", "content", " ? %", 1, "stats", "medium"], ["title", "# False positive", 1, "stats", 3, "content"], ["title", "# True positive", 1, "stats", 3, "content"], ["title", "Support", "content", "2 ac", 1, "stats"], ["title", "Mission Start", 1, "stats", "large", 3, "content"], ["title", "No stats for vehicle.", "content", "", 1, "stats", "large"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, VehicleMissionStatsComponent_div_0_Template, 13, 10, "div", 0);
+VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 3, vars: 2, consts: [["class", "mission-stats", 4, "ngIf", "ngIfElse"], ["nostats", ""], [1, "mission-stats"], ["class", "stats large", "title", "Mission Start", 3, "content", 4, "ngIf"], ["title", "Uptime", 1, "stats", 3, "content"], ["title", "Done", 1, "stats", 3, "content"], ["title", "Moving", 1, "stats", 3, "content"], ["title", "Auto Stop", 1, "stats", 3, "content"], ["title", "Auto Driving", 1, "stats", 3, "content"], ["title", "Stops", 1, "stats", 3, "content"], ["title", "Telesupport Duration", 1, "stats", "medium", 3, "content"], ["title", "Telesupport", 1, "stats", "medium", 3, "content"], ["title", "# False positive", 1, "stats", 3, "content"], ["title", "# True positive", 1, "stats", 3, "content"], ["title", "Support", 1, "stats", 3, "content"], ["title", "Mission Start", 1, "stats", "large", 3, "content"], ["title", "No stats for vehicle.", "content", "", 1, "stats", "large"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, VehicleMissionStatsComponent_div_0_Template, 13, 12, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_Template, 2, 0, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
         const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](2);
@@ -7254,10 +7280,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             { value: "status", label: "Autonomy State" },
             { value: "object", label: "Object Detection" }
         ];
-        this.nodes = [
-            "stereo_to_disparity",
-            "message_cache"
-        ];
+        this.nodes = [];
         this.isLive = false;
         this.columns = [
             'status',
@@ -9250,6 +9273,8 @@ class GqlQueryService {
         return this.basicFilteredQuery(QueryQL.Logging.QueryBuilder(variables.logType, variables.paginationRange, variables.nodes), variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
             const logging = [];
+            if (!response || !response.data)
+                return logging;
             response.data.logging ? response.data.logging.nodes.map((item) => item.vehicleLogsByMessageId.nodes.forEach((innerItem) => { logging.push(innerItem); })) : null;
             return [].concat(logging || [])
                 .concat(response.data.objectDetection ? response.data.objectDetection.nodes : [])

@@ -52,7 +52,7 @@ export const sqlInsertVehicle = async (data) => {
             RETURNING *
         `, [
             id
-            , name.toLowerCase().trim()
+            , name.toString().toLowerCase().trim()
             , vehicleType.rows[0].id
             , ip
             ]
