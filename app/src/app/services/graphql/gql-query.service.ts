@@ -119,6 +119,9 @@ export class GqlQueryService {
     return this
       .basicFilteredQuery(QueryQL.Images.SegmentationMapByHeaderId, variables)
       .pipe(map(response=>{
+        if(!response.data.cameraMessageHeaders)
+          return []
+          
         return response.data.cameraMessageHeaders.nodes.filter((msg:any) =>{
           if(!msg.cameraMessagesByHeaderId.nodes.length)
             return false

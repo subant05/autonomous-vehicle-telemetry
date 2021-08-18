@@ -13,11 +13,27 @@ export class ObjectDetectionDetailComponent implements OnInit, OnDestroy {
   imageSubscription: Subscription | null = null
   image: any = null
   isImageLoaded:boolean = false
+  coordinates: number[][]= []
+  vehicleId: number | null = null
+  json:any = {}
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public id: number,
     @Inject(MAT_DIALOG_DATA) public data: any
-    , private graphQLQuery: GqlQueryService) { }
+    , private graphQLQuery: GqlQueryService) { 
+      const fieldOrigin = data.message.centroidLocation.fieldOrigin
+      const xyzCamera = data.message.centroidLocation.xyzCamera
+      this.json  = {fieldOrigin, xyzCamera}
+      this.vehicleId = data.vehicleId
+      this.coordinates = [
+          [
+            parseFloat(fieldOrigin.longitudeDeg)
+            , parseFloat(fieldOrigin.latitudeDeg)
+
+          ]
+        ]
+
+    }
     
   ngOnInit(): void {
     this.imageSubscription = this.graphQLQuery.getPreviewImageByCameraMessageHeaderId({headerId: parseInt(this.data.message.header.headerid)})

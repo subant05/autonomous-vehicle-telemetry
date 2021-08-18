@@ -23,9 +23,14 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
   headerid: string  =""
   label: string = ""
   pagesLength: number =0
+  objectDetection:any ={}
+  latitude = 0
+  longitude = 0
+  coordinates: number[][] = [[]]
 
   @Input() vehicleId: number | string = ""
   @Input() live: boolean = false
+  @Input() data: any = null
 
 
   constructor(
@@ -54,8 +59,18 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       })
   }
 
+  private updateObjectDetection(data:any){
+    this.coordinates= [[]]
+    this.objectDetection = data
+    const centroid_location = data.message.centroidLocation
+    this.latitude = parseFloat(centroid_location.fieldOrigin.latitudeDeg)
+    this.longitude = parseFloat(centroid_location.fieldOrigin.longitudeDeg)
+    this.coordinates = [[this.longitude, this.latitude]]
+  }
+
   private getImage(){
     this.isImageLoaded = false
+    this.coordinates= [[]]
     this.unsubscribeQueryies()
     this.objectQuery = this.gqlQuery.getObjectDetectionByVehicleId({
       vehicleId: this.vehicleId
@@ -65,6 +80,8 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       .subscribe((response:any)=>{
         if(!response.nodes.length)
           this.isImageLoaded = true
+
+        this.updateObjectDetection(response.nodes[0])
 
         this.pagesLength = response.totalCount
         this.stopImageQuery = response.nodes.map((stopInfo:any)=>this.imageHandler(stopInfo))
@@ -80,6 +97,9 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
 
           if(this.page)
             this.page++
+          else {
+            this.updateObjectDetection(response)
+          }
 
           this.imageHandler(response)
         })
@@ -88,11 +108,15 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
 
   ngOnInit(): void {
     // @ts-ignore
-    if(isNaN(this.vehicleId))
+    if(isNaN(this.vehicleId) && !this.data)
       return;
-    
-    this.getImage()
-    this.initiateLiveObjectDetection()
+    else if(this.data){
+      this.updateObjectDetection(this.data)
+      this.imageHandler(this.data)
+    }else if(this.vehicleId){
+      this.getImage()
+      this.initiateLiveObjectDetection()
+    }
   }
 
 

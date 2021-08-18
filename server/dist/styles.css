@@ -2916,15 +2916,6 @@ a {
   box-shadow: 3px 0px 4px 1px rgba(0, 0, 0, 0.1);
 }
 
-.grid .grid__cell .grid__cell--content img,
-.grid .grid__cell .grid__cell--content ul,
-.grid .grid__cell .grid__cell--content li:last-of-type,
-.grid .grid__cell .grid__cell--content table,
-.grid .grid__cell .grid__cell--content div {
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
 @media screen and (min-width: 800px) {
   .grid.col-4, .grid.col-3, .grid.col-2 {
     grid-template-columns: 1fr 1fr;

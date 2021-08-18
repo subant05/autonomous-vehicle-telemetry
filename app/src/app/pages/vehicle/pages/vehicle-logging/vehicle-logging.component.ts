@@ -9,6 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {VehicleStatusDetailComponent} from 'src/app/components/modals/vehicle-status-detail/vehicle-status-detail.component'
 import {ObjectDetectionDetailComponent} from 'src/app/components/modals/object-detection-detail/object-detection-detail.component'
 import {ScrollService} from 'src/app/services/layout/scroll.service'
+import {VehicleLoggingFilterService} from './filter.service'
 
 @Component({
   selector: 'app-vehicle-logging',
@@ -20,6 +21,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   private loggingSubscription: Subscription | null = null
   private objectSubscription: Subscription | null = null
   private statusSubscription: Subscription | null = null
+  private infiniteScrollSubscription: Subscription | null = null
 
   fgLoggingFilter: any 
   vehicleId: string=""
@@ -59,6 +61,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     , private route: ActivatedRoute 
     , public dialog: MatDialog
     , private scrollService: ScrollService
+    , private filterService: VehicleLoggingFilterService
   ) { 
     super()
     this.formatTimestampForInputs()
@@ -100,8 +103,8 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     .getAllVehicleLogsStatusDetection({
       vehicleId: this.vehicleId
       , cursor: this.cursor
-      , startDateTime: this.startDateTime
-      , endDateTime: this.endDateTime
+      , startDateTime: this.fgLoggingFilter.value.startDateTime
+      , endDateTime: this.fgLoggingFilter.value.endDateTime
       , logType: this.fgLoggingFilter.value.logType
       , paginationRange: this.fgLoggingFilter.value.paginationRange
       , nodes: this.fgLoggingFilter.value.nodes
@@ -170,29 +173,31 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   
   ngOnInit(): void {
     this.vehicleId = (this.route.parent as any).snapshot.params.id
-    this.fgLoggingFilter = new FormGroup({
+    this.fgLoggingFilter = this.filterService.getFilterState() || new FormGroup({
       startDateTime: new FormControl(this.startDateTime,[Validators.required])
       , endDateTime: new FormControl(this.endDateTime,[Validators.required])
       , logType: new FormControl(this.logType, [Validators.required])
       , paginationRange: new FormControl(this.paginationRange[1], [Validators.required])
       , nodes: new FormControl(this.nodes, [Validators.required])
       , isLive: new FormControl(this.isLive, [Validators.required])
-
-      // , description: new FormControl(this.description,[Validators.required])
     })
   
     this.loadData()
-    this.scrollService.contentScroll.subscribe((scrolled:any)=>{
+    this.infiniteScrollSubscription = this.scrollService.contentScroll.subscribe((scrolled:any)=>{
       if(scrolled){
         this.cursor  = this.pagination * ++this.cursor
         this.loadData(scrolled)
       }
     })
+    if(this.fgLoggingFilter.value.isLive)
+      this.initiateLiveSubscriptions()
   }
 
   ngOnDestroy():void {
     this.logQuery?.unsubscribe()
     this.unsubscribeLiveSubscriptions()
+    this.infiniteScrollSubscription?.unsubscribe()
+    this.filterService.saveFilterState(this.fgLoggingFilter)
   }
 
   ngAfterViewInit(): void{}
@@ -205,15 +210,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   onLiveToggle(event:any){
     const isLive = !event.currentTarget.querySelector("input").checked
     if(isLive){
-      this.fgLoggingFilter.controls.startDateTime.disable()
-      this.fgLoggingFilter.controls.endDateTime.disable()
-      this.fgLoggingFilter.controls.paginationRange.disable()
       this.initiateLiveSubscriptions()
     }
     else {
-      this.fgLoggingFilter.controls.startDateTime.enable()
-      this.fgLoggingFilter.controls.endDateTime.enable()
-      this.fgLoggingFilter.controls.paginationRange.enable()
       this.unsubscribeLiveSubscriptions()
     }
   }

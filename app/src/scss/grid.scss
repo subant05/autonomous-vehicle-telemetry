@@ -62,15 +62,14 @@
             padding: 10px;
             box-shadow: $box-shadow;
 
-            img,
-            ul,
-            li:last-of-type,
-            table,
-            div{
-                border-bottom-left-radius: $border-radius;
-                border-bottom-right-radius: $border-radius;
-            }
-            
+            // img,
+            // ul,
+            // li:last-of-type,
+            // table,
+            // div{
+            //     border-bottom-left-radius: $border-radius;
+            //     border-bottom-right-radius: $border-radius;
+            // }
 
         }
     }

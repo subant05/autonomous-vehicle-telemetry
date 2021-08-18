@@ -27,6 +27,38 @@ subscription ObjectDetectionSubscription ($vehicleId: BigInt) {
             }
           }
         }
+        centroidLocation{
+          xyzCamera{
+            xM
+            yM
+            zM
+          }
+          xyzStarfire{
+            xM
+            yM
+            zM
+          }
+          lla{
+            latitudeDeg
+            longitudeDeg
+            altitudeM
+          }
+          enu{
+            eastM
+            northM
+            upM
+          }
+          fieldOrigin{
+            latitudeDeg
+            longitudeDeg
+            altitudeM
+          }
+          ecef{
+            xM
+            yM
+            zM
+          }
+        }
         header{
           headerid
           seq

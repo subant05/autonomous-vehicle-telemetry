@@ -35,13 +35,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.menuService.menu.subscribe((data)=>{
       this.showRightNav = data ? true : false;
     })
-    this.alertSubscription = this.alertService.alerts.subscribe(data=>{
-      this._snackBar.open(data.alertMessage , 'Dismiss', {
-         duration: 1000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
-    })
+    // this.alertSubscription = this.alertService.alerts.subscribe(data=>{
+    //   this._snackBar.open(data.alertMessage , 'Dismiss', {
+    //      duration: 1000,
+    //     horizontalPosition: this.horizontalPosition,
+    //     verticalPosition: this.verticalPosition,
+    //   });
+    // })
   }
 
   ngOnDestroy():void {
