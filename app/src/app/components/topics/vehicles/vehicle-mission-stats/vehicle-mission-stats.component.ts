@@ -116,7 +116,7 @@ export class VehicleMissionStatsComponent implements OnInit {
   }
 
   getTeleopDuration(){
-    return  `${this.convertToSeconds(this.missionStats.durationTeleop)} sec`
+    return  `${this.convertToMilliSeconds(this.missionStats.durationTeleop)} sec`
   }
 
   getMovingPercentage(){
@@ -148,7 +148,7 @@ export class VehicleMissionStatsComponent implements OnInit {
   }
 
   getSupport(){
-    if(!this.getAreaDone())
+    if(!this.getAreaDone() || !+(this.missionStats.numTeleopQueries))
       return `${0}`
 
     const support =  +(this.missionStats.numTeleopQueries) / parseFloat(this.getAreaDone() )

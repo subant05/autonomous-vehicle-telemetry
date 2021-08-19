@@ -5820,7 +5820,7 @@ class VehicleMissionStatsComponent {
         return `${(autonomyAreaTravelledSqm / metersPerAcre).toFixed(2)} ac`;
     }
     getTeleopDuration() {
-        return `${this.convertToSeconds(this.missionStats.durationTeleop)} sec`;
+        return `${this.convertToMilliSeconds(this.missionStats.durationTeleop)} sec`;
     }
     getMovingPercentage() {
         // Add All 3
@@ -5845,7 +5845,7 @@ class VehicleMissionStatsComponent {
         return `${(+(this.missionStats.durationTeleop) * 100 / +(totalTime)).toFixed(2)} %`;
     }
     getSupport() {
-        if (!this.getAreaDone())
+        if (!this.getAreaDone() || !+(this.missionStats.numTeleopQueries))
             return `${0}`;
         const support = +(this.missionStats.numTeleopQueries) / parseFloat(this.getAreaDone());
         return support;
