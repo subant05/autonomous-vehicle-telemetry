@@ -5568,10 +5568,6 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
         this.gqlQuery
             .getPreviewImageByCameraMessageHeaderId({ headerId: stopInfo.message.header.headerid })
             .subscribe((response) => {
-            // if(!response){
-            //   setTimeout(()=>this.imageHandler(stopInfo), 2000);
-            //   return
-            // }
             this.isImageLoaded = true;
             this.image = response;
             this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat)}`;
@@ -5615,6 +5611,7 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
                     this.page++;
                 else {
                     this.image = "";
+                    this.isImageLoaded = false;
                     this.updateObjectDetection(response);
                     this.imageHandler(response);
                 }
