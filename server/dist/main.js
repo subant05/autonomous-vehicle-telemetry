@@ -5752,7 +5752,7 @@ class VehicleMissionStatsComponent {
         this.isDataLoaded = false;
     }
     convertToMilliSeconds(time) {
-        return parseFloat(((time * 1.0E-9) / 1000).toFixed(2));
+        return parseFloat(((time * 1.0E-9)).toFixed(2));
     }
     convertToSeconds(time) {
         return +((this.convertToMilliSeconds(parseFloat(time)) / 1000).toFixed(2));
@@ -5790,7 +5790,7 @@ class VehicleMissionStatsComponent {
     getUpTime() {
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
         const totalTimeSeconds = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy);
-        return `${this.convertToSeconds(totalTimeSeconds)} sec`;
+        return `${this.convertToMilliSeconds(totalTimeSeconds)} sec`;
         // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
     }
     getMissionStartTime() {

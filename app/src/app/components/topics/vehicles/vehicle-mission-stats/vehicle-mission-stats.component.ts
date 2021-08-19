@@ -24,7 +24,7 @@ export class VehicleMissionStatsComponent implements OnInit {
   ) { }
 
   private convertToMilliSeconds(time:any): any{
-    return parseFloat(((time  * 1.0E-9)/1000 ).toFixed(2))
+    return parseFloat(((time  * 1.0E-9) ).toFixed(2))
   }
 
   private convertToSeconds(time:any): any{
@@ -76,7 +76,7 @@ export class VehicleMissionStatsComponent implements OnInit {
   getUpTime(){
     const {durationAutonomyDriving,durationAutonomyStopped, durationNoAutonomy} = this.missionStats
     const totalTimeSeconds =  +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy)
-    return `${this.convertToSeconds(totalTimeSeconds)} sec`
+    return `${this.convertToMilliSeconds(totalTimeSeconds)} sec`
     // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
   }
 
