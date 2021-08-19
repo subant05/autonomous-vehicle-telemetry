@@ -7329,7 +7329,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.isScrollDataLoading = false;
         this.savedResults = [];
         this.pagination = 20;
-        this.paginationRange = [10, 25, 50, 100];
+        this.paginationRange = [25, 50, 100];
         this.formatTimestampForInputs();
         this.nodesSubscription = this.graphQLQuery.getLoggingNodes().subscribe((response) => {
             this.nodes = response;
@@ -7433,7 +7433,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             startDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.startDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
             endDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.endDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
             logType: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.logType, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
-            paginationRange: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.paginationRange[1], [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
+            paginationRange: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.paginationRange[0], [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
             nodes: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl([], [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
             isLive: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.isLive, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required])
         });
