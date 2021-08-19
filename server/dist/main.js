@@ -5565,7 +5565,6 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
     }
     imageHandler(stopInfo) {
         let counter = 0;
-        this.image = "";
         this.gqlQuery
             .getPreviewImageByCameraMessageHeaderId({ headerId: stopInfo.message.header.headerid })
             .subscribe((response) => {
@@ -5615,9 +5614,10 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
                 if (this.page)
                     this.page++;
                 else {
+                    this.image = "";
                     this.updateObjectDetection(response);
+                    this.imageHandler(response);
                 }
-                this.imageHandler(response);
             });
         }
     }
