@@ -5789,7 +5789,7 @@ class VehicleMissionStatsComponent {
     }
     getUpTime() {
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
-        const totalTimeSeconds = +(durationAutonomyDriving) + +(durationAutonomyStopped);
+        const totalTimeSeconds = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy);
         return `${this.convertToSeconds(totalTimeSeconds)} sec`;
         // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
     }
@@ -5798,10 +5798,10 @@ class VehicleMissionStatsComponent {
     }
     getAcresDone() {
         const metersPerAcre = 4047;
-        const { numFalsePositives } = this.missionStats;
-        if (numFalsePositives < metersPerAcre)
+        const { autonomyAreaTravelledSqm } = this.missionStats;
+        if (autonomyAreaTravelledSqm < metersPerAcre)
             return "0";
-        return `${this.missionStats.numFalsePositives / metersPerAcre} ac`;
+        return `${autonomyAreaTravelledSqm / metersPerAcre} ac`;
     }
     getFalsePositives() {
         return this.missionStats.numFalsePositives;
@@ -5826,8 +5826,10 @@ class VehicleMissionStatsComponent {
         // Add All 3
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
         const totalTime = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy);
-        const driveTimePerc = this.convertToSeconds((durationAutonomyDriving * 100) / +(totalTime));
-        return `${driveTimePerc} % `;
+        if (!+(totalTime))
+            return `${0} %`;
+        const driveTimePerc = (durationAutonomyDriving * 100) / +(totalTime);
+        return `${driveTimePerc.toFixed(2)} % `;
     }
     getAutonomyStopped() {
         return `${this.convertToSeconds(this.missionStats.durationAutonomyStopped)} sec`;
@@ -5838,10 +5840,14 @@ class VehicleMissionStatsComponent {
     getTelesupport() {
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
         const totalTime = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy);
+        if (!+(totalTime))
+            return `${0} %`;
         return `${(+(this.missionStats.durationTeleop) * 100 / +(totalTime)).toFixed(2)} %`;
     }
     getSupport() {
-        const support = (parseFloat(this.getAreaDone()) / +(this.missionStats.numTeleopQueries));
+        if (!this.getAreaDone())
+            return 0;
+        const support = +(this.missionStats.numTeleopQueries) / parseFloat(this.getAreaDone());
         return support;
     }
     ngOnInit() {
