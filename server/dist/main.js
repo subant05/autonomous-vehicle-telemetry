@@ -5845,9 +5845,9 @@ class VehicleMissionStatsComponent {
         return `${(+(this.missionStats.durationTeleop) * 100 / +(totalTime)).toFixed(2)} %`;
     }
     getSupport() {
-        if (!this.getAreaDone() || !+(this.missionStats.numTeleopQueries))
+        if (!parseFloat(this.getAreaDone()) || !+(this.missionStats.numTeleopQueries))
             return `${0}`;
-        const support = +(this.missionStats.numTeleopQueries) / parseFloat(this.getAreaDone());
+        const support = (+(this.missionStats.numTeleopQueries) * 100) / parseFloat(this.getAreaDone());
         return support;
     }
     ngOnInit() {
