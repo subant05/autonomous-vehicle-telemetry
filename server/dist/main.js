@@ -7444,6 +7444,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.statusSubscription = null;
         this.infiniteScrollSubscription = null;
         this.nodesSubscription = null;
+        this.timeFormat = 'YYYY-MM-DDTHH:mm:ss';
         this.vehicleId = "";
         this.startDateTime = "";
         this.endDateTime = "";
@@ -7495,9 +7496,8 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.updateList(this.savedResults);
     }
     formatTimestampForInputs() {
-        const format = 'YYYY-MM-DDTHH:mm:ss';
-        this.startDateTime = moment__WEBPACK_IMPORTED_MODULE_3___default()().subtract(1, 'hours').format(format);
-        this.endDateTime = moment__WEBPACK_IMPORTED_MODULE_3___default()().format(format);
+        this.startDateTime = moment__WEBPACK_IMPORTED_MODULE_3___default()().subtract(1, 'hours').format(this.timeFormat);
+        this.endDateTime = moment__WEBPACK_IMPORTED_MODULE_3___default()().format(this.timeFormat);
     }
     loadData(scroll) {
         if (this.logQuery)
@@ -7507,8 +7507,8 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             .getAllVehicleLogsStatusDetection({
             vehicleId: this.vehicleId,
             cursor: this.cursor,
-            startDateTime: this.fgLoggingFilter.value.startDateTime,
-            endDateTime: this.fgLoggingFilter.value.endDateTime,
+            startDateTime: moment__WEBPACK_IMPORTED_MODULE_3___default()(this.fgLoggingFilter.value.startDateTime).utc().format(this.timeFormat),
+            endDateTime: moment__WEBPACK_IMPORTED_MODULE_3___default()(this.fgLoggingFilter.value.endDateTime).utc().format(this.timeFormat),
             logType: this.fgLoggingFilter.value.logType,
             paginationRange: this.fgLoggingFilter.value.paginationRange,
             nodes: this.fgLoggingFilter.value.nodes

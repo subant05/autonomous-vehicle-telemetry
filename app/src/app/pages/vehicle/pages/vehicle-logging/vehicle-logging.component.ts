@@ -24,6 +24,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   private statusSubscription: Subscription | null = null
   private infiniteScrollSubscription: Subscription | null = null
   private nodesSubscription: Subscription | null = null
+  private timeFormat = 'YYYY-MM-DDTHH:mm:ss'
 
   fgLoggingFilter: any 
   vehicleId: string=""
@@ -90,9 +91,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   private formatTimestampForInputs(){
-    const format = 'YYYY-MM-DDTHH:mm:ss'
-    this.startDateTime = moment().subtract(1,'hours').format(format)
-    this.endDateTime = moment().format(format)
+    
+    this.startDateTime = moment().subtract(1,'hours').format(this.timeFormat)
+    this.endDateTime = moment().format(this.timeFormat)
   }
 
   private loadData(scroll?:boolean){
@@ -105,8 +106,8 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     .getAllVehicleLogsStatusDetection({
       vehicleId: this.vehicleId
       , cursor: this.cursor
-      , startDateTime: this.fgLoggingFilter.value.startDateTime
-      , endDateTime: this.fgLoggingFilter.value.endDateTime
+      , startDateTime: moment(this.fgLoggingFilter.value.startDateTime).utc().format(this.timeFormat)
+      , endDateTime: moment(this.fgLoggingFilter.value.endDateTime).utc().format(this.timeFormat)
       , logType: this.fgLoggingFilter.value.logType
       , paginationRange: this.fgLoggingFilter.value.paginationRange
       , nodes: this.fgLoggingFilter.value.nodes
