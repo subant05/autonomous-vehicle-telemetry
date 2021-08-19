@@ -283,7 +283,13 @@ export class GqlQueryService {
     .pipe(map((response:any)=>{
       return response.data.objects
     }))
+  }
 
+  getLoggingNodes(){
+    return this.basicFilteredQuery(QueryQL.Logging.Nodes)
+    .pipe(map((response:any)=>{
+      return response.data.vehicleLogNodeTypes.nodes.map((node:any)=>node.name)
+    }))
   }
 
 }

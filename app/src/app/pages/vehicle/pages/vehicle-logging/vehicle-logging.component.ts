@@ -22,6 +22,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   private objectSubscription: Subscription | null = null
   private statusSubscription: Subscription | null = null
   private infiniteScrollSubscription: Subscription | null = null
+  private nodesSubscription: Subscription | null = null
 
   fgLoggingFilter: any 
   vehicleId: string=""
@@ -62,6 +63,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   ) { 
     super()
     this.formatTimestampForInputs()
+    this.nodesSubscription = this.graphQLQuery.getLoggingNodes().subscribe((response:any)=>{
+      this.nodes = response
+    })
   }
 
   private updateTable({data, action} = {data:[], action:"replace"}){
@@ -178,7 +182,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       , endDateTime: new FormControl(this.endDateTime,[Validators.required])
       , logType: new FormControl(this.logType, [Validators.required])
       , paginationRange: new FormControl(this.paginationRange[1], [Validators.required])
-      , nodes: new FormControl(this.nodes, [Validators.required])
+      , nodes: new FormControl([], [Validators.required])
       , isLive: new FormControl(this.isLive, [Validators.required])
     })
   
@@ -198,6 +202,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.unsubscribeLiveSubscriptions()
     this.infiniteScrollSubscription?.unsubscribe()
     this.filterService.saveFilterState(this.fgLoggingFilter)
+    this.nodesSubscription?.unsubscribe()
   }
 
   ngAfterViewInit(): void{}

@@ -871,12 +871,43 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "All": () => (/* reexport safe */ _loggingStatusDetection__WEBPACK_IMPORTED_MODULE_0__.default),
-/* harmony export */   "QueryBuilder": () => (/* reexport safe */ _queryBuilders_loggingQueryBuilder__WEBPACK_IMPORTED_MODULE_1__.default)
+/* harmony export */   "QueryBuilder": () => (/* reexport safe */ _queryBuilders_loggingQueryBuilder__WEBPACK_IMPORTED_MODULE_1__.default),
+/* harmony export */   "Nodes": () => (/* reexport safe */ _loggingNodeTypes__WEBPACK_IMPORTED_MODULE_2__.default)
 /* harmony export */ });
 /* harmony import */ var _loggingStatusDetection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./loggingStatusDetection */ 28802);
 /* harmony import */ var _queryBuilders_loggingQueryBuilder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./queryBuilders/loggingQueryBuilder */ 72871);
+/* harmony import */ var _loggingNodeTypes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./loggingNodeTypes */ 641);
 
 
+
+
+
+
+/***/ }),
+
+/***/ 641:
+/*!************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/logging/loggingNodeTypes.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ vehicleLogNodeTypes)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const vehicleLogNodeTypes = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+query LoggingNodes{
+	vehicleLogNodeTypes{
+    nodes{
+      name
+    }
+  }
+}
+`
 
 
 
@@ -7271,6 +7302,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.objectSubscription = null;
         this.statusSubscription = null;
         this.infiniteScrollSubscription = null;
+        this.nodesSubscription = null;
         this.vehicleId = "";
         this.startDateTime = "";
         this.endDateTime = "";
@@ -7299,6 +7331,9 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.pagination = 20;
         this.paginationRange = [10, 25, 50, 100];
         this.formatTimestampForInputs();
+        this.nodesSubscription = this.graphQLQuery.getLoggingNodes().subscribe((response) => {
+            this.nodes = response;
+        });
     }
     updateTable({ data, action } = { data: [], action: "replace" }) {
         switch (action) {
@@ -7399,7 +7434,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             endDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.endDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
             logType: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.logType, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
             paginationRange: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.paginationRange[1], [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
-            nodes: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.nodes, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
+            nodes: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl([], [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required]),
             isLive: new _angular_forms__WEBPACK_IMPORTED_MODULE_8__.FormControl(this.isLive, [_angular_forms__WEBPACK_IMPORTED_MODULE_8__.Validators.required])
         });
         this.loadData();
@@ -7413,11 +7448,12 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             this.initiateLiveSubscriptions();
     }
     ngOnDestroy() {
-        var _a, _b;
+        var _a, _b, _c;
         (_a = this.logQuery) === null || _a === void 0 ? void 0 : _a.unsubscribe();
         this.unsubscribeLiveSubscriptions();
         (_b = this.infiniteScrollSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
         this.filterService.saveFilterState(this.fgLoggingFilter);
+        (_c = this.nodesSubscription) === null || _c === void 0 ? void 0 : _c.unsubscribe();
     }
     ngAfterViewInit() { }
     refreshMap() {
@@ -9304,6 +9340,12 @@ class GqlQueryService {
         return this.basicFilteredQuery(QueryQL.Detection.ByVehicleId, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
             return response.data.objects;
+        }));
+    }
+    getLoggingNodes() {
+        return this.basicFilteredQuery(QueryQL.Logging.Nodes)
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            return response.data.vehicleLogNodeTypes.nodes.map((node) => node.name);
         }));
     }
 }
