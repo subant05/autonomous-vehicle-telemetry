@@ -49,13 +49,15 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
   }
 
   private imageHandler(stopInfo:any){
+    let counter = 0
+    this.image = ""
     this.gqlQuery
       .getPreviewImageByCameraMessageHeaderId({headerId:stopInfo.message.header.headerid})
       .subscribe((response:any)=>{
-        if(!response){
-          setTimeout(()=>this.imageHandler(stopInfo), 2000);
-          return
-        }
+        // if(!response){
+        //   setTimeout(()=>this.imageHandler(stopInfo), 2000);
+        //   return
+        // }
 
         this.isImageLoaded = true
         this.image = response
