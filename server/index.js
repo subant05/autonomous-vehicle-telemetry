@@ -41,10 +41,10 @@ app.use(express.static('./dist'));
         pluginHook,
         ownerConnectionString: process.env.NODE_ENV === "development" ? process.env.DEV_DATABASE_URL : process.env.DATABASE_URL+"?ssl=true",
         watchPg: true,
-        enhanceGraphiql: process.env.NODE_ENV === "development" ? true : false,
+        enhanceGraphiql: true, //process.env.NODE_ENV === "development" ? true : false,
         ignoreRBAC: false, // Role Based Access Control (RBAC)
         extendedErrors: ["errcode", "detail", "hint"],
-        graphiql: process.env.NODE_ENV === "development" ? true : false,
+        graphiql: true, //process.env.NODE_ENV === "development" ? true : false,
         subscriptions: true,
         simpleSubscriptions: true,
         live:true,
