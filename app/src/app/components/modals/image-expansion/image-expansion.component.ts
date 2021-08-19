@@ -47,7 +47,7 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
     switch(event){
       case "loaded":
           this.loadedSegmentations = true
-          this.segmentationToggle.checked = this.segmentationToggle.checked 
+          this.segmentationToggle.checked = true
           break;
       case "no segmentation":
       case "unloaded":

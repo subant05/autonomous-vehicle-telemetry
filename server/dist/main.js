@@ -3807,7 +3807,7 @@ class ImageExpansionComponent {
         switch (event) {
             case "loaded":
                 this.loadedSegmentations = true;
-                this.segmentationToggle.checked = this.segmentationToggle.checked;
+                this.segmentationToggle.checked = true;
                 break;
             case "no segmentation":
             case "unloaded":
