@@ -4,6 +4,7 @@ import { rawListeners } from 'process';
 import { v4 as uuid } from "uuid"
 import { map } from 'rxjs/operators'
 import {ImageService} from 'src/app/services/images/image.service'
+import { resourceLimits } from 'worker_threads';
 const QueryQL = require("src/app/graphql/query-syntax/query")
 
 @Injectable({
@@ -289,6 +290,19 @@ export class GqlQueryService {
     return this.basicFilteredQuery(QueryQL.Logging.Nodes)
     .pipe(map((response:any)=>{
       return response.data.vehicleLogNodeTypes.nodes.map((node:any)=>node.name)
+    }))
+  }
+
+  getTopicsByCategoryVehicleId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Topics.ByCategoryVehicleId, variables)
+    .pipe(map((response:any)=>{
+      return response.data
+            .topicCategories.nodes[0]
+            .topics.nodes.map((result:any)=>{
+              if(result.vehicleTopics.nodes.length)
+                return result.vehicleTopics.nodes[0].topic
+              return null
+            }).filter((results:any)=>!!results)
     }))
   }
 

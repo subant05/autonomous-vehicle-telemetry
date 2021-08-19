@@ -29,7 +29,7 @@ export class PreviewComponent implements OnInit, OnDestroy {
     checked:false,
     disabled: this.loadedSegmentations !== null && !this.loadedSegmentations
   } 
-  @Input() topic: string = "";
+  @Input() topic: string | null = "";
   @Input() cursor: number = 0;
   @Input() vehicleId: string |undefined;
   @Input() topicId: number | null = null

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms'
 import {ActivatedRoute, Event} from '@angular/router'
+import moment from 'moment';
 
 @Component({
   selector: 'app-vehicle-geolocation',
@@ -21,9 +22,9 @@ export class VehicleGeolocationComponent implements OnInit {
     }
 
   private formatTimestampForInputs(){
-    const regex = /(:)([0-9]+)(\.[0-9Z]+)/
-    this.startDateTime = new Date(new Date().valueOf() - (1000*60*60)).toISOString().replace(regex, "");
-    this.endDateTime = new Date().toISOString().replace(regex, "")
+    const format = 'YYYY-MM-DDTHH:mm:ss'
+    this.startDateTime = moment().subtract(1,'hours').format(format)
+    this.endDateTime = moment().format(format)
   }
 
   ngOnInit(): void {

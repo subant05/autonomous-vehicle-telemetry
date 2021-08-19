@@ -10,6 +10,7 @@ import {VehicleStatusDetailComponent} from 'src/app/components/modals/vehicle-st
 import {ObjectDetectionDetailComponent} from 'src/app/components/modals/object-detection-detail/object-detection-detail.component'
 import {ScrollService} from 'src/app/services/layout/scroll.service'
 import {VehicleLoggingFilterService} from './filter.service'
+import moment from "moment"
 
 @Component({
   selector: 'app-vehicle-logging',
@@ -89,9 +90,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   private formatTimestampForInputs(){
-    const regex = /(:)([0-9]+)(\.[0-9Z]+)/
-    this.startDateTime = new Date(new Date().valueOf() - (1000*60*60)).toISOString().replace(regex, "");
-    this.endDateTime = new Date().toISOString().replace(regex, "")
+    const format = 'YYYY-MM-DDTHH:mm:ss'
+    this.startDateTime = moment().subtract(1,'hours').format(format)
+    this.endDateTime = moment().format(format)
   }
 
   private loadData(scroll?:boolean){
@@ -132,6 +133,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
           this.loggingSubscription = this.graphQLSubscription
             .getLoggingByVehicleId({vehicleId:this.vehicleId})
             .subscribe((response:any)=>{
+              if(!response)
+                return
+                
               if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1)
                 this.updateTable({data:response, action:"prepend"})   
             })

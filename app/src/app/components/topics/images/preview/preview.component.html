@@ -1,6 +1,6 @@
 <div *ngIf="imageData; else loading;" >
     <div class="grid gap images">
-        <div class="grid__cell center-cell-content" *ngIf="loadSegmentation(); else segmentationLoader;">
+        <!-- <div class="grid__cell center-cell-content" *ngIf="loadSegmentation(); else segmentationLoader;">
             <mat-slide-toggle 
                 class="segmentation-toggle"
                 [color]="segmentationToggle.color"
@@ -16,7 +16,7 @@
                     Segmentation
                 </mat-progress-bar>
             </div>
-        </ng-template>
+        </ng-template> -->
         <div class="grid__cell center-cell-content">
             <div *ngFor="let image of imageData; let i = index;" class="image-wrapper">
                 <div class="images__meta-data">
@@ -37,10 +37,12 @@
                     </ul>
                 </div>
                 <div class="images__render">
-                    <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
+                    <!-- <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
                         <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="image.headerId"></app-segmentation-image>
                     </div>
-                    <app-rgb-image [data]="image" [id]="image.imageId" class="images"></app-rgb-image>
+                    <app-rgb-image [data]="image" [id]="image.imageId" class="images"></app-rgb-image> -->
+                    <app-image [data]="image" [id]="image.imageId" class="images"></app-image>
+
                 </div>
                 
             </div>
