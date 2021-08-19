@@ -5832,10 +5832,10 @@ class VehicleMissionStatsComponent {
         return `${driveTimePerc.toFixed(2)} % `;
     }
     getAutonomyStopped() {
-        return `${this.convertToSeconds(this.missionStats.durationAutonomyStopped)} sec`;
+        return `${this.convertToMilliSeconds(this.missionStats.durationAutonomyStopped)} sec`;
     }
     getAutonomyDriving() {
-        return `${this.convertToSeconds(this.missionStats.durationAutonomyDriving)} sec`;
+        return `${this.convertToMilliSeconds(this.missionStats.durationAutonomyDriving)} sec`;
     }
     getTelesupport() {
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
@@ -5846,7 +5846,7 @@ class VehicleMissionStatsComponent {
     }
     getSupport() {
         if (!this.getAreaDone())
-            return 0;
+            return `${0}`;
         const support = +(this.missionStats.numTeleopQueries) / parseFloat(this.getAreaDone());
         return support;
     }
