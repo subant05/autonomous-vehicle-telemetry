@@ -8,9 +8,9 @@
             <mat-label>Start</mat-label>
             <input matInput type="datetime-local" 
                 formControlName="startDateTime">
-            <button matSuffix mat-icon-button aria-label="Clear" >
-              <mat-icon>close</mat-icon>
-            </button>
+            <mat-error *ngIf="fgLoggingFilter.get('startDateTime').hasError('required')">
+                Start date is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
     </div>
     <div class="logging__form--field">
@@ -18,9 +18,9 @@
             <mat-label>End</mat-label>
             <input matInput type="datetime-local" 
                 formControlName="endDateTime">
-            <button matSuffix mat-icon-button aria-label="Clear" >
-              <mat-icon>close</mat-icon>
-            </button>
+            <mat-error *ngIf="fgLoggingFilter.get('endDateTime').hasError('required')">
+                End date is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
     </div>
     <div class="logging__form--field" >
@@ -43,6 +43,9 @@
                     {{opts.label}}
                 </mat-option>
             </mat-select>
+            <mat-error *ngIf="fgLoggingFilter.get('logType').hasError('required')">
+                Log type selection is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
     </div>
     <div class="logging__form--field"
@@ -55,6 +58,9 @@
                     {{opts}}
                 </mat-option>
             </mat-select>
+            <mat-error *ngIf="fgLoggingFilter.get('nodes').hasError('required')">
+                A node selection is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
     </div>
     <div class="logging__form--field">

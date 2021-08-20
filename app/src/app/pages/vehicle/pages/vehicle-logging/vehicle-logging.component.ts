@@ -174,6 +174,16 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.statusSubscription?.unsubscribe()
   }
 
+  isFormValid(){
+    return  (this.fgLoggingFilter.valid 
+      || (!this.fgLoggingFilter.valid 
+          && !this.fgLoggingFilter.controls.nodes.valid
+          && this.fgLoggingFilter.controls.logType.value.indexOf('logging') === -1
+          && this.fgLoggingFilter.controls.startDateTime.valid
+          && this.fgLoggingFilter.controls.endDateTime.valid
+          )
+    )
+  }
 
   onTypeChange(){
     if(this.fgLoggingFilter.value.isLive)
@@ -228,6 +238,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   onSubmit(): void{
+    if(!this.isFormValid())
+      return;
+    
     this.cursor = 0
     this.startDateTime = this.fgLoggingFilter.value.startDateTime
     this.endDateTime = this.fgLoggingFilter.value.endDateTime
