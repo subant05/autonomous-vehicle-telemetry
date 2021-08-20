@@ -3288,16 +3288,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ImageComponent": () => (/* binding */ ImageComponent)
 /* harmony export */ });
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! uuid */ 61319);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! uuid */ 61319);
 /* harmony import */ var _modals_image_expansion_image_expansion_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../modals/image-expansion/image-expansion.component */ 54217);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
 /* harmony import */ var src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/images/image.service */ 82329);
-/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/dialog */ 22238);
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/dialog */ 22238);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 38583);
+/* harmony import */ var _segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../segmentation-image/segmentation-image.component */ 98299);
+/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
 
 
 
 
 
+
+
+
+function ImageComponent_mat_progress_bar_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "mat-progress-bar", 5);
+} }
+const _c0 = function (a0) { return { display: a0 }; };
 class ImageComponent {
     constructor(imageService, dialog) {
         this.imageService = imageService;
@@ -3305,10 +3315,12 @@ class ImageComponent {
         this.imageUrl = "";
         this.width = "";
         this.height = "";
-        this.resultId = (0,uuid__WEBPACK_IMPORTED_MODULE_2__.default)();
-        this.lensId = (0,uuid__WEBPACK_IMPORTED_MODULE_2__.default)();
+        this.resultId = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
+        this.lensId = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
         this.zoomAdded = false;
-        this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_2__.default)();
+        this.segmentationLoaded = false;
+        this.isSegmentationImage = false;
+        this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
         this.class = "";
         this.label = "";
         this.headerId = "";
@@ -3353,16 +3365,42 @@ class ImageComponent {
             console.log(`Dialog closed: ${result}`);
         });
     }
+    onSegmentationLoad(event) {
+        this.segmentationLoaded = true;
+        console.log(event);
+        switch (event) {
+            case "no segmentation":
+                this.isSegmentationImage = false;
+                break;
+            case "loaded":
+                this.isSegmentationImage = true;
+                break;
+        }
+    }
 }
-ImageComponent.ɵfac = function ImageComponent_Factory(t) { return new (t || ImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__.MatDialog)); };
-ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", data: "data" }, decls: 1, vars: 4, consts: [[3, "src", "id", "click"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "img", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function ImageComponent_Template_img_click_0_listener() { return ctx.openDialog(); });
+ImageComponent.ɵfac = function ImageComponent_Factory(t) { return new (t || ImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialog)); };
+ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", data: "data" }, decls: 5, vars: 9, consts: [[1, "images__render", 3, "click"], ["mode", "indeterminate", 4, "ngIf"], [3, "src", "id"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function ImageComponent_Template_div_click_0_listener() { return ctx.openDialog(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, ImageComponent_mat_progress_bar_1_Template, 1, 0, "mat-progress-bar", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "img", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "div", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](4, "app-segmentation-image", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("load", function ImageComponent_Template_app_segmentation_image_load_4_listener($event) { return ctx.onSegmentationLoad($event); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
     } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", !ctx.segmentationLoaded);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵclassMap"](ctx.class);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("src", ctx.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsanitizeUrl"])("id", ctx.id);
-    } }, styles: ["img[_ngcontent-%COMP%] {\n  width: 100%;\n  cursor: pointer;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImltYWdlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksV0FBQTtFQUNBLGVBQUE7QUFDSiIsImZpbGUiOiJpbWFnZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImltZyB7XG4gICAgd2lkdGg6MTAwJTtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gfSJdfQ== */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpureFunction1"](7, _c0, ctx.segmentationLoaded && ctx.isSegmentationImage ? "block" : "none"));
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("imageHeaderId", ctx.headerId);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.NgIf, _angular_common__WEBPACK_IMPORTED_MODULE_6__.NgStyle, _segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_2__.SegmentationImageComponent, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_7__.MatProgressBar], styles: ["img[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.images__render[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n\n.images__render[_ngcontent-%COMP%]   .image[_ngcontent-%COMP%], .images__render[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  max-width: 512px;\n  margin: auto;\n}\n\n.images__render[_ngcontent-%COMP%]   .segmentation[_ngcontent-%COMP%] {\n  margin: 0;\n  z-index: 1;\n  width: 100%;\n  margin-top: calc(-50% + -5px);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImltYWdlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksV0FBQTtBQUNKOztBQUNDO0VBQ0csZUFBQTtBQUVKOztBQUFJOztFQUVJLFdBQUE7RUFDQSxZQUFBO0VBQ0EsZ0JBQUE7RUFDQSxZQUFBO0FBRVI7O0FBR0k7RUFDSSxTQUFBO0VBQ0EsVUFBQTtFQUNBLFdBQUE7RUFDQSw2QkFBQTtBQURSIiwiZmlsZSI6ImltYWdlLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW1nIHtcbiAgICB3aWR0aDoxMDAlO1xuIH1cbiAuaW1hZ2VzX19yZW5kZXJ7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuXG4gICAgLmltYWdlLFxuICAgIGltZyB7XG4gICAgICAgIHdpZHRoOiAxMDAlO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICAgIG1heC13aWR0aDogNTEycHg7XG4gICAgICAgIG1hcmdpbjphdXRvO1xuICAgICAgICAvLyBcblxuICAgIH1cblxuICAgIC5zZWdtZW50YXRpb257XG4gICAgICAgIG1hcmdpbjowO1xuICAgICAgICB6LWluZGV4OiAxO1xuICAgICAgICB3aWR0aDogMTAwJTtcbiAgICAgICAgbWFyZ2luLXRvcDogY2FsYygtNTAlICsgLTVweCk7XG4gICAgfVxufSJdfQ== */"] });
 
 
 /***/ }),

@@ -4,8 +4,14 @@
     [ngStyle]="{maxWidth:width, maxHeight:height}"
     (click)="openDialog()"
     > -->
-    <img 
-    [src]="imageUrl" 
-    [id]=id [class]="class" 
-    (click)="openDialog()"
-    >
+    <div class="images__render" (click)="openDialog()">
+        <mat-progress-bar *ngIf="!segmentationLoaded" mode="indeterminate"></mat-progress-bar>
+        <img 
+            [src]="imageUrl" 
+            [id]=id [class]="class" 
+        >
+        <div class="segmentation"  [ngStyle]="{display: segmentationLoaded && isSegmentationImage ? 'block' : 'none'} ">
+            <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="headerId"></app-segmentation-image>
+        </div>
+    </div>
+

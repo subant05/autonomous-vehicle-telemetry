@@ -15,6 +15,8 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
   resultId: string = uuid()
   lensId: string = uuid()
   zoomAdded: boolean = false;
+  segmentationLoaded = false
+  isSegmentationImage = false
 
   @Input() id: string = uuid()
   @Input() class: string = ""
@@ -70,6 +72,19 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog closed: ${result}`);
     });
+  }
+
+  onSegmentationLoad(event:any){
+    this.segmentationLoaded = true
+    console.log(event)
+    switch(event){
+      case "no segmentation":
+        this.isSegmentationImage = false
+        break;
+      case "loaded":
+        this.isSegmentationImage = true
+        break;
+    }
   }
 
 }
