@@ -97,6 +97,9 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       this.objectSubscription = this.gqlSubscription
         .getObjectDetectionByVehicleId({vehicleId: this.vehicleId})
         .subscribe((response:any)=>{
+          if(!response)
+            return;
+            
           this.pagesLength++
 
           if(this.page)

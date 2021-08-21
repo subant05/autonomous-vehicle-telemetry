@@ -5644,6 +5644,8 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
             this.objectSubscription = this.gqlSubscription
                 .getObjectDetectionByVehicleId({ vehicleId: this.vehicleId })
                 .subscribe((response) => {
+                if (!response)
+                    return;
                 this.pagesLength++;
                 if (this.page)
                     this.page++;
