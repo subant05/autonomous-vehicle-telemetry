@@ -11,6 +11,8 @@ const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
         return;
     }
     
+    console.log("PREVIEW IMAGE DATA", JSON.stringify(data))
+
     try{
         // Vehicle should not wait for response
         // cb(null, JSON.stringify("Data Sent") )
