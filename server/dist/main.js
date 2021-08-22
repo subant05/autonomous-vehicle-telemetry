@@ -983,7 +983,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const vehicleLogNodeTypes = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 query LoggingNodes($vehicleId:BigInt){
-	vehicleLogNodeTypes(condition:{vehicleId:$vehicleId}){
+	vehicleLogNodeTypes(orderBy:NODE_TYPE_ASC condition:{vehicleId:$vehicleId}){
     nodes{
       nodeType
       vehicleId
@@ -7628,6 +7628,14 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                         }
                         else if (this.nodes.indexOf(response.message.name) === -1) {
                             this.nodes.push(response.message.name);
+                            this.nodes = this.nodes.sort((a, b) => {
+                                if (a < b)
+                                    return -1;
+                                else if (a > a)
+                                    return 1;
+                                else
+                                    return 0;
+                            });
                         }
                         else { }
                     });

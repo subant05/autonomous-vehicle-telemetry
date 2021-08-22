@@ -142,6 +142,14 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
                 this.updateTable({data:response, action:"prepend"})   
               } else if (this.nodes.indexOf(response.message.name) === -1){
                   this.nodes.push(response.message.name)
+                  this.nodes = this.nodes.sort((a:any,b:any)=>{
+                    if(a < b)
+                      return -1
+                    else if (a > a)
+                      return 1
+                    else 
+                      return 0
+                  })
               }else{}
 
             })
