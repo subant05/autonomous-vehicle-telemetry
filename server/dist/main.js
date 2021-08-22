@@ -7274,9 +7274,9 @@ function VehicleLoggingComponent_form_0_div_26_mat_option_5_Template(rf, ctx) { 
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const opts_r15 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("value", opts_r15.nodeType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("value", opts_r15);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate1"](" ", opts_r15.nodeType, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtextInterpolate1"](" ", opts_r15, " ");
 } }
 function VehicleLoggingComponent_form_0_div_26_mat_error_6_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "mat-error");
@@ -7564,7 +7564,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.vehicleId = this.route.parent.snapshot.params.id;
         this.formatTimestampForInputs();
         this.nodesSubscription = this.graphQLQuery.getLoggingNodes({ vehicleId: this.vehicleId }).subscribe((response) => {
-            this.nodes = response;
+            this.nodes = response.map((result) => result.nodeType);
         });
     }
     updateTable({ data, action } = { data: [], action: "replace" }) {
@@ -7623,8 +7623,13 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                         .subscribe((response) => {
                         if (!response)
                             return;
-                        if (this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1)
+                        if (this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1) {
                             this.updateTable({ data: response, action: "prepend" });
+                        }
+                        else if (this.nodes.indexOf(response.message.name) === -1) {
+                            this.nodes.push(response.message.name);
+                        }
+                        else { }
                     });
                     break;
                 case "status":

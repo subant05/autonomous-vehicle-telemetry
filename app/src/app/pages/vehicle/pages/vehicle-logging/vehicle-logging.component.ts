@@ -67,7 +67,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.vehicleId = (this.route.parent as any).snapshot.params.id
     this.formatTimestampForInputs()
     this.nodesSubscription = this.graphQLQuery.getLoggingNodes({ vehicleId:this.vehicleId}).subscribe((response:any)=>{
-      this.nodes = response
+      this.nodes = response.map((result:any)=>result.nodeType)
     })
   }
 
@@ -138,8 +138,12 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
               if(!response)
                 return
                 
-              if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1)
+              if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1){
                 this.updateTable({data:response, action:"prepend"})   
+              } else if (this.nodes.indexOf(response.message.name) === -1){
+                  this.nodes.push(response.message.name)
+              }else{}
+
             })
             break;
         case "status":
