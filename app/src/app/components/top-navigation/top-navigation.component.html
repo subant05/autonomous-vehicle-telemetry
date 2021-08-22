@@ -5,7 +5,7 @@
 
     <div *ngIf="menu" class="nav__top-menu" 
         [ngClass]="{ show:showRightNav===true, hide:showRightNav===false}" >
-        <h5 *ngIf="menu.header">{{menu.header}}</h5>
+        <h5 *ngIf="menu.header">{{menu.header | titlecase}}</h5>
         <ul *ngIf="menu.links.length" >
             <li *ngFor="let menuItem of menu.links">
                 <a *ngIf="menuItem.callback" mat-flat-button (click)="menuItem.callback($event); toggleSideNav()" tooltip="menuItem.tooltip"> {{menuItem.label}} </a>
