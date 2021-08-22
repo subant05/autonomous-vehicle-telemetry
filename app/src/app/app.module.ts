@@ -199,7 +199,7 @@ import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehic
 
       const defaultOptions = {
         watchQuery: {
-          fetchPolicy:  'network-only', //"cache-first",  //'no-cache',
+          fetchPolicy:  "cache-first" , //'network-only', ,  //'no-cache',
           nextFetchPolicy: 'cache-first', //"cache-first",
           errorPolicy: 'ignore',
         },
@@ -212,7 +212,7 @@ import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehic
         subscription: {
           errorPolicy: 'ignore',
           fetchPolicy:  'network-only', //"cache-first", //'network-only', //'no-cache',
-          nextFetchPolicy: 'cache-first' //"cache-first" 
+          nextFetchPolicy: 'network-only' //"cache-first" 
           // errorPolicy: 'all',
         },
       }
