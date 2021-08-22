@@ -32,10 +32,9 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
 
     private loadMenu(obj:any) {
       const { data, loading } = obj
-  
       if (!loading)
         this.menuService.menu.next({
-          header: `Vehicle: ${this.vehicleId }`,
+          header: `${data.vehicles.nodes[0].name}`,
           links: [
             {
               label:"Overview"
@@ -94,7 +93,7 @@ export class VehicleComponent implements OnInit, OnDestroy, DoCheck {
   ngOnInit(): void {
     this.currentRoute =  (this.route.url as any).value.join("/")
     this.graphqlQueryService
-      .getTopicsByVehicleId({id:this.vehicleId})
+      .getVehicleById({id:this.vehicleId})
       .subscribe(response=>
         this.loadMenu(response)
       );

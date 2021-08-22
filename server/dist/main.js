@@ -1840,6 +1840,14 @@ query VehicleTopics($id:BigInt!){
           nodes{
           vehicleTopics(filter:{vehicleId:{equalTo:$id}}){
             nodes{
+              vehicle{
+                name
+                ip
+                id
+                type{
+                  type
+                }
+              }
               topic{
                 name
                 id
@@ -1931,9 +1939,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ vehicle)
 /* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
 
 
-const vehicle = `
+const vehicle = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
     query Vehicles($id:BigInt){
         vehicles(condition:{id:$id}){
             nodes{
@@ -8158,7 +8167,7 @@ class VehicleComponent {
         const { data, loading } = obj;
         if (!loading)
             this.menuService.menu.next({
-                header: `Vehicle: ${this.vehicleId}`,
+                header: `${data.vehicles.nodes[0].name}`,
                 links: [
                     {
                         label: "Overview",
@@ -8212,7 +8221,7 @@ class VehicleComponent {
     ngOnInit() {
         this.currentRoute = this.route.url.value.join("/");
         this.graphqlQueryService
-            .getTopicsByVehicleId({ id: this.vehicleId })
+            .getVehicleById({ id: this.vehicleId })
             .subscribe(response => this.loadMenu(response));
     }
     ngOnDestroy() {

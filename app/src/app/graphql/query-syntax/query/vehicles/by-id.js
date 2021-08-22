@@ -1,6 +1,6 @@
 import { gql } from 'apollo-angular';
 
-const vehicle = `
+const vehicle = gql`
     query Vehicles($id:BigInt){
         vehicles(condition:{id:$id}){
             nodes{

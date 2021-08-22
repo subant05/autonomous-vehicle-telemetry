@@ -6,6 +6,14 @@ query VehicleTopics($id:BigInt!){
           nodes{
           vehicleTopics(filter:{vehicleId:{equalTo:$id}}){
             nodes{
+              vehicle{
+                name
+                ip
+                id
+                type{
+                  type
+                }
+              }
               topic{
                 name
                 id
