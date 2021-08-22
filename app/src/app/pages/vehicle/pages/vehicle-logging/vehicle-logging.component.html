@@ -54,8 +54,8 @@
             <mat-label>Nodes</mat-label>
             <mat-select formControlName="nodes" multiple>
                 <mat-option *ngFor="let opts of nodes"
-                    [value]="opts">
-                    {{opts}}
+                    [value]="opts.nodeType">
+                    {{opts.nodeType}}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="fgLoggingFilter.get('nodes').hasError('required')">

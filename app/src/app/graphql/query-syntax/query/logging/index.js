@@ -1,9 +1,9 @@
 import All from './loggingStatusDetection'
 import QueryBuilder from './queryBuilders/loggingQueryBuilder'
-import Nodes from './loggingNodeTypes'
+import NodesByVehicleId from './loggingNodeTypes'
 
 export {
     All
     , QueryBuilder
-    , Nodes
+    , NodesByVehicleId
 }

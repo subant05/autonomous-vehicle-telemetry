@@ -12,6 +12,14 @@ query MainPreviewImages($vehicleId: BigInt $topicNames:[String!]) {
     topics(
       filter:{name:{in:$topicNames}}){
       nodes{
+        vehicleTopics(last: 1){
+            nodes{
+              topic{
+                name
+                id
+              }
+            }
+        }
         cameras(orderBy: ID_DESC first:1 condition:{vehicleId:$vehicleId}){
           nodes{
             topic{

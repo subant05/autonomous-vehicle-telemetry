@@ -1,10 +1,12 @@
 import { gql } from 'apollo-angular';
 
 const vehicleLogNodeTypes = gql`
-query LoggingNodes{
-	vehicleLogNodeTypes{
+query LoggingNodes($vehicleId:BigInt){
+	vehicleLogNodeTypes(condition:{vehicleId:$vehicleId}){
     nodes{
-      name
+      nodeType
+      vehicleId
+      vehicleName
     }
   }
 }

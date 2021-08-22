@@ -40,7 +40,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     {value: "status", label: "Autonomy State"},
     {value: "object", label: "Object Detection"}
   ]
-  nodes: string[] = []
+  nodes: {nodeType:string}[] = []
   isLive:boolean= false;
   columns: string[] = [
     'status'
@@ -64,8 +64,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     , private filterService: VehicleLoggingFilterService
   ) { 
     super()
+    this.vehicleId = (this.route.parent as any).snapshot.params.id
     this.formatTimestampForInputs()
-    this.nodesSubscription = this.graphQLQuery.getLoggingNodes().subscribe((response:any)=>{
+    this.nodesSubscription = this.graphQLQuery.getLoggingNodes({ vehicleId:this.vehicleId}).subscribe((response:any)=>{
       this.nodes = response
     })
   }
@@ -191,7 +192,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
   
   ngOnInit(): void {
-    this.vehicleId = (this.route.parent as any).snapshot.params.id
     this.fgLoggingFilter = this.filterService.getFilterState() || new FormGroup({
       startDateTime: new FormControl(this.startDateTime,[Validators.required])
       , endDateTime: new FormControl(this.endDateTime,[Validators.required])

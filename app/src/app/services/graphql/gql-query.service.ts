@@ -290,10 +290,10 @@ export class GqlQueryService {
     }))
   }
 
-  getLoggingNodes(){
-    return this.basicFilteredQuery(QueryQL.Logging.Nodes)
+  getLoggingNodes(variables={}){
+    return this.basicFilteredQuery(QueryQL.Logging.NodesByVehicleId, variables)
     .pipe(map((response:any)=>{
-      return response.data.vehicleLogNodeTypes.nodes.map((node:any)=>node.name)
+      return response.data.vehicleLogNodeTypes.nodes
     }))
   }
 
@@ -316,8 +316,11 @@ export class GqlQueryService {
       if(!response.data.topics)
         return null;
 
-      return response.data.topics.nodes.map((result:any)=>{
-        const msg = {...result.cameras.nodes[0].msg }
+      return response.data.topics.nodes.map((result:any, index:number, array:any[])=>{
+        if(!result.cameras.nodes.length)
+          return {topic:result.vehicleTopics.nodes[0].topic};
+
+        const msg = result.cameras.nodes.length ? {...result.cameras.nodes[0].msg } : null
         const topic = result.cameras.nodes[0].topic
         const header = msg.header
 

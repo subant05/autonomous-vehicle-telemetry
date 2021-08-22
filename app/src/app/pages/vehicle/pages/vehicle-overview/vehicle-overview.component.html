@@ -44,10 +44,15 @@
                 <div *ngIf="imageInfo">
                     <div class="grid__cell--label">{{imageInfo.topic.name.replace("/left/preview","").replace("/", "").replace("/","").replace("_"," ") | titlecase}}</div>
                     <div class="grid__cell--content">
-                        <app-image [data]="imageInfo.image" 
+                            <app-image 
+                            *ngIf="imageInfo.header && imageInfo.image; else noimage"
+                            [data]="imageInfo.image" 
                             [label]="imageInfo.topic.name" 
                             [headerId]="imageInfo.header.headerId">
                         </app-image>
+                        <ng-template #noimage>
+                            <mat-icon aria-hidden="false" class="no-image" aria-label="No Image">image_not_supported</mat-icon>
+                        </ng-template>
                     </div>
                 </div>
             </div>
