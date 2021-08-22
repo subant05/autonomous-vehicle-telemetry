@@ -3,24 +3,36 @@ import { gql } from 'apollo-angular';
 const previewByMessageHeaderId = gql`
 query PreviewImage ($headerId: BigInt){
 	cameraMessageHeaders(condition:{headerId:$headerId}) {
-		nodes{
+    nodes{
       node
       readingat
       seq
       cameraMessagesByHeaderId{
         nodes{
-          image{
-            id
-            nodeId
-            width
-            height
-            step
-            isBigendian
-            encoding
-            data {
-              id
-              nodeId
-              data
+          camerasByMsgId{
+						nodes{
+              msg{
+                header{
+                  readingat
+                  node
+                  seq
+                  headerId
+                }
+                image{
+                  id
+                  nodeId
+                  width
+                  height
+                  step
+                  isBigendian
+                  encoding
+                  data {
+                    id
+                    nodeId
+                    data
+                  }
+                }
+              }
             }
           }
         }

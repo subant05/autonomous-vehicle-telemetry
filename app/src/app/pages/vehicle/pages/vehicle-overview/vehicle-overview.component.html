@@ -42,10 +42,10 @@
             <div class="preview-images__img" 
                 *ngFor="let imageInfo of vehicleImages" >
                 <div *ngIf="imageInfo">
-                    <div class="grid__cell--label">{{imageInfo.topic.replace("/left/preview","").replace("/", "").replace("/","").replace("_"," ") | titlecase}}</div>
+                    <div class="grid__cell--label">{{imageInfo.topic.name.replace("/left/preview","").replace("/", "").replace("/","").replace("_"," ") | titlecase}}</div>
                     <div class="grid__cell--content">
                         <app-image [data]="imageInfo.image" 
-                            [label]="imageInfo.topic" 
+                            [label]="imageInfo.topic.name" 
                             [headerId]="imageInfo.header.headerId">
                         </app-image>
                     </div>

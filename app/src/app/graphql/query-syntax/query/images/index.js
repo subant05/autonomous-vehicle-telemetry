@@ -5,8 +5,8 @@ import SegmentationMapByHeaderId from './segmentationMapByHeaderId'
 import PreviewDetailsByVehicleId from './previewDetailsByVehicleId'
 import SegmentationMap from './segmentationMap'
 import ImagePair from './imagePair'
-import  PreviewByMessageHeaderId from './previewByHeaderId'
-
+import PreviewByMessageHeaderId from './previewByHeaderId'
+import ByTopicNamesVehicleId from './selectPreviewsByVehicleId'
 export {
     PreviewImageByVehicleId
     , PreviewByVehicleIdTopicId
@@ -16,4 +16,5 @@ export {
     , SegmentationMap
     , ImagePair
     , PreviewByMessageHeaderId
+    , ByTopicNamesVehicleId
 }

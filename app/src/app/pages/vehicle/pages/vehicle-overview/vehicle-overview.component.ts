@@ -39,41 +39,67 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
     this.graphQLSubscription
     .getVehiclePreviewImages({vehicleId:this.vehicleId})
     .subscribe((response:any)=>{
-      const imageIndex = this.vehicleImages.findIndex((image:any)=>{
-        return !image ? false : image.topicId === response.topicId
+      const imageIndex = this.vehicleImages.findIndex((item:any)=>{
+        return !item ? false : item.topic.id === response.topicId
       }) 
 
-      if(imageIndex === -1){
-        this.previewImageQuery()
+      if(imageIndex !== -1){
+        this.vehicleImages[imageIndex] = {
+          topic:{
+             name: response.topic
+             , id: response.topicId
+          }
+          , header: response.header
+          , image: response.image
+         }
       }
+
     })
   }
 
-  private previewImageQuery(){
-    this.previewImagesSubscription?.unsubscribe()
-    this.imageSubscriptions.forEach(subscription=>{
-      subscription.unsubscribe()
-    })
+  // private previewImageQuery(){
+  //   this.previewImagesSubscription?.unsubscribe()
+  //   this.imageSubscriptions.forEach(subscription=>{
+  //     subscription.unsubscribe()
+  //   })
 
+  //   this.previewImagesSubscription = this.graphQLQuery
+  //   .getVehiclePreviewImages({id:this.vehicleId})
+  //   .subscribe((response:any)=>{
+  //     this.vehicleImages = response.filter((item:any)=>!!item)
+  //     this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
+  //       if(!image)
+  //         return;
+
+  //       this.imageSubscriptions[index]  =  
+  //         this.graphQLSubscription
+  //         .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
+  //         .subscribe((response:any): void | null=>{
+  //           if(!response)
+  //             return null;
+
+  //           array[index] = response
+  //         })
+  //     })
+  //     this.isImagesLoaded = true
+  //   })
+  // }
+
+  previewImageQuery(){
     this.previewImagesSubscription = this.graphQLQuery
-    .getVehiclePreviewImages({id:this.vehicleId})
-    .subscribe((response:any)=>{
-      this.vehicleImages = response.filter((item:any)=>!!item)
-      this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
-        if(!image)
-          return;
-
-        this.imageSubscriptions[index]  =  
-          this.graphQLSubscription
-          .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
-          .subscribe((response:any): void | null=>{
-            if(!response)
-              return null;
-
-            array[index] = response
-          })
-      })
+    .getPreviewImagesByTopicNameVehicleId({
+      vehicleId:this.vehicleId
+      , topicNames:["/side_right/left/preview"
+      , "/side_left/left/preview"
+      , "/front_right/left/preview"
+      , "/front_left/left/preview"
+      , "/front_center/left/preview"
+      , "/rear/left/preview"]
+    }).subscribe((response:any)=>{
       this.isImagesLoaded = true
+
+      if(response)
+        this.vehicleImages = response
     })
   }
 

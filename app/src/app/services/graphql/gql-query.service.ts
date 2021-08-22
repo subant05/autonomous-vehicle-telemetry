@@ -261,13 +261,17 @@ export class GqlQueryService {
   getPreviewImageByCameraMessageHeaderId(variables={}){
     return this.basicFilteredQuery(QueryQL.Images.PreviewByMessageHeaderId, variables)
         .pipe(map((response:any)=>{
-          if(!response.data.cameraMessageHeaders.nodes.length)
+          const result = response.data.cameraMessageHeaders.nodes.map((node:any)=>{
+                return node.cameraMessagesByHeaderId.nodes[0].camerasByMsgId.nodes[0]
+            }).filter((result:any)=>!!result)
+          if(!result.length)
             return null
 
-          const header =  response.data.cameraMessageHeaders.nodes[0]
+          const recentResult =  result[result.length-1].msg
+          const header =  recentResult.header
           const image = {
-              ...header.cameraMessagesByHeaderId.nodes[0].image
-              , data: JSON.parse(header.cameraMessagesByHeaderId.nodes[0].image.data.data)
+              ...recentResult.image
+              , data: JSON.parse(recentResult.image.data.data)
             }
 
             return {
@@ -304,6 +308,33 @@ export class GqlQueryService {
               return null
             }).filter((results:any)=>!!results)
     }))
+  }
+
+  getPreviewImagesByTopicNameVehicleId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Images.ByTopicNamesVehicleId, variables)
+    .pipe(map((response:any)=>{
+      if(!response.data.topics)
+        return null;
+
+      return response.data.topics.nodes.map((result:any)=>{
+        const msg = {...result.cameras.nodes[0].msg }
+        const topic = result.cameras.nodes[0].topic
+        const header = msg.header
+
+        let parsedMsg = null;
+
+        if(msg.image && msg.image.data)
+          parsedMsg = {...msg.image, data :JSON.parse(msg.image.data.data)}
+
+        return {
+          topic
+          , header
+          , image: parsedMsg
+        }
+
+      })
+    }))
+
   }
 
 }
