@@ -10,8 +10,4 @@ router.post("/", async (req, res) => {
     Geolocation.sqlInsertStarFire(req.body.topic, req.body, responseCallback(res))
 })
 
-router.post("/test", async (req, res) => {
-    res.send("test positive")
-})
-
 export default router;

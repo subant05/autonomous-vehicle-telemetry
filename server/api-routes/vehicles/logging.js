@@ -9,9 +9,4 @@ router.post("/", async (req, res) => {
     Logging.sqlInsertVehicleLogs(req.body[0].topic, req.body, responseCallback(res))
 })
 
-router.post("/test", async (req, res) => {
-    res.send("success")
-})
-
-
 export default router;

@@ -18,9 +18,4 @@ router.get("/test", async (req, res) => {
     res.send("test positive")
 })
 
-router.post("/test", async (req, res) => {
-    res.send("success")
-})
-
-
 export default router;

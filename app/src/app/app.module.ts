@@ -199,7 +199,7 @@ import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehic
 
       const defaultOptions = {
         watchQuery: {
-          fetchPolicy:  "network-only" , //'network-only', ,  //'no-cache',
+          fetchPolicy:  'network-only', //'cache-first', //"network-only" , //'network-only', ,  //'no-cache',
           nextFetchPolicy: 'cache-first', //"cache-first",
           errorPolicy: 'ignore',
         },

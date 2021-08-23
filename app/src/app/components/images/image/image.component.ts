@@ -67,10 +67,10 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
           width:this.width,
           height: this.height,
           imageUrl: this.imageUrl,
-          segmentation:{
-            image:this.data
-            , segmentation: this.segmentationData
-          }
+          // segmentation:{
+          //   image:this.data
+          //   , segmentation: this.segmentationData
+          // }
         }
     });
 
@@ -88,7 +88,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
         break;
       case "loaded":
         this.isSegmentationImage = true
-        this.segmentationData = event.data
+        // this.segmentationData = event.data
         break;
     }
   }

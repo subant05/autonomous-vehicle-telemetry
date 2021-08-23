@@ -20,8 +20,4 @@ router.post("/segmentation", async (req, res) => {
     Images.sqlInsertSegmentationMap(req.body.topic, req.body, responseCallback(res))
 })
 
-router.post("/test", async (req, res) => {
-    res.send("success")
-})
-
 export default router;

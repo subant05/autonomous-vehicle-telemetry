@@ -9,8 +9,4 @@ router.post("/", async (req, res) => {
     Detection.sqlInsertObjectDetection(req.body.topic, req.body, responseCallback(res))
 })
 
-router.post("/test", async (req, res) => {
-    res.send("success")
-})
-
 export default router;

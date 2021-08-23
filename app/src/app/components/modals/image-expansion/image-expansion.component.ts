@@ -52,6 +52,7 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
       case "unloaded":
       default:
           this.loadedSegmentations = false
+          this.segmentationToggle.checked = false
           break;
     }
   }
