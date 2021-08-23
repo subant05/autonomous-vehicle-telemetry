@@ -3413,6 +3413,7 @@ class ImageComponent {
         this.zoomAdded = false;
         this.segmentationLoaded = false;
         this.isSegmentationImage = false;
+        this.segmentationData = null;
         this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
         this.class = "";
         this.label = "";
@@ -3451,7 +3452,11 @@ class ImageComponent {
                 label: this.label,
                 width: this.width,
                 height: this.height,
-                imageUrl: this.imageUrl
+                imageUrl: this.imageUrl,
+                segmentation: {
+                    image: this.data,
+                    segmentation: this.segmentationData
+                }
             }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -3460,13 +3465,13 @@ class ImageComponent {
     }
     onSegmentationLoad(event) {
         this.segmentationLoaded = true;
-        console.log(event);
-        switch (event) {
+        switch (event.state) {
             case "no segmentation":
                 this.isSegmentationImage = false;
                 break;
             case "loaded":
                 this.isSegmentationImage = true;
+                this.segmentationData = event.data;
                 break;
         }
     }
@@ -3731,7 +3736,7 @@ class SegmentationImageComponent {
         var _a;
         const imageHeaderId = argsImageHeaderId || this.imageHeaderId;
         if (!imageHeaderId) {
-            this.load.emit("unloaded");
+            this.load.emit({ state: "unloaded" });
             return;
         }
         (_a = this.querySubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
@@ -3741,15 +3746,24 @@ class SegmentationImageComponent {
             const image = response.find((msg) => msg.encoding === "rgb8");
             const segmentation = response.find((msg) => msg.encoding === "mono8");
             if (!response.length || !segmentation) {
-                this.load.emit("no segmentation");
+                this.load.emit({ state: "no segmentation" });
                 return;
             }
             this.imageData = this.imageService.getDataURL(Object.assign(Object.assign({}, segmentation), { isSegmentation: true }));
             this.imageUrl = this.imageService.getDataURL(Object.assign({}, image));
-            this.load.emit("loaded");
+            this.load.emit({ state: "loaded", data: segmentation });
         });
     }
     ngOnInit() {
+        if (this.data
+            && this.data.segmentation
+            && this.data.image) {
+            const { image, segmentation } = this.data;
+            this.imageData = this.imageService.getDataURL(Object.assign(Object.assign({}, segmentation), { isSegmentation: true }));
+            this.imageUrl = this.imageService.getDataURL(Object.assign({}, image));
+            this.load.emit({ state: "loaded", data: segmentation });
+            return;
+        }
         this.getSegmentationImage();
     }
     ngOnChanges(changes) {
@@ -3759,7 +3773,7 @@ class SegmentationImageComponent {
     }
 }
 SegmentationImageComponent.ɵfac = function SegmentationImageComponent_Factory(t) { return new (t || SegmentationImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_0__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService)); };
-SegmentationImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: SegmentationImageComponent, selectors: [["app-segmentation-image"]], inputs: { imageHeaderId: "imageHeaderId" }, outputs: { load: "load" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵNgOnChangesFeature"]], decls: 3, vars: 2, consts: [["class", "segmentation-image ", 3, "ngStyle", 4, "ngIf", "ngIfElse"], ["loading", ""], [1, "segmentation-image", 3, "ngStyle"], [3, "src", "id", 4, "ngIf"], [3, "src", "id"], [4, "ngIf", "ngIfElse"], ["loader", ""], ["mode", "indeterminate"]], template: function SegmentationImageComponent_Template(rf, ctx) { if (rf & 1) {
+SegmentationImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: SegmentationImageComponent, selectors: [["app-segmentation-image"]], inputs: { imageHeaderId: "imageHeaderId", data: "data" }, outputs: { load: "load" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵNgOnChangesFeature"]], decls: 3, vars: 2, consts: [["class", "segmentation-image ", 3, "ngStyle", 4, "ngIf", "ngIfElse"], ["loading", ""], [1, "segmentation-image", 3, "ngStyle"], [3, "src", "id", 4, "ngIf"], [3, "src", "id"], [4, "ngIf", "ngIfElse"], ["loader", ""], ["mode", "indeterminate"]], template: function SegmentationImageComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](0, SegmentationImageComponent_div_0_Template, 2, 4, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, SegmentationImageComponent_ng_template_1_Template, 3, 2, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
@@ -3918,7 +3932,7 @@ class ImageExpansionComponent {
         this.segmentationTopic$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__.BehaviorSubject(this.segmentationTopic);
         this.segmentationToggle = {
             color: "primary",
-            checked: false,
+            checked: true,
             disabled: this.loadedSegmentations !== null && !this.loadedSegmentations
         };
     }
@@ -3933,20 +3947,21 @@ class ImageExpansionComponent {
         return typeof this.loadedSegmentations === 'boolean';
     }
     onSegmentationLoad(event) {
-        switch (event) {
+        switch (event.state) {
             case "loaded":
                 this.loadedSegmentations = true;
                 this.segmentationToggle.checked = true;
                 break;
             case "no segmentation":
             case "unloaded":
+            default:
                 this.loadedSegmentations = false;
                 break;
         }
     }
 }
 ImageExpansionComponent.ɵfac = function ImageExpansionComponent_Factory(t) { return new (t || ImageExpansionComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MAT_DIALOG_DATA), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_0__.GqlQueryService)); };
-ImageExpansionComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: ImageExpansionComponent, selectors: [["app-image-expansion"]], decls: 14, vars: 14, consts: [["mat-dialog-title", ""], [1, "grid", "gap", "images"], ["class", "grid__cell center-cell-content", 4, "ngIf", "ngIfElse"], ["loader", ""], [1, "grid__cell", "center-cell-content"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], [3, "src", "id", "ngClass"], ["align", "end"], ["mat-button", "", "mat-dialog-close", ""], [1, "segmentation-toggle", 3, "color", "checked", "disabled", "change"], ["mode", "indeterminate"]], template: function ImageExpansionComponent_Template(rf, ctx) { if (rf & 1) {
+ImageExpansionComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: ImageExpansionComponent, selectors: [["app-image-expansion"]], decls: 14, vars: 14, consts: [["mat-dialog-title", ""], [1, "grid", "gap", "images"], ["class", "grid__cell center-cell-content", 4, "ngIf"], ["loader", ""], [1, "grid__cell", "center-cell-content"], [1, "segmentation", 3, "ngStyle"], [3, "data", "imageHeaderId", "load"], [3, "src", "id", "ngClass"], ["align", "end"], ["mat-button", "", "mat-dialog-close", ""], [1, "segmentation-toggle", 3, "color", "checked", "disabled", "change"], ["mode", "indeterminate"]], template: function ImageExpansionComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "h2", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -3970,18 +3985,17 @@ ImageExpansionComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MO
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     } if (rf & 2) {
-        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx.data.label);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.loadSegmentation())("ngIfElse", _r1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.data.segmentation.segmentation);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction1"](10, _c0, ctx.segmentationToggle.checked ? "inline-block" : "none"));
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction1"](10, _c0, ctx.data.segmentation.segmentation && ctx.segmentationToggle.checked ? "inline-block" : "none"));
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("imageHeaderId", ctx.data.headerId);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("data", ctx.data.segmentation)("imageHeaderId", ctx.data.headerId);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassMap"](ctx.class);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("src", ctx.data.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵsanitizeUrl"])("id", ctx.id)("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction1"](12, _c1, ctx.segmentationToggle.checked));
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("src", ctx.data.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵsanitizeUrl"])("id", ctx.id)("ngClass", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction1"](12, _c1, ctx.data.segmentation.segmentation && ctx.segmentationToggle.checked));
     } }, directives: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialogTitle, _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialogContent, _angular_common__WEBPACK_IMPORTED_MODULE_6__.NgIf, _angular_common__WEBPACK_IMPORTED_MODULE_6__.NgStyle, _images_segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_1__.SegmentationImageComponent, _angular_common__WEBPACK_IMPORTED_MODULE_6__.NgClass, _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialogActions, _angular_material_button__WEBPACK_IMPORTED_MODULE_7__.MatButton, _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialogClose, _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_8__.MatSlideToggle, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_9__.MatProgressBar], styles: ["img[_ngcontent-%COMP%] {\n  width: 65vw;\n}\nimg.segmented[_ngcontent-%COMP%] {\n  margin-top: calc(-50% + -5px);\n}\n@media screen and (min-width: 730px) {\n  img[_ngcontent-%COMP%] {\n    width: 75vw;\n  }\n}\n.segmentation[_ngcontent-%COMP%] {\n  width: 65vw;\n}\n@media screen and (min-width: 730px) {\n  .segmentation[_ngcontent-%COMP%] {\n    width: 75vw;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImltYWdlLWV4cGFuc2lvbi5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUFDSjtBQUFJO0VBQ0ksNkJBQUE7QUFFUjtBQUVJO0VBUEo7SUFRUSxXQUFBO0VBQ047QUFDRjtBQUVDO0VBQ0csV0FBQTtBQUNKO0FBQ0k7RUFISDtJQUlPLFdBQUE7RUFFTjtBQUNGIiwiZmlsZSI6ImltYWdlLWV4cGFuc2lvbi5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImltZyB7XG4gICAgd2lkdGg6NjV2dztcbiAgICAmLnNlZ21lbnRlZHtcbiAgICAgICAgbWFyZ2luLXRvcDogY2FsYygtNTAlICsgLTVweCk7XG5cbiAgICB9XG5cbiAgICBAbWVkaWEgc2NyZWVuIGFuZCAobWluLXdpZHRoOjczMHB4KSB7XG4gICAgICAgIHdpZHRoOjc1dnc7XG4gICAgfVxuIH1cblxuIC5zZWdtZW50YXRpb24ge1xuICAgIHdpZHRoOjY1dnc7XG5cbiAgICBAbWVkaWEgc2NyZWVuIGFuZCAobWluLXdpZHRoOjczMHB4KSB7XG4gICAgICAgIHdpZHRoOjc1dnc7XG4gICAgfVxuIH0iXX0= */"] });
 
 
@@ -5806,11 +5820,8 @@ class VehicleMissionStatsComponent {
         this.cursor = 0;
         this.isDataLoaded = false;
     }
-    convertToMilliSeconds(time) {
-        return parseFloat(((time * 1.0E-9)).toFixed(2));
-    }
     convertToSeconds(time) {
-        return +((this.convertToMilliSeconds(parseFloat(time)) / 1000).toFixed(2));
+        return parseFloat(((time * 1.0E-9)).toFixed(2));
     }
     convertToMinutes(time) {
         return +((this.convertToSeconds(parseFloat(time)) / 60).toFixed(2));
@@ -5845,11 +5856,11 @@ class VehicleMissionStatsComponent {
     getUpTime() {
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;
         const totalTimeSeconds = +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy);
-        return `${this.convertToMilliSeconds(totalTimeSeconds)} sec`;
+        return `${this.convertToSeconds(totalTimeSeconds)} sec`;
         // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
     }
     getMissionStartTime() {
-        return new Date(this.missionStats.missionStartTime).toLocaleString();
+        return this.missionStats.missionStartTime ? new Date(this.missionStats.missionStartTime).toLocaleString() : "N/A";
     }
     getAcresDone() {
         const metersPerAcre = 4047;
@@ -5875,7 +5886,7 @@ class VehicleMissionStatsComponent {
         return `${(autonomyAreaTravelledSqm / metersPerAcre).toFixed(2)} ac`;
     }
     getTeleopDuration() {
-        return `${this.convertToMilliSeconds(this.missionStats.durationTeleop)} sec`;
+        return `${this.convertToSeconds(this.missionStats.durationTeleop)} sec`;
     }
     getMovingPercentage() {
         // Add All 3
@@ -5887,10 +5898,10 @@ class VehicleMissionStatsComponent {
         return `${driveTimePerc.toFixed(2)} % `;
     }
     getAutonomyStopped() {
-        return `${this.convertToMilliSeconds(this.missionStats.durationAutonomyStopped)} sec`;
+        return `${this.convertToSeconds(this.missionStats.durationAutonomyStopped)} sec`;
     }
     getAutonomyDriving() {
-        return `${this.convertToMilliSeconds(this.missionStats.durationAutonomyDriving)} sec`;
+        return `${this.convertToSeconds(this.missionStats.durationAutonomyDriving)} sec`;
     }
     getTelesupport() {
         const { durationAutonomyDriving, durationAutonomyStopped, durationNoAutonomy } = this.missionStats;

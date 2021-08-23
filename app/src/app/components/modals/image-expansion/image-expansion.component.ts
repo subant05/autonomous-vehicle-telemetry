@@ -21,14 +21,13 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
   segmentationTopic$ = new BehaviorSubject<string | null>(this.segmentationTopic);
   segmentationToggle = {
     color:"primary",
-    checked:false,
+    checked:true,
     disabled: this.loadedSegmentations !== null && !this.loadedSegmentations
   } 
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any
-    , private graphQLQuery: GqlQueryService) { 
-    }
+    , private graphQLQuery: GqlQueryService) { }
 
   ngOnInit(): void {
   }
@@ -44,13 +43,14 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
     return typeof this.loadedSegmentations === 'boolean'
   }
   onSegmentationLoad(event:any) {
-    switch(event){
+    switch(event.state){
       case "loaded":
           this.loadedSegmentations = true
           this.segmentationToggle.checked = true
           break;
       case "no segmentation":
       case "unloaded":
+      default:
           this.loadedSegmentations = false
           break;
     }

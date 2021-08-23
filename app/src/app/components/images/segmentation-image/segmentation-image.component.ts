@@ -18,7 +18,8 @@ export class SegmentationImageComponent implements OnInit {
   imgId: string | null = uuid()
 
   @Input() imageHeaderId: number | null | undefined | string;
-  @Output("load") load =  new EventEmitter<string>()
+  @Input() data: string | [] | {image:string, segmentation:string} | undefined;
+  @Output("load") load =  new EventEmitter<any>()
 
   constructor(    
     private gqlQueryService: GqlQueryService
@@ -30,7 +31,7 @@ export class SegmentationImageComponent implements OnInit {
     const imageHeaderId = argsImageHeaderId || this.imageHeaderId
 
     if (!imageHeaderId){
-      this.load.emit("unloaded")
+      this.load.emit({state:"unloaded"})
       return;
     }
 
@@ -42,18 +43,27 @@ export class SegmentationImageComponent implements OnInit {
       const segmentation = response.find((msg:any)=>msg.encoding === "mono8")
 
       if(!response.length || !segmentation){
-        this.load.emit("no segmentation")
+        this.load.emit({state:"no segmentation"})
         return
       }
 
       this.imageData = this.imageService.getDataURL({...segmentation, isSegmentation:true});
       this.imageUrl = this.imageService.getDataURL({...image});
-
-      this.load.emit("loaded")
+      this.load.emit({state:"loaded", data: segmentation})
     })
   }
 
   ngOnInit(): void {
+    if(this.data 
+      && (this.data as any).segmentation 
+      && (this.data as any).image ){
+        const {image, segmentation} = (this.data as any)
+        this.imageData = this.imageService.getDataURL({...segmentation, isSegmentation:true});
+        this.imageUrl = this.imageService.getDataURL({...image});
+        this.load.emit({state:"loaded", data: segmentation})
+      return
+    }
+
     this.getSegmentationImage()
   }
 

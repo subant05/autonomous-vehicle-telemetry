@@ -11,7 +11,9 @@
         >
 
         <div class="segmentation"  [ngStyle]="{display: isSegmentationImage ? 'block' : 'none'} ">
-            <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="headerId"></app-segmentation-image>
+            <app-segmentation-image   
+                (load)="onSegmentationLoad($event)"  
+                [imageHeaderId]="headerId"></app-segmentation-image>
         </div>
         <mat-progress-bar *ngIf="!segmentationLoaded" mode="indeterminate"></mat-progress-bar>
     </div>

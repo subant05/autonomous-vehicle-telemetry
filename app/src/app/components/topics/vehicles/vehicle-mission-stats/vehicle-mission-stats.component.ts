@@ -23,12 +23,8 @@ export class VehicleMissionStatsComponent implements OnInit {
     , private graphQLQuery: GqlQueryService
   ) { }
 
-  private convertToMilliSeconds(time:any): any{
-    return parseFloat(((time  * 1.0E-9) ).toFixed(2))
-  }
-
   private convertToSeconds(time:any): any{
-    return +((this.convertToMilliSeconds(parseFloat(time))/1000).toFixed(2))
+    return parseFloat(((time  * 1.0E-9) ).toFixed(2))
   }
 
   private convertToMinutes(time:any): any{
@@ -76,12 +72,12 @@ export class VehicleMissionStatsComponent implements OnInit {
   getUpTime(){
     const {durationAutonomyDriving,durationAutonomyStopped, durationNoAutonomy} = this.missionStats
     const totalTimeSeconds =  +(durationAutonomyDriving) + +(durationAutonomyStopped) + +(durationNoAutonomy)
-    return `${this.convertToMilliSeconds(totalTimeSeconds)} sec`
+    return `${this.convertToSeconds(totalTimeSeconds)} sec`
     // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
   }
 
   getMissionStartTime(){
-    return new Date(this.missionStats.missionStartTime).toLocaleString()
+    return this.missionStats.missionStartTime ? new Date(this.missionStats.missionStartTime).toLocaleString() : "N/A"
   }
 
   getAcresDone(){
@@ -116,7 +112,7 @@ export class VehicleMissionStatsComponent implements OnInit {
   }
 
   getTeleopDuration(){
-    return  `${this.convertToMilliSeconds(this.missionStats.durationTeleop)} sec`
+    return  `${this.convertToSeconds(this.missionStats.durationTeleop)} sec`
   }
 
   getMovingPercentage(){
@@ -131,11 +127,11 @@ export class VehicleMissionStatsComponent implements OnInit {
   }
 
   getAutonomyStopped(){
-    return `${this.convertToMilliSeconds(this.missionStats.durationAutonomyStopped) } sec`
+    return `${this.convertToSeconds(this.missionStats.durationAutonomyStopped) } sec`
   }
 
   getAutonomyDriving(){
-    return `${this.convertToMilliSeconds(this.missionStats.durationAutonomyDriving) } sec`
+    return `${this.convertToSeconds(this.missionStats.durationAutonomyDriving) } sec`
   }
 
   getTelesupport(){

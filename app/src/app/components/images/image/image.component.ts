@@ -17,6 +17,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
   zoomAdded: boolean = false;
   segmentationLoaded = false
   isSegmentationImage = false
+  segmentationData=null
 
   @Input() id: string = uuid()
   @Input() class: string = ""
@@ -60,12 +61,16 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   openDialog(): void{
     const dialogRef = this.dialog.open(ImageExpansionComponent, {
-      data:{
+       data:{
           headerId:this.headerId,
           label:this.label,
           width:this.width,
           height: this.height,
-          imageUrl: this.imageUrl
+          imageUrl: this.imageUrl,
+          segmentation:{
+            image:this.data
+            , segmentation: this.segmentationData
+          }
         }
     });
 
@@ -76,15 +81,17 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   onSegmentationLoad(event:any){
     this.segmentationLoaded = true
-    console.log(event)
-    switch(event){
+
+    switch(event.state){
       case "no segmentation":
         this.isSegmentationImage = false
         break;
       case "loaded":
         this.isSegmentationImage = true
+        this.segmentationData = event.data
         break;
     }
   }
+
 
 }
