@@ -5860,7 +5860,7 @@ class VehicleMissionStatsComponent {
         // return !totalTime ? totalTime.toString() : `${(totalTime / +(durationNoAutonomy)).toFixed(2)} hrs`
     }
     getMissionStartTime() {
-        return this.missionStats.missionStartTime ? new Date(this.missionStats.missionStartTime).toLocaleString() : "N/A";
+        return new Date(this.missionStats.missionStartTime).valueOf() ? new Date(this.missionStats.missionStartTime).toLocaleString() : "N/A";
     }
     getAcresDone() {
         const metersPerAcre = 4047;

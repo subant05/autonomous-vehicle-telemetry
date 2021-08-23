@@ -77,7 +77,7 @@ export class VehicleMissionStatsComponent implements OnInit {
   }
 
   getMissionStartTime(){
-    return this.missionStats.missionStartTime ? new Date(this.missionStats.missionStartTime).toLocaleString() : "N/A"
+    return new Date(this.missionStats.missionStartTime).valueOf() ? new Date(this.missionStats.missionStartTime).toLocaleString() : "N/A"
   }
 
   getAcresDone(){
