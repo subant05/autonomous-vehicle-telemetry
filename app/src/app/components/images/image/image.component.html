@@ -5,13 +5,14 @@
     (click)="openDialog()"
     > -->
     <div class="images__render" (click)="openDialog()">
-        <!-- <mat-progress-bar *ngIf="!segmentationLoaded" mode="indeterminate"></mat-progress-bar> -->
         <img 
             [src]="imageUrl" 
             [id]=id [class]="class" 
         >
-        <div class="segmentation"  [ngStyle]="{display: segmentationLoaded && isSegmentationImage ? 'block' : 'none'} ">
+
+        <div class="segmentation"  [ngStyle]="{display: isSegmentationImage ? 'block' : 'none'} ">
             <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="headerId"></app-segmentation-image>
         </div>
+        <mat-progress-bar *ngIf="!segmentationLoaded" mode="indeterminate"></mat-progress-bar>
     </div>
 
