@@ -6,7 +6,7 @@
         <div class="grid__cell--content">
             <div *ngIf="image; else loader">
                 <app-image 
-                    [data]="image" 
+                    [imageId]="image.id" 
                     [label]="data.topic.name" 
                     [headerId]="data.message.header.headerid">
                 </app-image>

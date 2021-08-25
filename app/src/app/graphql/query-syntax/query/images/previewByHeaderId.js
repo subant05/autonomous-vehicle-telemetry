@@ -26,11 +26,6 @@ query PreviewImage ($headerId: BigInt){
                   step
                   isBigendian
                   encoding
-                  data {
-                    id
-                    nodeId
-                    data
-                  }
                 }
               }
             }

@@ -40,14 +40,12 @@ query PreviewByVehicleId ($vehicleId:BigInt, $topicId: BigInt, $cursor:Int) {
                 headerId
             }
             image {
-            isBigendian
-            encoding
-            height
-            width
-            step
-            data{
-                data
-            }
+                id
+                isBigendian
+                encoding
+                height
+                width
+                step
             }
         }
     }

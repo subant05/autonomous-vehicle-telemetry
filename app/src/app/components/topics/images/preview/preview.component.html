@@ -41,7 +41,7 @@
                         <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="image.headerId"></app-segmentation-image>
                     </div>
                     <app-rgb-image [data]="image" [id]="image.imageId" class="images"></app-rgb-image> -->
-                    <app-image [data]="image" [id]="image.imageId" class="images"></app-image>
+                    <app-image [imageId]="image.id" [id]="image.imageId" class="images"></app-image>
 
                 </div>
                 

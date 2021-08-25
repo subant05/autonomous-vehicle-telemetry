@@ -46,7 +46,7 @@
                     <div class="grid__cell--content">
                             <app-image 
                             *ngIf="imageInfo.header && imageInfo.image; else noimage"
-                            [data]="imageInfo.image" 
+                            [imageId]="imageInfo.image.id" 
                             [label]="imageInfo.topic.name" 
                             [headerId]="imageInfo.header.headerId">
                         </app-image>

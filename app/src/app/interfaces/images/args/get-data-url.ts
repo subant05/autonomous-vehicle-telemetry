@@ -1,4 +1,5 @@
 export interface GetDataUrl {
+    id?:number;
     width:number;
     height:number;
     step?:number;

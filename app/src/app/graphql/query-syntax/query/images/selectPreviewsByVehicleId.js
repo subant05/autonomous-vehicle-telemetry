@@ -38,9 +38,6 @@ query MainPreviewImages($vehicleId: BigInt $topicNames:[String!]) {
                 step
                 isBigendian
                 encoding
-                data {
-                  data
-                }
               }
             }
           }

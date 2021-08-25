@@ -123,17 +123,16 @@ export class GqlQueryService {
         if(!response.data.cameraMessageHeaders)
           return []
 
-        return response.data.cameraMessageHeaders.nodes.filter((msg:any) =>{
-          if(!msg.cameraMessagesByHeaderId.nodes.length)
-            return false
+        return response.data.cameraMessageHeaders.nodes.filter((msg:any, index:number, array:any[]) =>{
+          const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
+          
+          return !!segmentation
+        }).map((msg:any)=>{
+            const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
             
-          return msg.cameraMessagesByHeaderId.nodes[0].image.encoding === "rgb8" || 
-                  msg.cameraMessagesByHeaderId.nodes[0].image.encoding === "mono8"
-            }).map((msg:any)=>{
-                const image = {...msg.cameraMessagesByHeaderId.nodes[0].image}
-                image.data = JSON.parse(image.data.data)
-                return image
-            })
+            return {segmentation:segmentation.msg.image}
+        })[0]
+
       }))
   }
 
@@ -153,7 +152,6 @@ export class GqlQueryService {
             , headerId : info.msg.header.headerId
             , meta : info.msg.cameraMeta
           }
-          image.url = this.imageService.getDataURL(image)
         
         return image
       })
@@ -213,7 +211,7 @@ export class GqlQueryService {
           return {
             topic: preview.topic.name
             , topicId: preview.topic.id
-            , image: {...image, data: JSON.parse(image.data.data)}
+            , image
             , header: header
           }
       })
@@ -269,16 +267,12 @@ export class GqlQueryService {
 
           const recentResult =  result[result.length-1].msg
           const header =  recentResult.header
-          const image = {
-              ...recentResult.image
-              , data: JSON.parse(recentResult.image.data.data)
-            }
 
             return {
               seq: header.seq
               , node: header.node
               , readingat: header.readingat
-              , ...image
+              , image: recentResult.image
             }
         }))
   }
@@ -315,7 +309,7 @@ export class GqlQueryService {
     .pipe(map((response:any)=>{
       if(!response.data.topics)
         return null;
-
+        
       return response.data.topics.nodes.map((result:any, index:number, array:any[])=>{
         if(!result.cameras.nodes.length)
           return {topic:result.vehicleTopics.nodes[0].topic};
@@ -324,15 +318,10 @@ export class GqlQueryService {
         const topic = result.cameras.nodes[0].topic
         const header = msg.header
 
-        let parsedMsg = null;
-
-        if(msg.image && msg.image.data)
-          parsedMsg = {...msg.image, data :JSON.parse(msg.image.data.data)}
-
         return {
           topic
           , header
-          , image: parsedMsg
+          , image: msg.image
         }
 
       })

@@ -54,7 +54,10 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       .getPreviewImageByCameraMessageHeaderId({headerId:stopInfo.message.header.headerid})
       .subscribe((response:any)=>{
         this.isImageLoaded = true
-        this.image = response
+        if(!response)
+          return;
+          
+        this.image = response.id
         this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
         this.headerid = stopInfo.message.header.headerid
       })

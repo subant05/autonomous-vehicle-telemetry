@@ -6,16 +6,23 @@ query Segmentation($imageHeaderId: BigInt) {
     nodes{
       cameraMessagesByHeaderId{
         nodes{
-          id
           image{
-						encoding
             width
             height
-            step
-            isBigendian
-             data{
-               data
-             }
+          }
+          segmentationMapsByMsgId{
+            nodes{
+              msg{
+                image{
+                    id
+                    encoding
+                    width
+                    height
+                    step
+                    isBigendian
+                }
+              }
+            }
           }
         }
       }

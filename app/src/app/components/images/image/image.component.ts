@@ -22,35 +22,15 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @Input() id: string = uuid()
   @Input() class: string = ""
   @Input() label: string=""
-  @Input() headerId:string=""
-  @Input() data: string | [] | {} | undefined;
+  @Input() headerId:string | undefined
+  @Input() imageId: string | undefined;
 
   constructor( 
     private imageService: ImageService
     , public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    let parsedData;
-
-    try{
-      switch(typeof this.data){
-        case "string":
-           parsedData =  {...JSON.parse(this.data)}
-          break;
-        case "object":
-          parsedData = {...this.data};
-          break;
-        default:
-            parsedData = {}
-            break;
-      }
-      this.width = (parsedData as any).width +"px"
-      this.height = (parsedData as any).height+"px"
-      this.imageUrl = this.imageService.getDataURL(parsedData)
-    }catch(e){
-      console.log(e.message)
-    }
-
+    this.imageUrl = "/api/vehicle/images//" + this.imageId
   }
 
   ngAfterViewInit(){

@@ -1,6 +1,7 @@
 <div *ngIf="imageData; else loading"class="segmentation-image " [ngStyle]="{ 'background-image': 'url(' + imageData + ')'}">
-    <img *ngIf="imageUrl" [src]="imageUrl" [id]="imgId">
+    <img *ngIf="imageData" [src]="imageData" [id]="imgId">
 </div>
+
 <ng-template #loading>
     <span *ngIf="noImage; else loader">
     </span>

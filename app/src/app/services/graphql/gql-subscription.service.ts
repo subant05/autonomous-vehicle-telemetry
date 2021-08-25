@@ -118,11 +118,13 @@ export class GqlSubscriptionService {
       query: SubscriptionQL.Images.PreviewImagesByVehicleId
       , variables
     }).pipe(map((response:any)=>{
+      const camera = response.data.sqlCamera.camera
       return {
-        topic: response.data.sqlCamera.camera.topic.name
-        , topicId: response.data.sqlCamera.camera.topic.id
-        , image: {...response.data.sqlCamera.camera.msg.image, data: JSON.parse(response.data.sqlCamera.camera.msg.image.data.data)}
-        , header:response.data.sqlCamera.camera.msg.header
+        topic: camera.topic.name
+        , topicId: camera.topic.id
+        , vehicleId: camera.vehicleId
+        , image: {...camera.msg.image}
+        , header:camera.msg.header
       }
 
       // return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
@@ -154,7 +156,7 @@ export class GqlSubscriptionService {
       return {
         topic: topic.name
         , topicId: topic.id
-        , image: {...image, data: JSON.parse(image.data.data) }
+        , image
         , header 
       }
     }))

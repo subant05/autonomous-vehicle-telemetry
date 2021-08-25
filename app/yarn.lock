@@ -3357,6 +3357,11 @@
   "resolved" "https://registry.npmjs.org/detect-node/-/detect-node-2.1.0.tgz"
   "version" "2.1.0"
 
+"dexie@^3.0.3":
+  "integrity" "sha512-BSFhGpngnCl1DOr+8YNwBDobRMH0ziJs2vts69VilwetHYOtEDcLqo7d/XiIphM0tJZ2rPPyAGd31lgH2Ln3nw=="
+  "resolved" "https://registry.npmjs.org/dexie/-/dexie-3.0.3.tgz"
+  "version" "3.0.3"
+
 "di@^0.0.1":
   "integrity" "sha1-gGZJMmzqp8qjMG112YXqJ0i6kTw="
   "resolved" "https://registry.npmjs.org/di/-/di-0.0.1.tgz"

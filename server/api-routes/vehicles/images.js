@@ -20,4 +20,29 @@ router.post("/segmentation", async (req, res) => {
     Images.sqlInsertSegmentationMap(req.body.topic, req.body, responseCallback(res))
 })
 
+router.get('/:id', async (req,res)=>{
+    const id =  parseInt(req.params.id)
+    if(isNaN(id)){
+      res.status(404)
+      res.send("404")
+      return
+    }
+    const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
+    const imageList = await Images.sqlSelectImageBase64ById(id, isSegmentation)
+    if(imageList.length){
+      var img = Buffer.from(imageList[0].replace(/^data:image\/png;base64,/, ''), 'base64');
+  
+     res.writeHead(200, {
+       'Content-Type': 'image/png',
+       'Content-Length': img.length
+     });
+     res.end(img); 
+    }
+    else{
+      res.status(404)
+      res.send("404")
+      return
+    }
+  })
+
 export default router;

@@ -44,14 +44,12 @@ query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor
                   }
                 }
                 image{
+                  id
                   isBigendian
                   encoding
                   height
                   width
                   step
-                  data{
-                    data
-                  }
                 }
               }
             }

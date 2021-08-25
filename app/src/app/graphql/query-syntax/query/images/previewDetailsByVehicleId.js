@@ -24,14 +24,12 @@ query PreviewImagesByVehicleId($id: BigInt) {
                         }
   
                         image{
+                          id
                           width
                           height
                           step
                           isBigendian
                           encoding
-                          data {
-                            data
-                          }
                         }
                       }
                     }

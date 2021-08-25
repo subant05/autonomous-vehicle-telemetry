@@ -16,6 +16,7 @@ query SegmentationMap($topic:String! $cursor:Int! $id:Float!){
             timestamp
           }
           image {
+            id
             header{
               stamp {
                 sec
@@ -28,7 +29,6 @@ query SegmentationMap($topic:String! $cursor:Int! $id:Float!){
             encoding
             is_bigendian
             step
-            data
           }
         }
       }

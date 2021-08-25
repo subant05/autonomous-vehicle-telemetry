@@ -28,9 +28,6 @@ subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:
                         encoding
                         isBigendian
                         step
-                        data{
-                          data
-                        }
                       }
                     }
                   }

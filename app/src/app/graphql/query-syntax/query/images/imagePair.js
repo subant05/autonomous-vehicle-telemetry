@@ -18,6 +18,7 @@ query ImagePair($topic:String! $cursor:Int!){
                   node
               }
               left_image{
+                id
                 height
                 width
                 encoding
@@ -26,6 +27,7 @@ query ImagePair($topic:String! $cursor:Int!){
                 data
               }
               right_image{
+                id
                 height
                 width
                 encoding

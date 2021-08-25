@@ -39,6 +39,9 @@ export class ObjectDetectionDetailComponent implements OnInit, OnDestroy {
     this.imageSubscription = this.graphQLQuery.getPreviewImageByCameraMessageHeaderId({headerId: parseInt(this.data.message.header.headerid)})
       .subscribe((response:any)=>{
         this.isImageLoaded = true
+        if(!response)
+          return;
+          
         this.image = response
       })
   }

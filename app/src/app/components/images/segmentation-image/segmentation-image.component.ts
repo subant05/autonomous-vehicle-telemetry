@@ -16,6 +16,7 @@ export class SegmentationImageComponent implements OnInit {
   imageUrl: string | {} | null = ""
   noImage: boolean = false
   imgId: string | null = uuid()
+  image:{width:string, height:string} = {width:"0px", height:"0px"}
 
   @Input() imageHeaderId: number | null | undefined | string;
   @Input() data: string | [] | {image:string, segmentation:string} | undefined;
@@ -38,31 +39,20 @@ export class SegmentationImageComponent implements OnInit {
     this.querySubscription?.unsubscribe()
     this.querySubscription = this.gqlQueryService
     .getSegmentationMapByHeaderId({ imageHeaderId })
-    .subscribe(response => {
-      const image = response.find((msg:any)=>msg.encoding === "rgb8")
-      const segmentation = response.find((msg:any)=>msg.encoding === "mono8")
-
-      if(!response.length || !segmentation){
+    .subscribe((response:any) => {
+      if(!response){
         this.load.emit({state:"no segmentation"})
         return
       }
 
-      this.imageData = this.imageService.getDataURL({...segmentation, isSegmentation:true});
-      this.imageUrl = this.imageService.getDataURL({...image});
+      const {segmentation} = response
+
+      this.imageData = `/api/vehicle/images//${segmentation.id}?segmentation=true`
       this.load.emit({state:"loaded", data: segmentation})
     })
   }
 
   ngOnInit(): void {
-    if(this.data 
-      && (this.data as any).segmentation 
-      && (this.data as any).image ){
-        const {image, segmentation} = (this.data as any)
-        this.imageData = this.imageService.getDataURL({...segmentation, isSegmentation:true});
-        this.imageUrl = this.imageService.getDataURL({...image});
-        this.load.emit({state:"loaded", data: segmentation})
-      return
-    }
 
     this.getSegmentationImage()
   }

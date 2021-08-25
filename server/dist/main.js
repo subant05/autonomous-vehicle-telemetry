@@ -350,6 +350,7 @@ query ImagePair($topic:String! $cursor:Int!){
                   node
               }
               left_image{
+                id
                 height
                 width
                 encoding
@@ -358,6 +359,7 @@ query ImagePair($topic:String! $cursor:Int!){
                 data
               }
               right_image{
+                id
                 height
                 width
                 encoding
@@ -455,11 +457,6 @@ query PreviewImage ($headerId: BigInt){
                   step
                   isBigendian
                   encoding
-                  data {
-                    id
-                    nodeId
-                    data
-                  }
                 }
               }
             }
@@ -533,14 +530,12 @@ query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor
                   }
                 }
                 image{
+                  id
                   isBigendian
                   encoding
                   height
                   width
                   step
-                  data{
-                    data
-                  }
                 }
               }
             }
@@ -581,6 +576,7 @@ query PreviewByVehicleId ($vehicleId:BigInt) {
           headerId
         }
         image {
+          id
           isBigendian
           segmentationMaps {
             edges {
@@ -592,9 +588,6 @@ query PreviewByVehicleId ($vehicleId:BigInt) {
           encoding
           height
           width
-          data{
-            data
-          }
         }
       }
     }
@@ -660,14 +653,12 @@ query PreviewByVehicleId ($vehicleId:BigInt, $topicId: BigInt, $cursor:Int) {
                 headerId
             }
             image {
-            isBigendian
-            encoding
-            height
-            width
-            step
-            data{
-                data
-            }
+                id
+                isBigendian
+                encoding
+                height
+                width
+                step
             }
         }
     }
@@ -717,14 +708,12 @@ query PreviewImagesByVehicleId($id: BigInt) {
                         }
   
                         image{
+                          id
                           width
                           height
                           step
                           isBigendian
                           encoding
-                          data {
-                            data
-                          }
                         }
                       }
                     }
@@ -772,6 +761,7 @@ query SegmentationMap($topic:String! $cursor:Int! $id:Float!){
             timestamp
           }
           image {
+            id
             header{
               stamp {
                 sec
@@ -784,7 +774,6 @@ query SegmentationMap($topic:String! $cursor:Int! $id:Float!){
             encoding
             is_bigendian
             step
-            data
           }
         }
       }
@@ -815,16 +804,23 @@ query Segmentation($imageHeaderId: BigInt) {
     nodes{
       cameraMessagesByHeaderId{
         nodes{
-          id
           image{
-						encoding
             width
             height
-            step
-            isBigendian
-             data{
-               data
-             }
+          }
+          segmentationMapsByMsgId{
+            nodes{
+              msg{
+                image{
+                    id
+                    encoding
+                    width
+                    height
+                    step
+                    isBigendian
+                }
+              }
+            }
           }
         }
       }
@@ -888,9 +884,6 @@ query MainPreviewImages($vehicleId: BigInt $topicNames:[String!]) {
                 step
                 isBigendian
                 encoding
-                data {
-                  data
-                }
               }
             }
           }
@@ -2463,9 +2456,6 @@ subscription SQLCameraSubscriptionByVehilceIdTopicId($vehicleId:BigInt $topicId:
                         encoding
                         isBigendian
                         step
-                        data{
-                          data
-                        }
                       }
                     }
                   }
@@ -2497,51 +2487,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
 
 
-// const previewImagesByVehicleId  = gql`
-// subscription PreviewImagesByVehicleId($id: BigInt) {
-//     topicCategories(condition:{name:"images"}){
-//       nodes{
-//         topics(filter:{name:{includes:"left/preview"} }){
-//           nodes{
-//             cameras(last:1 condition:{vehicleId:$id}){
-//               totalCount
-//               nodes {
-//                 id
-//                 topic{
-//                   name
-//                 }
-//                 msg{
-//                   image {
-//                     cameraMessages{
-//                       nodes{
-//                         header{
-//                           readingat
-//                           headerId
-//                         }
-  
-//                         image{
-//                           width
-//                           height
-//                           step
-//                           isBigendian
-//                           encoding
-//                           data {
-//                             data
-//                           }
-//                         }
-//                       }
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `
-
 const previewImagesByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`subscription PreviewImagesByVehicleId($id: BigInt)  {
   sqlCamera {
     event
@@ -2553,6 +2498,7 @@ const previewImagesByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.def
           name
           id
         }
+        vehicleId
         msg {
           id
           nodeId
@@ -2561,6 +2507,7 @@ const previewImagesByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.def
             seq
             readingat
             node
+            headerId
           }
           image{
             id
@@ -2570,11 +2517,6 @@ const previewImagesByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.def
             step
             isBigendian
             encoding
-            data {
-              id
-              nodeId
-              data
-            }
         }
       }
     }
@@ -3417,29 +3359,9 @@ class ImageComponent {
         this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
         this.class = "";
         this.label = "";
-        this.headerId = "";
     }
     ngOnInit() {
-        let parsedData;
-        try {
-            switch (typeof this.data) {
-                case "string":
-                    parsedData = Object.assign({}, JSON.parse(this.data));
-                    break;
-                case "object":
-                    parsedData = Object.assign({}, this.data);
-                    break;
-                default:
-                    parsedData = {};
-                    break;
-            }
-            this.width = parsedData.width + "px";
-            this.height = parsedData.height + "px";
-            this.imageUrl = this.imageService.getDataURL(parsedData);
-        }
-        catch (e) {
-            console.log(e.message);
-        }
+        this.imageUrl = "/api/vehicle/images//" + this.imageId;
     }
     ngAfterViewInit() {
     }
@@ -3477,7 +3399,7 @@ class ImageComponent {
     }
 }
 ImageComponent.ɵfac = function ImageComponent_Factory(t) { return new (t || ImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialog)); };
-ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", data: "data" }, decls: 5, vars: 9, consts: [[1, "images__render", 3, "click"], [3, "src", "id"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
+ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", imageId: "imageId" }, decls: 5, vars: 9, consts: [[1, "images__render", 3, "click"], [3, "src", "id"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function ImageComponent_Template_div_click_0_listener() { return ctx.openDialog(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "img", 1);
@@ -3694,7 +3616,7 @@ function SegmentationImageComponent_div_0_img_1_Template(rf, ctx) { if (rf & 1) 
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "img", 4);
 } if (rf & 2) {
     const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("src", ctx_r3.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵsanitizeUrl"])("id", ctx_r3.imgId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("src", ctx_r3.imageData, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵsanitizeUrl"])("id", ctx_r3.imgId);
 } }
 const _c0 = function (a0) { return { "background-image": a0 }; };
 function SegmentationImageComponent_div_0_Template(rf, ctx) { if (rf & 1) {
@@ -3705,7 +3627,7 @@ function SegmentationImageComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction1"](2, _c0, "url(" + ctx_r0.imageData + ")"));
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r0.imageUrl);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r0.imageData);
 } }
 function SegmentationImageComponent_ng_template_1_span_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "span");
@@ -3730,6 +3652,7 @@ class SegmentationImageComponent {
         this.imageUrl = "";
         this.noImage = false;
         this.imgId = (0,uuid__WEBPACK_IMPORTED_MODULE_3__.default)();
+        this.image = { width: "0px", height: "0px" };
         this.load = new _angular_core__WEBPACK_IMPORTED_MODULE_2__.EventEmitter();
     }
     getSegmentationImage(argsImageHeaderId) {
@@ -3742,28 +3665,17 @@ class SegmentationImageComponent {
         (_a = this.querySubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
         this.querySubscription = this.gqlQueryService
             .getSegmentationMapByHeaderId({ imageHeaderId })
-            .subscribe(response => {
-            const image = response.find((msg) => msg.encoding === "rgb8");
-            const segmentation = response.find((msg) => msg.encoding === "mono8");
-            if (!response.length || !segmentation) {
+            .subscribe((response) => {
+            if (!response) {
                 this.load.emit({ state: "no segmentation" });
                 return;
             }
-            this.imageData = this.imageService.getDataURL(Object.assign(Object.assign({}, segmentation), { isSegmentation: true }));
-            this.imageUrl = this.imageService.getDataURL(Object.assign({}, image));
+            const { segmentation } = response;
+            this.imageData = `/api/vehicle/images//${segmentation.id}?segmentation=true`;
             this.load.emit({ state: "loaded", data: segmentation });
         });
     }
     ngOnInit() {
-        if (this.data
-            && this.data.segmentation
-            && this.data.image) {
-            const { image, segmentation } = this.data;
-            this.imageData = this.imageService.getDataURL(Object.assign(Object.assign({}, segmentation), { isSegmentation: true }));
-            this.imageUrl = this.imageService.getDataURL(Object.assign({}, image));
-            this.load.emit({ state: "loaded", data: segmentation });
-            return;
-        }
         this.getSegmentationImage();
     }
     ngOnChanges(changes) {
@@ -4044,7 +3956,7 @@ function ObjectDetectionDetailComponent_div_8_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("data", ctx_r0.image)("label", ctx_r0.data.topic.name)("headerId", ctx_r0.data.message.header.headerid);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("imageId", ctx_r0.image.id)("label", ctx_r0.data.topic.name)("headerId", ctx_r0.data.message.header.headerid);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx_r0.vehicleId && ctx_r0.coordinates.length);
 } }
@@ -4087,6 +3999,8 @@ class ObjectDetectionDetailComponent {
         this.imageSubscription = this.graphQLQuery.getPreviewImageByCameraMessageHeaderId({ headerId: parseInt(this.data.message.header.headerid) })
             .subscribe((response) => {
             this.isImageLoaded = true;
+            if (!response)
+                return;
             this.image = response;
         });
     }
@@ -4096,7 +4010,7 @@ class ObjectDetectionDetailComponent {
     }
 }
 ObjectDetectionDetailComponent.ɵfac = function ObjectDetectionDetailComponent_Factory(t) { return new (t || ObjectDetectionDetailComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__.MAT_DIALOG_DATA), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__.MAT_DIALOG_DATA), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_0__.GqlQueryService)); };
-ObjectDetectionDetailComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ObjectDetectionDetailComponent, selectors: [["app-object-detection-detail"]], decls: 19, vars: 5, consts: [["mat-dialog-title", ""], [1, "mat-typography"], [1, "grid", "gap", "col-2"], [1, "grid__cell", "sticky"], [1, "grid__cell--label"], [1, "grid__cell--content"], [4, "ngIf", "ngIfElse"], ["loader", ""], [1, "grid__cell"], [1, "grid__cell--label", "sticky"], [1, "grid__cell--content", "json"], [3, "json", "expanded"], ["align", "end"], ["mat-button", "", "mat-dialog-close", ""], [3, "data", "label", "headerId"], ["class", "map", 4, "ngIf"], [1, "map"], [3, "showTractor", "zoom", "coordinates", "vehicleId"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ObjectDetectionDetailComponent_Template(rf, ctx) { if (rf & 1) {
+ObjectDetectionDetailComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ObjectDetectionDetailComponent, selectors: [["app-object-detection-detail"]], decls: 19, vars: 5, consts: [["mat-dialog-title", ""], [1, "mat-typography"], [1, "grid", "gap", "col-2"], [1, "grid__cell", "sticky"], [1, "grid__cell--label"], [1, "grid__cell--content"], [4, "ngIf", "ngIfElse"], ["loader", ""], [1, "grid__cell"], [1, "grid__cell--label", "sticky"], [1, "grid__cell--content", "json"], [3, "json", "expanded"], ["align", "end"], ["mat-button", "", "mat-dialog-close", ""], [3, "imageId", "label", "headerId"], ["class", "map", 4, "ngIf"], [1, "map"], [3, "showTractor", "zoom", "coordinates", "vehicleId"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ObjectDetectionDetailComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "h2", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
@@ -5403,7 +5317,7 @@ function PreviewComponent_div_0_div_3_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate2"]("( x: ", image_r4.meta.rightRoi.xOffset, ", y: ", image_r4.meta.rightRoi.xOffset, ")");
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("data", image_r4)("id", image_r4.imageId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("imageId", image_r4.id)("id", image_r4.imageId);
 } }
 function PreviewComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div");
@@ -5514,7 +5428,7 @@ class PreviewComponent {
     }
 }
 PreviewComponent.ɵfac = function PreviewComponent_Factory(t) { return new (t || PreviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_0__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };
-PreviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: PreviewComponent, selectors: [["app-preview"]], inputs: { topic: "topic", cursor: "cursor", vehicleId: "vehicleId", topicId: "topicId" }, decls: 5, vars: 5, consts: [[4, "ngIf", "ngIfElse"], ["loading", ""], [3, "length", "pageSize", "pageSizeOptions", "page"], [1, "grid", "gap", "images"], [1, "grid__cell", "center-cell-content"], ["class", "image-wrapper", 4, "ngFor", "ngForOf"], [1, "image-wrapper"], [1, "images__meta-data"], [1, "images__meta-title"], [1, "images__render"], [1, "images", 3, "data", "id"], ["loader", ""], ["mode", "indeterminate"]], template: function PreviewComponent_Template(rf, ctx) { if (rf & 1) {
+PreviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: PreviewComponent, selectors: [["app-preview"]], inputs: { topic: "topic", cursor: "cursor", vehicleId: "vehicleId", topicId: "topicId" }, decls: 5, vars: 5, consts: [[4, "ngIf", "ngIfElse"], ["loading", ""], [3, "length", "pageSize", "pageSizeOptions", "page"], [1, "grid", "gap", "images"], [1, "grid__cell", "center-cell-content"], ["class", "image-wrapper", 4, "ngFor", "ngForOf"], [1, "image-wrapper"], [1, "images__meta-data"], [1, "images__meta-title"], [1, "images__render"], [1, "images", 3, "imageId", "id"], ["loader", ""], ["mode", "indeterminate"]], template: function PreviewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, PreviewComponent_div_0_Template, 4, 1, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, PreviewComponent_ng_template_1_Template, 3, 2, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](3, "hr");
@@ -5566,7 +5480,7 @@ function StopImagesComponent_app_image_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](0, "app-image", 4);
 } if (rf & 2) {
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("data", ctx_r0.image)("label", ctx_r0.label)("headerId", ctx_r0.headerid);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("imageId", ctx_r0.image)("label", ctx_r0.label)("headerId", ctx_r0.headerid);
 } }
 function StopImagesComponent_div_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "div", 5);
@@ -5629,7 +5543,9 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
             .getPreviewImageByCameraMessageHeaderId({ headerId: stopInfo.message.header.headerid })
             .subscribe((response) => {
             this.isImageLoaded = true;
-            this.image = response;
+            if (!response)
+                return;
+            this.image = response.id;
             this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat)}`;
             this.headerid = stopInfo.message.header.headerid;
         });
@@ -5709,7 +5625,7 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
     }
 }
 StopImagesComponent.ɵfac = function StopImagesComponent_Factory(t) { return new (t || StopImagesComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService)); };
-StopImagesComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineComponent"]({ type: StopImagesComponent, selectors: [["app-stop-images"]], inputs: { vehicleId: "vehicleId", live: "live", data: "data" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵInheritDefinitionFeature"]], decls: 7, vars: 6, consts: [[3, "data", "label", "headerId", 4, "ngIf", "ngIfElse"], ["class", "map", 4, "ngIf"], [3, "length", "pageSize", "pageIndex", "page"], ["loader", ""], [3, "data", "label", "headerId"], [1, "map"], [3, "showTractor", "zoom", "coordinates", "vehicleId"], ["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function StopImagesComponent_Template(rf, ctx) { if (rf & 1) {
+StopImagesComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineComponent"]({ type: StopImagesComponent, selectors: [["app-stop-images"]], inputs: { vehicleId: "vehicleId", live: "live", data: "data" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵInheritDefinitionFeature"]], decls: 7, vars: 6, consts: [[3, "imageId", "label", "headerId", 4, "ngIf", "ngIfElse"], ["class", "map", 4, "ngIf"], [3, "length", "pageSize", "pageIndex", "page"], ["loader", ""], [3, "imageId", "label", "headerId"], [1, "map"], [3, "showTractor", "zoom", "coordinates", "vehicleId"], ["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function StopImagesComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](0, StopImagesComponent_app_image_0_Template, 1, 3, "app-image", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelement"](1, "hr");
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](2, StopImagesComponent_div_2_Template, 2, 4, "div", 1);
@@ -7900,7 +7816,7 @@ function VehicleOverviewComponent_div_21_div_1_div_1_app_image_5_Template(rf, ct
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](0, "app-image", 20);
 } if (rf & 2) {
     const imageInfo_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](2).$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("data", imageInfo_r5.image)("label", imageInfo_r5.topic.name)("headerId", imageInfo_r5.header.headerId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("imageId", imageInfo_r5.image.id)("label", imageInfo_r5.topic.name)("headerId", imageInfo_r5.header.headerId);
 } }
 function VehicleOverviewComponent_div_21_div_1_div_1_ng_template_6_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "mat-icon", 21);
@@ -7971,6 +7887,8 @@ class VehicleOverviewComponent {
             this.graphQLSubscription
                 .getVehiclePreviewImages({ vehicleId: this.vehicleId })
                 .subscribe((response) => {
+                if (response.vehicleId !== this.vehicleId)
+                    return;
                 const imageIndex = this.vehicleImages.findIndex((item) => {
                     return !item ? false : item.topic.id === response.topicId;
                 });
@@ -8069,7 +7987,7 @@ class VehicleOverviewComponent {
     }
 }
 VehicleOverviewComponent.ɵfac = function VehicleOverviewComponent_Factory(t) { return new (t || VehicleOverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](src_app_services_geolocation_geolocation_service__WEBPACK_IMPORTED_MODULE_0__.GeolocationService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_8__.ActivatedRoute)); };
-VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineComponent"]({ type: VehicleOverviewComponent, selectors: [["app-vehicle-overview"]], decls: 24, vars: 7, consts: [[1, "header"], [1, "header__title"], ["class", "live-pulse", "mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 4, "ngIf"], [1, "grid", "gap", "col-2"], [1, "grid__cell"], [3, "vehicleId"], [1, "grid__cell--label"], [1, "grid__cell--content"], [1, "grid__cell", "grid__cell__full-width"], [1, "divider"], [3, "vehicleId", "live"], ["class", "preview-images", 4, "ngIf", "ngIfElse"], ["loader", ""], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "preview-images"], ["class", "preview-images__img", 4, "ngFor", "ngForOf"], [1, "preview-images__img"], [4, "ngIf"], [3, "data", "label", "headerId", 4, "ngIf", "ngIfElse"], ["noimage", ""], [3, "data", "label", "headerId"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function VehicleOverviewComponent_Template(rf, ctx) { if (rf & 1) {
+VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineComponent"]({ type: VehicleOverviewComponent, selectors: [["app-vehicle-overview"]], decls: 24, vars: 7, consts: [[1, "header"], [1, "header__title"], ["class", "live-pulse", "mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 4, "ngIf"], [1, "grid", "gap", "col-2"], [1, "grid__cell"], [3, "vehicleId"], [1, "grid__cell--label"], [1, "grid__cell--content"], [1, "grid__cell", "grid__cell__full-width"], [1, "divider"], [3, "vehicleId", "live"], ["class", "preview-images", 4, "ngIf", "ngIfElse"], ["loader", ""], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "preview-images"], ["class", "preview-images__img", 4, "ngFor", "ngForOf"], [1, "preview-images__img"], [4, "ngIf"], [3, "imageId", "label", "headerId", 4, "ngIf", "ngIfElse"], ["noimage", ""], [3, "imageId", "label", "headerId"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function VehicleOverviewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "h2");
@@ -8910,22 +8828,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppRoutes": () => (/* binding */ AppRoutes)
 /* harmony export */ });
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/router */ 39895);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/router */ 39895);
 /* harmony import */ var _pages_login_login_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pages/login/login.component */ 24902);
 /* harmony import */ var _pages_profile_profile_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/profile/profile.component */ 58220);
 /* harmony import */ var _components_layout_layout_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/layout/layout.component */ 39520);
 /* harmony import */ var _pages_vehicles_vehicles_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/vehicles/vehicles.component */ 2815);
 /* harmony import */ var _services_auth_auth_guard_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/auth/auth-guard.service */ 49404);
-/* harmony import */ var src_app_pages_vehicles_pages_vehicle_topic_vehicle_topic_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/pages/vehicles/pages/vehicle-topic/vehicle-topic.component */ 94266);
-/* harmony import */ var _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle-list/vehicle-list.component */ 78211);
-/* harmony import */ var _pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../pages/vehicle/vehicle.component */ 15852);
-/* harmony import */ var _pages_vehicle_pages_vehicle_overview_vehicle_overview_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-overview/vehicle-overview.component */ 32642);
-/* harmony import */ var _pages_vehicle_pages_vehicle_geolocation_vehicle_geolocation_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-geolocation/vehicle-geolocation.component */ 97618);
-/* harmony import */ var _pages_vehicle_pages_vehicle_images_vehicle_images_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-images/vehicle-images.component */ 17962);
-/* harmony import */ var _pages_vehicle_pages_vehicle_logging_vehicle_logging_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-logging/vehicle-logging.component */ 81668);
-/* harmony import */ var _pages_vehicle_pages_vehicle_system_vehicle_system_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-system/vehicle-system.component */ 52862);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/core */ 37716);
-
+/* harmony import */ var _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../pages/vehicles/pages/vehicle-list/vehicle-list.component */ 78211);
+/* harmony import */ var _pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/vehicle/vehicle.component */ 15852);
+/* harmony import */ var _pages_vehicle_pages_vehicle_overview_vehicle_overview_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-overview/vehicle-overview.component */ 32642);
+/* harmony import */ var _pages_vehicle_pages_vehicle_geolocation_vehicle_geolocation_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-geolocation/vehicle-geolocation.component */ 97618);
+/* harmony import */ var _pages_vehicle_pages_vehicle_images_vehicle_images_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-images/vehicle-images.component */ 17962);
+/* harmony import */ var _pages_vehicle_pages_vehicle_logging_vehicle_logging_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-logging/vehicle-logging.component */ 81668);
+/* harmony import */ var _pages_vehicle_pages_vehicle_system_vehicle_system_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-system/vehicle-system.component */ 52862);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/core */ 37716);
 
 
 
@@ -8965,7 +8881,7 @@ const routes = [
                     {
                         // Vehicle List is degailt page on Main / Home Page
                         path: "",
-                        component: _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_6__.VehicleListComponent,
+                        component: _pages_vehicles_pages_vehicle_list_vehicle_list_component__WEBPACK_IMPORTED_MODULE_5__.VehicleListComponent,
                         data: {
                             title: 'Vehicle List',
                             breadcrumb: [
@@ -8978,7 +8894,7 @@ const routes = [
                     },
                     {
                         path: ":id",
-                        component: _pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_7__.VehicleComponent,
+                        component: _pages_vehicle_vehicle_component__WEBPACK_IMPORTED_MODULE_6__.VehicleComponent,
                         data: {
                             title: 'Vehicle',
                             breadcrumb: [
@@ -8996,7 +8912,7 @@ const routes = [
                             },
                             {
                                 path: "overview",
-                                component: _pages_vehicle_pages_vehicle_overview_vehicle_overview_component__WEBPACK_IMPORTED_MODULE_8__.VehicleOverviewComponent,
+                                component: _pages_vehicle_pages_vehicle_overview_vehicle_overview_component__WEBPACK_IMPORTED_MODULE_7__.VehicleOverviewComponent,
                                 data: {
                                     title: 'Overview',
                                     breadcrumb: [
@@ -9013,7 +8929,7 @@ const routes = [
                             },
                             {
                                 path: "geolocation",
-                                component: _pages_vehicle_pages_vehicle_geolocation_vehicle_geolocation_component__WEBPACK_IMPORTED_MODULE_9__.VehicleGeolocationComponent,
+                                component: _pages_vehicle_pages_vehicle_geolocation_vehicle_geolocation_component__WEBPACK_IMPORTED_MODULE_8__.VehicleGeolocationComponent,
                                 data: {
                                     title: 'Geolocation',
                                     breadcrumb: [
@@ -9030,7 +8946,7 @@ const routes = [
                             },
                             {
                                 path: "images",
-                                component: _pages_vehicle_pages_vehicle_images_vehicle_images_component__WEBPACK_IMPORTED_MODULE_10__.VehicleImagesComponent,
+                                component: _pages_vehicle_pages_vehicle_images_vehicle_images_component__WEBPACK_IMPORTED_MODULE_9__.VehicleImagesComponent,
                                 data: {
                                     title: 'Images',
                                     breadcrumb: [
@@ -9047,7 +8963,7 @@ const routes = [
                             },
                             {
                                 path: "logging",
-                                component: _pages_vehicle_pages_vehicle_logging_vehicle_logging_component__WEBPACK_IMPORTED_MODULE_11__.VehicleLoggingComponent,
+                                component: _pages_vehicle_pages_vehicle_logging_vehicle_logging_component__WEBPACK_IMPORTED_MODULE_10__.VehicleLoggingComponent,
                                 data: {
                                     title: 'Logging',
                                     breadcrumb: [
@@ -9064,7 +8980,7 @@ const routes = [
                             },
                             {
                                 path: "system",
-                                component: _pages_vehicle_pages_vehicle_system_vehicle_system_component__WEBPACK_IMPORTED_MODULE_12__.VehicleSystemComponent,
+                                component: _pages_vehicle_pages_vehicle_system_vehicle_system_component__WEBPACK_IMPORTED_MODULE_11__.VehicleSystemComponent,
                                 data: {
                                     title: 'Configuration',
                                     breadcrumb: [
@@ -9081,7 +8997,7 @@ const routes = [
                             },
                             {
                                 path: "**",
-                                component: src_app_pages_vehicles_pages_vehicle_topic_vehicle_topic_component__WEBPACK_IMPORTED_MODULE_5__.VehicleTopicComponent
+                                redirectTo: "/"
                             }
                         ]
                     }
@@ -9120,9 +9036,9 @@ const routes = [
 class AppRoutes {
 }
 AppRoutes.ɵfac = function AppRoutes_Factory(t) { return new (t || AppRoutes)(); };
-AppRoutes.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵdefineNgModule"]({ type: AppRoutes });
-AppRoutes.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵdefineInjector"]({ imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_14__.RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })], _angular_router__WEBPACK_IMPORTED_MODULE_14__.RouterModule] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_13__["ɵɵsetNgModuleScope"](AppRoutes, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_14__.RouterModule], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_14__.RouterModule] }); })();
+AppRoutes.ɵmod = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵdefineNgModule"]({ type: AppRoutes });
+AppRoutes.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵdefineInjector"]({ imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_13__.RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })], _angular_router__WEBPACK_IMPORTED_MODULE_13__.RouterModule] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵsetNgModuleScope"](AppRoutes, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_13__.RouterModule], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_13__.RouterModule] }); })();
 
 
 /***/ }),
@@ -9471,16 +9387,13 @@ class GqlQueryService {
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
             if (!response.data.cameraMessageHeaders)
                 return [];
-            return response.data.cameraMessageHeaders.nodes.filter((msg) => {
-                if (!msg.cameraMessagesByHeaderId.nodes.length)
-                    return false;
-                return msg.cameraMessagesByHeaderId.nodes[0].image.encoding === "rgb8" ||
-                    msg.cameraMessagesByHeaderId.nodes[0].image.encoding === "mono8";
+            return response.data.cameraMessageHeaders.nodes.filter((msg, index, array) => {
+                const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0];
+                return !!segmentation;
             }).map((msg) => {
-                const image = Object.assign({}, msg.cameraMessagesByHeaderId.nodes[0].image);
-                image.data = JSON.parse(image.data.data);
-                return image;
-            });
+                const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0];
+                return { segmentation: segmentation.msg.image };
+            })[0];
         }));
     }
     getImagePreview(variables) {
@@ -9490,7 +9403,6 @@ class GqlQueryService {
             const totalCount = cameraData.totalCount;
             const images = cameraData.nodes.map((info) => {
                 const image = Object.assign(Object.assign({}, info.msg.image), { timestamp: new Date(info.readingat).toUTCString(), vehicle: info.vehicle.name, id: info.id, imageId: (0,uuid__WEBPACK_IMPORTED_MODULE_2__.default)(), data: JSON.parse(info.msg.image.data.data), headerId: info.msg.header.headerId, meta: info.msg.cameraMeta });
-                image.url = this.imageService.getDataURL(image);
                 return image;
             });
             return { cameraData, totalCount, images };
@@ -9540,7 +9452,7 @@ class GqlQueryService {
                 return {
                     topic: preview.topic.name,
                     topicId: preview.topic.id,
-                    image: Object.assign(Object.assign({}, image), { data: JSON.parse(image.data.data) }),
+                    image,
                     header: header
                 };
             });
@@ -9584,8 +9496,12 @@ class GqlQueryService {
                 return null;
             const recentResult = result[result.length - 1].msg;
             const header = recentResult.header;
-            const image = Object.assign(Object.assign({}, recentResult.image), { data: JSON.parse(recentResult.image.data.data) });
-            return Object.assign({ seq: header.seq, node: header.node, readingat: header.readingat }, image);
+            return {
+                seq: header.seq,
+                node: header.node,
+                readingat: header.readingat,
+                image: recentResult.image
+            };
         }));
     }
     getObjectDetectionByVehicleId(variables = {}) {
@@ -9623,13 +9539,10 @@ class GqlQueryService {
                 const msg = result.cameras.nodes.length ? Object.assign({}, result.cameras.nodes[0].msg) : null;
                 const topic = result.cameras.nodes[0].topic;
                 const header = msg.header;
-                let parsedMsg = null;
-                if (msg.image && msg.image.data)
-                    parsedMsg = Object.assign(Object.assign({}, msg.image), { data: JSON.parse(msg.image.data.data) });
                 return {
                     topic,
                     header,
-                    image: parsedMsg
+                    image: msg.image
                 };
             });
         }));
@@ -9746,11 +9659,13 @@ class GqlSubscriptionService {
             query: SubscriptionQL.Images.PreviewImagesByVehicleId,
             variables
         }).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_0__.map)((response) => {
+            const camera = response.data.sqlCamera.camera;
             return {
-                topic: response.data.sqlCamera.camera.topic.name,
-                topicId: response.data.sqlCamera.camera.topic.id,
-                image: Object.assign(Object.assign({}, response.data.sqlCamera.camera.msg.image), { data: JSON.parse(response.data.sqlCamera.camera.msg.image.data.data) }),
-                header: response.data.sqlCamera.camera.msg.header
+                topic: camera.topic.name,
+                topicId: camera.topic.id,
+                vehicleId: camera.vehicleId,
+                image: Object.assign({}, camera.msg.image),
+                header: camera.msg.header
             };
             // return response.data.topicCategories.nodes[0].topics.nodes.map((item:any)=>{
             //     const preview = item.cameras.nodes[0]
@@ -9779,7 +9694,7 @@ class GqlSubscriptionService {
             return {
                 topic: topic.name,
                 topicId: topic.id,
-                image: Object.assign(Object.assign({}, image), { data: JSON.parse(image.data.data) }),
+                image,
                 header
             };
         }));
@@ -9838,6 +9753,7 @@ class ImageService {
     }
     generateSegmentationColor(data, index, step, value, reverse) {
         const code = value[step];
+        debugger;
         switch (code) {
             // ‘Drivable’: (0, 0, 0), # Black
             case 0:
@@ -9877,8 +9793,10 @@ class ImageService {
         while (y < height) {
             j = y * step;
             for (x = 0; x < width; x++) {
-                if (isSegmentation)
+                if (isSegmentation) {
+                    debugger;
                     this.generateSegmentationColor(parsedData, i, j, data, is_bigendian);
+                }
                 else
                     this.generateRgbColor(parsedData, i, j, data, is_bigendian);
                 i += 4;

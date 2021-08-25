@@ -8,7 +8,6 @@ import { LayoutComponent } from "../components/layout/layout.component"
 import { VehiclesComponent } from "../pages/vehicles/vehicles.component"
 import { AuthGuardService } from "../services/auth/auth-guard.service"
 import { ErrorComponent } from "src/app/pages/error/error.component"
-import { VehicleTopicComponent } from "src/app/pages/vehicles/pages/vehicle-topic/vehicle-topic.component"
 import { VehicleLiveComponent } from "../pages/vehicles/pages/vehicle-live/vehicle-live.component"
 import { VehicleListComponent } from "../pages/vehicles/pages/vehicle-list/vehicle-list.component"
 import { VehicleComponent } from "../pages/vehicle/vehicle.component"
@@ -158,7 +157,7 @@ const routes: Routes = [
                             },
                             {
                                 path: "**"
-                                , component: VehicleTopicComponent
+                                , redirectTo:"/"
                             }]
                     }
                 ]

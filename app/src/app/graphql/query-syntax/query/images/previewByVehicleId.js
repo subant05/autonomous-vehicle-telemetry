@@ -13,6 +13,7 @@ query PreviewByVehicleId ($vehicleId:BigInt) {
           headerId
         }
         image {
+          id
           isBigendian
           segmentationMaps {
             edges {
@@ -24,9 +25,6 @@ query PreviewByVehicleId ($vehicleId:BigInt) {
           encoding
           height
           width
-          data{
-            data
-          }
         }
       }
     }
