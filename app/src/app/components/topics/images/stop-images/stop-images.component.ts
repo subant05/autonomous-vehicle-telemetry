@@ -57,7 +57,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
         if(!response)
           return;
           
-        this.image = response.id
+        this.image = response.image.id
         this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
         this.headerid = stopInfo.message.header.headerid
       })

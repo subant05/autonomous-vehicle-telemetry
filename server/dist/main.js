@@ -5545,7 +5545,7 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
             this.isImageLoaded = true;
             if (!response)
                 return;
-            this.image = response.id;
+            this.image = response.image.id;
             this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat)}`;
             this.headerid = stopInfo.message.header.headerid;
         });
