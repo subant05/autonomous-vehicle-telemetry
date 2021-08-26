@@ -91,7 +91,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
     console.log(event)
     this.cursor =   event.pageIndex
     this.pageSize = event.pageSize
-    // this.onSubmit()
+    this.onSubmit()
   }
 
   ngOnDestroy(){

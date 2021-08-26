@@ -7245,7 +7245,7 @@ class VehicleImagesComponent {
         console.log(event);
         this.cursor = event.pageIndex;
         this.pageSize = event.pageSize;
-        // this.onSubmit()
+        this.onSubmit();
     }
     ngOnDestroy() {
         var _a, _b;
