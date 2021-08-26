@@ -20,7 +20,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   topics: {name:any, id:any}[] =  []
   selectedTopic :string = ""
   pageSize:number = 1
-  pageSizeOptions: number[] = [1, 4, 8, 12, 16]
+  pageSizeOptions: number[] = [1, 10, 20]
   pagesLength: number = 0
   cursor: number = 0;
   images: any[]= []
@@ -45,6 +45,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
       .getTopicsByCategoryVehicleId({
         vehicleId:this.vehicleId
         , topicName:"%/left/preview"
+        , topicList:["/toUI/closest_on_path_object"]
         , category:"images"
       })
       .subscribe((response:any)=>{
@@ -67,24 +68,37 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
     if(!this.fgImageFilter.valid)
       return;
       
-    this.imageQuery = this
-    .gqlQuery
-    .getImagePreview({
+    const variales = {
       vehicleId: this.vehicleId
       , topicName: this.fgImageFilter.controls.topics.value
       , startDateTime: this.fgImageFilter.controls.startDateTime.value
       , endDateTime: this.fgImageFilter.controls.endDateTime.value
       , cursor: this.cursor
       , size: this.pageSize
-    })
-    .subscribe((response:any)=>{
-      this.pagesLength = response.totalCount
-      if(!response || !response.cameraData.nodes.length)
-        return
+    }
+      
+    switch(this.fgImageFilter.controls.topics.value){
+      case "/toUI/closest_on_path_object":
+          this.imageQuery = this
+            .gqlQuery.getObjectDetectionImages(variales)
+            .subscribe((response:any)=>{
+              this.pagesLength = response.totalCount
+              this.images = response.nodes
+            })
+        break;
+      default:
+          this.imageQuery = this
+            .gqlQuery
+            .getImagePreview(variales)
+            .subscribe((response:any)=>{
+              this.pagesLength = response.totalCount
+              if(!response || !response.cameraData.nodes.length)
+                return
 
-      this.images = response.cameraData.nodes.map((item:any)=>item.msg)
-    })
-
+              this.images = response.cameraData.nodes.map((item:any)=>item.msg)
+            })
+        break;
+    }
   }
 
   getPage(event:any){
@@ -98,5 +112,6 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
     this.imageQuery?.unsubscribe()
     this.topicsSubscription?.unsubscribe()
   }
+
 
 }

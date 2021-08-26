@@ -7,6 +7,8 @@ import SegmentationMap from './segmentationMap'
 import ImagePair from './imagePair'
 import PreviewByMessageHeaderId from './previewByHeaderId'
 import ByTopicNamesVehicleId from './selectPreviewsByVehicleId'
+import ObjectDetectionImagesByVehicleId from './objectDetectionImagesByVehicleId'
+
 export {
     PreviewImageByVehicleId
     , PreviewByVehicleIdTopicId
@@ -17,4 +19,5 @@ export {
     , ImagePair
     , PreviewByMessageHeaderId
     , ByTopicNamesVehicleId
+    , ObjectDetectionImagesByVehicleId
 }

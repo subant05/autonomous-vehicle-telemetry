@@ -45,7 +45,7 @@
         </div>
     </form>
 
-    <div class="grid gap col-2">
+    <div class="grid gap" [ngClass]="{'col-2': pageSize > 1}">
         <div class="grid__cell" *ngFor="let image of images">
             <div class="grid__cell--label">{{image.header.readingat| date:"medium":"locale"}}</div>
             <div class="grid__cell--content">
@@ -55,7 +55,7 @@
                     [label]="image.header.readingat" 
                     [headerId]="image.header.headerId">
                 </app-image>
-                <mat-expansion-panel hideToggle>
+                <mat-expansion-panel hideToggle *ngIf="image.cameraMeta">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         Meta Data
@@ -71,8 +71,6 @@
                         <li><b>Right Exposure:</b> {{image.cameraMeta.rightExposure}}</li>
                         <li><b>Left Gain:</b> {{image.cameraMeta.leftGain}}</li>
                         <li><b>Right Gain:</b> {{image.cameraMeta.rightGain}}</li>
-                        <li><b>Left ROI:</b>( x: {{image.cameraMeta.leftRoi.xOffset}}, y: {{image.cameraMeta.leftRoi.xOffset}})</li>
-                        <li><b>Right ROI:</b>( x: {{image.cameraMeta.rightRoi.xOffset}}, y: {{image.cameraMeta.rightRoi.xOffset}})</li>
                         <li><b>Descriptor ID:</b>{{image.header.headerId}}</li>
                     </ul>
                   </mat-expansion-panel>

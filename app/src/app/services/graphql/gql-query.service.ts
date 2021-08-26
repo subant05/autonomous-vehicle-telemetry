@@ -293,14 +293,25 @@ export class GqlQueryService {
   getTopicsByCategoryVehicleId(variables={}){
     return this.basicFilteredQuery(QueryQL.Topics.ByCategoryVehicleId, variables)
     .pipe(map((response:any)=>{
-      return response.data
-            .topicCategories.nodes[0]
+      const byList:any = []
+      response.data.list.nodes.filter((item:any)=>{
+        return item.vehicleTopics.nodes.length
+      }).forEach((item:any)=>{
+        return item.vehicleTopics.nodes.map((vehicleTopic:any)=>{
+          byList.push(vehicleTopic.topic)
+        })
+      })
+      const byCategory =  response.data
+            .category.nodes[0]
             .topics.nodes.map((result:any)=>{
               if(result.vehicleTopics.nodes.length)
                 return result.vehicleTopics.nodes[0].topic
               return null
             }).filter((results:any)=>!!results)
+      
+      return [...byCategory, ...byList]
     }))
+
   }
 
   getPreviewImagesByTopicNameVehicleId(variables={}){
@@ -326,6 +337,43 @@ export class GqlQueryService {
       })
     }))
 
+  }
+
+  getObjectDetectionHeaderIdByVehicleId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Detection.HeaderIdByVehicleId, variables)
+    .pipe(map((response:any)=>{
+      return response.data.objects
+    }))
+  }
+
+  getObjectDetectionImages(variables={}){
+    return this.basicFilteredQuery(QueryQL.Images.ObjectDetectionImagesByVehicleId, variables)
+    .pipe(map((response:any)=>{
+        return {
+          totalCount:response.data.objectDetectionImages.totalCount
+          , nodes:response.data.objectDetectionImages.nodes.map((data:any)=>{
+          return {
+            image: {
+              id: data.imageId
+              , encoding: data
+              , height: data.height
+              , width: data.width
+            }
+            , header: {
+                headerId: data.headerId
+                , readingat: data.readingat
+            }
+            , cameraMeta:{
+                cameraName: data.cameraName
+                , leftExposure: data.leftExposure
+                , rightExposure: data.rightExposure
+                , leftGain: data.leftGain
+                , rightGain: data.rightGain
+            }
+          }
+        })
+      }
+    }))
   }
 
 }
