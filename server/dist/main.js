@@ -3844,7 +3844,6 @@ class SegmentationImageComponent {
         });
     }
     ngOnInit() {
-        console.log(this.imageHeaderId);
         this.getSegmentationImage();
     }
     ngOnChanges(changes) {
@@ -3930,7 +3929,6 @@ class LayoutComponent {
     }
     onScroll() {
         this.scollService.contentScroll.next(true);
-        console.log("content scrolled");
     }
 }
 LayoutComponent.ɵfac = function LayoutComponent_Factory(t) { return new (t || LayoutComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](src_app_services_notifications_alert_service__WEBPACK_IMPORTED_MODULE_0__.AlertService), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_services_navigation_menu_service__WEBPACK_IMPORTED_MODULE_1__.MenuService), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__.MatSnackBar), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](src_app_services_layout_scroll_service__WEBPACK_IMPORTED_MODULE_2__.ScrollService)); };
@@ -7452,7 +7450,6 @@ class VehicleImagesComponent {
         }
     }
     getPage(event) {
-        console.log(event);
         this.cursor = event.pageIndex;
         this.pageSize = event.pageSize;
         this.onSubmit();

@@ -54,7 +54,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   onScroll(){
     this.scollService.contentScroll.next(true)
-    console.log("content scrolled")
   }
 
 }

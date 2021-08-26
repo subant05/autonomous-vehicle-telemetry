@@ -52,7 +52,6 @@ export class SegmentationImageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.imageHeaderId)
     this.getSegmentationImage()
   }
 

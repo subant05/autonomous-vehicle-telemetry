@@ -107,7 +107,6 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   }
 
   getPage(event:any){
-    console.log(event)
     this.cursor =   event.pageIndex
     this.pageSize = event.pageSize
     this.onSubmit()
