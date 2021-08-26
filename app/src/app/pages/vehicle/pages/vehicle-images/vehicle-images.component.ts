@@ -3,6 +3,7 @@ import {FormGroup, FormControl, Validators} from '@angular/forms'
 import {ActivatedRoute, Event} from '@angular/router'
 import { Subscription } from 'rxjs';
 import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
+import {VehicleImagesFilterService} from "./filter.service"
 import moment from 'moment';
 
 @Component({
@@ -28,6 +29,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute
     , private gqlQuery: GqlQueryService
+    , private filterService:VehicleImagesFilterService
   ) { 
       this.formatTimestampForInputs()
     }
@@ -50,12 +52,15 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
       })
       .subscribe((response:any)=>{
         this.topics = response
-        this.fgImageFilter = new FormGroup({
+        this.fgImageFilter =  this.filterService.getFilterState() || new FormGroup({
           startDateTime: new FormControl(this.startDateTime,[Validators.required]),
           endDateTime: new FormControl(this.endDateTime,[Validators.required]),
           topics: new FormControl(null,[Validators.required]),
           isLive: new FormControl(false,[Validators.required])
         })
+
+        if(this.filterService.getFilterState())
+          this.onSubmit()
       })
   }
 
@@ -109,6 +114,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this.filterService.saveFilterState(this.fgImageFilter)
     this.imageQuery?.unsubscribe()
     this.topicsSubscription?.unsubscribe()
   }
