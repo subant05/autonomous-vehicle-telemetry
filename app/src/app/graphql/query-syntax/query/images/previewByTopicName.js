@@ -1,7 +1,7 @@
 import { gql } from 'apollo-angular';
 
 const previewByVehicleIdTopicName = gql`
-query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor:Int, $size:Int){
+query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor:Int, $size:Int, $startDateTime:Datetime, $endDateTime:Datetime){
     topics(filter: {
       name: {
           equalTo: $topicName 
@@ -15,18 +15,25 @@ query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor
             condition: {
                 vehicleId: $vehicleId
             }
+            filter:{
+              readingat:{
+                greaterThanOrEqualTo: $startDateTime
+                , lessThanOrEqualTo: $endDateTime
+              }
+            }
         ){
           totalCount       
               nodes{
-              id
-              readingat
-              vehicle{
+                id
+                readingat
+                vehicle{
                 name
               }
               
               msg{
                 header{
                   headerId
+                  readingat
                 }
                 cameraMeta{
                   cameraName

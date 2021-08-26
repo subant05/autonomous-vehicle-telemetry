@@ -1,14 +1,11 @@
 import { RouterModule, Routes } from "@angular/router"
 import { NgModule } from "@angular/core"
-import { AppComponent } from '../app.component'
 import { LoginComponent } from "../pages/login/login.component"
-import { DashboardComponent } from "../pages/dashboard/dashboard.component"
 import { ProfileComponent } from "../pages/profile/profile.component"
 import { LayoutComponent } from "../components/layout/layout.component"
 import { VehiclesComponent } from "../pages/vehicles/vehicles.component"
 import { AuthGuardService } from "../services/auth/auth-guard.service"
 import { ErrorComponent } from "src/app/pages/error/error.component"
-import { VehicleLiveComponent } from "../pages/vehicles/pages/vehicle-live/vehicle-live.component"
 import { VehicleListComponent } from "../pages/vehicles/pages/vehicle-list/vehicle-list.component"
 import { VehicleComponent } from "../pages/vehicle/vehicle.component"
 import { VehicleOverviewComponent } from '../pages/vehicle/pages/vehicle-overview/vehicle-overview.component';
@@ -157,7 +154,7 @@ const routes: Routes = [
                             },
                             {
                                 path: "**"
-                                , redirectTo:"/"
+                                , component:ErrorComponent
                             }]
                     }
                 ]

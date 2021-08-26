@@ -25,7 +25,6 @@ export class ImageService {
 
   private generateSegmentationColor( data:number[], index:number, step:number, value:number[], reverse?:boolean | number ){
     const code = value[step]
-    debugger
     switch(code){
       // ‘Drivable’: (0, 0, 0), # Black
       case 0: 
@@ -71,7 +70,6 @@ export class ImageService {
         for (x = 0; x < width; x++) {   
             
           if(isSegmentation){
-            debugger;
             this.generateSegmentationColor(parsedData, i, j, data, is_bigendian)
           }
           else

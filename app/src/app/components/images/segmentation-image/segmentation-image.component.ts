@@ -28,7 +28,6 @@ export class SegmentationImageComponent implements OnInit {
 
   
   private getSegmentationImage(argsImageHeaderId?:any): void{
-
     const imageHeaderId = argsImageHeaderId || this.imageHeaderId
 
     if (!imageHeaderId){
@@ -47,13 +46,13 @@ export class SegmentationImageComponent implements OnInit {
 
       const {segmentation} = response
 
-      this.imageData = `/api/vehicle/images//${segmentation.id}?segmentation=true`
+      this.imageData = `/api/vehicle/images/${segmentation.id}?segmentation=true`
       this.load.emit({state:"loaded", data: segmentation})
     })
   }
 
   ngOnInit(): void {
-
+    console.log(this.imageHeaderId)
     this.getSegmentationImage()
   }
 

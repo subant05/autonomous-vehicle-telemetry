@@ -16,8 +16,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgDynamicBreadcrumbModule } from "ng-dynamic-breadcrumb";
 import { ErrorComponent } from './pages/error/error.component';
-import { VehicleTopicComponent } from './pages/vehicles/pages/vehicle-topic/vehicle-topic.component';
-import { VehicleLiveComponent } from './pages/vehicles/pages/vehicle-live/vehicle-live.component';
 import { StarfireComponent } from './components/topics/geolocation/starfire/starfire.component';
 import { ImagePairComponent } from './components/topics/images/image-pair/image-pair.component';
 import { ImageSegmentationComponent } from './components/topics/images/image-segmentation/image-segmentation.component';
@@ -97,8 +95,6 @@ import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehic
     VehiclesComponent,
     TopNavigationComponent,
     ErrorComponent,
-    VehicleTopicComponent,
-    VehicleLiveComponent,
     StarfireComponent,
     ImagePairComponent,
     ImageSegmentationComponent,

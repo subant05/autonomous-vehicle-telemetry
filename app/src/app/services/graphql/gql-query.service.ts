@@ -126,7 +126,7 @@ export class GqlQueryService {
         return response.data.cameraMessageHeaders.nodes.filter((msg:any, index:number, array:any[]) =>{
           const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
           
-          return !!segmentation
+          return !!segmentation && segmentation.msg.image.encoding === "mono8"
         }).map((msg:any)=>{
             const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
             
@@ -148,7 +148,6 @@ export class GqlQueryService {
             , vehicle: info.vehicle.name
             , id: info.id
             , imageId: uuid()
-            , data: JSON.parse(info.msg.image.data.data) 
             , headerId : info.msg.header.headerId
             , meta : info.msg.cameraMeta
           }

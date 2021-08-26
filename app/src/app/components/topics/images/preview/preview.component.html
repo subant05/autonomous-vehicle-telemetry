@@ -34,22 +34,17 @@
                         <li><b>Right Gain:</b> {{image.meta.rightGain}}</li>
                         <li><b>Left ROI:</b>( x: {{image.meta.leftRoi.xOffset}}, y: {{image.meta.leftRoi.xOffset}})</li>
                         <li><b>Right ROI:</b>( x: {{image.meta.rightRoi.xOffset}}, y: {{image.meta.rightRoi.xOffset}})</li>
+                        <li><b>Descriptor ID:</b>( x: {{image.headerId}}, y: {{image.meta.rightRoi.xOffset}})</li>
                     </ul>
                 </div>
                 <div class="images__render">
-                    <!-- <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
-                        <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="image.headerId"></app-segmentation-image>
-                    </div>
-                    <app-rgb-image [data]="image" [id]="image.imageId" class="images"></app-rgb-image> -->
-                    <app-image [imageId]="image.id" [id]="image.imageId" class="images"></app-image>
-
+                    <app-image 
+                        [imageId]="image.id" 
+                        [headerId]="image.headerId"
+                        [id]="image.id" 
+                        class="images"></app-image>
                 </div>
-                
             </div>
-                <!-- <app-rgb-image [data]="imageData" [id]="imageId" class="images"></app-rgb-image>
-                <div class="segmentation" [ngStyle]="{visibility: segmentationToggle.checked ? 'visible' : 'hidden'} ">
-                    <app-segmentation-image   (load)="onSegmentationLoad($event)"  [imageHeaderId]="imageHeaderId"></app-segmentation-image>
-                </div> -->
         </div>
     </div>
 </div>
