@@ -115,7 +115,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         this.fgLoggingFilter
           .controls.startDateTime
           .patchValue(
-            moment(response[0].readingat).subtract(1,'day')
+            moment(response[0].readingat).subtract(2,'day')
             .format(this.timeFormat)
           )
         this.fgLoggingFilter

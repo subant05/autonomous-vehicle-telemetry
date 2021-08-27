@@ -8027,7 +8027,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             this.updateTable({ data: response, action: "replace" });
             this.fgLoggingFilter
                 .controls.startDateTime
-                .patchValue(moment__WEBPACK_IMPORTED_MODULE_3___default()(response[0].readingat).subtract(1, 'day')
+                .patchValue(moment__WEBPACK_IMPORTED_MODULE_3___default()(response[0].readingat).subtract(2, 'day')
                 .format(this.timeFormat));
             this.fgLoggingFilter
                 .controls.endDateTime
