@@ -5,6 +5,11 @@ import { Subscription } from 'rxjs';
 import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
 import {VehicleImagesFilterService} from "./filter.service"
 import moment from 'moment';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-vehicle-images',
@@ -14,6 +19,9 @@ import moment from 'moment';
 export class VehicleImagesComponent implements OnInit, OnDestroy {
   private topicsSubscription : Subscription | null = null;
   private imageQuery : Subscription | null = null;
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
   vehicleId: string=""
   startDateTime:string = "" 
   endDateTime:string  = "" 
@@ -25,11 +33,12 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   pagesLength: number = 0
   cursor: number = 0;
   images: any[]= []
-  
+
   constructor(
     private route: ActivatedRoute
     , private gqlQuery: GqlQueryService
     , private filterService:VehicleImagesFilterService
+    , private _snackBar: MatSnackBar
   ) { 
       this.formatTimestampForInputs()
     }
@@ -38,6 +47,14 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
     const format = 'YYYY-MM-DDTHH:mm:ss'
     this.startDateTime = moment().subtract(1,'hours').format(format)
     this.endDateTime = moment().format(format)
+  }
+
+  private noResultsNotification(){
+    this._snackBar.open("No results found." , 'Dismiss', {
+     duration: 1000,
+     horizontalPosition: this.horizontalPosition,
+     verticalPosition: this.verticalPosition,
+   });
   }
 
   ngOnInit(): void {
@@ -87,6 +104,11 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
           this.imageQuery = this
             .gqlQuery.getObjectDetectionImages(variales)
             .subscribe((response:any)=>{
+              if(!response.nodes.length){
+                this.noResultsNotification()
+                return
+              }
+
               this.pagesLength = response.totalCount
               this.images = response.nodes
             })
@@ -97,14 +119,18 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
             .getImagePreview(variales)
             .subscribe((response:any)=>{
               this.pagesLength = response.totalCount
-              if(!response || !response.cameraData.nodes.length)
+              if(!response || !response.cameraData.nodes.length){
+                this.noResultsNotification()
                 return
+              }
 
               this.images = response.cameraData.nodes.map((item:any)=>item.msg)
             })
         break;
     }
   }
+
+
 
   getPage(event:any){
     this.cursor =   event.pageIndex

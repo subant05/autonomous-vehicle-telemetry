@@ -11,6 +11,11 @@ import {ObjectDetectionDetailComponent} from 'src/app/components/modals/object-d
 import {ScrollService} from 'src/app/services/layout/scroll.service'
 import {VehicleLoggingFilterService} from './filter.service'
 import moment from "moment"
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-vehicle-logging',
@@ -25,6 +30,8 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   private infiniteScrollSubscription: Subscription | null = null
   private nodesSubscription: Subscription | null = null
   private timeFormat = 'YYYY-MM-DDTHH:mm:ss'
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   fgLoggingFilter: any 
   vehicleId: string=""
@@ -62,6 +69,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     , public dialog: MatDialog
     , private scrollService: ScrollService
     , private filterService: VehicleLoggingFilterService
+    , private _snackBar: MatSnackBar
   ) { 
     super()
     this.vehicleId = (this.route.parent as any).snapshot.params.id
@@ -116,6 +124,10 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     })
     .subscribe((response:any)=>{
       this.isScrollDataLoading = false
+      if(!response.length){
+        this.noResultsNotification();
+        return
+      }
 
         if(scroll)
           this.updateTable({data:response, action:"concat"})
@@ -185,6 +197,14 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.loggingSubscription?.unsubscribe()
     this.objectSubscription?.unsubscribe()
     this.statusSubscription?.unsubscribe()
+  }
+
+  private noResultsNotification(){
+    this._snackBar.open("No results found." , 'Dismiss', {
+     duration: 1000,
+     horizontalPosition: this.horizontalPosition,
+     verticalPosition: this.verticalPosition,
+   });
   }
 
   isFormValid(){

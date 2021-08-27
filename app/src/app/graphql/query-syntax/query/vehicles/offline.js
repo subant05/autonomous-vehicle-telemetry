@@ -2,7 +2,7 @@ import { gql } from 'apollo-angular';
 
 const offlineVehicles  = gql`
 query OfflineVehicles {
-    vehiclesOfflines{
+    vehiclesOfflines(filter:{decommissioned:{notEqualTo :true}}){
       nodes{
         deviceId
         id

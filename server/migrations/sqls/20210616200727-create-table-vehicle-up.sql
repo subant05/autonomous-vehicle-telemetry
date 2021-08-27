@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS  vehicles.vehicles (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     ip VARCHAR(20) NOT NULL,
+    decommissioned BOOLEAN,
     PRIMARY KEY(id),
     CONSTRAINT fk_vehicles_type
       FOREIGN KEY(type_id) 

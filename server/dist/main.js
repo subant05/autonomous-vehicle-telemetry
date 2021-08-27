@@ -2182,7 +2182,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const offlineVehicles  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 query OfflineVehicles {
-    vehiclesOfflines{
+    vehiclesOfflines(filter:{decommissioned:{notEqualTo :true}}){
       nodes{
         deviceId
         id
@@ -7130,17 +7130,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 39895);
 /* harmony import */ var src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/graphql/gql-query.service */ 91776);
 /* harmony import */ var _filter_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./filter.service */ 138);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 38583);
-/* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material/paginator */ 99692);
-/* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material/form-field */ 98295);
-/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material/input */ 83166);
-/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material/select */ 67441);
-/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/button */ 51095);
-/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/icon */ 76627);
-/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/core */ 5015);
+/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/snack-bar */ 77001);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ 38583);
+/* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material/paginator */ 99692);
+/* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material/form-field */ 98295);
+/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material/input */ 83166);
+/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/select */ 67441);
+/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/button */ 51095);
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/icon */ 76627);
+/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/core */ 5015);
 /* harmony import */ var _components_images_image_image_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../components/images/image/image.component */ 89990);
-/* harmony import */ var _angular_material_expansion__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/expansion */ 1562);
-/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+/* harmony import */ var _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/expansion */ 1562);
+/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+
 
 
 
@@ -7367,12 +7369,15 @@ function VehicleImagesComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 25);
 } }
 class VehicleImagesComponent {
-    constructor(route, gqlQuery, filterService) {
+    constructor(route, gqlQuery, filterService, _snackBar) {
         this.route = route;
         this.gqlQuery = gqlQuery;
         this.filterService = filterService;
+        this._snackBar = _snackBar;
         this.topicsSubscription = null;
         this.imageQuery = null;
+        this.horizontalPosition = 'center';
+        this.verticalPosition = 'bottom';
         this.vehicleId = "";
         this.startDateTime = "";
         this.endDateTime = "";
@@ -7390,6 +7395,13 @@ class VehicleImagesComponent {
         const format = 'YYYY-MM-DDTHH:mm:ss';
         this.startDateTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(1, 'hours').format(format);
         this.endDateTime = moment__WEBPACK_IMPORTED_MODULE_0___default()().format(format);
+    }
+    noResultsNotification() {
+        this._snackBar.open("No results found.", 'Dismiss', {
+            duration: 1000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+        });
     }
     ngOnInit() {
         this.vehicleId = this.route.parent.snapshot.params.id;
@@ -7432,6 +7444,10 @@ class VehicleImagesComponent {
                 this.imageQuery = this
                     .gqlQuery.getObjectDetectionImages(variales)
                     .subscribe((response) => {
+                    if (!response.nodes.length) {
+                        this.noResultsNotification();
+                        return;
+                    }
                     this.pagesLength = response.totalCount;
                     this.images = response.nodes;
                 });
@@ -7442,8 +7458,10 @@ class VehicleImagesComponent {
                     .getImagePreview(variales)
                     .subscribe((response) => {
                     this.pagesLength = response.totalCount;
-                    if (!response || !response.cameraData.nodes.length)
+                    if (!response || !response.cameraData.nodes.length) {
+                        this.noResultsNotification();
                         return;
+                    }
                     this.images = response.cameraData.nodes.map((item) => item.msg);
                 });
                 break;
@@ -7461,14 +7479,14 @@ class VehicleImagesComponent {
         (_b = this.topicsSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
     }
 }
-VehicleImagesComponent.ɵfac = function VehicleImagesComponent_Factory(t) { return new (t || VehicleImagesComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__.ActivatedRoute), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_filter_service__WEBPACK_IMPORTED_MODULE_2__.VehicleImagesFilterService)); };
+VehicleImagesComponent.ɵfac = function VehicleImagesComponent_Factory(t) { return new (t || VehicleImagesComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__.ActivatedRoute), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_filter_service__WEBPACK_IMPORTED_MODULE_2__.VehicleImagesFilterService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__.MatSnackBar)); };
 VehicleImagesComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: VehicleImagesComponent, selectors: [["app-vehicle-images"]], decls: 3, vars: 2, consts: [[4, "ngIf", "ngIfElse"], ["loader", ""], ["class", "image__form", 3, "formGroup", "submit", 4, "ngIf"], [1, "grid", "gap", 3, "ngClass"], ["class", "grid__cell", 4, "ngFor", "ngForOf"], [3, "length", "pageSize", "pageSizeOptions", "page"], [1, "image__form", 3, "formGroup", "submit"], [1, "image__form--field"], ["appearance", "fill", 1, "example-form-field", "datetime"], ["matInput", "", "type", "datetime-local", "formControlName", "startDateTime"], ["matInput", "", "type", "datetime-local", "formControlName", "endDateTime"], ["appearance", "fill"], ["formControlName", "topics", 3, "selectionChange"], [3, "value", 4, "ngFor", "ngForOf"], ["mat-mini-fab", "", "color", "primary", "aria-label", "Submit geolocation query"], [3, "value"], [1, "grid__cell"], [1, "grid__cell--label"], [1, "grid__cell--content"], [3, "imageId", "label", "headerId", 4, "ngIf", "ngIfElse"], ["hideToggle", "", 4, "ngIf"], ["noimage", ""], [3, "imageId", "label", "headerId"], ["hideToggle", ""], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function VehicleImagesComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, VehicleImagesComponent_div_0_Template, 5, 8, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, VehicleImagesComponent_ng_template_1_Template, 1, 0, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
         const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵreference"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.fgImageFilter && ctx.topics.length)("ngIfElse", _r1);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.NgIf, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgClass, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgForOf, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_8__.MatPaginator, _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormGroupDirective, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_9__.MatFormField, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_9__.MatLabel, _angular_material_input__WEBPACK_IMPORTED_MODULE_10__.MatInput, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControlName, _angular_material_select__WEBPACK_IMPORTED_MODULE_11__.MatSelect, _angular_material_button__WEBPACK_IMPORTED_MODULE_12__.MatButton, _angular_material_icon__WEBPACK_IMPORTED_MODULE_13__.MatIcon, _angular_material_core__WEBPACK_IMPORTED_MODULE_14__.MatOption, _components_images_image_image_component__WEBPACK_IMPORTED_MODULE_3__.ImageComponent, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_15__.MatExpansionPanel, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_15__.MatExpansionPanelHeader, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_15__.MatExpansionPanelTitle, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_16__.MatProgressBar], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.DatePipe], styles: [".image__form[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  width: 100%;\n  flex-wrap: wrap;\n  padding: 20px;\n}\n.image__form[_ngcontent-%COMP%]   .image__form--field[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.image__form[_ngcontent-%COMP%]   .image__form--field[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n.image__form[_ngcontent-%COMP%]   .image__form--field[_ngcontent-%COMP%]   .image__form--radio[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.datetime[_ngcontent-%COMP%] {\n  width: 280px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtaW1hZ2VzLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksYUFBQTtFQUNBLG1CQUFBO0VBQ0EsMkJBQUE7RUFDQSxXQUFBO0VBQ0EsZUFBQTtFQUNBLGFBQUE7QUFDSjtBQUNJO0VBQ0ksa0JBQUE7QUFDUjtBQUNRO0VBQ0ksaUJBQUE7QUFDWjtBQUVRO0VBQ0ksa0JBQUE7QUFBWjtBQUtBO0VBQ0ksWUFBQTtBQUZKIiwiZmlsZSI6InZlaGljbGUtaW1hZ2VzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlX19mb3Jte1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgd2lkdGg6MTAwJTtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAgcGFkZGluZzogMjBweDtcblxuICAgIC5pbWFnZV9fZm9ybS0tZmllbGQge1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDEwcHg7XG5cbiAgICAgICAgJjpsYXN0LW9mLXR5cGUge1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiAwcHg7XG4gICAgICAgIH1cblxuICAgICAgICAuaW1hZ2VfX2Zvcm0tLXJhZGlve1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuICAgICAgICB9XG4gICAgfVxufVxuXG4uZGF0ZXRpbWV7XG4gICAgd2lkdGg6MjgwcHg7XG59Il19 */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_8__.NgIf, _angular_common__WEBPACK_IMPORTED_MODULE_8__.NgClass, _angular_common__WEBPACK_IMPORTED_MODULE_8__.NgForOf, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_9__.MatPaginator, _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormGroupDirective, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_10__.MatFormField, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_10__.MatLabel, _angular_material_input__WEBPACK_IMPORTED_MODULE_11__.MatInput, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControlName, _angular_material_select__WEBPACK_IMPORTED_MODULE_12__.MatSelect, _angular_material_button__WEBPACK_IMPORTED_MODULE_13__.MatButton, _angular_material_icon__WEBPACK_IMPORTED_MODULE_14__.MatIcon, _angular_material_core__WEBPACK_IMPORTED_MODULE_15__.MatOption, _components_images_image_image_component__WEBPACK_IMPORTED_MODULE_3__.ImageComponent, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__.MatExpansionPanel, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__.MatExpansionPanelHeader, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_16__.MatExpansionPanelTitle, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_17__.MatProgressBar], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_8__.DatePipe], styles: [".image__form[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  width: 100%;\n  flex-wrap: wrap;\n  padding: 20px;\n}\n.image__form[_ngcontent-%COMP%]   .image__form--field[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.image__form[_ngcontent-%COMP%]   .image__form--field[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n.image__form[_ngcontent-%COMP%]   .image__form--field[_ngcontent-%COMP%]   .image__form--radio[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.datetime[_ngcontent-%COMP%] {\n  width: 280px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtaW1hZ2VzLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksYUFBQTtFQUNBLG1CQUFBO0VBQ0EsMkJBQUE7RUFDQSxXQUFBO0VBQ0EsZUFBQTtFQUNBLGFBQUE7QUFDSjtBQUNJO0VBQ0ksa0JBQUE7QUFDUjtBQUNRO0VBQ0ksaUJBQUE7QUFDWjtBQUVRO0VBQ0ksa0JBQUE7QUFBWjtBQUtBO0VBQ0ksWUFBQTtBQUZKIiwiZmlsZSI6InZlaGljbGUtaW1hZ2VzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlX19mb3Jte1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgd2lkdGg6MTAwJTtcbiAgICBmbGV4LXdyYXA6IHdyYXA7XG4gICAgcGFkZGluZzogMjBweDtcblxuICAgIC5pbWFnZV9fZm9ybS0tZmllbGQge1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDEwcHg7XG5cbiAgICAgICAgJjpsYXN0LW9mLXR5cGUge1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiAwcHg7XG4gICAgICAgIH1cblxuICAgICAgICAuaW1hZ2VfX2Zvcm0tLXJhZGlve1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuICAgICAgICB9XG4gICAgfVxufVxuXG4uZGF0ZXRpbWV7XG4gICAgd2lkdGg6MjgwcHg7XG59Il19 */"] });
 
 
 /***/ }),
@@ -7527,16 +7545,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/material/dialog */ 22238);
 /* harmony import */ var src_app_services_layout_scroll_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/layout/scroll.service */ 9312);
 /* harmony import */ var _filter_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./filter.service */ 44802);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/common */ 38583);
-/* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/material/form-field */ 98295);
-/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/input */ 83166);
-/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/select */ 67441);
-/* harmony import */ var _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/slide-toggle */ 45396);
-/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material/button */ 51095);
-/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/material/icon */ 76627);
-/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/material/core */ 5015);
-/* harmony import */ var _angular_material_table__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @angular/material/table */ 32091);
-/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/material/snack-bar */ 77001);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/common */ 38583);
+/* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/material/form-field */ 98295);
+/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/material/input */ 83166);
+/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/select */ 67441);
+/* harmony import */ var _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material/slide-toggle */ 45396);
+/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/material/button */ 51095);
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/material/icon */ 76627);
+/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @angular/material/core */ 5015);
+/* harmony import */ var _angular_material_table__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/material/table */ 32091);
+/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+
 
 
 
@@ -7855,7 +7875,7 @@ function VehicleLoggingComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
 } }
 class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBPACK_IMPORTED_MODULE_0__.TableUtil {
-    constructor(graphQLSubscription, graphQLQuery, route, dialog, scrollService, filterService) {
+    constructor(graphQLSubscription, graphQLQuery, route, dialog, scrollService, filterService, _snackBar) {
         super();
         this.graphQLSubscription = graphQLSubscription;
         this.graphQLQuery = graphQLQuery;
@@ -7863,6 +7883,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.dialog = dialog;
         this.scrollService = scrollService;
         this.filterService = filterService;
+        this._snackBar = _snackBar;
         this.logQuery = null;
         this.loggingSubscription = null;
         this.objectSubscription = null;
@@ -7870,6 +7891,8 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.infiniteScrollSubscription = null;
         this.nodesSubscription = null;
         this.timeFormat = 'YYYY-MM-DDTHH:mm:ss';
+        this.horizontalPosition = 'center';
+        this.verticalPosition = 'bottom';
         this.vehicleId = "";
         this.startDateTime = "";
         this.endDateTime = "";
@@ -7941,6 +7964,10 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         })
             .subscribe((response) => {
             this.isScrollDataLoading = false;
+            if (!response.length) {
+                this.noResultsNotification();
+                return;
+            }
             if (scroll)
                 this.updateTable({ data: response, action: "concat" });
             else
@@ -8004,6 +8031,13 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         (_a = this.loggingSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
         (_b = this.objectSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
         (_c = this.statusSubscription) === null || _c === void 0 ? void 0 : _c.unsubscribe();
+    }
+    noResultsNotification() {
+        this._snackBar.open("No results found.", 'Dismiss', {
+            duration: 1000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+        });
     }
     isFormValid() {
         return (this.fgLoggingFilter.valid
@@ -8151,7 +8185,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         }
     }
 }
-VehicleLoggingComponent.ɵfac = function VehicleLoggingComponent_Factory(t) { return new (t || VehicleLoggingComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_4__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_5__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_10__.ActivatedRoute), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_11__.MatDialog), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_layout_scroll_service__WEBPACK_IMPORTED_MODULE_6__.ScrollService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_filter_service__WEBPACK_IMPORTED_MODULE_7__.VehicleLoggingFilterService)); };
+VehicleLoggingComponent.ɵfac = function VehicleLoggingComponent_Factory(t) { return new (t || VehicleLoggingComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_4__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_5__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_10__.ActivatedRoute), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_11__.MatDialog), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](src_app_services_layout_scroll_service__WEBPACK_IMPORTED_MODULE_6__.ScrollService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_filter_service__WEBPACK_IMPORTED_MODULE_7__.VehicleLoggingFilterService), _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdirectiveInject"](_angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_12__.MatSnackBar)); };
 VehicleLoggingComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵdefineComponent"]({ type: VehicleLoggingComponent, selectors: [["app-vehicle-logging"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵInheritDefinitionFeature"]], decls: 10, vars: 4, consts: [["class", "logging__form", 3, "formGroup", "submit", 4, "ngIf"], [1, "grid", "gap"], [1, "grid__cell", "table"], [1, "grid__cell--label"], [1, "grid__cell--content", "scollable"], [4, "ngIf", "ngIfElse"], ["loader", ""], [4, "ngIf"], [1, "logging__form", 3, "formGroup", "submit"], [1, "logging__form--field"], ["appearance", "fill", 1, "example-form-field", "datetime"], ["matInput", "", "type", "datetime-local", "formControlName", "startDateTime"], ["matInput", "", "type", "datetime-local", "formControlName", "endDateTime"], ["appearance", "fill", 2, "width", "120px"], ["formControlName", "paginationRange", 2, "width", "100px"], [3, "value", 4, "ngFor", "ngForOf"], ["appearance", "fill"], ["formControlName", "logType", "multiple", "", 3, "selectionChange"], ["class", "logging__form--field", 4, "ngIf"], ["formControlName", "isLive", 3, "click"], ["mat-mini-fab", "", "color", "primary", "aria-label", "Submit logging filter", 3, "disabled"], [3, "value"], ["formControlName", "nodes", "multiple", ""], ["mat-table", "", 1, "vehicles__status", 3, "dataSource"], ["matColumnDef", "status"], ["mat-header-cell", "", "mat-sort-header", "", 4, "matHeaderCellDef"], ["mat-cell", "", 4, "matCellDef"], ["matColumnDef", "timestamp"], ["matColumnDef", "type"], ["mat-cell", "", "class", "type", 4, "matCellDef"], ["matColumnDef", "node"], ["mat-cell", "", "class", "node", 4, "matCellDef"], ["matColumnDef", "description"], ["mat-cell", "", "class", "description", 4, "matCellDef"], ["mat-header-row", "", 4, "matHeaderRowDef"], ["mat-row", "", 3, "class", "click", 4, "matRowDef", "matRowDefColumns"], ["mat-header-cell", "", "mat-sort-header", ""], ["mat-cell", ""], ["inline", "", 1, "icon"], ["mat-cell", "", 1, "type"], ["mat-cell", "", 1, "node"], ["mat-cell", "", 1, "description"], ["mat-header-row", ""], ["mat-row", "", 3, "click"], ["mode", "indeterminate"]], template: function VehicleLoggingComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](0, VehicleLoggingComponent_form_0_Template, 34, 8, "form", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](1, "div", 1);
@@ -8173,7 +8207,7 @@ VehicleLoggingComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MO
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.savedResults.length)("ngIfElse", _r2);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](3);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("ngIf", ctx.isScrollDataLoading);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_12__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_9__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_9__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormGroupDirective, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_13__.MatFormField, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_13__.MatLabel, _angular_material_input__WEBPACK_IMPORTED_MODULE_14__.MatInput, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControlName, _angular_material_select__WEBPACK_IMPORTED_MODULE_15__.MatSelect, _angular_common__WEBPACK_IMPORTED_MODULE_12__.NgForOf, _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_16__.MatSlideToggle, _angular_material_button__WEBPACK_IMPORTED_MODULE_17__.MatButton, _angular_material_icon__WEBPACK_IMPORTED_MODULE_18__.MatIcon, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_13__.MatError, _angular_material_core__WEBPACK_IMPORTED_MODULE_19__.MatOption, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatTable, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatColumnDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatHeaderCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatHeaderRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatHeaderCell, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatCell, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatHeaderRow, _angular_material_table__WEBPACK_IMPORTED_MODULE_20__.MatRow, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_21__.MatProgressBar], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_12__.DatePipe], styles: [".logging__form[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  width: 100%;\n  flex-wrap: wrap;\n  padding: 20px;\n}\n.logging__form[_ngcontent-%COMP%]   .logging__form--field[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.logging__form[_ngcontent-%COMP%]   .logging__form--field[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n.logging__form[_ngcontent-%COMP%]   .logging__form--field[_ngcontent-%COMP%]   .logging__form--radio[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.datetime[_ngcontent-%COMP%] {\n  width: 280px;\n}\n.mat-table[_ngcontent-%COMP%] {\n  width: 100%;\n}\n.mat-table[_ngcontent-%COMP%]   .mat-row[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n.vehicles__status[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 5px;\n}\n.vehicles__status[_ngcontent-%COMP%]   td.description[_ngcontent-%COMP%] {\n  max-width: 300px;\n}\n.vehicles__status[_ngcontent-%COMP%]   td.node[_ngcontent-%COMP%] {\n  padding: 5px;\n}\n.vehicles__status[_ngcontent-%COMP%]   td.type[_ngcontent-%COMP%] {\n  min-width: 50px;\n}\n.vehicles__status[_ngcontent-%COMP%]   .icon[_ngcontent-%COMP%] {\n  font-size: 1.5rem;\n  width: 24px;\n}\n.vehicles__status[_ngcontent-%COMP%]   .priority_high[_ngcontent-%COMP%] {\n  background-color: var(--critical);\n}\n.vehicles__status[_ngcontent-%COMP%]   .priority_high[_ngcontent-%COMP%]:hover {\n  background-color: var(--critical-hover);\n}\n.vehicles__status[_ngcontent-%COMP%]   .error[_ngcontent-%COMP%] {\n  background-color: var(--error);\n}\n.vehicles__status[_ngcontent-%COMP%]   .error[_ngcontent-%COMP%]:hover {\n  background-color: var(--error-hover);\n}\n.vehicles__status[_ngcontent-%COMP%]   .warning[_ngcontent-%COMP%] {\n  background-color: var(--warning);\n}\n.vehicles__status[_ngcontent-%COMP%]   .warning[_ngcontent-%COMP%]:hover {\n  background-color: var(--warning-hover);\n}\n.vehicles__status[_ngcontent-%COMP%]   .logging[_ngcontent-%COMP%], .vehicles__status[_ngcontent-%COMP%]   .information[_ngcontent-%COMP%] {\n  background-color: var(--success);\n}\n.vehicles__status[_ngcontent-%COMP%]   .logging[_ngcontent-%COMP%]:hover, .vehicles__status[_ngcontent-%COMP%]   .information[_ngcontent-%COMP%]:hover {\n  background-color: var(--success-hover);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbG9nZ2luZy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLDJCQUFBO0VBQ0EsV0FBQTtFQUNBLGVBQUE7RUFDQSxhQUFBO0FBQ0o7QUFDSTtFQUNJLGtCQUFBO0FBQ1I7QUFDUTtFQUNJLGlCQUFBO0FBQ1o7QUFFUTtFQUNJLGtCQUFBO0FBQVo7QUFLQTtFQUNJLFlBQUE7QUFGSjtBQUtBO0VBQ0ksV0FBQTtBQUZKO0FBSUk7RUFDSSxlQUFBO0FBRlI7QUFPSTtFQUNJLFlBQUE7QUFKUjtBQUtRO0VBQ0ksZ0JBQUE7QUFIWjtBQU1RO0VBQ0ksWUFBQTtBQUpaO0FBT1E7RUFDSSxlQUFBO0FBTFo7QUFTSTtFQUNJLGlCQUFBO0VBQ0EsV0FBQTtBQVBSO0FBVUk7RUFDSSxpQ0FBQTtBQVJSO0FBU1E7RUFDSSx1Q0FBQTtBQVBaO0FBV0k7RUFDSSw4QkFBQTtBQVRSO0FBVVE7RUFDSSxvQ0FBQTtBQVJaO0FBWUk7RUFDSSxnQ0FBQTtBQVZSO0FBV1E7RUFDSSxzQ0FBQTtBQVRaO0FBYUk7O0VBRUksZ0NBQUE7QUFYUjtBQVlROztFQUNJLHNDQUFBO0FBVFoiLCJmaWxlIjoidmVoaWNsZS1sb2dnaW5nLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmxvZ2dpbmdfX2Zvcm17XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICB3aWR0aDoxMDAlO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBwYWRkaW5nOiAyMHB4O1xuXG4gICAgLmxvZ2dpbmdfX2Zvcm0tLWZpZWxkIHtcbiAgICAgICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuXG4gICAgICAgICY6bGFzdC1vZi10eXBlIHtcbiAgICAgICAgICAgIG1hcmdpbi1yaWdodDogMHB4O1xuICAgICAgICB9XG5cbiAgICAgICAgLmxvZ2dpbmdfX2Zvcm0tLXJhZGlve1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuICAgICAgICB9XG4gICAgfVxufVxuXG4uZGF0ZXRpbWV7XG4gICAgd2lkdGg6MjgwcHg7XG59XG5cbi5tYXQtdGFibGUge1xuICAgIHdpZHRoOiAxMDAlO1xuXG4gICAgLm1hdC1yb3cge1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgfVxufVxuXG4udmVoaWNsZXNfX3N0YXR1cyB7XG4gICAgdGR7XG4gICAgICAgIHBhZGRpbmc6NXB4O1xuICAgICAgICAmLmRlc2NyaXB0aW9ue1xuICAgICAgICAgICAgbWF4LXdpZHRoOiAzMDBweDtcbiAgICAgICAgfVxuXG4gICAgICAgICYubm9kZXtcbiAgICAgICAgICAgIHBhZGRpbmc6NXB4XG4gICAgICAgIH1cbiAgICAgICAgXG4gICAgICAgICYudHlwZXtcbiAgICAgICAgICAgIG1pbi13aWR0aDogNTBweDtcbiAgICAgICAgfVxuXG4gICAgfVxuICAgIC5pY29uIHtcbiAgICAgICAgZm9udC1zaXplOiAxLjVyZW07XG4gICAgICAgIHdpZHRoOjI0cHg7XG4gICAgfVxuXG4gICAgLnByaW9yaXR5X2hpZ2gge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1jcml0aWNhbCk7XG4gICAgICAgICY6aG92ZXJ7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1jcml0aWNhbC1ob3Zlcik7XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAuZXJyb3Ige1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1lcnJvcik7XG4gICAgICAgICY6aG92ZXJ7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1lcnJvci1ob3Zlcik7XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAud2FybmluZyB7XG4gICAgICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLXdhcm5pbmcpO1xuICAgICAgICAmOmhvdmVye1xuICAgICAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0td2FybmluZy1ob3Zlcik7XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAubG9nZ2luZyxcbiAgICAuaW5mb3JtYXRpb24ge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1zdWNjZXNzKTtcbiAgICAgICAgJjpob3ZlcntcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLXN1Y2Nlc3MtaG92ZXIpO1xuICAgICAgICB9XG4gICAgfVxuXG59Il19 */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_13__.NgIf, _angular_forms__WEBPACK_IMPORTED_MODULE_9__["ɵNgNoValidate"], _angular_forms__WEBPACK_IMPORTED_MODULE_9__.NgControlStatusGroup, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormGroupDirective, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__.MatFormField, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__.MatLabel, _angular_material_input__WEBPACK_IMPORTED_MODULE_15__.MatInput, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.DefaultValueAccessor, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.NgControlStatus, _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControlName, _angular_material_select__WEBPACK_IMPORTED_MODULE_16__.MatSelect, _angular_common__WEBPACK_IMPORTED_MODULE_13__.NgForOf, _angular_material_slide_toggle__WEBPACK_IMPORTED_MODULE_17__.MatSlideToggle, _angular_material_button__WEBPACK_IMPORTED_MODULE_18__.MatButton, _angular_material_icon__WEBPACK_IMPORTED_MODULE_19__.MatIcon, _angular_material_form_field__WEBPACK_IMPORTED_MODULE_14__.MatError, _angular_material_core__WEBPACK_IMPORTED_MODULE_20__.MatOption, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatTable, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatColumnDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatHeaderCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatCellDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatHeaderRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatRowDef, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatHeaderCell, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatCell, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatHeaderRow, _angular_material_table__WEBPACK_IMPORTED_MODULE_21__.MatRow, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_22__.MatProgressBar], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_13__.DatePipe], styles: [".logging__form[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: flex-start;\n  width: 100%;\n  flex-wrap: wrap;\n  padding: 20px;\n}\n.logging__form[_ngcontent-%COMP%]   .logging__form--field[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.logging__form[_ngcontent-%COMP%]   .logging__form--field[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n.logging__form[_ngcontent-%COMP%]   .logging__form--field[_ngcontent-%COMP%]   .logging__form--radio[_ngcontent-%COMP%] {\n  margin-right: 10px;\n}\n.datetime[_ngcontent-%COMP%] {\n  width: 280px;\n}\n.mat-table[_ngcontent-%COMP%] {\n  width: 100%;\n}\n.mat-table[_ngcontent-%COMP%]   .mat-row[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n.vehicles__status[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 5px;\n}\n.vehicles__status[_ngcontent-%COMP%]   td.description[_ngcontent-%COMP%] {\n  max-width: 300px;\n}\n.vehicles__status[_ngcontent-%COMP%]   td.node[_ngcontent-%COMP%] {\n  padding: 5px;\n}\n.vehicles__status[_ngcontent-%COMP%]   td.type[_ngcontent-%COMP%] {\n  min-width: 50px;\n}\n.vehicles__status[_ngcontent-%COMP%]   .icon[_ngcontent-%COMP%] {\n  font-size: 1.5rem;\n  width: 24px;\n}\n.vehicles__status[_ngcontent-%COMP%]   .priority_high[_ngcontent-%COMP%] {\n  background-color: var(--critical);\n}\n.vehicles__status[_ngcontent-%COMP%]   .priority_high[_ngcontent-%COMP%]:hover {\n  background-color: var(--critical-hover);\n}\n.vehicles__status[_ngcontent-%COMP%]   .error[_ngcontent-%COMP%] {\n  background-color: var(--error);\n}\n.vehicles__status[_ngcontent-%COMP%]   .error[_ngcontent-%COMP%]:hover {\n  background-color: var(--error-hover);\n}\n.vehicles__status[_ngcontent-%COMP%]   .warning[_ngcontent-%COMP%] {\n  background-color: var(--warning);\n}\n.vehicles__status[_ngcontent-%COMP%]   .warning[_ngcontent-%COMP%]:hover {\n  background-color: var(--warning-hover);\n}\n.vehicles__status[_ngcontent-%COMP%]   .logging[_ngcontent-%COMP%], .vehicles__status[_ngcontent-%COMP%]   .information[_ngcontent-%COMP%] {\n  background-color: var(--success);\n}\n.vehicles__status[_ngcontent-%COMP%]   .logging[_ngcontent-%COMP%]:hover, .vehicles__status[_ngcontent-%COMP%]   .information[_ngcontent-%COMP%]:hover {\n  background-color: var(--success-hover);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbG9nZ2luZy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLDJCQUFBO0VBQ0EsV0FBQTtFQUNBLGVBQUE7RUFDQSxhQUFBO0FBQ0o7QUFDSTtFQUNJLGtCQUFBO0FBQ1I7QUFDUTtFQUNJLGlCQUFBO0FBQ1o7QUFFUTtFQUNJLGtCQUFBO0FBQVo7QUFLQTtFQUNJLFlBQUE7QUFGSjtBQUtBO0VBQ0ksV0FBQTtBQUZKO0FBSUk7RUFDSSxlQUFBO0FBRlI7QUFPSTtFQUNJLFlBQUE7QUFKUjtBQUtRO0VBQ0ksZ0JBQUE7QUFIWjtBQU1RO0VBQ0ksWUFBQTtBQUpaO0FBT1E7RUFDSSxlQUFBO0FBTFo7QUFTSTtFQUNJLGlCQUFBO0VBQ0EsV0FBQTtBQVBSO0FBVUk7RUFDSSxpQ0FBQTtBQVJSO0FBU1E7RUFDSSx1Q0FBQTtBQVBaO0FBV0k7RUFDSSw4QkFBQTtBQVRSO0FBVVE7RUFDSSxvQ0FBQTtBQVJaO0FBWUk7RUFDSSxnQ0FBQTtBQVZSO0FBV1E7RUFDSSxzQ0FBQTtBQVRaO0FBYUk7O0VBRUksZ0NBQUE7QUFYUjtBQVlROztFQUNJLHNDQUFBO0FBVFoiLCJmaWxlIjoidmVoaWNsZS1sb2dnaW5nLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmxvZ2dpbmdfX2Zvcm17XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICB3aWR0aDoxMDAlO1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICBwYWRkaW5nOiAyMHB4O1xuXG4gICAgLmxvZ2dpbmdfX2Zvcm0tLWZpZWxkIHtcbiAgICAgICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuXG4gICAgICAgICY6bGFzdC1vZi10eXBlIHtcbiAgICAgICAgICAgIG1hcmdpbi1yaWdodDogMHB4O1xuICAgICAgICB9XG5cbiAgICAgICAgLmxvZ2dpbmdfX2Zvcm0tLXJhZGlve1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuICAgICAgICB9XG4gICAgfVxufVxuXG4uZGF0ZXRpbWV7XG4gICAgd2lkdGg6MjgwcHg7XG59XG5cbi5tYXQtdGFibGUge1xuICAgIHdpZHRoOiAxMDAlO1xuXG4gICAgLm1hdC1yb3cge1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgfVxufVxuXG4udmVoaWNsZXNfX3N0YXR1cyB7XG4gICAgdGR7XG4gICAgICAgIHBhZGRpbmc6NXB4O1xuICAgICAgICAmLmRlc2NyaXB0aW9ue1xuICAgICAgICAgICAgbWF4LXdpZHRoOiAzMDBweDtcbiAgICAgICAgfVxuXG4gICAgICAgICYubm9kZXtcbiAgICAgICAgICAgIHBhZGRpbmc6NXB4XG4gICAgICAgIH1cbiAgICAgICAgXG4gICAgICAgICYudHlwZXtcbiAgICAgICAgICAgIG1pbi13aWR0aDogNTBweDtcbiAgICAgICAgfVxuXG4gICAgfVxuICAgIC5pY29uIHtcbiAgICAgICAgZm9udC1zaXplOiAxLjVyZW07XG4gICAgICAgIHdpZHRoOjI0cHg7XG4gICAgfVxuXG4gICAgLnByaW9yaXR5X2hpZ2gge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1jcml0aWNhbCk7XG4gICAgICAgICY6aG92ZXJ7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1jcml0aWNhbC1ob3Zlcik7XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAuZXJyb3Ige1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1lcnJvcik7XG4gICAgICAgICY6aG92ZXJ7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1lcnJvci1ob3Zlcik7XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAud2FybmluZyB7XG4gICAgICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLXdhcm5pbmcpO1xuICAgICAgICAmOmhvdmVye1xuICAgICAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0td2FybmluZy1ob3Zlcik7XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAubG9nZ2luZyxcbiAgICAuaW5mb3JtYXRpb24ge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1zdWNjZXNzKTtcbiAgICAgICAgJjpob3ZlcntcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLXN1Y2Nlc3MtaG92ZXIpO1xuICAgICAgICB9XG4gICAgfVxuXG59Il19 */"] });
 
 
 /***/ }),
@@ -8551,11 +8585,11 @@ class VehicleComponent {
                         url: `/vehicles/${this.vehicleId}/overview`,
                         tooltip: `Vehicle: ${this.vehicleId} Overview Page`
                     },
-                    // {
-                    //   label:"Geolocation"
-                    //   , url:`/vehicles/${this.vehicleId}/geolocation`
-                    //   , tooltip:`Vehicle: ${this.vehicleId} Geolocation Page`
-                    // },
+                    {
+                        label: "Geolocation",
+                        url: `/vehicles/${this.vehicleId}/geolocation`,
+                        tooltip: `Vehicle: ${this.vehicleId} Geolocation Page`
+                    },
                     {
                         label: "Images",
                         url: `/vehicles/${this.vehicleId}/images`,
