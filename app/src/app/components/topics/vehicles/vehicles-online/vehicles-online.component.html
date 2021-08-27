@@ -33,7 +33,7 @@
     <tr mat-row 
     [class]= "renderAlertsColumn(row)" 
     *matRowDef="let row; columns: columns;"
-    (click)="rowClick(row)"
+    (dblclick)="rowClick(row)"
     ></tr>
     
     <!-- Row shown when there is no matching data. -->

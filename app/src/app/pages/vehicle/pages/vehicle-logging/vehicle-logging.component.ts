@@ -29,6 +29,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   private statusSubscription: Subscription | null = null
   private infiniteScrollSubscription: Subscription | null = null
   private nodesSubscription: Subscription | null = null
+  private initialDataLoadSubscription: Subscription | null = null
   private timeFormat = 'YYYY-MM-DDTHH:mm:ss'
   private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
@@ -58,9 +59,8 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   cursor:number = 0
   isScrollDataLoading:boolean = false
   savedResults: any[] =[]
-  pagination: number = 20
+  pagination: number = 25
   paginationRange: number[] = [ 25, 50, 100]
-
   
   constructor(
     private graphQLSubscription: GqlSubscriptionService
@@ -74,9 +74,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     super()
     this.vehicleId = (this.route.parent as any).snapshot.params.id
     this.formatTimestampForInputs()
-    this.nodesSubscription = this.graphQLQuery.getLoggingNodes({ vehicleId:this.vehicleId}).subscribe((response:any)=>{
-      this.nodes = response.map((result:any)=>result.nodeType)
-    })
   }
 
   private updateTable({data, action} = {data:[], action:"replace"}){
@@ -100,19 +97,50 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   private formatTimestampForInputs(){
-    
     this.startDateTime = moment().subtract(1,'hours').format(this.timeFormat)
     this.endDateTime = moment().format(this.timeFormat)
   }
 
-  private loadData(scroll?:boolean){
+  private initialDataLoad(variables:any){
+    this.initialDataLoadSubscription = this.graphQLQuery
+      .getCurrentLogsByVehicleId(variables)
+      .subscribe((response:any)=>{
+        this.isScrollDataLoading = false
+        this.updateTable({data:response, action:"replace"})
+        this.fgLoggingFilter
+          .controls.startDateTime
+          .patchValue(
+            moment(response[0].readingat).subtract(1,'day')
+            .format(this.timeFormat)
+          )
+        this.fgLoggingFilter
+          .controls.endDateTime
+          .patchValue(
+            moment(response[0].readingat).format(this.timeFormat)
+          )
+      })
+  }
+
+  private getDataLoad(variables:any, action="replace"){
+    this.logQuery = this.graphQLQuery
+      .getAllVehicleLogsStatusDetection(variables)
+      .subscribe((response:any)=>{
+        this.isScrollDataLoading = false
+        if(!response.length){
+          this.noResultsNotification();
+          return
+        }
+
+        this.updateTable({data:response, action})    
+      })
+  }
+
+  private loadData(scroll?:boolean, init:boolean = false){
     if(this.logQuery)
       this.logQuery.unsubscribe()
     
     this.isScrollDataLoading = true
-
-    this.logQuery = this.graphQLQuery
-    .getAllVehicleLogsStatusDetection({
+    const variables = {
       vehicleId: this.vehicleId
       , cursor: this.cursor
       , startDateTime: moment(this.fgLoggingFilter.value.startDateTime).utc().format(this.timeFormat)
@@ -120,20 +148,16 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       , logType: this.fgLoggingFilter.value.logType
       , paginationRange: this.fgLoggingFilter.value.paginationRange
       , nodes: this.fgLoggingFilter.value.nodes
+    }
 
-    })
-    .subscribe((response:any)=>{
-      this.isScrollDataLoading = false
-      if(!response.length){
-        this.noResultsNotification();
-        return
-      }
-
-        if(scroll)
-          this.updateTable({data:response, action:"concat"})
-        else
-          this.updateTable({data:response, action:"replace"})      
-    })
+    if(init){
+      this.initialDataLoad(variables)
+    } else {
+      if(scroll)
+        this.getDataLoad(variables, "concat")
+      else
+        this.getDataLoad(variables, "replace")  
+    }
   }
 
 
@@ -207,6 +231,41 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
    });
   }
 
+  private setupFilter(savedForm:any){
+    this.fgLoggingFilter = savedForm || new FormGroup({
+      startDateTime: new FormControl(this.startDateTime,[Validators.required])
+      , endDateTime: new FormControl(this.endDateTime,[Validators.required])
+      , logType: new FormControl(this.logType, [Validators.required])
+      , paginationRange: new FormControl(this.paginationRange[0], [Validators.required])
+      , nodes: new FormControl(this.nodes, [Validators.required])
+      , isLive: new FormControl(this.isLive, [Validators.required])
+    })
+  }
+
+  private setupInfiniteScroll(){
+    this.infiniteScrollSubscription = this.scrollService.contentScroll.subscribe((scrolled:any)=>{
+      if(scrolled){
+        this.cursor  = this.tableList.data.length
+        this.loadData(scrolled)
+      }
+    })
+  }
+
+  private setupLiveSubscription(){
+    if(this.fgLoggingFilter.value.isLive)
+    this.initiateLiveSubscriptions()
+  }
+
+  private nodeSubscriptionHandler(response:any){
+    const savedForm = this.filterService.getFilterState()
+
+    this.nodes = response.map((result:any)=>result.nodeType)
+    this.setupFilter(savedForm)
+    this.loadData(false, !savedForm)
+    this.setupInfiniteScroll()
+    this.setupLiveSubscription()
+  }
+
   isFormValid(){
     return  (this.fgLoggingFilter.valid 
       || (!this.fgLoggingFilter.valid 
@@ -224,24 +283,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
   
   ngOnInit(): void {
-    this.fgLoggingFilter = this.filterService.getFilterState() || new FormGroup({
-      startDateTime: new FormControl(this.startDateTime,[Validators.required])
-      , endDateTime: new FormControl(this.endDateTime,[Validators.required])
-      , logType: new FormControl(this.logType, [Validators.required])
-      , paginationRange: new FormControl(this.paginationRange[0], [Validators.required])
-      , nodes: new FormControl([], [Validators.required])
-      , isLive: new FormControl(this.isLive, [Validators.required])
-    })
-  
-    this.loadData()
-    this.infiniteScrollSubscription = this.scrollService.contentScroll.subscribe((scrolled:any)=>{
-      if(scrolled){
-        this.cursor  = this.pagination * ++this.cursor
-        this.loadData(scrolled)
-      }
-    })
-    if(this.fgLoggingFilter.value.isLive)
-      this.initiateLiveSubscriptions()
+    this.nodesSubscription = this.graphQLQuery
+    .getLoggingNodes({ vehicleId:this.vehicleId})
+    .subscribe((response:any)=>this.nodeSubscriptionHandler(response))
   }
 
   ngOnDestroy():void {
@@ -250,6 +294,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.infiniteScrollSubscription?.unsubscribe()
     this.filterService.saveFilterState(this.fgLoggingFilter)
     this.nodesSubscription?.unsubscribe()
+    this.initialDataLoadSubscription?.unsubscribe()
   }
 
   ngAfterViewInit(): void{}
@@ -369,5 +414,12 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
             return "info"
             break;
     }
+  }
+
+  onSelectAllNodes(){
+    this.fgLoggingFilter.controls.nodes.patchValue( this.nodes)
+  }
+  onClearAllNodes(){
+    this.fgLoggingFilter.controls.nodes.patchValue( [])
   }
 }

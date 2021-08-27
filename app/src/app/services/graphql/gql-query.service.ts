@@ -376,4 +376,19 @@ export class GqlQueryService {
     }))
   }
 
+  getCurrentLogsByVehicleId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Logging.CurrentLogsByVehicleId, variables)
+    .pipe(map((response:any)=>{
+      const logging:any = []
+      
+      if(!response || !response.data)
+        return logging
+
+      response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
+
+      return logging
+    }))
+     
+  }
+
 }
