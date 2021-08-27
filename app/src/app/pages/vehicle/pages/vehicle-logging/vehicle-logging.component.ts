@@ -59,7 +59,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   cursor:number = 0
   isScrollDataLoading:boolean = false
   savedResults: any[] =[]
-  pagination: number = 25
   paginationRange: number[] = [ 25, 50, 100]
   
   constructor(
@@ -121,7 +120,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         this.fgLoggingFilter
           .controls.endDateTime
           .patchValue(
-            moment(response[0].readingat).format(this.timeFormat)
+            moment().format(this.timeFormat)
           )
       })
   }
@@ -240,7 +239,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       startDateTime: new FormControl(this.startDateTime,[Validators.required])
       , endDateTime: new FormControl(this.endDateTime,[Validators.required])
       , logType: new FormControl(this.logType, [Validators.required])
-      , paginationRange: new FormControl(this.paginationRange[0], [Validators.required])
+      , paginationRange: new FormControl(this.paginationRange[1], [Validators.required])
       , nodes: new FormControl(this.nodes, [Validators.required])
       , isLive: new FormControl(this.isLive, [Validators.required])
     })

@@ -7990,7 +7990,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.cursor = 0;
         this.isScrollDataLoading = false;
         this.savedResults = [];
-        this.pagination = 25;
         this.paginationRange = [25, 50, 100];
         this.vehicleId = this.route.parent.snapshot.params.id;
         this.formatTimestampForInputs();
@@ -8031,7 +8030,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                 .format(this.timeFormat));
             this.fgLoggingFilter
                 .controls.endDateTime
-                .patchValue(moment__WEBPACK_IMPORTED_MODULE_3___default()(response[0].readingat).format(this.timeFormat));
+                .patchValue(moment__WEBPACK_IMPORTED_MODULE_3___default()().format(this.timeFormat));
         });
     }
     getDataLoad(variables, action = "replace") {
@@ -8138,7 +8137,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             startDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControl(this.startDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_9__.Validators.required]),
             endDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControl(this.endDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_9__.Validators.required]),
             logType: new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControl(this.logType, [_angular_forms__WEBPACK_IMPORTED_MODULE_9__.Validators.required]),
-            paginationRange: new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControl(this.paginationRange[0], [_angular_forms__WEBPACK_IMPORTED_MODULE_9__.Validators.required]),
+            paginationRange: new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControl(this.paginationRange[1], [_angular_forms__WEBPACK_IMPORTED_MODULE_9__.Validators.required]),
             nodes: new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControl(this.nodes, [_angular_forms__WEBPACK_IMPORTED_MODULE_9__.Validators.required]),
             isLive: new _angular_forms__WEBPACK_IMPORTED_MODULE_9__.FormControl(this.isLive, [_angular_forms__WEBPACK_IMPORTED_MODULE_9__.Validators.required])
         });
