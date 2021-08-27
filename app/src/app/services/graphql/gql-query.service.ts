@@ -286,7 +286,7 @@ export class GqlQueryService {
   getLoggingNodes(variables={}){
     return this.basicFilteredQuery(QueryQL.Logging.NodesByVehicleId, variables)
     .pipe(map((response:any)=>{
-      return response.data.vehicleLogNodeTypes.nodes
+      return response.data.vehicleNodes.nodes
     }))
   }
 

@@ -133,7 +133,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         this.isScrollDataLoading = false
         if(!response.length){
           this.noResultsNotification();
-          return
         }
 
         this.updateTable({data:response, action})    
@@ -262,7 +261,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   private nodeSubscriptionHandler(response:any, isSavedForm:any){
-    this.nodes = response.map((result:any)=>result.nodeType)
+    this.nodes = response.map((result:any)=>result.node)
     if(!isSavedForm 
       && this.nodes.length 
       && this.fgLoggingFilter.controls.logType.value.indexOf( "logging") > -1){

@@ -151,3 +151,27 @@ export const sqlInsertVehicleTopic = async (vehicle_id, topic_id)=>{
 
     return null
 }
+
+export const sqlInsertVehicleNodeFromLogs = async (vehicle_id, logs) =>{
+    try{
+        const result = await client.query(
+            `  INSERT INTO vehicles.vehicle_nodes (node, vehicle_id)
+                SELECT
+                    t.value->'msg'->>'name'
+                    , $2                    
+                FROM  jsonb_array_elements($1::jsonb) WITH ordinality AS t(value, idx)
+                
+                RETURNING id
+            `,
+            [
+            JSON.stringify(logs)
+            , vehicle_id
+            ]
+        )
+
+        return result
+    } catch(e){
+        console.log("VEHICLE VEHICLE NODE INSERT ERROR: ", e.message)
+        console.log("VEHICLE VEHICLE NODE INSERT STACK: ", e.stack)
+    }
+}

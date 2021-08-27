@@ -1,5 +1,5 @@
 import {formatDateTime} from '../_utils'
-import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
+import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic, sqlInsertVehicleNodeFromLogs} from '../vehicles'
 import { sqlInsertTopic } from '../topics'
 const { client, pool } = require("../../connection.js")
 
@@ -9,7 +9,7 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
         return;
     }
 
-    try{
+
 
         cb(null, "Data Recieved" )
 
@@ -17,57 +17,56 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
         const vehicle = await sqlInsertVehicle(data[0].vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
-
+        const vehicleNode = await sqlInsertVehicleNodeFromLogs(vehicle.rows[0].id, data)
+    try{    
         const queryResult = await client.query(`
-        WITH ins_log_message_stamp AS (
-            INSERT INTO logging.vehicle_log_message_stamps
-            (sec, nanosec)
-            select (s.value->'msg'->'stamp'->>'sec')::int
-                   , (s.value->'msg'->'stamp'->>'nanosec')::int
-            from jsonb_array_elements($1::jsonb) s
-               
-            RETURNING id
-           ), 
-           
-           ins_message AS (
+            WITH ins_log_message_stamp AS (
+                INSERT INTO logging.vehicle_log_message_stamps
+                (sec, nanosec)
+                select (s.value->'msg'->'stamp'->>'sec')::int
+                    , (s.value->'msg'->'stamp'->>'nanosec')::int
+                from jsonb_array_elements($1::jsonb) s
+                
+                RETURNING id
+            ), 
+            
+            ins_message AS (
                 INSERT INTO logging.vehicle_log_messages
                 ( stamp_id, level, name, msg, file, function, line)
                 SELECT
-                    (SELECT id FROM ins_log_message_stamp 
-                       WHERE id = 
-                       (SELECT id FROM ins_log_message_stamp 
-                       ORDER BY id LIMIT 1 OFFSET idx-1) 
-                   )
-                  , (t.value->'msg'->>'level')::int
-                  , t.value->'msg'->>'name'
-                  , t.value->'msg'->>'msg'
-                  , t.value->'msg'->>'file'
-                  , t.value->'msg'->>'function'
-                  , (t.value->'msg'->>'line')::int
-                  
-               FROM  jsonb_array_elements($1::jsonb) WITH ordinality AS t(value, idx)
-               
-               RETURNING id
-            )             
-             
-            INSERT INTO  logging.vehicle_logs (
-                 message_id
-                 , vehicle_id
-                 , topic_id
-                 , readingat )
-                 SELECT  
-                    (SELECT id FROM ins_message 
-                       WHERE id = 
-                       (SELECT id FROM ins_message 
-                        ORDER BY id  LIMIT 1  OFFSET idx-1) 
+                        (SELECT id FROM ins_log_message_stamp 
+                        WHERE id = 
+                        (SELECT id FROM ins_log_message_stamp 
+                        ORDER BY id LIMIT 1 OFFSET idx-1) 
                     )
-                    , $2
-                    , $3
-                    , to_timestamp(((i.value->>'timestamp')::decimal)/1000000000)
-             FROM  jsonb_array_elements($1::jsonb) WITH ordinality AS i(value, idx)
+                    , (t.value->'msg'->>'level')::int
+                    , t.value->'msg'->>'name'
+                    , t.value->'msg'->>'msg'
+                    , t.value->'msg'->>'file'
+                    , t.value->'msg'->>'function'
+                    , (t.value->'msg'->>'line')::int
+                FROM  jsonb_array_elements($1::jsonb) WITH ordinality AS t(value, idx)
+                
+                RETURNING id
+            )
+                
+                INSERT INTO  logging.vehicle_logs (
+                    message_id
+                    , vehicle_id
+                    , topic_id
+                    , readingat )
+                    SELECT  
+                        (SELECT id FROM ins_message 
+                        WHERE id = 
+                        (SELECT id FROM ins_message 
+                            ORDER BY id  LIMIT 1  OFFSET idx-1) 
+                        )
+                        , $2
+                        , $3
+                        , to_timestamp(((i.value->>'timestamp')::decimal)/1000000000)
+                FROM  jsonb_array_elements($1::jsonb) WITH ordinality AS i(value, idx)
 
-             RETURNING id
-           
+                RETURNING id
         `,[
             JSON.stringify(data)
             , vehicle.rows[0].id
@@ -75,11 +74,13 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
             // , formatDateTime(data.timestamp)
         ])
 
+
+
         return queryResult
     }catch(e){
         console.log("INSERT VEHICLE LOG ERROR MESSAGE: ", e.message)
         console.log("INSERT VEHICLE LOG ERROR STACK: ", e.stack)
         cb(e)
         return null
-    }
+    } 
 }

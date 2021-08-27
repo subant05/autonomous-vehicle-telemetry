@@ -1163,11 +1163,10 @@ __webpack_require__.r(__webpack_exports__);
 
 const vehicleLogNodeTypes = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 query LoggingNodes($vehicleId:BigInt){
-	vehicleLogNodeTypes(orderBy:NODE_TYPE_ASC condition:{vehicleId:$vehicleId}){
+  vehicleNodes(orderBy:NODE_ASC condition:{vehicleId:$vehicleId}){
     nodes{
-      nodeType
+      node
       vehicleId
-      vehicleName
     }
   }
 }
@@ -8042,7 +8041,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             this.isScrollDataLoading = false;
             if (!response.length) {
                 this.noResultsNotification();
-                return;
             }
             this.updateTable({ data: response, action });
         });
@@ -8158,7 +8156,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             this.initiateLiveSubscriptions();
     }
     nodeSubscriptionHandler(response, isSavedForm) {
-        this.nodes = response.map((result) => result.nodeType);
+        this.nodes = response.map((result) => result.node);
         if (!isSavedForm
             && this.nodes.length
             && this.fgLoggingFilter.controls.logType.value.indexOf("logging") > -1) {
@@ -9592,7 +9590,7 @@ class GqlQueryService {
     getLoggingNodes(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Logging.NodesByVehicleId, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
-            return response.data.vehicleLogNodeTypes.nodes;
+            return response.data.vehicleNodes.nodes;
         }));
     }
     getTopicsByCategoryVehicleId(variables = {}) {
