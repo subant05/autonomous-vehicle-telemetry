@@ -7480,11 +7480,11 @@ class VehicleImagesComponent {
             this.fgImageFilter = this.filterService.getFilterState() || new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormGroup({
                 startDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControl(this.startDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__.Validators.required]),
                 endDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControl(this.endDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__.Validators.required]),
-                topics: new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControl(null, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__.Validators.required]),
+                topics: new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControl(this.topics[0].name, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__.Validators.required]),
                 isLive: new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControl(false, [_angular_forms__WEBPACK_IMPORTED_MODULE_5__.Validators.required])
             });
-            if (this.filterService.getFilterState())
-                this.onSubmit();
+            // if(this.filterService.getFilterState())
+            this.onSubmit();
         });
     }
     onTopicChange() {
@@ -8159,13 +8159,14 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         if (this.fgLoggingFilter.value.isLive)
             this.initiateLiveSubscriptions();
     }
-    nodeSubscriptionHandler(response) {
-        const savedForm = this.filterService.getFilterState();
+    nodeSubscriptionHandler(response, isSavedForm) {
         this.nodes = response.map((result) => result.nodeType);
-        this.setupFilter(savedForm);
-        this.loadData(false, !savedForm);
-        this.setupInfiniteScroll();
-        this.setupLiveSubscription();
+        if (!isSavedForm) {
+            {
+                this.fgLoggingFilter.controls.nodes.patchValue(this.nodes);
+                this.loadData(false, !isSavedForm);
+            }
+        }
     }
     isFormValid() {
         return (this.fgLoggingFilter.valid
@@ -8180,9 +8181,16 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             this.initiateLiveSubscriptions();
     }
     ngOnInit() {
+        const savedForm = this.filterService.getFilterState();
         this.nodesSubscription = this.graphQLQuery
             .getLoggingNodes({ vehicleId: this.vehicleId })
-            .subscribe((response) => this.nodeSubscriptionHandler(response));
+            .subscribe((response) => {
+            this.nodeSubscriptionHandler(response, savedForm);
+        });
+        this.setupFilter(savedForm);
+        this.loadData(false, !savedForm);
+        this.setupInfiniteScroll();
+        this.setupLiveSubscription();
     }
     ngOnDestroy() {
         var _a, _b, _c, _d;

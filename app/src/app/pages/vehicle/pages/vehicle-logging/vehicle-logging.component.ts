@@ -256,14 +256,13 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.initiateLiveSubscriptions()
   }
 
-  private nodeSubscriptionHandler(response:any){
-    const savedForm = this.filterService.getFilterState()
-
+  private nodeSubscriptionHandler(response:any, isSavedForm:any){
     this.nodes = response.map((result:any)=>result.nodeType)
-    this.setupFilter(savedForm)
-    this.loadData(false, !savedForm)
-    this.setupInfiniteScroll()
-    this.setupLiveSubscription()
+    if(!isSavedForm){{
+      this.fgLoggingFilter.controls.nodes.patchValue( this.nodes)
+      this.loadData(false, !isSavedForm)
+     }
+    }
   }
 
   isFormValid(){
@@ -283,9 +282,16 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
   
   ngOnInit(): void {
+    const savedForm = this.filterService.getFilterState()
     this.nodesSubscription = this.graphQLQuery
     .getLoggingNodes({ vehicleId:this.vehicleId})
-    .subscribe((response:any)=>this.nodeSubscriptionHandler(response))
+    .subscribe((response:any)=>{
+      this.nodeSubscriptionHandler(response, savedForm)
+    })
+    this.setupFilter(savedForm)
+    this.loadData(false, !savedForm)
+    this.setupInfiniteScroll()
+    this.setupLiveSubscription()
   }
 
   ngOnDestroy():void {

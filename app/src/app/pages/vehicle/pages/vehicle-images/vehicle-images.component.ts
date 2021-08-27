@@ -69,15 +69,16 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
       })
       .subscribe((response:any)=>{
         this.topics = response
+
         this.fgImageFilter =  this.filterService.getFilterState() || new FormGroup({
           startDateTime: new FormControl(this.startDateTime,[Validators.required]),
           endDateTime: new FormControl(this.endDateTime,[Validators.required]),
-          topics: new FormControl(null,[Validators.required]),
+          topics: new FormControl(this.topics[0].name,[Validators.required]),
           isLive: new FormControl(false,[Validators.required])
         })
 
-        if(this.filterService.getFilterState())
-          this.onSubmit()
+        // if(this.filterService.getFilterState())
+        this.onSubmit()
       })
   }
 
