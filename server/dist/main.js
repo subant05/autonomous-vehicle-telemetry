@@ -7940,11 +7940,7 @@ function VehicleLoggingComponent_div_6_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵproperty"]("matRowDefColumns", ctx_r1.columns);
 } }
-function VehicleLoggingComponent_ng_template_7_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtext"](1, " No Data ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
-} }
+function VehicleLoggingComponent_ng_template_7_Template(rf, ctx) { }
 function VehicleLoggingComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](0, "div");
     _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelement"](1, "mat-progress-bar", 46);
@@ -8027,6 +8023,8 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             .getCurrentLogsByVehicleId(variables)
             .subscribe((response) => {
             this.isScrollDataLoading = false;
+            if (!response.length)
+                return;
             this.updateTable({ data: response, action: "replace" });
             this.fgLoggingFilter
                 .controls.startDateTime
@@ -8161,7 +8159,9 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
     }
     nodeSubscriptionHandler(response, isSavedForm) {
         this.nodes = response.map((result) => result.nodeType);
-        if (!isSavedForm && this.nodes.length) {
+        if (!isSavedForm
+            && this.nodes.length
+            && this.fgLoggingFilter.controls.logType.value.indexOf("logging") > -1) {
             debugger;
             this.isScrollDataLoading = true;
             this.fgLoggingFilter.controls.nodes.patchValue(this.nodes);
@@ -8324,7 +8324,7 @@ VehicleLoggingComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MO
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementStart"](5, "div", 4);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](6, VehicleLoggingComponent_div_6_Template, 19, 3, "div", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](7, VehicleLoggingComponent_ng_template_7_Template, 2, 0, "ng-template", null, 6, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](7, VehicleLoggingComponent_ng_template_7_Template, 0, 0, "ng-template", null, 6, _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplateRefExtractor"]);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵtemplate"](9, VehicleLoggingComponent_div_9_Template, 2, 0, "div", 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_8__["ɵɵelementEnd"]();

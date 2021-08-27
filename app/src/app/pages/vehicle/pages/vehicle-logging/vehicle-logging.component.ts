@@ -102,10 +102,15 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   private initialDataLoad(variables:any){
+
     this.initialDataLoadSubscription = this.graphQLQuery
       .getCurrentLogsByVehicleId(variables)
       .subscribe((response:any)=>{
         this.isScrollDataLoading = false
+
+        if(!response.length)
+          return;
+
         this.updateTable({data:response, action:"replace"})
         this.fgLoggingFilter
           .controls.startDateTime
@@ -258,11 +263,13 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
 
   private nodeSubscriptionHandler(response:any, isSavedForm:any){
     this.nodes = response.map((result:any)=>result.nodeType)
-    if(!isSavedForm && this.nodes.length){
-      debugger;
-      this.isScrollDataLoading = true
-      this.fgLoggingFilter.controls.nodes.patchValue( this.nodes)
-      this.loadData(false, !isSavedForm)
+    if(!isSavedForm 
+      && this.nodes.length 
+      && this.fgLoggingFilter.controls.logType.value.indexOf( "logging") > -1){
+        debugger;
+        this.isScrollDataLoading = true
+        this.fgLoggingFilter.controls.nodes.patchValue( this.nodes)
+        this.loadData(false, !isSavedForm)
     }
   }
 
