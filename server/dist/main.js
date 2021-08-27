@@ -8162,10 +8162,9 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
     nodeSubscriptionHandler(response, isSavedForm) {
         this.nodes = response.map((result) => result.nodeType);
         if (!isSavedForm) {
-            {
-                this.fgLoggingFilter.controls.nodes.patchValue(this.nodes);
-                this.loadData(false, !isSavedForm);
-            }
+            this.isScrollDataLoading = true;
+            this.fgLoggingFilter.controls.nodes.patchValue(this.nodes);
+            this.loadData(false, !isSavedForm);
         }
     }
     isFormValid() {
