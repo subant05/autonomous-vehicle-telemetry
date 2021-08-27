@@ -21,9 +21,7 @@
         <div class="image__form--field" >
             <mat-form-field appearance="fill">
                 <mat-label>Image Topics</mat-label>
-                <mat-select formControlName="topics"
-                    (selectionChange)="onTopicChange()"
-                >
+                <mat-select formControlName="topics">
                     <mat-option *ngFor="let topic of topics"
                         [value]="topic.name">
                         {{topic.name}}
@@ -80,15 +78,14 @@
             </div>
         </div>
     </div>
-    <mat-paginator 
-        [length]="pagesLength"
-        [pageSize]="pageSize"
-        [pageSizeOptions] = "pageSizeOptions"
-        (page)="getPage($event)">
-    </mat-paginator>
 </div>
 
 <ng-template #loader>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div *ngIf="!topics.length">
+        There are no images associated with this vehicle
+    </div>
+    <div *ngIf="!imagesLoaded && topics.length">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
 </ng-template>
  

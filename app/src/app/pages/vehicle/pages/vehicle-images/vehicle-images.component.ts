@@ -4,6 +4,7 @@ import {ActivatedRoute, Event} from '@angular/router'
 import { Subscription } from 'rxjs';
 import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
 import {VehicleImagesFilterService} from "./filter.service"
+import {ScrollService} from 'src/app/services/layout/scroll.service'
 import moment from 'moment';
 import {
   MatSnackBar,
@@ -21,6 +22,8 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   private imageQuery : Subscription | null = null;
   private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  private infiniteScrollSubscription: Subscription | null = null
+  private timeFormat = 'YYYY-MM-DDTHH:mm:ss'
 
   vehicleId: string=""
   startDateTime:string = "" 
@@ -28,17 +31,18 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   fgImageFilter: FormGroup = new FormGroup({})
   topics: {name:any, id:any}[] =  []
   selectedTopic :string = ""
-  pageSize:number = 1
-  pageSizeOptions: number[] = [1, 10, 20]
-  pagesLength: number = 0
+  pageSize:number = 10
+  pageSizeOptions: number[] = [ 10, 20, 40]
   cursor: number = 0;
   images: any[]= []
+  imagesLoaded:boolean = false
 
   constructor(
     private route: ActivatedRoute
     , private gqlQuery: GqlQueryService
     , private filterService:VehicleImagesFilterService
     , private _snackBar: MatSnackBar
+    , private scrollService: ScrollService
   ) { 
       this.formatTimestampForInputs()
     }
@@ -57,6 +61,15 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
    });
   }
 
+  private setupInfiniteScroll(){
+    this.infiniteScrollSubscription = this.scrollService.contentScroll.subscribe((scrolled:any)=>{
+      if(scrolled){
+        this.cursor = this.images.length
+        this.onSubmit(scrolled)
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.vehicleId = (this.route.parent as any).snapshot.params.id
 
@@ -68,8 +81,10 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
         , category:"images"
       })
       .subscribe((response:any)=>{
-        this.topics = response
+        // if(!response.length)
+        //   return
 
+        this.topics = response
         this.fgImageFilter =  this.filterService.getFilterState() || new FormGroup({
           startDateTime: new FormControl(this.startDateTime,[Validators.required]),
           endDateTime: new FormControl(this.endDateTime,[Validators.required]),
@@ -79,15 +94,12 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
 
         // if(this.filterService.getFilterState())
         this.onSubmit()
+        this.setupInfiniteScroll()
       })
   }
 
-  onTopicChange(){
-  }
-  onLiveToggle(event:any){
-
-  }
-  onSubmit(){
+  onSubmit(scrolled?:any){
+    this.imagesLoaded = false
     if(!this.fgImageFilter.valid)
       return;
       
@@ -105,44 +117,81 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
           this.imageQuery = this
             .gqlQuery.getObjectDetectionImages(variales)
             .subscribe((response:any)=>{
+              this.imagesLoaded = true
               if(!response.nodes.length){
                 this.noResultsNotification()
+                if(!scrolled)
+                  this.images = []
                 return
               }
 
-              this.pagesLength = response.totalCount
-              this.images = response.nodes
+              if(scrolled)
+                this.images = this.images.concat(response.nodes)
+              else 
+                this.images = response.nodes
             })
         break;
       default:
+        if(!this.filterService.getFilterState()){
+          this.imageQuery = this
+            .gqlQuery.getLatestImagePreview(variales)
+            .subscribe((response:any)=>{
+              this.imagesLoaded = true
+              if(!response || !response.cameraData.nodes.length){
+                this.noResultsNotification()
+                if(!scrolled)
+                  this.images = []
+              }
+
+              const results = response.cameraData.nodes.map((item:any)=>item.msg)
+
+              const startTime = results[results.length-1] ? results[results.length-1].header.readingat : new Date()
+              this.fgImageFilter
+                .controls.startDateTime
+                .patchValue(
+                  moment(startTime).subtract(2,'day')
+                  .format(this.timeFormat)
+                )
+              this.fgImageFilter
+                .controls.endDateTime
+                .patchValue(
+                  moment().format(this.timeFormat)
+                )
+
+              if(scrolled)
+                this.images = this.images.concat(results)
+              else 
+                this.images = results
+
+            })
+        } else
           this.imageQuery = this
             .gqlQuery
             .getImagePreview(variales)
             .subscribe((response:any)=>{
-              this.pagesLength = response.totalCount
               if(!response || !response.cameraData.nodes.length){
                 this.noResultsNotification()
+                if(!scrolled)
+                  this.images = []
                 return
               }
 
-              this.images = response.cameraData.nodes.map((item:any)=>item.msg)
+              const results = response.cameraData.nodes.map((item:any)=>item.msg)
+              
+              if(scrolled)
+                this.images = this.images.concat(results)
+              else 
+                this.images = results
             })
         break;
     }
-  }
-
-
-
-  getPage(event:any){
-    this.cursor =   event.pageIndex
-    this.pageSize = event.pageSize
-    this.onSubmit()
   }
 
   ngOnDestroy(){
     this.filterService.saveFilterState(this.fgImageFilter)
     this.imageQuery?.unsubscribe()
     this.topicsSubscription?.unsubscribe()
+    this.infiniteScrollSubscription?.unsubscribe()
   }
 
 

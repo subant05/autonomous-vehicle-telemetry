@@ -114,7 +114,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         this.fgLoggingFilter
           .controls.startDateTime
           .patchValue(
-            moment(response[0].readingat).subtract(2,'day')
+            moment(response[response.length-1].readingat).subtract(2,'day')
             .format(this.timeFormat)
           )
         this.fgLoggingFilter
@@ -264,7 +264,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     if(!isSavedForm 
       && this.nodes.length 
       && this.fgLoggingFilter.controls.logType.value.indexOf( "logging") > -1){
-        debugger;
         this.isScrollDataLoading = true
         this.fgLoggingFilter.controls.nodes.patchValue( this.nodes)
         this.loadData(false, !isSavedForm)

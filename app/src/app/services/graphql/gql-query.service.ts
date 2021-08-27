@@ -124,6 +124,9 @@ export class GqlQueryService {
           return []
 
         return response.data.cameraMessageHeaders.nodes.filter((msg:any, index:number, array:any[]) =>{
+          if(!msg.cameraMessagesByHeaderId.nodes.length)
+            return false
+
           const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
           
           return !!segmentation && segmentation.msg.image.encoding === "mono8"
@@ -138,6 +141,28 @@ export class GqlQueryService {
 
   getImagePreview(variables:any){
     return this.basicFilteredQuery(QueryQL.Images.PreviewByVehicleIdTopicName, variables)
+    .pipe(map((response:any)=>{
+      const cameraData = response.data.topics.nodes[0].cameras
+      const totalCount = cameraData.totalCount
+      const images = cameraData.nodes.map((info:any)=>{
+        const image =  {
+            ...info.msg.image
+            , timestamp: new Date(info.readingat).toUTCString()
+            , vehicle: info.vehicle.name
+            , id: info.id
+            , imageId: uuid()
+            , headerId : info.msg.header.headerId
+            , meta : info.msg.cameraMeta
+          }
+        
+        return image
+      })
+      return {cameraData, totalCount, images }
+    }))
+  }
+
+  getLatestImagePreview(variables:any){
+    return this.basicFilteredQuery(QueryQL.Images.LatestPreviewVehicleIdByTopicName, variables)
     .pipe(map((response:any)=>{
       const cameraData = response.data.topics.nodes[0].cameras
       const totalCount = cameraData.totalCount
@@ -311,7 +336,6 @@ export class GqlQueryService {
       
       return [...byCategory, ...byList]
     }))
-
   }
 
   getPreviewImagesByTopicNameVehicleId(variables={}){
