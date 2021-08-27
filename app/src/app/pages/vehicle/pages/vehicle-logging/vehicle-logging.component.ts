@@ -258,7 +258,8 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
 
   private nodeSubscriptionHandler(response:any, isSavedForm:any){
     this.nodes = response.map((result:any)=>result.nodeType)
-    if(!isSavedForm){
+    if(!isSavedForm && this.nodes.length){
+      debugger;
       this.isScrollDataLoading = true
       this.fgLoggingFilter.controls.nodes.patchValue( this.nodes)
       this.loadData(false, !isSavedForm)
