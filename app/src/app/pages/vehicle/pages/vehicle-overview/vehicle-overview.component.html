@@ -71,13 +71,13 @@
                 <app-starfire  *ngIf="isVehicleOnline"
                     playback="live" 
                     [showTractor]=true 
-                    [zoom]=20
+                    [zoom]=16
                     [vehicleId]="vehicleId"
                     ></app-starfire>
                 <app-starfire  *ngIf="!isVehicleOnline"
                     playback="static" 
                     [showTractor]=true 
-                    [zoom]=20
+                    [zoom]=16
                     [vehicleId]="vehicleId"
                     [coordinates]="vehiclesLastCoordinates"
                     [lastPosition]="true"
@@ -88,7 +88,7 @@
                     <app-starfire  *ngIf="!isVehicleOnline"
                         playback="static" 
                         [showTractor]=true 
-                        [zoom]=20
+                        [zoom]=16
                         [vehicleId]="vehicleId"
                         [lastPosition]="true"
                     ></app-starfire>

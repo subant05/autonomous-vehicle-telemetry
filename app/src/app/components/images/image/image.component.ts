@@ -30,7 +30,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
     , public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.imageUrl = "/api/vehicle/images//" + this.imageId
+    this.imageUrl = "/api/vehicle/images/" + this.imageId
   }
 
   ngAfterViewInit(){
@@ -47,6 +47,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked {
           width:this.width,
           height: this.height,
           imageUrl: this.imageUrl,
+          imageId: this.imageId
           // segmentation:{
           //   image:this.data
           //   , segmentation: this.segmentationData

@@ -3672,7 +3672,7 @@ class ImageComponent {
         this.label = "";
     }
     ngOnInit() {
-        this.imageUrl = "/api/vehicle/images//" + this.imageId;
+        this.imageUrl = "/api/vehicle/images/" + this.imageId;
     }
     ngAfterViewInit() {
     }
@@ -3686,6 +3686,7 @@ class ImageComponent {
                 width: this.width,
                 height: this.height,
                 imageUrl: this.imageUrl,
+                imageId: this.imageId
                 // segmentation:{
                 //   image:this.data
                 //   , segmentation: this.segmentationData
@@ -4255,7 +4256,7 @@ function ObjectDetectionDetailComponent_div_8_div_3_Template(rf, ctx) { if (rf &
 } if (rf & 2) {
     const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("showTractor", true)("zoom", 20)("coordinates", ctx_r3.coordinates)("vehicleId", ctx_r3.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("showTractor", true)("zoom", 16)("coordinates", ctx_r3.coordinates)("vehicleId", ctx_r3.vehicleId);
 } }
 function ObjectDetectionDetailComponent_div_8_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div");
@@ -5807,7 +5808,7 @@ function StopImagesComponent_div_2_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("showTractor", true)("zoom", 20)("coordinates", ctx_r1.coordinates)("vehicleId", ctx_r1.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("showTractor", true)("zoom", 16)("coordinates", ctx_r1.coordinates)("vehicleId", ctx_r1.vehicleId);
 } }
 function StopImagesComponent_ng_template_5_mat_icon_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵelementStart"](0, "mat-icon", 9);
@@ -7110,7 +7111,7 @@ function VehicleGeolocationComponent_div_1_div_1_Template(rf, ctx) { if (rf & 1)
 } if (rf & 2) {
     const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("showTractor", true)("zoom", 20)("vehicleId", ctx_r7.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("showTractor", true)("zoom", 16)("vehicleId", ctx_r7.vehicleId);
 } }
 function VehicleGeolocationComponent_div_1_ng_template_2_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 17);
@@ -7124,7 +7125,7 @@ function VehicleGeolocationComponent_div_1_ng_template_2_div_0_Template(rf, ctx)
 } if (rf & 2) {
     const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("startDateTime", ctx_r10.startDateTime)("endDateTime", ctx_r10.endDateTime)("showTractor", true)("zoom", 20)("vehicleId", ctx_r10.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("startDateTime", ctx_r10.startDateTime)("endDateTime", ctx_r10.endDateTime)("showTractor", true)("zoom", 16)("vehicleId", ctx_r10.vehicleId);
 } }
 function VehicleGeolocationComponent_div_1_ng_template_2_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 17);
@@ -7138,7 +7139,7 @@ function VehicleGeolocationComponent_div_1_ng_template_2_div_1_Template(rf, ctx)
 } if (rf & 2) {
     const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("startDateTime", ctx_r11.startDateTime)("endDateTime", ctx_r11.endDateTime)("showTractor", true)("zoom", 20)("vehicleId", ctx_r11.vehicleId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("startDateTime", ctx_r11.startDateTime)("endDateTime", ctx_r11.endDateTime)("showTractor", true)("zoom", 16)("vehicleId", ctx_r11.vehicleId);
 } }
 function VehicleGeolocationComponent_div_1_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](0, VehicleGeolocationComponent_div_1_ng_template_2_div_0_Template, 5, 5, "div", 21);
@@ -9402,14 +9403,14 @@ class GeolocationService {
         };
     }
     getStaticMap(config) {
-        const { container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 15, lineColor, lineSize } = config;
+        const { container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 10, lineColor, lineSize } = config;
         const map = this.setupMap(container, center, zoom);
         map.on("load", () => {
             this.onLoadStaticMapHandler({ container, coordinates, center, showTractor, lineColor, lineSize }, map);
         });
     }
     getReplayMap(config) {
-        const { container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 20, lineColor, lineSize } = config;
+        const { container = "map", coordinates = [[]], center = coordinates[0], showTractor = false, zoom = 10, lineColor, lineSize } = config;
         const map = this.setupMap(container, center, zoom);
         map.on("load", () => {
             const geoJson = this.getFeaturesGEOJSON({
@@ -9452,7 +9453,7 @@ class GeolocationService {
         });
     }
     getLiveMap(config) {
-        const { container = "map", coordinates = [[]], showTractor = false, center, zoom = 20, lineColor, lineSize } = config;
+        const { container = "map", coordinates = [[]], showTractor = false, center, zoom = 10, lineColor, lineSize } = config;
         const map = this.setupMap(container, center, zoom);
         return new Promise((resolve, reject) => {
             map.on("load", () => {

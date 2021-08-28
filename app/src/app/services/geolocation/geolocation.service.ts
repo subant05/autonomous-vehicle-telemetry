@@ -142,7 +142,7 @@ export class GeolocationService {
             , coordinates = [[]]
             , center = coordinates[0]
             , showTractor = false
-            , zoom = 15
+            , zoom = 10
             , lineColor
             , lineSize 
           } = config
@@ -160,7 +160,7 @@ export class GeolocationService {
       , coordinates = [[]]
       , center = coordinates[0]
       , showTractor = false
-      , zoom = 20
+      , zoom = 10
       , lineColor
       , lineSize 
     } = config
@@ -218,7 +218,7 @@ export class GeolocationService {
       , coordinates = [[]]
       , showTractor = false
       , center
-      , zoom = 20
+      , zoom = 10
       , lineColor
       , lineSize 
     } = config
