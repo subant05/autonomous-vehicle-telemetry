@@ -21,12 +21,39 @@
                     [imageHeaderId]="data.headerId"></app-segmentation-image>
             </div>
             <img [src]="data.imageUrl" [id]=id [class]="class" [ngClass]="{segmented: loadedSegmentations && segmentationToggle.checked}">
-            
-            <!-- <img [src]="data.imageUrl" [id]=id [class]="class" > -->
 
+            <!-- <img [src]="data.imageUrl" [id]=id [class]="class" > -->
         </div>
     </div>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="modal-footer">
+    <mat-expansion-panel 
+        class="meta"
+        hideToggle *ngIf="meta">
+        <mat-expansion-panel-header>
+        <mat-panel-title>
+            Meta Data
+        </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul>
+            <li><b>Date:</b> {{meta.header.readingat}}</li>
+            <li><b>Camera:</b> {{meta.cameraName}}</li>
+            <li><b>Encoding:</b> {{meta.encoding}}</li>
+            <li><b>Height:</b> {{meta.height}}</li>
+            <li><b>Width:</b> {{meta.width}}</li>
+            <li><b>Left Exposure:</b> {{meta.leftExposure}}</li>
+            <li><b>Right Exposure:</b> {{meta.rightExposure}}</li>
+            <li><b>Left Gain:</b> {{meta.leftGain}}</li>
+            <li><b>Right Gain:</b> {{meta.rightGain}}</li>
+            <li><b>Descriptor ID:</b>{{meta.header.headerId}}</li>
+        </ul>
+    </mat-expansion-panel>
+    <mat-paginator 
+        *ngIf="data.pagination"
+        [length]="data.pagination.pagesLength"
+        [pageSize]="data.pagination.pageSize"
+        [pageSizeOptions] = "data.pagination.pageSizeOptions"
+        (page)="onPaginate($event)">
+    </mat-paginator>
     <button mat-button mat-dialog-close>Close</button>
   </mat-dialog-actions>

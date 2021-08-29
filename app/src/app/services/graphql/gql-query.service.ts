@@ -412,7 +412,26 @@ export class GqlQueryService {
 
       return logging
     }))
-     
   }
+
+  getImageMeta(variables={}){
+    return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
+    .pipe(map((response:any)=>{
+      if(!response.data.images.nodes.length)
+        return null;
+      const cameraData = response.data.images.nodes[0]
+      const cameraMetaData = cameraData.cameraMessages.nodes[0].cameraMeta
+      return { 
+        width:cameraData.width
+        , height: cameraData.height
+        , step: cameraData.step
+        , encoding: cameraData.encoding
+        , isBigendian: cameraData.isBigendian
+        , header: cameraData.cameraMessages.nodes[0].header
+        , ...cameraData.cameraMessages.nodes[0].cameraMeta
+      }
+    }))
+  }
+   
 
 }

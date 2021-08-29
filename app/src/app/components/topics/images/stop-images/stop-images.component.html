@@ -2,7 +2,8 @@
     *ngIf="image; else loader"
     [imageId]="image" 
     [label]="label" 
-    [headerId]="headerid">
+    [headerId]="headerid"
+    [subject]="objectDetectionSubject">
 </app-image>
 <hr/>
 <div class="map" *ngIf="coordinates[0].length">

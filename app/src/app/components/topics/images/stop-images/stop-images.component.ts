@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { TableUtil } from 'src/app/components/table/table-utils';
 import { subscribe } from 'graphql';
 import {PageEvent} from '@angular/material/paginator';
@@ -14,6 +14,7 @@ import {PageEvent} from '@angular/material/paginator';
 })
 export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy {
   objectQuery: Subscription | null = null
+  objectDetectionSubject =  new Subject<{type:string, data:any}>()
   stopImageQuery: Subscription[]  = []
   objectSubscription: Subscription | null = null
   pageSize: number = 1
@@ -27,6 +28,8 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
   latitude = 0
   longitude = 0
   coordinates: number[][] = [[]]
+  paginationInit = false
+
 
   @Input() vehicleId: number | string = ""
   @Input() live: boolean = false
@@ -48,6 +51,24 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       )
   }
 
+  private notifyPaginationChange(){
+    if(this.pagesLength)
+      this.objectDetectionSubject
+        .next({type:"pagination", data:{
+          pagesLength: this.pagesLength
+          , page: this.page
+          , pageSize: this.pageSize
+        }})
+  }
+
+  private notifyImageChange(){
+    this.objectDetectionSubject.next({type:"imageUpdated", data:{
+      image: this.image
+      , label: this.label
+      , headerId : this.headerid
+    }})
+  }
+
   private imageHandler(stopInfo:any){
     let counter = 0
     this.gqlQuery
@@ -60,6 +81,8 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
         this.image = response.image.id
         this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
         this.headerid = stopInfo.message.header.headerid
+        this.notifyPaginationChange()
+        this.notifyImageChange()
       })
   }
 
@@ -92,6 +115,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
 
         this.pagesLength = response.totalCount
         this.stopImageQuery = response.nodes.map((stopInfo:any)=>this.imageHandler(stopInfo))
+        this.notifyPaginationChange()
       })
   }
 
@@ -105,15 +129,15 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
             
           this.pagesLength++
 
-          if(this.page)
+          if(this.page){
             this.page++
-          else {
+            this.notifyPaginationChange()
+          } else {
             this.image = ""
             this.isImageLoaded = false
             this.updateObjectDetection(response)
             this.imageHandler(response)
           }
-
         })
       }
   }
@@ -129,11 +153,20 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       this.getImage()
       this.initiateLiveObjectDetection()
     }
+
+    this.objectDetectionSubject.subscribe((response:any)=>{
+      switch(response.type){
+        case "updateImage":
+          this.getCurrentImage({pageIndex: response.data.page, pageSize: response.data.pageSize})
+          break;
+        case "getPagination":
+          this.notifyPaginationChange()
+          break;
+      }
+    })
   }
 
-
-
-  getCurrentImage(event:PageEvent){
+  getCurrentImage(event:PageEvent | any){
     if( this.page !== event.pageIndex || event.pageSize !== this.pageSize ){
       this.page = event.pageIndex
       this.image=""
