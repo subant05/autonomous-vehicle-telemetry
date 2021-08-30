@@ -1,21 +1,21 @@
 img {
-    width:65vw;
+    width:100%;
     &.segmented{
         margin-top: calc(-50% + -5px);
 
     }
 
-    @media screen and (min-width:730px) {
-        width:75vw;
-    }
+    // @media screen and (min-width:730px) {
+    //     width:50vw;
+    // }
  }
 
  .segmentation {
-    width:65vw;
+    width:100%;
 
-    @media screen and (min-width:730px) {
-        width:75vw;
-    }
+    // @media screen and (min-width:730px) {
+    //     width:50vw;
+    // }
  }
 
  .meta {
