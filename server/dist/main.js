@@ -8672,7 +8672,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             case "VehicleStatus":
                 dialogRef = this.dialog.open(src_app_components_modals_vehicle_status_detail_vehicle_status_detail_component__WEBPACK_IMPORTED_MODULE_1__.VehicleStatusDetailComponent, {
                     data: {
-                        node: row.message.header.node,
+                        node: (row.message || row.statusMessage).header.node,
                         topic: row.topic.name,
                         alerts: row.alerts.nodes[0],
                         vehicleStatusDetails: row.vehicleStatusDetails.nodes

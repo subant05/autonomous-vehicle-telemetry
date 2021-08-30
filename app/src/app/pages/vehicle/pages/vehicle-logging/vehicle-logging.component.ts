@@ -351,7 +351,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       case "VehicleStatus":
           dialogRef = this.dialog.open(VehicleStatusDetailComponent, {
             data:{
-                 node: row.message.header.node
+                 node: (row.message || row.statusMessage).header.node
                 , topic: row.topic.name
                 , alerts: row.alerts.nodes[0]
                 , vehicleStatusDetails: row.vehicleStatusDetails.nodes
