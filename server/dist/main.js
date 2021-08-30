@@ -4799,16 +4799,26 @@ class ImageExpansionComponent {
                 this.data.imageId = response.data.image;
                 this.data.label = response.data.label;
                 this.data.headerId = response.data.headerId;
+                this.getMetaData();
                 break;
             case "geolocationUpdated":
+                // if(this.data.geolocation && this.data.geolocation.coordinates)
+                //   this.data.geolocation.coordinates = []
                 this.data.geolocation = Object.assign({}, response.data);
                 break;
             case "pagination":
-                if (this.data.geolocation && this.data.geolocation.coordinates)
-                    this.data.geolocation.coordinates = [];
                 this.data.pagination = response.data;
                 break;
         }
+    }
+    getMetaData() {
+        var _a;
+        (_a = this.metaDataSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        this.metaDataSubscription = this.graphQLQuery.getImageMeta({ imageId: this.data.imageId })
+            .subscribe((response) => {
+            if (response)
+                this.meta = response;
+        });
     }
     ngOnInit() {
         if (this.data.subject) {
@@ -4816,11 +4826,7 @@ class ImageExpansionComponent {
             this.data.subject.next({ type: "getPagination", data: null });
             this.data.subject.next({ type: "getGeolocation", data: null });
         }
-        this.metaDataSubscription = this.graphQLQuery.getImageMeta({ imageId: this.data.imageId })
-            .subscribe((response) => {
-            if (response)
-                this.meta = response;
-        });
+        this.getMetaData();
     }
     ngOnDestroy() {
         var _a, _b;

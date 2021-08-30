@@ -40,19 +40,29 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
         this.data.imageId = response.data.image
         this.data.label = response.data.label
         this.data.headerId = response.data.headerId
+        this.getMetaData()
         break;
       case "geolocationUpdated":
+        // if(this.data.geolocation && this.data.geolocation.coordinates)
+        //   this.data.geolocation.coordinates = []
         this.data.geolocation = {
           ...response.data
         }
         break;
       case "pagination":
-        if(this.data.geolocation && this.data.geolocation.coordinates)
-          this.data.geolocation.coordinates = []
-
         this.data.pagination = response.data
         break;
     }
+  }
+
+
+  private getMetaData(){
+    this.metaDataSubscription?.unsubscribe()
+    this.metaDataSubscription = this.graphQLQuery.getImageMeta({imageId: this.data.imageId})
+    .subscribe((response:any)=>{
+      if(response)
+        this.meta = response
+    })
   }
 
   ngOnInit(): void {
@@ -61,11 +71,7 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
       this.data.subject.next({type:"getPagination", data:null})
       this.data.subject.next({type:"getGeolocation", data:null})
     }
-    this.metaDataSubscription = this.graphQLQuery.getImageMeta({imageId: this.data.imageId})
-    .subscribe((response:any)=>{
-      if(response)
-        this.meta = response
-    })
+    this.getMetaData()
   }
 
   ngOnDestroy() :void{

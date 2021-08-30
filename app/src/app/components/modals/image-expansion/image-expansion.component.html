@@ -101,7 +101,8 @@
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                 </ng-template>
             </div>
-            <div class="map-wrapper" *ngIf="data && data.geolocation && data.geolocation.coordinates && data.geolocation.coordinates.length" >
+            <div class="map-wrapper" 
+                *ngIf="data && data.geolocation && data.geolocation.coordinates && data.geolocation.coordinates.length" >
                 <mat-expansion-panel 
                     [expanded]="false">
                     <mat-expansion-panel-header>
