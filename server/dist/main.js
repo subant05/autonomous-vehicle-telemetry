@@ -7916,11 +7916,11 @@ class VehicleImagesComponent {
             this.fgImageFilter = this.filterService.getFilterState(`images-${this.vehicleId}`) || new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormGroup({
                 startDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormControl(this.startDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required]),
                 endDateTime: new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormControl(this.endDateTime, [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required]),
-                topics: new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormControl(this.topics[0].name, [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required]),
+                topics: new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormControl(this.topics.length ? this.topics[0].name : null, [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required]),
                 isLive: new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormControl(false, [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required])
             });
-            // if(this.filterService.getFilterState())
-            this.onSubmit();
+            if (this.topics.length)
+                this.onSubmit();
             this.setupInfiniteScroll();
         });
     }
@@ -8504,8 +8504,13 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         else {
             if (scroll)
                 this.getDataLoad(variables, "concat");
-            else
+            else {
+                if (!variables.nodes.length && variables.logType.length === 1 && variables.logType.indexOf("logging") > -1) {
+                    this.isScrollDataLoading = false;
+                    return;
+                }
                 this.getDataLoad(variables, "replace");
+            }
         }
     }
     initiateLiveSubscriptions() {

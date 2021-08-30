@@ -84,23 +84,25 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
         // if(!response.length)
         //   return
 
+
         this.topics = response
         this.fgImageFilter =  this.filterService.getFilterState(`images-${this.vehicleId}`) || new FormGroup({
           startDateTime: new FormControl(this.startDateTime,[Validators.required]),
           endDateTime: new FormControl(this.endDateTime,[Validators.required]),
-          topics: new FormControl(this.topics[0].name,[Validators.required]),
+          topics: new FormControl(this.topics.length ? this.topics[0].name : null,[Validators.required]),
           isLive: new FormControl(false,[Validators.required])
         })
 
-        // if(this.filterService.getFilterState())
-        this.onSubmit()
+        if(this.topics.length)
+          this.onSubmit()
+
         this.setupInfiniteScroll()
       })
   }
 
   onSubmit(scrolled?:any){
     this.imagesLoaded = false
-    if(!this.fgImageFilter.valid)
+    if(!this.fgImageFilter.valid )
       return;
       
     const variales = {

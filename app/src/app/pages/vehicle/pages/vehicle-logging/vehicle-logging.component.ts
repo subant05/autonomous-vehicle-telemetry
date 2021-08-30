@@ -162,8 +162,13 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     } else {
       if(scroll)
         this.getDataLoad(variables, "concat")
-      else
+      else{
+        if(!variables.nodes.length && variables.logType.length === 1 && variables.logType.indexOf("logging") > -1 ){
+          this.isScrollDataLoading = false
+          return
+        }
         this.getDataLoad(variables, "replace")  
+      }
     }
   }
 
