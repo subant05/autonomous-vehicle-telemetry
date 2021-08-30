@@ -3,7 +3,7 @@ import {FormGroup, FormControl, Validators} from '@angular/forms'
 import {ActivatedRoute, Event} from '@angular/router'
 import { Subscription } from 'rxjs';
 import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
-import {VehicleImagesFilterService} from "./filter.service"
+import {FilterService} from 'src/app/services/form/filter.service'
 import {ScrollService} from 'src/app/services/layout/scroll.service'
 import moment from 'moment';
 import {
@@ -40,7 +40,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute
     , private gqlQuery: GqlQueryService
-    , private filterService:VehicleImagesFilterService
+    , private filterService:FilterService
     , private _snackBar: MatSnackBar
     , private scrollService: ScrollService
   ) { 
@@ -85,7 +85,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
         //   return
 
         this.topics = response
-        this.fgImageFilter =  this.filterService.getFilterState() || new FormGroup({
+        this.fgImageFilter =  this.filterService.getFilterState(`images-${this.vehicleId}`) || new FormGroup({
           startDateTime: new FormControl(this.startDateTime,[Validators.required]),
           endDateTime: new FormControl(this.endDateTime,[Validators.required]),
           topics: new FormControl(this.topics[0].name,[Validators.required]),
@@ -132,7 +132,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
             })
         break;
       default:
-        if(!this.filterService.getFilterState()){
+        if(!this.filterService.getFilterState(`images-${this.vehicleId}`)){
           this.imageQuery = this
             .gqlQuery.getLatestImagePreview(variales)
             .subscribe((response:any)=>{
@@ -188,7 +188,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.filterService.saveFilterState(this.fgImageFilter)
+    this.filterService.saveFilterState(`images-${this.vehicleId}`,this.fgImageFilter)
     this.imageQuery?.unsubscribe()
     this.topicsSubscription?.unsubscribe()
     this.infiniteScrollSubscription?.unsubscribe()

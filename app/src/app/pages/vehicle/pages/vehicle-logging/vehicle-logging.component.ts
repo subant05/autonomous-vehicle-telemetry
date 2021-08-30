@@ -9,7 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {VehicleStatusDetailComponent} from 'src/app/components/modals/vehicle-status-detail/vehicle-status-detail.component'
 import {ObjectDetectionDetailComponent} from 'src/app/components/modals/object-detection-detail/object-detection-detail.component'
 import {ScrollService} from 'src/app/services/layout/scroll.service'
-import {VehicleLoggingFilterService} from './filter.service'
+import {FilterService} from 'src/app/services/form/filter.service'
 import moment from "moment"
 import {
   MatSnackBar,
@@ -67,7 +67,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     , private route: ActivatedRoute 
     , public dialog: MatDialog
     , private scrollService: ScrollService
-    , private filterService: VehicleLoggingFilterService
+    , private filterService: FilterService
     , private _snackBar: MatSnackBar
   ) { 
     super()
@@ -291,7 +291,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
   
   ngOnInit(): void {
-    const savedForm = this.filterService.getFilterState()
+    const savedForm = this.filterService.getFilterState(`logging-${this.vehicleId}`)
     this.nodesSubscription = this.graphQLQuery
     .getLoggingNodes({ vehicleId:this.vehicleId})
     .subscribe((response:any)=>{
@@ -307,7 +307,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.logQuery?.unsubscribe()
     this.unsubscribeLiveSubscriptions()
     this.infiniteScrollSubscription?.unsubscribe()
-    this.filterService.saveFilterState(this.fgLoggingFilter)
+    this.filterService.saveFilterState(`logging-${this.vehicleId}`, this.fgLoggingFilter)
     this.nodesSubscription?.unsubscribe()
     this.initialDataLoadSubscription?.unsubscribe()
   }
