@@ -148,7 +148,7 @@ export class VehicleMissionStatsComponent implements OnInit {
       return `${0}`
 
     const support =  (+(this.missionStats.numTeleopQueries)*100) / parseFloat(this.getAreaDone() )
-    return support
+    return support.toFixed(2)
   }
 
   ngOnInit(): void {

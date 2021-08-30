@@ -20,16 +20,17 @@
                     (load)="onSegmentationLoad($event)"  
                     [imageHeaderId]="data.headerId"></app-segmentation-image>
             </div>
-            <img [src]="data.imageUrl" [id]=id [class]="class" [ngClass]="{segmented: loadedSegmentations && segmentationToggle.checked}">
-
-            <!-- <img [src]="data.imageUrl" [id]=id [class]="class" > -->
+            <img *ngIf="data.imageUrl; else image_loader" [src]="data.imageUrl" [id]=id [class]="class" [ngClass]="{segmented: loadedSegmentations && segmentationToggle.checked}">
+            <ng-template #image_loader>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </ng-template>
         </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="modal-footer">
     <mat-expansion-panel 
         class="meta"
-        hideToggle *ngIf="meta">
+        *ngIf="meta; else meta_loader">
         <mat-expansion-panel-header>
         <mat-panel-title>
             Meta Data
@@ -48,8 +49,12 @@
             <li><b>Descriptor ID:</b>{{meta.header.headerId}}</li>
         </ul>
     </mat-expansion-panel>
+    <ng-template #meta_loader>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </ng-template>
     <mat-paginator 
         *ngIf="data.pagination"
+        [pageIndex]="data.pagination.page"
         [length]="data.pagination.pagesLength"
         [pageSize]="data.pagination.pageSize"
         [pageSizeOptions] = "data.pagination.pageSizeOptions"
