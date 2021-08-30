@@ -14,20 +14,18 @@
 
     @media screen and (min-width:400px) {
         .stats{
-            width: 30%;
+            width: calc(33.3% - 10px);
 
             &.medium {
                 min-width: 175px;
             }
             &.medium-large {
                 min-width: 175px;
-                width:62%;
+                width: calc(66.6% - 10px);
             }
             &.large {
                 min-width: 300px;
-                width:100%;
-                margin-right:28px;
-            }
+                width: calc(100% - 10px);            }
         }
     }
 }
