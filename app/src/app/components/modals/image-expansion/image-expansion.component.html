@@ -39,19 +39,85 @@
                     <ul>
                         <li><b>Date:</b> {{meta.header.readingat}}</li>
                         <li><b>Camera:</b> {{meta.cameraName}}</li>
-                        <li><b>Encoding:</b> {{meta.encoding}}</li>
+                        <li><b>Serial Number:</b> {{meta.serialNumber}}</li>
+                        <li><b>Descriptor ID:</b>{{meta.header.headerId}}</li>
+                        <li><b>Node:</b>{{meta.header.node}}</li>
                         <li><b>Height:</b> {{meta.height}}</li>
                         <li><b>Width:</b> {{meta.width}}</li>
+                        <li><b>Encoding:</b> {{meta.encoding}}</li>
+                        <li><b>Step:</b> {{meta.step}}</li>
+                        <li><b>isBigendian:</b> {{meta.isBigendian}}</li>
                         <li><b>Left Exposure:</b> {{meta.leftExposure}}</li>
                         <li><b>Right Exposure:</b> {{meta.rightExposure}}</li>
                         <li><b>Left Gain:</b> {{meta.leftGain}}</li>
                         <li><b>Right Gain:</b> {{meta.rightGain}}</li>
-                        <li><b>Descriptor ID:</b>{{meta.header.headerId}}</li>
+                        <li><b>F:</b> {{meta.f.data}}</li>
+                        <li><b>Left Histogram - Full Histogram:</b> {{meta.leftHistogram.fullHistogram.data}}</li>
+                        <li><b>Left Histogram - Small Histogram:</b> {{meta.leftHistogram.smallHistogram.data}}</li>
+                        <li><b>Left Intrinsics - d:</b> {{meta.leftIntrinsics.d.data}}</li>
+                        <li><b>Left Intrinsics - k:</b> {{meta.leftIntrinsics.k.data}}</li>
+                        <li><b>Left Intrinsics - width:</b> {{meta.leftIntrinsics.width}}</li>
+                        <li><b>Left Intrinsics - height:</b> {{meta.leftIntrinsics.height}}</li>
+                        
+
+                        <li><b>Right Histogram - Full Histogram:</b> {{meta.rightHistogram.fullHistogram.data}}</li>
+                        <li><b>Right Histogram - Small Histogram:</b> {{meta.rightHistogram.smallHistogram.data}}</li>
+                        <li><b>Right Intrinsics - d:</b> {{meta.rightIntrinsics.d.data}}</li>
+                        <li><b>Right Intrinsics - k:</b> {{meta.rightIntrinsics.k.data}}</li>
+                        <li><b>Right Intrinsics - width:</b> {{meta.rightIntrinsics.width}}</li>
+                        <li><b>Right Intrinsics - height:</b> {{meta.rightIntrinsics.height}}</li>
+                        
+
+                        <li><b>Left ROI - doRectify:</b> {{meta.leftRoi.doRectify}}</li>
+                        <li><b>Left ROI - height:</b> {{meta.leftRoi.height}}</li>
+                        <li><b>Left ROI - width:</b> {{meta.leftRoi.width}}</li>
+                        <li><b>Left ROI - xOffset:</b> {{meta.leftRoi.xOffset}}</li>
+                        <li><b>Left ROI - yOffset:</b> {{meta.leftRoi.yOffset}}</li>
+
+
+                        <li><b>Right ROI - doRectify:</b> {{meta.rightRoi.doRectify}}</li>
+                        <li><b>Right ROI - height:</b> {{meta.rightRoi.height}}</li>
+                        <li><b>Right ROI - width:</b> {{meta.rightRoi.width}}</li>
+                        <li><b>Right ROI - xOffset:</b> {{meta.rightRoi.xOffset}}</li>
+                        <li><b>Right ROI - yOffset:</b> {{meta.rightRoi.yOffset}}</li>
+
+                        <li><b>E:</b> {{meta.e.data}}</li>
+                        <li><b>Extra:</b> {{meta.extra}}</li>
+                        <li><b>P1:</b> {{meta.p1.data}}</li>
+                        <li><b>P2:</b> {{meta.p2.data}}</li>
+                        <li><b>Q:</b> {{meta.q.data}}</li>
+                        <li><b>R1:</b> {{meta.r1.data}}</li>
+                        <li><b>R2:</b> {{meta.r2.data}}</li>
+                        <li><b>Stereo Extrinsics - R:</b> {{meta.stereoExtrinsics.r.data}}</li>
+                        <li><b>Stereo Extrinsics - R_Rodrigues:</b> {{meta.stereoExtrinsics.rRodrigues.data}}</li>
+                        <li><b>Stereo Extrinsics - t:</b> {{meta.stereoExtrinsics.t.data}}</li>
+                        <li><b>Tractor Extrinsics - R:</b> {{meta.tractorExtrinsics.r.data}}</li>
+                        <li><b>Tractor Extrinsics - R_Rodrigues:</b> {{meta.tractorExtrinsics.rRodrigues.data}}</li>
+                        <li><b>Tractor Extrinsics - t:</b> {{meta.tractorExtrinsics.t.data}}</li>
+
                     </ul>
                 </mat-expansion-panel>
                 <ng-template #meta_loader>
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                 </ng-template>
+            </div>
+            <div class="map-wrapper" *ngIf="data && data.geolocation && data.geolocation.coordinates && data.geolocation.coordinates.length" >
+                <mat-expansion-panel 
+                    [expanded]="false">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Geolocation
+                    </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="map">
+                        <app-starfire 
+                            [showTractor]=true 
+                            [zoom]=16 
+                            [coordinates]="data.geolocation.coordinates"
+                            [vehicleId]="data.geolocation.vehicleId" >
+                        </app-starfire>
+                    </div>
+                </mat-expansion-panel>
             </div>
         </div>
     </div>

@@ -20,12 +20,23 @@ img {
 
  .meta {
      overflow: scroll;
-     max-height: 300px;
      width:100%;
-     padding-bottom:20px;
      text-align:left;
+     word-wrap: break-word;
+     max-width: 500px;
+     max-height: 250px;
+     margin-bottom: 10px;
  }
 
  .modal-footer{
      padding-top: 20px;
+ }
+
+ .map-wrapper{
+    max-width: 500px;
+    margin-bottom: 10px;
+ }
+ .map {
+     width: 100%;
+     height: 250px;
  }

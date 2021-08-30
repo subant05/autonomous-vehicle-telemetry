@@ -69,6 +69,15 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
     }})
   }
 
+  private notifyGeolocationChange(){
+    this.objectDetectionSubject.next({type:"geolocationUpdated", data:{
+      latitude: this.latitude
+      , longitude: this.longitude
+      , coordinates: this.coordinates
+      , vehicleId: this.vehicleId
+    }})
+  }
+
   private imageHandler(stopInfo:any){
     let counter = 0
     this.gqlQuery
@@ -96,6 +105,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
     this.latitude = parseFloat(centroid_location.fieldOrigin.latitudeDeg)
     this.longitude = parseFloat(centroid_location.fieldOrigin.longitudeDeg)
     this.coordinates = [[this.longitude, this.latitude]]
+    this.notifyGeolocationChange()
   }
 
   private getImage(){
@@ -161,6 +171,9 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
           break;
         case "getPagination":
           this.notifyPaginationChange()
+          break;
+        case "getGeolocation":
+          this.notifyGeolocationChange()
           break;
       }
     })

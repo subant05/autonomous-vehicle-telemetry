@@ -2920,8 +2920,14 @@ a {
   .grid.col-4, .grid.col-3, .grid.col-2 {
     grid-template-columns: 1fr 1fr;
   }
-  .grid .grid__cell.grid__cell__full-width {
+  .grid.col-2 .grid__cell.grid__cell__full-width {
     grid-column: 1/span 2;
+  }
+  .grid.col-3 .grid__cell.grid__cell__full-width {
+    grid-column: 1/span 3;
+  }
+  .grid.col-4 .grid__cell.grid__cell__full-width {
+    grid-column: 1/span 4;
   }
 }
 

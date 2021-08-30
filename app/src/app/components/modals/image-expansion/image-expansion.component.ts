@@ -41,7 +41,15 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
         this.data.label = response.data.label
         this.data.headerId = response.data.headerId
         break;
+      case "geolocationUpdated":
+        this.data.geolocation = {
+          ...response.data
+        }
+        break;
       case "pagination":
+        if(this.data.geolocation && this.data.geolocation.coordinates)
+          this.data.geolocation.coordinates = []
+
         this.data.pagination = response.data
         break;
     }
@@ -51,6 +59,7 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
     if(this.data.subject){
       this.segmentationQuery = this.data.subject.subscribe(this.subjectHanlder.bind(this))
       this.data.subject.next({type:"getPagination", data:null})
+      this.data.subject.next({type:"getGeolocation", data:null})
     }
     this.metaDataSubscription = this.graphQLQuery.getImageMeta({imageId: this.data.imageId})
     .subscribe((response:any)=>{

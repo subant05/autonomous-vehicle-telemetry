@@ -25,6 +25,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     , page: number
     , pageSize: number
   } | undefined;
+  geolocation:any;
   
 
   @Input() id: string = uuid()
@@ -44,6 +45,14 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
       case "pagination":
           this.pagination = response.data
         break;
+      case "geolocationUpdated":
+          if(this.geolocation && this.geolocation.coordinates)
+            this.geolocation.coordinates = []
+            
+          this.geolocation = {
+            ...response.data
+          }
+          break;
     }
   }
 
@@ -72,7 +81,8 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
           imageUrl: this.imageUrl,
           imageId: this.imageId,
           subject: this.subject,
-          pagination: this.pagination
+          pagination: this.pagination,
+          geolocation: this.geolocation
           // segmentation:{
           //   image:this.data
           //   , segmentation: this.segmentationData

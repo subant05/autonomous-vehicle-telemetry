@@ -83,9 +83,25 @@
             grid-template-columns: 1fr 1fr;
         }
 
-        .grid__cell {
-            &.grid__cell__full-width {
-                grid-column: 1 / span 2;
+        &.col-2 {
+            .grid__cell {
+                &.grid__cell__full-width {
+                    grid-column: 1 / span 2;
+                }
+            }
+        }
+        &.col-3 {
+            .grid__cell {
+                &.grid__cell__full-width {
+                    grid-column: 1 / span 3;
+                }
+            }
+        }
+        &.col-4 {
+            .grid__cell {
+                &.grid__cell__full-width {
+                    grid-column: 1 / span 4;
+                }
             }
         }
     }
