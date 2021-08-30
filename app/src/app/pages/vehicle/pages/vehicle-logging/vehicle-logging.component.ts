@@ -296,9 +296,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     .getLoggingNodes({ vehicleId:this.vehicleId})
     .subscribe((response:any)=>{
       this.nodeSubscriptionHandler(response, savedForm)
+      this.loadData(false, !savedForm)
     })
     this.setupFilter(savedForm)
-    this.loadData(false, !savedForm)
     this.setupInfiniteScroll()
     this.setupLiveSubscription()
   }

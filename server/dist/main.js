@@ -8683,9 +8683,9 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             .getLoggingNodes({ vehicleId: this.vehicleId })
             .subscribe((response) => {
             this.nodeSubscriptionHandler(response, savedForm);
+            this.loadData(false, !savedForm);
         });
         this.setupFilter(savedForm);
-        this.loadData(false, !savedForm);
         this.setupInfiniteScroll();
         this.setupLiveSubscription();
     }
