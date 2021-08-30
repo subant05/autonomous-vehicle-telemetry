@@ -101,6 +101,10 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   private initialDataLoad(variables:any){
+    if(!variables.nodes.length){
+      this.isScrollDataLoading = false
+      return
+    }
 
     this.initialDataLoadSubscription = this.graphQLQuery
       .getCurrentLogsByVehicleId(variables)

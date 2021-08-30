@@ -8911,6 +8911,10 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.endDateTime = moment__WEBPACK_IMPORTED_MODULE_3___default()().format(this.timeFormat);
     }
     initialDataLoad(variables) {
+        if (!variables.nodes.length) {
+            this.isScrollDataLoading = false;
+            return;
+        }
         this.initialDataLoadSubscription = this.graphQLQuery
             .getCurrentLogsByVehicleId(variables)
             .subscribe((response) => {
