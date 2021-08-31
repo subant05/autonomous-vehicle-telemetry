@@ -4131,6 +4131,43 @@ export type CreateTopicPayloadTopicEdgeArgs = {
   orderBy?: Maybe<Array<TopicsOrderBy>>;
 };
 
+/** All input for the create `TopicSequence` mutation. */
+export type CreateTopicSequenceInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `TopicSequence` to be created by this mutation. */
+  topicSequence: TopicSequenceInput;
+};
+
+/** The output of our create `TopicSequence` mutation. */
+export type CreateTopicSequencePayload = {
+  __typename?: 'CreateTopicSequencePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `TopicSequence` that was created by this mutation. */
+  topicSequence?: Maybe<TopicSequence>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Topic` that is related to this `TopicSequence`. */
+  topic?: Maybe<Topic>;
+  /** Reads a single `Vehicle` that is related to this `TopicSequence`. */
+  vehicle?: Maybe<Vehicle>;
+  /** An edge for our `TopicSequence`. May be used by Relay 1. */
+  topicSequenceEdge?: Maybe<TopicSequencesEdge>;
+};
+
+
+/** The output of our create `TopicSequence` mutation. */
+export type CreateTopicSequencePayloadTopicSequenceEdgeArgs = {
+  orderBy?: Maybe<Array<TopicSequencesOrderBy>>;
+};
+
 /** All input for the create `TopicType` mutation. */
 export type CreateTopicTypeInput = {
   /**
@@ -4404,6 +4441,39 @@ export type CreateVehicleLogPayload = {
 /** The output of our create `VehicleLog` mutation. */
 export type CreateVehicleLogPayloadVehicleLogEdgeArgs = {
   orderBy?: Maybe<Array<VehicleLogsOrderBy>>;
+};
+
+/** All input for the create `VehicleNode` mutation. */
+export type CreateVehicleNodeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our create `VehicleNode` mutation. */
+export type CreateVehicleNodePayload = {
+  __typename?: 'CreateVehicleNodePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `VehicleNode` that was created by this mutation. */
+  vehicleNode?: Maybe<VehicleNode>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Vehicle` that is related to this `VehicleNode`. */
+  vehicle?: Maybe<Vehicle>;
+  /** An edge for our `VehicleNode`. May be used by Relay 1. */
+  vehicleNodeEdge?: Maybe<VehicleNodesEdge>;
+};
+
+
+/** The output of our create `VehicleNode` mutation. */
+export type CreateVehicleNodePayloadVehicleNodeEdgeArgs = {
+  orderBy?: Maybe<Array<VehicleNodesOrderBy>>;
 };
 
 /** The output of our create `Vehicle` mutation. */
@@ -7602,6 +7672,8 @@ export type ListenPayload = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Creates a single `VehicleNode`. */
+  createVehicleNode?: Maybe<CreateVehicleNodePayload>;
   /** Creates a single `VehicleTopic`. */
   createVehicleTopic?: Maybe<CreateVehicleTopicPayload>;
   /** Creates a single `VehicleType`. */
@@ -7614,6 +7686,8 @@ export type Mutation = {
   createVehiclesOnline?: Maybe<CreateVehiclesOnlinePayload>;
   /** Creates a single `TopicCategory`. */
   createTopicCategory?: Maybe<CreateTopicCategoryPayload>;
+  /** Creates a single `TopicSequence`. */
+  createTopicSequence?: Maybe<CreateTopicSequencePayload>;
   /** Creates a single `TopicType`. */
   createTopicType?: Maybe<CreateTopicTypePayload>;
   /** Creates a single `Topic`. */
@@ -7772,6 +7846,10 @@ export type Mutation = {
   updateVehiclesOnline?: Maybe<UpdateVehiclesOnlinePayload>;
   /** Updates a single `VehiclesOnline` using a unique key and a patch. */
   updateVehiclesOnlineByVehicleId?: Maybe<UpdateVehiclesOnlinePayload>;
+  /** Updates a single `TopicSequence` using its globally unique id and a patch. */
+  updateTopicSequenceByNodeId?: Maybe<UpdateTopicSequencePayload>;
+  /** Updates a single `TopicSequence` using a unique key and a patch. */
+  updateTopicSequence?: Maybe<UpdateTopicSequencePayload>;
   /** Updates a single `TopicType` using its globally unique id and a patch. */
   updateTopicTypeByNodeId?: Maybe<UpdateTopicTypePayload>;
   /** Updates a single `TopicType` using a unique key and a patch. */
@@ -8082,6 +8160,12 @@ export type Mutation = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateVehicleNodeArgs = {
+  input: CreateVehicleNodeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateVehicleTopicArgs = {
   input: CreateVehicleTopicInput;
 };
@@ -8114,6 +8198,12 @@ export type MutationCreateVehiclesOnlineArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateTopicCategoryArgs = {
   input: CreateTopicCategoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateTopicSequenceArgs = {
+  input: CreateTopicSequenceInput;
 };
 
 
@@ -8588,6 +8678,18 @@ export type MutationUpdateVehiclesOnlineArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateVehiclesOnlineByVehicleIdArgs = {
   input: UpdateVehiclesOnlineByVehicleIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTopicSequenceByNodeIdArgs = {
+  input: UpdateTopicSequenceByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTopicSequenceArgs = {
+  input: UpdateTopicSequenceInput;
 };
 
 
@@ -12188,6 +12290,8 @@ export type Query = Node & {
   nodeId: Scalars['ID'];
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
+  /** Reads and enables pagination through a set of `VehicleNode`. */
+  vehicleNodes?: Maybe<VehicleNodesConnection>;
   /** Reads and enables pagination through a set of `VehicleTopic`. */
   vehicleTopics?: Maybe<VehicleTopicsConnection>;
   /** Reads and enables pagination through a set of `VehicleType`. */
@@ -12200,6 +12304,8 @@ export type Query = Node & {
   vehiclesOnlines?: Maybe<VehiclesOnlinesConnection>;
   /** Reads and enables pagination through a set of `TopicCategory`. */
   topicCategories?: Maybe<TopicCategoriesConnection>;
+  /** Reads and enables pagination through a set of `TopicSequence`. */
+  topicSequences?: Maybe<TopicSequencesConnection>;
   /** Reads and enables pagination through a set of `TopicType`. */
   topicTypes?: Maybe<TopicTypesConnection>;
   /** Reads and enables pagination through a set of `Topic`. */
@@ -12346,6 +12452,8 @@ export type Query = Node & {
   objectMessageXyzStarfires?: Maybe<ObjectMessageXyzStarfiresConnection>;
   /** Reads and enables pagination through a set of `Object`. */
   objects?: Maybe<ObjectsConnection>;
+  vehicleNode?: Maybe<VehicleNode>;
+  vehicleNodeByVehicleIdAndNode?: Maybe<VehicleNode>;
   vehicleTopic?: Maybe<VehicleTopic>;
   vehicleType?: Maybe<VehicleType>;
   vehicleTypeByType?: Maybe<VehicleType>;
@@ -12354,6 +12462,7 @@ export type Query = Node & {
   vehiclesOnline?: Maybe<VehiclesOnline>;
   vehiclesOnlineByVehicleId?: Maybe<VehiclesOnline>;
   topicCategory?: Maybe<TopicCategory>;
+  topicSequence?: Maybe<TopicSequence>;
   topicType?: Maybe<TopicType>;
   topicTypeByModule?: Maybe<TopicType>;
   topic?: Maybe<Topic>;
@@ -12429,6 +12538,8 @@ export type Query = Node & {
   objectMessageXyzCamera?: Maybe<ObjectMessageXyzCamera>;
   objectMessageXyzStarfire?: Maybe<ObjectMessageXyzStarfire>;
   object?: Maybe<Object>;
+  /** Reads a single `VehicleNode` using its globally unique `ID`. */
+  vehicleNodeByNodeId?: Maybe<VehicleNode>;
   /** Reads a single `VehicleTopic` using its globally unique `ID`. */
   vehicleTopicByNodeId?: Maybe<VehicleTopic>;
   /** Reads a single `VehicleType` using its globally unique `ID`. */
@@ -12439,6 +12550,8 @@ export type Query = Node & {
   vehiclesOnlineByNodeId?: Maybe<VehiclesOnline>;
   /** Reads a single `TopicCategory` using its globally unique `ID`. */
   topicCategoryByNodeId?: Maybe<TopicCategory>;
+  /** Reads a single `TopicSequence` using its globally unique `ID`. */
+  topicSequenceByNodeId?: Maybe<TopicSequence>;
   /** Reads a single `TopicType` using its globally unique `ID`. */
   topicTypeByNodeId?: Maybe<TopicType>;
   /** Reads a single `Topic` using its globally unique `ID`. */
@@ -12591,6 +12704,19 @@ export type QueryNodeArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryVehicleNodesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<VehicleNodesOrderBy>>;
+  condition?: Maybe<VehicleNodeCondition>;
+  filter?: Maybe<VehicleNodeFilter>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryVehicleTopicsArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -12665,6 +12791,19 @@ export type QueryTopicCategoriesArgs = {
   orderBy?: Maybe<Array<TopicCategoriesOrderBy>>;
   condition?: Maybe<TopicCategoryCondition>;
   filter?: Maybe<TopicCategoryFilter>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicSequencesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<TopicSequencesOrderBy>>;
+  condition?: Maybe<TopicSequenceCondition>;
+  filter?: Maybe<TopicSequenceFilter>;
 };
 
 
@@ -13618,6 +13757,19 @@ export type QueryObjectsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryVehicleNodeArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryVehicleNodeByVehicleIdAndNodeArgs = {
+  vehicleId: Scalars['BigInt'];
+  node: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryVehicleTopicArgs = {
   id: Scalars['BigInt'];
 };
@@ -13661,6 +13813,12 @@ export type QueryVehiclesOnlineByVehicleIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryTopicCategoryArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicSequenceArgs = {
   id: Scalars['BigInt'];
 };
 
@@ -14116,6 +14274,12 @@ export type QueryObjectArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryVehicleNodeByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryVehicleTopicByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
@@ -14141,6 +14305,12 @@ export type QueryVehiclesOnlineByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryTopicCategoryByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicSequenceByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
@@ -16583,6 +16753,8 @@ export type Subscription = {
   nodeId: Scalars['ID'];
   /** Fetches an object given its globally unique `ID`. (live) */
   node?: Maybe<Node>;
+  /** Reads and enables pagination through a set of `VehicleNode`. (live) */
+  vehicleNodes?: Maybe<VehicleNodesConnection>;
   /** Reads and enables pagination through a set of `VehicleTopic`. (live) */
   vehicleTopics?: Maybe<VehicleTopicsConnection>;
   /** Reads and enables pagination through a set of `VehicleType`. (live) */
@@ -16595,6 +16767,8 @@ export type Subscription = {
   vehiclesOnlines?: Maybe<VehiclesOnlinesConnection>;
   /** Reads and enables pagination through a set of `TopicCategory`. (live) */
   topicCategories?: Maybe<TopicCategoriesConnection>;
+  /** Reads and enables pagination through a set of `TopicSequence`. (live) */
+  topicSequences?: Maybe<TopicSequencesConnection>;
   /** Reads and enables pagination through a set of `TopicType`. (live) */
   topicTypes?: Maybe<TopicTypesConnection>;
   /** Reads and enables pagination through a set of `Topic`. (live) */
@@ -16742,6 +16916,10 @@ export type Subscription = {
   /** Reads and enables pagination through a set of `Object`. (live) */
   objects?: Maybe<ObjectsConnection>;
   /**  (live) */
+  vehicleNode?: Maybe<VehicleNode>;
+  /**  (live) */
+  vehicleNodeByVehicleIdAndNode?: Maybe<VehicleNode>;
+  /**  (live) */
   vehicleTopic?: Maybe<VehicleTopic>;
   /**  (live) */
   vehicleType?: Maybe<VehicleType>;
@@ -16757,6 +16935,8 @@ export type Subscription = {
   vehiclesOnlineByVehicleId?: Maybe<VehiclesOnline>;
   /**  (live) */
   topicCategory?: Maybe<TopicCategory>;
+  /**  (live) */
+  topicSequence?: Maybe<TopicSequence>;
   /**  (live) */
   topicType?: Maybe<TopicType>;
   /**  (live) */
@@ -16907,6 +17087,8 @@ export type Subscription = {
   objectMessageXyzStarfire?: Maybe<ObjectMessageXyzStarfire>;
   /**  (live) */
   object?: Maybe<Object>;
+  /** Reads a single `VehicleNode` using its globally unique `ID`. (live) */
+  vehicleNodeByNodeId?: Maybe<VehicleNode>;
   /** Reads a single `VehicleTopic` using its globally unique `ID`. (live) */
   vehicleTopicByNodeId?: Maybe<VehicleTopic>;
   /** Reads a single `VehicleType` using its globally unique `ID`. (live) */
@@ -16917,6 +17099,8 @@ export type Subscription = {
   vehiclesOnlineByNodeId?: Maybe<VehiclesOnline>;
   /** Reads a single `TopicCategory` using its globally unique `ID`. (live) */
   topicCategoryByNodeId?: Maybe<TopicCategory>;
+  /** Reads a single `TopicSequence` using its globally unique `ID`. (live) */
+  topicSequenceByNodeId?: Maybe<TopicSequence>;
   /** Reads a single `TopicType` using its globally unique `ID`. (live) */
   topicTypeByNodeId?: Maybe<TopicType>;
   /** Reads a single `Topic` using its globally unique `ID`. (live) */
@@ -17095,6 +17279,40 @@ export type Subscription = {
  */
 export type SubscriptionNodeArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionVehicleNodesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<VehicleNodesOrderBy>>;
+  condition?: Maybe<VehicleNodeCondition>;
+  filter?: Maybe<VehicleNodeFilter>;
 };
 
 
@@ -17299,6 +17517,40 @@ export type SubscriptionTopicCategoriesArgs = {
   orderBy?: Maybe<Array<TopicCategoriesOrderBy>>;
   condition?: Maybe<TopicCategoryCondition>;
   filter?: Maybe<TopicCategoryFilter>;
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionTopicSequencesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<TopicSequencesOrderBy>>;
+  condition?: Maybe<TopicSequenceCondition>;
+  filter?: Maybe<TopicSequenceFilter>;
 };
 
 
@@ -19806,6 +20058,61 @@ export type SubscriptionObjectsArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
+export type SubscriptionVehicleNodeArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionVehicleNodeByVehicleIdAndNodeArgs = {
+  vehicleId: Scalars['BigInt'];
+  node: Scalars['String'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
 export type SubscriptionVehicleTopicArgs = {
   id: Scalars['BigInt'];
 };
@@ -19996,6 +20303,33 @@ export type SubscriptionVehiclesOnlineByVehicleIdArgs = {
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
 export type SubscriptionTopicCategoryArgs = {
+  id: Scalars['BigInt'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionTopicSequenceArgs = {
   id: Scalars['BigInt'];
 };
 
@@ -22047,6 +22381,33 @@ export type SubscriptionObjectArgs = {
  * server-side event occurs. This makes them a lot more efficient than Live
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
+export type SubscriptionVehicleNodeByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
 export type SubscriptionVehicleTopicByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
@@ -22156,6 +22517,33 @@ export type SubscriptionVehiclesOnlineByNodeIdArgs = {
  * Queries, but it is still recommended that you keep payloads fairly small.
  */
 export type SubscriptionTopicCategoryByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/**
+ * The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+ *
+ * #### Live Queries
+ *
+ * Live query fields are differentiated by containing `(live)` at the end of their
+ * description, they are added for each field in the `Query` type. When you
+ * subscribe to a live query field, the selection set will be evaluated and sent to
+ * the client, and then most things\* that would cause the output of the selection
+ * set to change will trigger the selection set to be re-evaluated and the results
+ * to be re-sent to the client.
+ *
+ * _(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+ *
+ * Live queries can be very expensive, so try and keep them small and focussed.
+ *
+ * #### Events
+ *
+ * Event fields will run their selection set when, and only when, the specified
+ * server-side event occurs. This makes them a lot more efficient than Live
+ * Queries, but it is still recommended that you keep payloads fairly small.
+ */
+export type SubscriptionTopicSequenceByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
@@ -24216,6 +24604,8 @@ export type Topic = Node & {
   objects: ObjectsConnection;
   /** Reads and enables pagination through a set of `VehicleLog`. */
   vehicleLogs: VehicleLogsConnection;
+  /** Reads and enables pagination through a set of `TopicSequence`. */
+  topicSequences: TopicSequencesConnection;
 };
 
 
@@ -24320,6 +24710,19 @@ export type TopicVehicleLogsArgs = {
   orderBy?: Maybe<Array<VehicleLogsOrderBy>>;
   condition?: Maybe<VehicleLogCondition>;
   filter?: Maybe<VehicleLogFilter>;
+};
+
+
+/** This is the topics table, which is related a topics passed from the vehicle */
+export type TopicTopicSequencesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<TopicSequencesOrderBy>>;
+  condition?: Maybe<TopicSequenceCondition>;
+  filter?: Maybe<TopicSequenceFilter>;
 };
 
 /** A connection to a list of `TopicCategory` values. */
@@ -24473,6 +24876,112 @@ export type TopicPatch = {
   name?: Maybe<Scalars['String']>;
   topicCategoryId?: Maybe<Scalars['BigInt']>;
 };
+
+/** Table contains the sequence numbers of topics for a vehicle */
+export type TopicSequence = Node & {
+  __typename?: 'TopicSequence';
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** The autoincremented id for the topic_sequence table */
+  id: Scalars['BigInt'];
+  /** The topic id that links to the topic  for the row in topic_sequence table */
+  topicId: Scalars['BigInt'];
+  /** The vehicle id that links to the vehicle  for the row in topic_sequence table */
+  vehicleId: Scalars['BigInt'];
+  /** The sequence for the row in topic_sequence table */
+  seq: Scalars['BigInt'];
+  createdAt: Scalars['Datetime'];
+  /** Reads a single `Topic` that is related to this `TopicSequence`. */
+  topic?: Maybe<Topic>;
+  /** Reads a single `Vehicle` that is related to this `TopicSequence`. */
+  vehicle?: Maybe<Vehicle>;
+};
+
+/**
+ * A condition to be used against `TopicSequence` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type TopicSequenceCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `topicId` field. */
+  topicId?: Maybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `vehicleId` field. */
+  vehicleId?: Maybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `seq` field. */
+  seq?: Maybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: Maybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `TopicSequence` object types. All fields are combined with a logical ‘and.’ */
+export type TopicSequenceFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<BigIntFilter>;
+  /** Filter by the object’s `topicId` field. */
+  topicId?: Maybe<BigIntFilter>;
+  /** Filter by the object’s `vehicleId` field. */
+  vehicleId?: Maybe<BigIntFilter>;
+  /** Filter by the object’s `seq` field. */
+  seq?: Maybe<BigIntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: Maybe<DatetimeFilter>;
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<TopicSequenceFilter>>;
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<TopicSequenceFilter>>;
+  /** Negates the expression. */
+  not?: Maybe<TopicSequenceFilter>;
+};
+
+/** An input for mutations affecting `TopicSequence` */
+export type TopicSequenceInput = {
+  createdAt?: Maybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `TopicSequence`. Fields that are set will be updated. */
+export type TopicSequencePatch = {
+  createdAt?: Maybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `TopicSequence` values. */
+export type TopicSequencesConnection = {
+  __typename?: 'TopicSequencesConnection';
+  /** A list of `TopicSequence` objects. */
+  nodes: Array<Maybe<TopicSequence>>;
+  /** A list of edges which contains the `TopicSequence` and cursor to aid in pagination. */
+  edges: Array<TopicSequencesEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `TopicSequence` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `TopicSequence` edge in the connection. */
+export type TopicSequencesEdge = {
+  __typename?: 'TopicSequencesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `TopicSequence` at the end of the edge. */
+  node?: Maybe<TopicSequence>;
+};
+
+/** Methods to use when ordering `TopicSequence`. */
+export enum TopicSequencesOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  TopicIdAsc = 'TOPIC_ID_ASC',
+  TopicIdDesc = 'TOPIC_ID_DESC',
+  VehicleIdAsc = 'VEHICLE_ID_ASC',
+  VehicleIdDesc = 'VEHICLE_ID_DESC',
+  SeqAsc = 'SEQ_ASC',
+  SeqDesc = 'SEQ_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
 
 /** This is the topics types table, which is related a topics type object passed from the vehicle */
 export type TopicType = Node & {
@@ -26060,6 +26569,58 @@ export type UpdateTopicPayloadTopicEdgeArgs = {
   orderBy?: Maybe<Array<TopicsOrderBy>>;
 };
 
+/** All input for the `updateTopicSequenceByNodeId` mutation. */
+export type UpdateTopicSequenceByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `TopicSequence` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `TopicSequence` being updated. */
+  patch: TopicSequencePatch;
+};
+
+/** All input for the `updateTopicSequence` mutation. */
+export type UpdateTopicSequenceInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `TopicSequence` being updated. */
+  patch: TopicSequencePatch;
+  /** The autoincremented id for the topic_sequence table */
+  id: Scalars['BigInt'];
+};
+
+/** The output of our update `TopicSequence` mutation. */
+export type UpdateTopicSequencePayload = {
+  __typename?: 'UpdateTopicSequencePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `TopicSequence` that was updated by this mutation. */
+  topicSequence?: Maybe<TopicSequence>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Topic` that is related to this `TopicSequence`. */
+  topic?: Maybe<Topic>;
+  /** Reads a single `Vehicle` that is related to this `TopicSequence`. */
+  vehicle?: Maybe<Vehicle>;
+  /** An edge for our `TopicSequence`. May be used by Relay 1. */
+  topicSequenceEdge?: Maybe<TopicSequencesEdge>;
+};
+
+
+/** The output of our update `TopicSequence` mutation. */
+export type UpdateTopicSequencePayloadTopicSequenceEdgeArgs = {
+  orderBy?: Maybe<Array<TopicSequencesOrderBy>>;
+};
+
 /** All input for the `updateTopicTypeByModule` mutation. */
 export type UpdateTopicTypeByModuleInput = {
   /**
@@ -26553,6 +27114,7 @@ export type Vehicle = Node & {
   /** The ID of vehicle provided by the vehicle */
   deviceId: Scalars['String'];
   ip: Scalars['String'];
+  decommissioned: Scalars['Boolean'];
   /** Reads a single `VehicleType` that is related to this `Vehicle`. */
   type?: Maybe<VehicleType>;
   /** Reads a single `VehiclesOnline` that is related to this `Vehicle`. */
@@ -26578,6 +27140,10 @@ export type Vehicle = Node & {
   objects: ObjectsConnection;
   /** Reads and enables pagination through a set of `VehicleLog`. */
   vehicleLogs: VehicleLogsConnection;
+  /** Reads and enables pagination through a set of `VehicleNode`. */
+  vehicleNodes: VehicleNodesConnection;
+  /** Reads and enables pagination through a set of `TopicSequence`. */
+  topicSequences: TopicSequencesConnection;
 };
 
 
@@ -26697,6 +27263,32 @@ export type VehicleVehicleLogsArgs = {
   filter?: Maybe<VehicleLogFilter>;
 };
 
+
+/** This is the vehicles table, which is related vehicles that are registered and in use */
+export type VehicleVehicleNodesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<VehicleNodesOrderBy>>;
+  condition?: Maybe<VehicleNodeCondition>;
+  filter?: Maybe<VehicleNodeFilter>;
+};
+
+
+/** This is the vehicles table, which is related vehicles that are registered and in use */
+export type VehicleTopicSequencesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['Cursor']>;
+  after?: Maybe<Scalars['Cursor']>;
+  orderBy?: Maybe<Array<TopicSequencesOrderBy>>;
+  condition?: Maybe<TopicSequenceCondition>;
+  filter?: Maybe<TopicSequenceFilter>;
+};
+
 /** A condition to be used against `Vehicle` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type VehicleCondition = {
   /** Checks for equality with the object’s `id` field. */
@@ -26713,6 +27305,8 @@ export type VehicleCondition = {
   deviceId?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `ip` field. */
   ip?: Maybe<Scalars['String']>;
+  /** Checks for equality with the object’s `decommissioned` field. */
+  decommissioned?: Maybe<Scalars['Boolean']>;
 };
 
 /** A filter to be used against `Vehicle` object types. All fields are combined with a logical ‘and.’ */
@@ -26731,6 +27325,8 @@ export type VehicleFilter = {
   deviceId?: Maybe<StringFilter>;
   /** Filter by the object’s `ip` field. */
   ip?: Maybe<StringFilter>;
+  /** Filter by the object’s `decommissioned` field. */
+  decommissioned?: Maybe<BooleanFilter>;
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<VehicleFilter>>;
   /** Checks for any expressions in this list. */
@@ -26751,6 +27347,7 @@ export type VehicleInput = {
   /** The ID of vehicle provided by the vehicle */
   deviceId: Scalars['String'];
   ip: Scalars['String'];
+  decommissioned?: Maybe<Scalars['Boolean']>;
 };
 
 /** Vehicle logs table contains the logs the are streamed from the vehicle */
@@ -27155,6 +27752,85 @@ export enum VehicleLogsOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
+/** Table contains the nodes that are on a vehilce */
+export type VehicleNode = Node & {
+  __typename?: 'VehicleNode';
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** The autoincremented id for the vehicle_nodes table */
+  id: Scalars['BigInt'];
+  /** The vehicle id for the associated with the vehicles table */
+  vehicleId: Scalars['BigInt'];
+  /** The node name of the vehicle */
+  node: Scalars['String'];
+  /** Reads a single `Vehicle` that is related to this `VehicleNode`. */
+  vehicle?: Maybe<Vehicle>;
+};
+
+/**
+ * A condition to be used against `VehicleNode` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type VehicleNodeCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `vehicleId` field. */
+  vehicleId?: Maybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `node` field. */
+  node?: Maybe<Scalars['String']>;
+};
+
+/** A filter to be used against `VehicleNode` object types. All fields are combined with a logical ‘and.’ */
+export type VehicleNodeFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<BigIntFilter>;
+  /** Filter by the object’s `vehicleId` field. */
+  vehicleId?: Maybe<BigIntFilter>;
+  /** Filter by the object’s `node` field. */
+  node?: Maybe<StringFilter>;
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<VehicleNodeFilter>>;
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<VehicleNodeFilter>>;
+  /** Negates the expression. */
+  not?: Maybe<VehicleNodeFilter>;
+};
+
+/** A connection to a list of `VehicleNode` values. */
+export type VehicleNodesConnection = {
+  __typename?: 'VehicleNodesConnection';
+  /** A list of `VehicleNode` objects. */
+  nodes: Array<Maybe<VehicleNode>>;
+  /** A list of edges which contains the `VehicleNode` and cursor to aid in pagination. */
+  edges: Array<VehicleNodesEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `VehicleNode` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `VehicleNode` edge in the connection. */
+export type VehicleNodesEdge = {
+  __typename?: 'VehicleNodesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `VehicleNode` at the end of the edge. */
+  node?: Maybe<VehicleNode>;
+};
+
+/** Methods to use when ordering `VehicleNode`. */
+export enum VehicleNodesOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  VehicleIdAsc = 'VEHICLE_ID_ASC',
+  VehicleIdDesc = 'VEHICLE_ID_DESC',
+  NodeAsc = 'NODE_ASC',
+  NodeDesc = 'NODE_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
 /** Represents an update to a `Vehicle`. Fields that are set will be updated. */
 export type VehiclePatch = {
   /** The name of the vehicle provided by the vehicle */
@@ -27167,6 +27843,7 @@ export type VehiclePatch = {
   /** The ID of vehicle provided by the vehicle */
   deviceId?: Maybe<Scalars['String']>;
   ip?: Maybe<Scalars['String']>;
+  decommissioned?: Maybe<Scalars['Boolean']>;
 };
 
 export type VehicleState = Node & {
@@ -27925,6 +28602,7 @@ export type VehiclesOffline = {
   updatedAt?: Maybe<Scalars['Datetime']>;
   deviceId?: Maybe<Scalars['String']>;
   ip?: Maybe<Scalars['String']>;
+  decommissioned?: Maybe<Scalars['Boolean']>;
 };
 
 /**
@@ -27946,6 +28624,8 @@ export type VehiclesOfflineCondition = {
   deviceId?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `ip` field. */
   ip?: Maybe<Scalars['String']>;
+  /** Checks for equality with the object’s `decommissioned` field. */
+  decommissioned?: Maybe<Scalars['Boolean']>;
 };
 
 /** A filter to be used against `VehiclesOffline` object types. All fields are combined with a logical ‘and.’ */
@@ -27964,6 +28644,8 @@ export type VehiclesOfflineFilter = {
   deviceId?: Maybe<StringFilter>;
   /** Filter by the object’s `ip` field. */
   ip?: Maybe<StringFilter>;
+  /** Filter by the object’s `decommissioned` field. */
+  decommissioned?: Maybe<BooleanFilter>;
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<VehiclesOfflineFilter>>;
   /** Checks for any expressions in this list. */
@@ -27981,6 +28663,7 @@ export type VehiclesOfflineInput = {
   updatedAt?: Maybe<Scalars['Datetime']>;
   deviceId?: Maybe<Scalars['String']>;
   ip?: Maybe<Scalars['String']>;
+  decommissioned?: Maybe<Scalars['Boolean']>;
 };
 
 /** A connection to a list of `VehiclesOffline` values. */
@@ -28021,7 +28704,9 @@ export enum VehiclesOfflinesOrderBy {
   DeviceIdAsc = 'DEVICE_ID_ASC',
   DeviceIdDesc = 'DEVICE_ID_DESC',
   IpAsc = 'IP_ASC',
-  IpDesc = 'IP_DESC'
+  IpDesc = 'IP_DESC',
+  DecommissionedAsc = 'DECOMMISSIONED_ASC',
+  DecommissionedDesc = 'DECOMMISSIONED_DESC'
 }
 
 /** This is the vehicles online table, which is related to vehicles that are currently online */
@@ -28144,6 +28829,8 @@ export enum VehiclesOrderBy {
   DeviceIdDesc = 'DEVICE_ID_DESC',
   IpAsc = 'IP_ASC',
   IpDesc = 'IP_DESC',
+  DecommissionedAsc = 'DECOMMISSIONED_ASC',
+  DecommissionedDesc = 'DECOMMISSIONED_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }

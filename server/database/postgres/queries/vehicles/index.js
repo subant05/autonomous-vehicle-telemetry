@@ -161,12 +161,24 @@ export const sqlInsertVehicleNodeFromLogs = async (vehicle_id, logs) =>{
                     , $2                    
                 FROM  jsonb_array_elements($1::jsonb) WITH ordinality AS t(value, idx)
                 
-                RETURNING id
+                RETURNING id;
             `,
             [
             JSON.stringify(logs)
             , vehicle_id
             ]
+        )
+
+        const removeDuplicates = await client.query(
+            `
+            DELETE FROM
+                vehicles.vehicle_nodes a
+                    USING vehicles.vehicle_nodes b
+            WHERE
+                a.id < b.id
+                AND a.vehicle_id = b.vehicle_id
+                AND a.node = b.node
+            `
         )
 
         return result

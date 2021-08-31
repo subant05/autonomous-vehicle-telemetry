@@ -41,7 +41,7 @@ export class ObjectDetectionDetailComponent implements OnInit, OnDestroy {
         this.isImageLoaded = true
         if(!response)
           return;
-          
+        
         this.image = response
       })
   }
