@@ -1,6 +1,6 @@
 import {formatDateTime} from '../_utils'
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
-import { sqlInsertTopic } from '../topics'
+import { sqlInsertTopic, sqlInsertTopicSequence } from '../topics'
 import {sqlInsertObjectDetectionMessage} from './sqlInsertObjectDetectionMessage'
 import {sqlInsertObjectDetectionMessageVertices} from './sqlInsertObjectDetectionMessageVertices'
 
@@ -18,6 +18,7 @@ export const sqlInsertObjectDetection = async (argTopic, data, cb = a => a) => {
         const topic = await sqlInsertTopic(argTopic, { category: "status", ...data })
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
+        const vehicleSequence = await sqlInsertTopicSequence(vehicle.rows[0].id, topic.rows[0].id, data)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         const objectMessage = await sqlInsertObjectDetectionMessage(data.msg)
         const vertices = await sqlInsertObjectDetectionMessageVertices(

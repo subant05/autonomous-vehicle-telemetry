@@ -34,8 +34,6 @@ export const sqlSelectTopic = async (topic) =>{
 }
 
 export const sqlInsertTopic = async (argTopic, argData) => {
-
-
     try{
         const type = await sqlInsertTopicType(argData.type)
         const topics = await client.query(`
@@ -66,4 +64,25 @@ export const sqlInsertTopic = async (argTopic, argData) => {
 
     console.log("SQL: TOPIC INSERT FAILED")
 
+}
+
+export const sqlInsertTopicSequence = async (vehicleId, topicId, {seq}={seq:0} ) => {
+    try{
+        return await client.query(`
+            INSERT INTO topics.topic_sequence 
+            (topic_id, vehicle_id, seq)
+            VALUES( $1, $2, $3)
+
+            RETURNING *
+        `,[
+            topicId
+            , vehicleId
+            , seq
+        ])
+    } catch(e){
+        console.log("TOPIC SEQUENCE INSERT MESSAGE", e.message)
+        console.log("TOPIC SEQUENCE INSERT STACK", e.stack)
+
+        return null
+    }
 }

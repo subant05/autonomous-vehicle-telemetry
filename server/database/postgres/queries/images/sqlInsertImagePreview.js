@@ -1,4 +1,4 @@
-import { sqlInsertTopic } from '../topics'
+import { sqlInsertTopic, sqlInsertTopicSequence } from '../topics'
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import moment from 'moment';
 import {sqlInsertCameraMessage} from './sqlInsertCameraMessage'
@@ -15,6 +15,7 @@ export const sqlInsertImagePreview = async (argTopic, data, cb=a=>a) =>{
         const topic = await sqlInsertTopic(argTopic, {category:"images", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
+        const vehicleSequence = await sqlInsertTopicSequence(vehicle.rows[0].id, topic.rows[0].id, data)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         const cameraMessage = await sqlInsertCameraMessage(data.msg)
         const queryResult =  await client.query(`

@@ -1,4 +1,4 @@
-import { sqlInsertTopic } from '../topics'
+import { sqlInsertTopic, sqlInsertTopicSequence } from '../topics'
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import moment from 'moment';
 const { client, pool } = require("../../connection.js")
@@ -119,6 +119,7 @@ export const sqlInsertStarFire = async (argTopic, data, cb=a=>a) => {
         const topic = await sqlInsertTopic(argTopic, {category:"geolocation", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
+        const vehicleSequence = await sqlInsertTopicSequence(vehicle.rows[0].id, topic.rows[0].id, data)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         const starFireMessage = await sqlInsertStarfireMessage(data.msg)
         const queryResult = await client.query(`

@@ -1,6 +1,6 @@
 import {formatDateTime} from '../_utils'
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic, sqlInsertVehicleNodeFromLogs} from '../vehicles'
-import { sqlInsertTopic } from '../topics'
+import { sqlInsertTopic, sqlInsertTopicSequence } from '../topics'
 const { client, pool } = require("../../connection.js")
 
 export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
@@ -16,6 +16,7 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
         const topic = await sqlInsertTopic(argTopic, { category: "status", ...data[0] })
         const vehicle = await sqlInsertVehicle(data[0].vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
+        const vehicleSequence = await sqlInsertTopicSequence(vehicle.rows[0].id, topic.rows[0].id, data[0])
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         const vehicleNode = await sqlInsertVehicleNodeFromLogs(vehicle.rows[0].id, data)
     try{    
