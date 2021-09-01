@@ -29,6 +29,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
   longitude = 0
   coordinates: number[][] = [[]]
   paginationInit = false
+  currentHeaderId: any;
 
 
   @Input() vehicleId: number | string = ""
@@ -78,14 +79,28 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
     }})
   }
 
-  private imageHandler(stopInfo:any){
+  private recursiveImageHandler(stopInfo:any,currentHeaderId:any){
+    const header = currentHeaderId ? currentHeaderId : this.currentHeaderId
+    if(this.page === 0 && header === this.currentHeaderId){
+      this.isImageLoaded = false
+      setTimeout(()=>this.imageHandler(stopInfo, true, header), 0)
+    } 
+  }
+
+  private imageHandler(stopInfo:any, isLiveUpdate=false, currentHeaderId?:any){
     let counter = 0
     this.gqlQuery
       .getPreviewImageByCameraMessageHeaderId({headerId:stopInfo.message.header.headerid})
       .subscribe((response:any)=>{
-        this.isImageLoaded = true
-        if(!response)
+        if(!response){
+          if(isLiveUpdate){
+            this.recursiveImageHandler(stopInfo,currentHeaderId)
+          }else{
+            this.isImageLoaded = true
+          }
           return;
+
+        }
           
         this.image = response.image.id
         this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
@@ -122,7 +137,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
           this.isImageLoaded = true
           return
         }
-
+        this.currentHeaderId = response.nodes[0].message.header.headerid
         this.updateObjectDetection(response.nodes[0])
 
         this.pagesLength = response.totalCount
@@ -147,8 +162,9 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
           } else {
             this.image = ""
             this.isImageLoaded = false
+            this.currentHeaderId = response.message.header.headerid
             this.updateObjectDetection(response)
-            this.imageHandler(response)
+            this.imageHandler(response, true)
           }
         })
       }

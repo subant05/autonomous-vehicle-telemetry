@@ -6200,14 +6200,27 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
                 vehicleId: this.vehicleId
             } });
     }
-    imageHandler(stopInfo) {
+    recursiveImageHandler(stopInfo, currentHeaderId) {
+        const header = currentHeaderId ? currentHeaderId : this.currentHeaderId;
+        if (this.page === 0 && header === this.currentHeaderId) {
+            this.isImageLoaded = false;
+            setTimeout(() => this.imageHandler(stopInfo, true, header), 0);
+        }
+    }
+    imageHandler(stopInfo, isLiveUpdate = false, currentHeaderId) {
         let counter = 0;
         this.gqlQuery
             .getPreviewImageByCameraMessageHeaderId({ headerId: stopInfo.message.header.headerid })
             .subscribe((response) => {
-            this.isImageLoaded = true;
-            if (!response)
+            if (!response) {
+                if (isLiveUpdate) {
+                    this.recursiveImageHandler(stopInfo, currentHeaderId);
+                }
+                else {
+                    this.isImageLoaded = true;
+                }
                 return;
+            }
             this.image = response.image.id;
             this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat)}`;
             this.headerid = stopInfo.message.header.headerid;
@@ -6240,6 +6253,7 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
                 this.isImageLoaded = true;
                 return;
             }
+            this.currentHeaderId = response.nodes[0].message.header.headerid;
             this.updateObjectDetection(response.nodes[0]);
             this.pagesLength = response.totalCount;
             this.stopImageQuery = response.nodes.map((stopInfo) => this.imageHandler(stopInfo));
@@ -6261,8 +6275,9 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
                 else {
                     this.image = "";
                     this.isImageLoaded = false;
+                    this.currentHeaderId = response.message.header.headerid;
                     this.updateObjectDetection(response);
-                    this.imageHandler(response);
+                    this.imageHandler(response, true);
                 }
             });
         }
