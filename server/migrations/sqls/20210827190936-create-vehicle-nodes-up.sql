@@ -6,9 +6,7 @@ CREATE TABLE vehicles.vehicle_nodes (
     PRIMARY KEY(id),
     CONSTRAINT fk_vehicle_id
         FOREIGN KEY(vehicle_id)
-        REFERENCES vehicles.vehicles(id),
-    CONSTRAINT uq_vehicle_node_and_vehicle_id 
-        UNIQUE (vehicle_id, node)
+        REFERENCES vehicles.vehicles(id)
 );
 
 CREATE INDEX idx_vehicle_nodes_id ON vehicles.vehicle_nodes(id);
