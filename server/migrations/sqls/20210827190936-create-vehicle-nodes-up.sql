@@ -1,5 +1,5 @@
 /* Replace with your SQL commands */
-CREATE TABLE vehicles.vehicle_nodes (
+CREATE TABLE IF NOT EXISTS vehicles.vehicle_nodes (
     id BIGSERIAL,
     vehicle_id BIGINT NOT NULL,
     node VARCHAR(255) NOT NULL,

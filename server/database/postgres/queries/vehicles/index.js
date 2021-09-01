@@ -169,18 +169,6 @@ export const sqlInsertVehicleNodeFromLogs = async (vehicle_id, logs) =>{
             ]
         )
 
-        const removeDuplicates = await client.query(
-            `
-            DELETE FROM
-                vehicles.vehicle_nodes a
-                    USING vehicles.vehicle_nodes b
-            WHERE
-                a.id < b.id
-                AND a.vehicle_id = b.vehicle_id
-                AND a.node = b.node
-            `
-        )
-
         return result
     } catch(e){
         console.log("VEHICLE VEHICLE NODE INSERT ERROR: ", e.message)
