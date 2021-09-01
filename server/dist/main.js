@@ -6236,8 +6236,10 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
             size: this.pageSize
         })
             .subscribe((response) => {
-            if (!response.nodes.length)
+            if (!response || !response.nodes.length) {
                 this.isImageLoaded = true;
+                return;
+            }
             this.updateObjectDetection(response.nodes[0]);
             this.pagesLength = response.totalCount;
             this.stopImageQuery = response.nodes.map((stopInfo) => this.imageHandler(stopInfo));

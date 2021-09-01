@@ -118,8 +118,10 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       , size: this.pageSize
     })
       .subscribe((response:any)=>{
-        if(!response.nodes.length)
+        if(!response || !response.nodes.length){
           this.isImageLoaded = true
+          return
+        }
 
         this.updateObjectDetection(response.nodes[0])
 
