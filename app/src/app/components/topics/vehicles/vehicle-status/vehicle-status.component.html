@@ -1,4 +1,4 @@
-<div *ngIf="isDataLoaded; else loader;">
+<div #statusContainer  class="vehicle-status__container" *ngIf="isDataLoaded; else loader;">
     <!-- <mat-form-field appearance="standard">
         <mat-label>Search</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Tractor" #input>
@@ -29,15 +29,10 @@
           (click)="openDialog(row)"
         ></tr>
     </table>
-
 </div>
 <ng-template #loader>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>
-<mat-paginator 
-[length]="pagesLength"
-[pageSize]="pageSize"
-[hidePageSize]="true"
-[pageSizeOptions]="pageSizeOptions"
-(page)="onPagination($event)">
-</mat-paginator>
+<button [disabled]="downloadButtonDisabled" class="download" mat-mini-fab color="primary" aria-label="Load next set of status" (click)="onScroll()">
+  <mat-icon aria-hidden="false" aria-label="Example home icon">file_download</mat-icon>
+</button>

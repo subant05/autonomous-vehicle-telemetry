@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
@@ -24,10 +24,13 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
   pageSizeOptions: number[] = [5]
   pagesLength: number = 0
   isDataLoaded: boolean = false
+  downloadButtonDisabled: boolean = false
 
 
   @Input() vehicleId: number | string |undefined;
   @Input() cursor: number = 0
+
+  @ViewChild('statusContainer') statusContainer: HTMLElement | undefined
   
   constructor(   
     private graphQLSubscription: GqlSubscriptionService
@@ -44,16 +47,22 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
     this.gqlOnlineQuery = this.graphQLQuery
         .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
         .subscribe((response:any)=>{
-          this.pagesLength = response.totalCount
-          this.statusList =response.nodes.map((result:any)=>{
+          const results =  response.nodes.map((result:any)=>{
             return {
               ...result
               , status: result.state.name
               , alerts: result.alerts.length ? result.alerts[0] : null
             }
           })
+          this.pagesLength = response.totalCount
+          this.statusList = this.statusList.concat(results)
           this.isDataLoaded = true
           this.updateList(this.statusList)
+          
+          if(!results.length)
+            this.downloadButtonDisabled = !results.length
+          // @ts-ignore
+          setTimeout(()=>this.statusContainer?.nativeElement.scrollTop = this.statusContainer.nativeElement.scrollHeight,0)
       })
     
     this.gqlOnlineSubscription = this.graphQLSubscription
@@ -63,7 +72,6 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
             return;
 
           this.statusList.unshift(response)
-          this.statusList.pop()
           this.updateList(this.statusList)
         })
     
@@ -80,18 +88,15 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
     this.gqlOnlineSubscription?.unsubscribe()
   }
 
-  ngAfterViewInit(): void{}
+  ngAfterViewInit(): void{
+  }
 
 
-  onPagination(event:PageEvent){
-    if( this.cursor !== event.pageIndex || event.pageSize !== this.pageSize ){
+  onScroll(){
       this.isDataLoaded = false
-      this.cursor = event.pageIndex
-      this.statusList =[];
-      this.pageSize = event.pageSize;
-      this.updateList(this.statusList)
+      this.cursor = this.statusList.length
       this.getStatus()
-    }
+    
   }
 
   openDialog(row:any): void{
