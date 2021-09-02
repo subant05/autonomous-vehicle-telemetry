@@ -58,11 +58,11 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
           this.statusList = this.statusList.concat(results)
           this.isDataLoaded = true
           this.updateList(this.statusList)
-          
+
           if(!results.length)
             this.downloadButtonDisabled = !results.length
           // @ts-ignore
-          setTimeout(()=>this.statusContainer?.nativeElement.scrollTop = this.statusContainer.nativeElement.scrollHeight,0)
+          this.statusContainer?.nativeElement.scrollTop = this.statusContainer.nativeElement.scrollHeight
       })
     
     this.gqlOnlineSubscription = this.graphQLSubscription
