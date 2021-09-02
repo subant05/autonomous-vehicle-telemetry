@@ -1,5 +1,5 @@
 import {formatDateTime} from '../_utils'
-import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic, sqlInsertVehicleNodeFromLogs} from '../vehicles'
+import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import { sqlInsertTopic, sqlInsertTopicSequence } from '../topics'
 const { client, pool } = require("../../connection.js")
 
@@ -18,7 +18,6 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleSequence = await sqlInsertTopicSequence(vehicle.rows[0].id, topic.rows[0].id, data[0])
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
-        const vehicleNode = await sqlInsertVehicleNodeFromLogs(vehicle.rows[0].id, data)
     try{    
         const queryResult = await client.query(`
             WITH ins_log_message_stamp AS (
