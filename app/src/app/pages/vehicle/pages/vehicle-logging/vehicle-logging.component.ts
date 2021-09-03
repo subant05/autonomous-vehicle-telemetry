@@ -320,6 +320,14 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   onLiveToggle(event:any){
+    const isLive = !event.currentTarget.querySelector("input").checked
+    if(isLive){
+      this.initLiveLogging()
+      this.initLiveObject()
+      this.initLiveStatus()
+    } else {
+      this.unsubscribeLiveSubscriptions()
+    }
   }
 
   onSubmit(): void{

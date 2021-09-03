@@ -61,34 +61,6 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
     })
   }
 
-  // private previewImageQuery(){
-  //   this.previewImagesSubscription?.unsubscribe()
-  //   this.imageSubscriptions.forEach(subscription=>{
-  //     subscription.unsubscribe()
-  //   })
-
-  //   this.previewImagesSubscription = this.graphQLQuery
-  //   .getVehiclePreviewImages({id:this.vehicleId})
-  //   .subscribe((response:any)=>{
-  //     this.vehicleImages = response.filter((item:any)=>!!item)
-  //     this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
-  //       if(!image)
-  //         return;
-
-  //       this.imageSubscriptions[index]  =  
-  //         this.graphQLSubscription
-  //         .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
-  //         .subscribe((response:any): void | null=>{
-  //           if(!response)
-  //             return null;
-
-  //           array[index] = response
-  //         })
-  //     })
-  //     this.isImagesLoaded = true
-  //   })
-  // }
-
   previewImageQuery(){
     this.previewImagesSubscription = this.graphQLQuery
     .getPreviewImagesByTopicNameVehicleId({

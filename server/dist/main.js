@@ -8657,6 +8657,15 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         setTimeout(() => this.refresh = !this.refresh, 0);
     }
     onLiveToggle(event) {
+        const isLive = !event.currentTarget.querySelector("input").checked;
+        if (isLive) {
+            this.initLiveLogging();
+            this.initLiveObject();
+            this.initLiveStatus();
+        }
+        else {
+            this.unsubscribeLiveSubscriptions();
+        }
     }
     onSubmit() {
         if (!this.isFormValid())
@@ -8919,30 +8928,6 @@ class VehicleOverviewComponent {
                 }
             });
     }
-    // private previewImageQuery(){
-    //   this.previewImagesSubscription?.unsubscribe()
-    //   this.imageSubscriptions.forEach(subscription=>{
-    //     subscription.unsubscribe()
-    //   })
-    //   this.previewImagesSubscription = this.graphQLQuery
-    //   .getVehiclePreviewImages({id:this.vehicleId})
-    //   .subscribe((response:any)=>{
-    //     this.vehicleImages = response.filter((item:any)=>!!item)
-    //     this.vehicleImages.forEach((image:any, index:number, array:any[])=>{
-    //       if(!image)
-    //         return;
-    //       this.imageSubscriptions[index]  =  
-    //         this.graphQLSubscription
-    //         .getPreviewImageByVehicleIdTopicId({vehicleId:this.vehicleId, topicId:image.topicId})
-    //         .subscribe((response:any): void | null=>{
-    //           if(!response)
-    //             return null;
-    //           array[index] = response
-    //         })
-    //     })
-    //     this.isImagesLoaded = true
-    //   })
-    // }
     previewImageQuery() {
         this.previewImagesSubscription = this.graphQLQuery
             .getPreviewImagesByTopicNameVehicleId({
