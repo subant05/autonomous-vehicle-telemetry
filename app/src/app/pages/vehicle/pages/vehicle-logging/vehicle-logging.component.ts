@@ -173,14 +173,12 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     }
   }
 
-
   private initiateLiveSubscriptions(){
+    this.unsubscribeLiveSubscriptions()
+
     this.fgLoggingFilter.value.logType.forEach((type:any)=>{
       switch(type){
         case "logging":
-          if(this.loggingSubscription && !this.loggingSubscription.closed)
-            this.loggingSubscription?.unsubscribe()
-
           this.loggingSubscription = this.graphQLSubscription
             .getLoggingByVehicleId({vehicleId:this.vehicleId})
             .subscribe((response:any)=>{
@@ -210,9 +208,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
             })
             break;
         case "status":
-          if(this.statusSubscription && !this.statusSubscription.closed)
-            this.statusSubscription?.unsubscribe()
-
           this.statusSubscription = this.graphQLSubscription
             .getVehicleStatus({vehicleId:this.vehicleId})
             .subscribe((response:any):void | null=> {
@@ -223,9 +218,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
             })
             break;
         case "object":
-            if(this.objectSubscription && !this.objectSubscription.closed)
-              this.objectSubscription?.unsubscribe()
-
             this.objectSubscription = this.graphQLSubscription
               .getObjectDetectionByVehicleId({vehicleId:this.vehicleId})
               .subscribe((response:any)=>{

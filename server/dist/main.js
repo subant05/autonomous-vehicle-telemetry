@@ -8514,12 +8514,10 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         }
     }
     initiateLiveSubscriptions() {
+        this.unsubscribeLiveSubscriptions();
         this.fgLoggingFilter.value.logType.forEach((type) => {
-            var _a, _b, _c;
             switch (type) {
                 case "logging":
-                    if (this.loggingSubscription && !this.loggingSubscription.closed)
-                        (_a = this.loggingSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
                     this.loggingSubscription = this.graphQLSubscription
                         .getLoggingByVehicleId({ vehicleId: this.vehicleId })
                         .subscribe((response) => {
@@ -8543,8 +8541,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                     });
                     break;
                 case "status":
-                    if (this.statusSubscription && !this.statusSubscription.closed)
-                        (_b = this.statusSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
                     this.statusSubscription = this.graphQLSubscription
                         .getVehicleStatus({ vehicleId: this.vehicleId })
                         .subscribe((response) => {
@@ -8554,8 +8550,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                     });
                     break;
                 case "object":
-                    if (this.objectSubscription && !this.objectSubscription.closed)
-                        (_c = this.objectSubscription) === null || _c === void 0 ? void 0 : _c.unsubscribe();
                     this.objectSubscription = this.graphQLSubscription
                         .getObjectDetectionByVehicleId({ vehicleId: this.vehicleId })
                         .subscribe((response) => {
