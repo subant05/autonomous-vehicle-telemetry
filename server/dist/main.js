@@ -8513,52 +8513,53 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             }
         }
     }
-    initiateLiveSubscriptions() {
-        this.unsubscribeLiveSubscriptions();
-        this.fgLoggingFilter.value.logType.forEach((type) => {
-            switch (type) {
-                case "logging":
-                    this.loggingSubscription = this.graphQLSubscription
-                        .getLoggingByVehicleId({ vehicleId: this.vehicleId })
-                        .subscribe((response) => {
-                        if (!response)
-                            return;
-                        if (this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1) {
-                            this.updateTable({ data: Object.assign(Object.assign(Object.assign({ readingat: response.readingat }, response.message), response.message.stamp), { __typename: "VehicleLogView", stamp: null }), action: "prepend" });
-                        }
-                        else if (this.nodes.indexOf(response.message.name) === -1) {
-                            this.nodes.push(response.message.name);
-                            this.nodes = this.nodes.sort((a, b) => {
-                                if (a < b)
-                                    return -1;
-                                else if (a > a)
-                                    return 1;
-                                else
-                                    return 0;
-                            });
-                        }
-                        else { }
+    // 
+    initLiveLogging() {
+        const addData = (response) => {
+            this.updateTable({ data: Object.assign(Object.assign(Object.assign({ readingat: response.readingat }, response.message), response.message.stamp), { __typename: "VehicleLogView", stamp: null }), action: "prepend" });
+        };
+        this.loggingSubscription = this.graphQLSubscription
+            .getLoggingByVehicleId({ vehicleId: this.vehicleId })
+            .subscribe((response) => {
+            if (response &&
+                (this.fgLoggingFilter.value.logType.indexOf("logging") !== -1 &&
+                    this.fgLoggingFilter.value.isLive)) {
+                if (this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1) {
+                    addData(response);
+                }
+                else if (this.nodes.indexOf(response.message.name) === -1) {
+                    this.nodes.push(response.message.name);
+                    this.nodes = this.nodes.sort((a, b) => {
+                        if (a < b)
+                            return -1;
+                        else if (a > a)
+                            return 1;
+                        else
+                            return 0;
                     });
-                    break;
-                case "status":
-                    this.statusSubscription = this.graphQLSubscription
-                        .getVehicleStatus({ vehicleId: this.vehicleId })
-                        .subscribe((response) => {
-                        if (!response)
-                            return null;
-                        this.updateTable({ data: response, action: "prepend" });
-                    });
-                    break;
-                case "object":
-                    this.objectSubscription = this.graphQLSubscription
-                        .getObjectDetectionByVehicleId({ vehicleId: this.vehicleId })
-                        .subscribe((response) => {
-                        this.updateTable({ data: response, action: "prepend" });
-                    });
-                    break;
+                    addData(response);
+                }
+                else { }
             }
         });
     }
+    initLiveStatus() {
+        this.statusSubscription = this.graphQLSubscription
+            .getVehicleStatus({ vehicleId: this.vehicleId })
+            .subscribe((response) => {
+            if (response && this.fgLoggingFilter.value.logType.indexOf("status") !== -1 && this.fgLoggingFilter.value.isLive)
+                this.updateTable({ data: response, action: "prepend" });
+        });
+    }
+    initLiveObject() {
+        this.objectSubscription = this.graphQLSubscription
+            .getObjectDetectionByVehicleId({ vehicleId: this.vehicleId })
+            .subscribe((response) => {
+            if (response && this.fgLoggingFilter.value.logType.indexOf("object") !== -1 && this.fgLoggingFilter.value.isLive)
+                this.updateTable({ data: response, action: "prepend" });
+        });
+    }
+    // 
     unsubscribeLiveSubscriptions() {
         var _a, _b, _c;
         (_a = this.loggingSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
@@ -8590,10 +8591,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             }
         });
     }
-    setupLiveSubscription() {
-        if (this.fgLoggingFilter.value.isLive)
-            this.initiateLiveSubscriptions();
-    }
     nodeSubscriptionHandler(response, isSavedForm) {
         this.nodes = response.map((result) => result.node);
         if (!isSavedForm
@@ -8613,8 +8610,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                 && this.fgLoggingFilter.controls.endDateTime.valid));
     }
     onTypeChange() {
-        if (this.fgLoggingFilter.value.isLive)
-            this.initiateLiveSubscriptions();
     }
     ngOnInit() {
         const savedForm = this.filterService.getFilterState(`logging-${this.vehicleId}`);
@@ -8626,7 +8621,9 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         });
         this.setupFilter(savedForm);
         this.setupInfiniteScroll();
-        this.setupLiveSubscription();
+        this.initLiveLogging();
+        this.initLiveObject();
+        this.initLiveStatus();
     }
     ngOnDestroy() {
         var _a, _b, _c, _d;
@@ -8643,13 +8640,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         setTimeout(() => this.refresh = !this.refresh, 0);
     }
     onLiveToggle(event) {
-        const isLive = !event.currentTarget.querySelector("input").checked;
-        if (isLive) {
-            this.initiateLiveSubscriptions();
-        }
-        else {
-            this.unsubscribeLiveSubscriptions();
-        }
     }
     onSubmit() {
         if (!this.isFormValid())

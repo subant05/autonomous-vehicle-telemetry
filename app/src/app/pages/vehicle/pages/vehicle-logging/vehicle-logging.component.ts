@@ -172,61 +172,62 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       }
     }
   }
+// 
+ private initLiveLogging(){
 
-  private initiateLiveSubscriptions(){
-    this.unsubscribeLiveSubscriptions()
-
-    this.fgLoggingFilter.value.logType.forEach((type:any)=>{
-      switch(type){
-        case "logging":
-          this.loggingSubscription = this.graphQLSubscription
-            .getLoggingByVehicleId({vehicleId:this.vehicleId})
-            .subscribe((response:any)=>{
-              if(!response)
-                return
-                
-              if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1){
-                this.updateTable({data:{
-                  readingat: response.readingat
-                  , ...response.message
-                  , ...response.message.stamp
-                  , __typename: "VehicleLogView"
-                  , stamp:null
-                  }, action:"prepend"})   
-              } else if (this.nodes.indexOf(response.message.name) === -1){
-                  this.nodes.push(response.message.name)
-                  this.nodes = this.nodes.sort((a:any,b:any)=>{
-                    if(a < b)
-                      return -1
-                    else if (a > a)
-                      return 1
-                    else 
-                      return 0
-                  })
-              }else{}
-
-            })
-            break;
-        case "status":
-          this.statusSubscription = this.graphQLSubscription
-            .getVehicleStatus({vehicleId:this.vehicleId})
-            .subscribe((response:any):void | null=> {
-              if(!response)
-                return null
-
-              this.updateTable({data:response, action:"prepend"})  
-            })
-            break;
-        case "object":
-            this.objectSubscription = this.graphQLSubscription
-              .getObjectDetectionByVehicleId({vehicleId:this.vehicleId})
-              .subscribe((response:any)=>{
-                this.updateTable({data:response, action:"prepend"})  
-              })
-          break;
-      }
-    })
+  const addData = (response:any) => {
+    this.updateTable({data:{
+      readingat: response.readingat
+      , ...response.message
+      , ...response.message.stamp
+      , __typename: "VehicleLogView"
+      , stamp:null
+      }, action:"prepend"})
   }
+  this.loggingSubscription = this.graphQLSubscription
+    .getLoggingByVehicleId({vehicleId:this.vehicleId})
+    .subscribe((response:any)=>{
+      if(response && 
+        ( this.fgLoggingFilter.value.logType.indexOf("logging") !== -1 && 
+          this.fgLoggingFilter.value.isLive)){
+            if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1){
+              addData(response)
+            } else if (this.nodes.indexOf(response.message.name) === -1){
+                this.nodes.push(response.message.name)
+                this.nodes = this.nodes.sort((a:any,b:any)=>{
+                  if(a < b)
+                    return -1
+                  else if (a > a)
+                    return 1
+                  else 
+                    return 0
+                })
+                addData(response)
+            }else{}
+          }        
+        
+
+    })
+ }
+
+ private initLiveStatus(){
+  this.statusSubscription = this.graphQLSubscription
+    .getVehicleStatus({vehicleId:this.vehicleId})
+    .subscribe((response:any):void | null=> {
+      if(response &&  this.fgLoggingFilter.value.logType.indexOf("status") !== -1 && this.fgLoggingFilter.value.isLive)
+        this.updateTable({data:response, action:"prepend"})  
+    })
+ }
+
+ private initLiveObject(){
+  this.objectSubscription = this.graphQLSubscription
+    .getObjectDetectionByVehicleId({vehicleId:this.vehicleId})
+    .subscribe((response:any)=>{
+      if(response && this.fgLoggingFilter.value.logType.indexOf("object") !== -1 && this.fgLoggingFilter.value.isLive)
+        this.updateTable({data:response, action:"prepend"})  
+  })
+ }
+// 
 
   private unsubscribeLiveSubscriptions(){
     this.loggingSubscription?.unsubscribe()
@@ -262,11 +263,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     })
   }
 
-  private setupLiveSubscription(){
-    if(this.fgLoggingFilter.value.isLive)
-    this.initiateLiveSubscriptions()
-  }
-
   private nodeSubscriptionHandler(response:any, isSavedForm:any){
     this.nodes = response.map((result:any)=>result.node)
     if(!isSavedForm 
@@ -290,8 +286,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   onTypeChange(){
-    if(this.fgLoggingFilter.value.isLive)
-      this.initiateLiveSubscriptions()
   }
   
   ngOnInit(): void {
@@ -304,7 +298,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     })
     this.setupFilter(savedForm)
     this.setupInfiniteScroll()
-    this.setupLiveSubscription()
+    this.initLiveLogging()
+    this.initLiveObject()
+    this.initLiveStatus()
   }
 
   ngOnDestroy():void {
@@ -324,13 +320,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   }
 
   onLiveToggle(event:any){
-    const isLive = !event.currentTarget.querySelector("input").checked
-    if(isLive){
-      this.initiateLiveSubscriptions()
-    }
-    else {
-      this.unsubscribeLiveSubscriptions()
-    }
   }
 
   onSubmit(): void{
