@@ -267,13 +267,13 @@ export class GqlQueryService {
                 )
               , variables)
           .pipe(map((response:any)=>{
-            const logging:any = []
+            // const logging:any = []
               if(!response || !response.data)
-                return logging
+                return []
 
-              response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
+              // response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
 
-              return [].concat(logging || [])
+              return [].concat(response.data.logging ? response.data.logging.nodes : [])
                 .concat(response.data.objectDetection ? response.data.objectDetection.nodes : [])
                 .concat(response.data.vehicleStatus ? response.data.vehicleStatus.nodes : [])
                 .sort((a,b)=>new Date((b as any).readingat).valueOf() - new Date((a as any).readingat).valueOf())
@@ -403,14 +403,15 @@ export class GqlQueryService {
   getCurrentLogsByVehicleId(variables={}){
     return this.basicFilteredQuery(QueryQL.Logging.CurrentLogsByVehicleId, variables)
     .pipe(map((response:any)=>{
-      const logging:any = []
+
+      // const logging:any = []
       
       if(!response || !response.data)
-        return logging
+        return []
 
-      response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
+      // response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
 
-      return logging
+      return response.data.logging.nodes
     }))
   }
 

@@ -38,43 +38,33 @@
 // }`
 
 export const logging = (paginationRange=25, nodes=[])=>`
-logging: vehicleLogMessages(
-        first: ${paginationRange}
-        orderBy:ID_DESC 
-        offset: $cursor
-        filter:{name:{in:${JSON.stringify(nodes)}}}
-  ){
-
-    nodes{
-      vehicleLogsByMessageId(
-        filter:{
-          vehicleId:{equalTo:$vehicleId} 
-          , readingat:{ 
-              greaterThanOrEqualTo: $startDateTime
-            , lessThanOrEqualTo: $endDateTime
-          } 
-        }
-      ){
-        nodes{
-          readingat
-          id
-          topicId
-          vehicleId
-          message{
-            id
-            name
-            function
-            file
-            level
-            msg
-            stamp{
-              sec
-              nanosec
-            }
-            
-          }
-        }
-      }
+logging: vehicleLogViews(
+  first: ${paginationRange}, 
+  orderBy: ID_DESC, 
+  offset: $cursor
+  condition:{vehicleId:$vehicleId}
+  filter:{
+    node:{
+      in:${JSON.stringify(nodes)}
     }
+    readingat:{ 
+            greaterThanOrEqualTo: $startDateTime
+          , lessThanOrEqualTo: $endDateTime
+    } 
   }
+){
+  nodes{
+    id
+    readingat
+    topicId
+    vehicleId
+    name: node
+    function
+    file
+    level
+    msg
+    sec
+    nanosec
+  }
+}
 `

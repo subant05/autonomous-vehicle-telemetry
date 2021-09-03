@@ -1313,43 +1313,31 @@ __webpack_require__.r(__webpack_exports__);
 
 const currentLogsByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 query Logging ($cursor:Int $vehicleId:BigInt $paginationRange:Int $nodes:[String!]){ 
-    logging: vehicleLogMessages(
-        first: $paginationRange
-        orderBy:ID_DESC 
-        offset: $cursor
-        filter:{
-            name:{
-                in:$nodes
-            }
-        }
-    ){
-        nodes{
-        vehicleLogsByMessageId(
-            filter:{
-            vehicleId:{equalTo:$vehicleId} 
-            }
-        ){
-            nodes{
-                readingat
-                id
-                topicId
-                vehicleId
-                    message{
-                        id
-                        name
-                        function
-                        file
-                        level
-                        msg
-                        stamp{
-                            sec
-                            nanosec
-                        }
-                    }
-                }
-            }   
-        }
+logging: vehicleLogViews(
+    first:$paginationRange, 
+    orderBy: ID_DESC, 
+    offset: $cursor
+    condition:{vehicleId:$vehicleId}
+    filter:{
+      node:{
+        in:$nodes
+      }
     }
+  ){
+    nodes{
+      id
+      readingat
+      topicId
+      vehicleId
+      name: node
+      function
+      file
+      level
+      msg
+      sec
+      nanosec
+    }
+  }
 }
 `
 
@@ -1738,45 +1726,35 @@ __webpack_require__.r(__webpack_exports__);
 // }`
 
 const logging = (paginationRange=25, nodes=[])=>`
-logging: vehicleLogMessages(
-        first: ${paginationRange}
-        orderBy:ID_DESC 
-        offset: $cursor
-        filter:{name:{in:${JSON.stringify(nodes)}}}
-  ){
-
-    nodes{
-      vehicleLogsByMessageId(
-        filter:{
-          vehicleId:{equalTo:$vehicleId} 
-          , readingat:{ 
-              greaterThanOrEqualTo: $startDateTime
-            , lessThanOrEqualTo: $endDateTime
-          } 
-        }
-      ){
-        nodes{
-          readingat
-          id
-          topicId
-          vehicleId
-          message{
-            id
-            name
-            function
-            file
-            level
-            msg
-            stamp{
-              sec
-              nanosec
-            }
-            
-          }
-        }
-      }
+logging: vehicleLogViews(
+  first: ${paginationRange}, 
+  orderBy: ID_DESC, 
+  offset: $cursor
+  condition:{vehicleId:$vehicleId}
+  filter:{
+    node:{
+      in:${JSON.stringify(nodes)}
     }
+    readingat:{ 
+            greaterThanOrEqualTo: $startDateTime
+          , lessThanOrEqualTo: $endDateTime
+    } 
   }
+){
+  nodes{
+    id
+    readingat
+    topicId
+    vehicleId
+    name: node
+    function
+    file
+    level
+    msg
+    sec
+    nanosec
+  }
+}
 `
 
 /***/ }),
@@ -8713,7 +8691,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                     console.log(`Dialog closed: ${result}`);
                 });
                 break;
-            case "VehicleLog":
+            case "VehicleLogView":
                 break;
         }
     }
@@ -8725,8 +8703,8 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             case "Object":
                 return col.message.header.node;
                 break;
-            case "VehicleLog":
-                return col.message.name;
+            case "VehicleLogView":
+                return col.name;
                 break;
         }
     }
@@ -8741,8 +8719,8 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             case "Object":
                 return col.message.header.node;
                 break;
-            case "VehicleLog":
-                return col.message.msg;
+            case "VehicleLogView":
+                return col.msg;
                 break;
         }
     }
@@ -8755,7 +8733,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             case "Object":
                 type = "Object";
                 break;
-            case "VehicleLog":
+            case "VehicleLogView":
                 type = "Log";
                 break;
         }
@@ -8767,7 +8745,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                 return (col.alerts.alertType || col.alerts.nodes[0].alertType).name;
                 break;
             case "Object":
-            case "VehicleLog":
+            case "VehicleLogView":
                 return "info";
                 break;
         }
@@ -10064,11 +10042,11 @@ class GqlQueryService {
     getAllVehicleLogsStatusDetection(variables = { logType: [], paginationRange: 25, nodes: [] }) {
         return this.basicFilteredQuery(QueryQL.Logging.QueryBuilder(variables.logType, variables.paginationRange, variables.nodes), variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
-            const logging = [];
+            // const logging:any = []
             if (!response || !response.data)
-                return logging;
-            response.data.logging ? response.data.logging.nodes.map((item) => item.vehicleLogsByMessageId.nodes.forEach((innerItem) => { logging.push(innerItem); })) : null;
-            return [].concat(logging || [])
+                return [];
+            // response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
+            return [].concat(response.data.logging ? response.data.logging.nodes : [])
                 .concat(response.data.objectDetection ? response.data.objectDetection.nodes : [])
                 .concat(response.data.vehicleStatus ? response.data.vehicleStatus.nodes : [])
                 .sort((a, b) => new Date(b.readingat).valueOf() - new Date(a.readingat).valueOf());
@@ -10182,11 +10160,11 @@ class GqlQueryService {
     getCurrentLogsByVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Logging.CurrentLogsByVehicleId, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
-            const logging = [];
+            // const logging:any = []
             if (!response || !response.data)
-                return logging;
-            response.data.logging ? response.data.logging.nodes.map((item) => item.vehicleLogsByMessageId.nodes.forEach((innerItem) => { logging.push(innerItem); })) : null;
-            return logging;
+                return [];
+            // response.data.logging ? response.data.logging.nodes.map((item:any)=>item.vehicleLogsByMessageId.nodes.forEach((innerItem:any)=>{logging.push(innerItem)})) :null
+            return response.data.logging.nodes;
         }));
     }
     getImageMeta(variables = {}) {

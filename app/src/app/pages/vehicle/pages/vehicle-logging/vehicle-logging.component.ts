@@ -111,6 +111,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       .subscribe((response:any)=>{
         this.isScrollDataLoading = false
 
+        ;
         if(!response.length)
           return;
 
@@ -370,7 +371,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
             console.log(`Dialog closed: ${result}`);
           });
           break;
-      case "VehicleLog":
+      case "VehicleLogView":
           break;
     }
 
@@ -385,8 +386,8 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
           case "Object":
               return col.message.header.node
               break;
-          case "VehicleLog":
-              return col.message.name
+          case "VehicleLogView":
+              return col.name
               break;
       }
   }
@@ -402,13 +403,14 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         case "Object":
             return col.message.header.node
             break;
-        case "VehicleLog":
-            return col.message.msg
+        case "VehicleLogView":
+            return col.msg
             break;
     }
   }
 
   renderTypeColumn(col:any){
+    
     let type = ""
     switch(col.__typename){
       case "VehicleStatus":
@@ -417,7 +419,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         case "Object":
             type =  "Object"
             break;
-        case "VehicleLog":
+        case "VehicleLogView":
             type = "Log"
             break;
     }
@@ -431,7 +433,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
           return (col.alerts.alertType || col.alerts.nodes[0].alertType).name
             break;
         case "Object":
-        case "VehicleLog":
+        case "VehicleLogView":
             return "info"
             break;
     }
