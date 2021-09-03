@@ -10189,10 +10189,10 @@ class GqlQueryService {
     getImageMeta(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
-            const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes;
-            if (!result.length)
+            const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes[0].cameraJson;
+            if (!result)
                 return null;
-            const parsed = JSON.parse(result[0].cameraJson.json);
+            const parsed = JSON.parse(result.json);
             parsed.msg.image.data = null;
             return parsed;
         }));

@@ -436,11 +436,11 @@ export class GqlQueryService {
   getImageMeta(variables={}){
     return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
     .pipe(map((response:any)=>{
-      const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes
-      if(!result.length)
+      const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes[0].cameraJson
+      if(!result)
         return null;
 
-      const parsed = JSON.parse(result[0].cameraJson.json)
+      const parsed = JSON.parse(result.json)
       parsed.msg.image.data = null
       
       return parsed
