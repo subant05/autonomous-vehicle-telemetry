@@ -8526,7 +8526,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                         if (!response)
                             return;
                         if (this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1) {
-                            this.updateTable({ data: response, action: "prepend" });
+                            this.updateTable({ data: Object.assign(Object.assign({}, response.message), response.message.stamp), action: "prepend" });
                         }
                         else if (this.nodes.indexOf(response.message.name) === -1) {
                             this.nodes.push(response.message.name);

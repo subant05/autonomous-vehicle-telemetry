@@ -188,7 +188,10 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
                 return
                 
               if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1){
-                this.updateTable({data:response, action:"prepend"})   
+                this.updateTable({data:{
+                  ...response.message
+                  , ...response.message.stamp
+                  }, action:"prepend"})   
               } else if (this.nodes.indexOf(response.message.name) === -1){
                   this.nodes.push(response.message.name)
                   this.nodes = this.nodes.sort((a:any,b:any)=>{
