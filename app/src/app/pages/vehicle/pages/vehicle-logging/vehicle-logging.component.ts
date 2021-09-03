@@ -88,7 +88,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
         break;
       case "replace":
       default:
-          this.savedResults = data
+          this.savedResults = [...data]
           break;
     }
 
@@ -189,8 +189,11 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
                 
               if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1){
                 this.updateTable({data:{
-                  ...response.message
+                  readingat: response.readingat
+                  , ...response.message
                   , ...response.message.stamp
+                  , __typename: "VehicleLogView"
+                  , stamp:null
                   }, action:"prepend"})   
               } else if (this.nodes.indexOf(response.message.name) === -1){
                   this.nodes.push(response.message.name)
