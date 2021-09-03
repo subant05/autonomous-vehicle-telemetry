@@ -11,7 +11,9 @@ router.post("/preview", async (req, res) => {
     console.log("IMAGES:",req.body.topic)
 
     setDefaultVehicle(req)
-    Images.sqlInsertPreviewImage(req.body.topic, req.body, responseCallback(res))
+    Images.sqlInsertPreviewImageJson(req.body.topic, req.body, responseCallback(res))
+
+    // Images.sqlInsertPreviewImage(req.body.topic, req.body, responseCallback(res))
 }) 
 router.post("/segmentation", async (req, res) => {
     console.log("SEGMENTATION:",req.body.topic)

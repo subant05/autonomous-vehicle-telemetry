@@ -6213,12 +6213,11 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
             .getPreviewImageByCameraMessageHeaderId({ headerId: stopInfo.message.header.headerid })
             .subscribe((response) => {
             if (!response) {
-                if (isLiveUpdate) {
-                    this.recursiveImageHandler(stopInfo, currentHeaderId);
-                }
-                else {
-                    this.isImageLoaded = true;
-                }
+                // if(isLiveUpdate){
+                //   this.recursiveImageHandler(stopInfo,currentHeaderId)
+                // }else{
+                this.isImageLoaded = true;
+                // }
                 return;
             }
             this.image = response.image.id;

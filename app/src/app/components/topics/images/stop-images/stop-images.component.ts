@@ -93,13 +93,12 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       .getPreviewImageByCameraMessageHeaderId({headerId:stopInfo.message.header.headerid})
       .subscribe((response:any)=>{
         if(!response){
-          if(isLiveUpdate){
-            this.recursiveImageHandler(stopInfo,currentHeaderId)
-          }else{
+          // if(isLiveUpdate){
+          //   this.recursiveImageHandler(stopInfo,currentHeaderId)
+          // }else{
             this.isImageLoaded = true
-          }
+          // }
           return;
-
         }
           
         this.image = response.image.id
