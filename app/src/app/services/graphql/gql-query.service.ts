@@ -438,7 +438,7 @@ export class GqlQueryService {
     .pipe(map((response:any)=>{
       const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes[0].cameraJson
       if(!result)
-        return null;
+        return {};
 
       const parsed = JSON.parse(result.json)
       parsed.msg.image.data = null

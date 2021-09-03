@@ -10191,7 +10191,7 @@ class GqlQueryService {
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
             const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes[0].cameraJson;
             if (!result)
-                return null;
+                return {};
             const parsed = JSON.parse(result.json);
             parsed.msg.image.data = null;
             return parsed;
