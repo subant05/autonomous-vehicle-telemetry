@@ -415,24 +415,35 @@ export class GqlQueryService {
     }))
   }
 
+  // getImageMeta(variables={}){
+  //   return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
+  //   .pipe(map((response:any)=>{
+  //     if(!response.data.images.nodes.length)
+  //       return null;
+  //     const cameraData = response.data.images.nodes[0]
+  //     const cameraMetaData = cameraData.cameraMessages.nodes[0].cameraMeta
+  //     return { 
+  //       width:cameraData.width
+  //       , height: cameraData.height
+  //       , step: cameraData.step
+  //       , encoding: cameraData.encoding
+  //       , isBigendian: cameraData.isBigendian
+  //       , header: cameraData.cameraMessages.nodes[0].header
+  //       , ...cameraData.cameraMessages.nodes[0].cameraMeta
+  //     }
+  //   }))
+  // }
   getImageMeta(variables={}){
     return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
     .pipe(map((response:any)=>{
-      if(!response.data.images.nodes.length)
+      const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes
+      if(!result.length)
         return null;
-      const cameraData = response.data.images.nodes[0]
-      const cameraMetaData = cameraData.cameraMessages.nodes[0].cameraMeta
-      return { 
-        width:cameraData.width
-        , height: cameraData.height
-        , step: cameraData.step
-        , encoding: cameraData.encoding
-        , isBigendian: cameraData.isBigendian
-        , header: cameraData.cameraMessages.nodes[0].header
-        , ...cameraData.cameraMessages.nodes[0].cameraMeta
-      }
+
+      const parsed = JSON.parse(result[0].cameraJson.json)
+      parsed.msg.image.data = null
+      
+      return parsed
     }))
   }
-   
-
 }

@@ -1,6 +1,6 @@
 import { gql } from 'apollo-angular';
-
-const cameraMeta =gql`query CamerMeta ($imageId:BigInt) {
+/**
+ * const cameraMeta =gql`query CamerMeta ($imageId:BigInt) {
     images(condition: {id: $imageId}) {
       nodes {
         width
@@ -134,5 +134,22 @@ const cameraMeta =gql`query CamerMeta ($imageId:BigInt) {
     }
   }
   `
+ */
+const cameraMeta =gql`query CamerMeta ($imageId:BigInt!) {
+  image(id:$imageId){
+    cameraMessages{
+      nodes{
+        camerasByMsgId{
+          nodes{
+            cameraJson{
+              json
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
 
   export {cameraMeta as default}

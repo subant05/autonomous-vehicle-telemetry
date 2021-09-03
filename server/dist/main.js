@@ -387,8 +387,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
 
-
-const cameraMeta =apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`query CamerMeta ($imageId:BigInt) {
+/**
+ * const cameraMeta =gql`query CamerMeta ($imageId:BigInt) {
     images(condition: {id: $imageId}) {
       nodes {
         width
@@ -522,6 +522,23 @@ const cameraMeta =apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`query Came
     }
   }
   `
+ */
+const cameraMeta =apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`query CamerMeta ($imageId:BigInt!) {
+  image(id:$imageId){
+    cameraMessages{
+      nodes{
+        camerasByMsgId{
+          nodes{
+            cameraJson{
+              json
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
 
   
 
@@ -10151,14 +10168,33 @@ class GqlQueryService {
             return response.data.logging.nodes;
         }));
     }
+    // getImageMeta(variables={}){
+    //   return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
+    //   .pipe(map((response:any)=>{
+    //     if(!response.data.images.nodes.length)
+    //       return null;
+    //     const cameraData = response.data.images.nodes[0]
+    //     const cameraMetaData = cameraData.cameraMessages.nodes[0].cameraMeta
+    //     return { 
+    //       width:cameraData.width
+    //       , height: cameraData.height
+    //       , step: cameraData.step
+    //       , encoding: cameraData.encoding
+    //       , isBigendian: cameraData.isBigendian
+    //       , header: cameraData.cameraMessages.nodes[0].header
+    //       , ...cameraData.cameraMessages.nodes[0].cameraMeta
+    //     }
+    //   }))
+    // }
     getImageMeta(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
-            if (!response.data.images.nodes.length)
+            const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes;
+            if (!result.length)
                 return null;
-            const cameraData = response.data.images.nodes[0];
-            const cameraMetaData = cameraData.cameraMessages.nodes[0].cameraMeta;
-            return Object.assign({ width: cameraData.width, height: cameraData.height, step: cameraData.step, encoding: cameraData.encoding, isBigendian: cameraData.isBigendian, header: cameraData.cameraMessages.nodes[0].header }, cameraData.cameraMessages.nodes[0].cameraMeta);
+            const parsed = JSON.parse(result[0].cameraJson.json);
+            parsed.msg.image.data = null;
+            return parsed;
         }));
     }
 }
