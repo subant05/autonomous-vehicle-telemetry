@@ -4335,7 +4335,7 @@ function ImageExpansionComponent_mat_expansion_panel_17_Template(rf, ctx) { if (
     const ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("expanded", true);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("json", ctx_r5.meta)("expanded", true);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("json", ctx_r5.meta)("expanded", false);
 } }
 function ImageExpansionComponent_ng_template_18_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "mat-progress-bar", 18);
