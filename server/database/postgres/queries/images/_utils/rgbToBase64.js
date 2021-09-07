@@ -94,4 +94,7 @@ export class ImageService {
 }
 
 export const imageService = new ImageService()
-export const rgbToBase64 = (config)=>imageService.getDataURL(config)
+export const rgbToBase64 = (config)=>{
+  const img = imageService.getDataURL(config)
+  return Buffer.from(img.replace(/^data:image\/png;base64,/, ''), 'base64')
+}

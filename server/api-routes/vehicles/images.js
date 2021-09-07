@@ -32,7 +32,8 @@ router.get('/:id', async (req,res)=>{
     const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
     const imageList = await Images.sqlSelectImageBase64ById(id, isSegmentation)
     if(imageList.length){
-      var img = Buffer.from(imageList[0].replace(/^data:image\/png;base64,/, ''), 'base64');
+      console.log(imageList[0] instanceof Array)
+      var img = imageList[0] //;
   
      res.writeHead(200, {
        'Content-Type': 'image/png',
