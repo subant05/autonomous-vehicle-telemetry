@@ -31,7 +31,8 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any
-    , private graphQLQuery: GqlQueryService) { }
+    , private graphQLQuery: GqlQueryService) { 
+    }
   
   private subjectHanlder(response:any){
     switch(response.type){
@@ -58,19 +59,24 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
 
   private getMetaData(){
     this.metaDataSubscription?.unsubscribe()
-    this.metaDataSubscription = this.graphQLQuery.getImageMeta({imageId: this.data.imageId})
-    .subscribe((response:any)=>{
-      if(response)
-        this.meta = response
-    })
+    this.metaDataSubscription = this.graphQLQuery
+      .getImageMeta({imageId: this.data.imageId})
+      .subscribe((response:any)=>{
+        if(response)
+          this.meta = response
+      })
   }
 
   ngOnInit(): void {
     if(this.data.subject){
-      this.segmentationQuery = this.data.subject.subscribe(this.subjectHanlder.bind(this))
+      this.segmentationQuery = this.data.subject
+        .subscribe(
+            this.subjectHanlder.bind(this)
+        )
       this.data.subject.next({type:"getPagination", data:null})
       this.data.subject.next({type:"getGeolocation", data:null})
     }
+    
     this.getMetaData()
   }
 

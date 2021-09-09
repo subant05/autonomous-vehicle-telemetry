@@ -29,6 +29,7 @@ query ObjectDetectionQuery ($vehicleId: BigInt $cursor:Int $size:Int){
                 seq
                 node
               }
+              cameraName
               detection{
                 header{
                   headerid

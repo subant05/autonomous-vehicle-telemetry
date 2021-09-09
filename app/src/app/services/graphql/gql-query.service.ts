@@ -446,4 +446,16 @@ export class GqlQueryService {
       return parsed
     }))
   }
+
+  getPreviewImageByCameraMessageIdCameraName(variables={}){
+    return this.basicFilteredQuery(QueryQL.Images.PreviewByMessageHeaderIdCameraName, variables)
+    .pipe(map((response:any)=>{
+      if(!response.data.imagesViews.nodes.length)
+        null;
+
+      return response.data.imagesViews.nodes[0]
+      
+    }))
+
+  }
 }

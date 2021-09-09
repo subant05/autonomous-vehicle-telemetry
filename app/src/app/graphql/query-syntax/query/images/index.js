@@ -10,6 +10,7 @@ import ByTopicNamesVehicleId from './selectPreviewsByVehicleId'
 import ObjectDetectionImagesByVehicleId from './objectDetectionImagesByVehicleId'
 import LatestPreviewVehicleIdByTopicName from './latestPreviewVehicleIdByTopicName'
 import CameraMetaByImageId from './cameraMetaByImageId'
+import PreviewByMessageHeaderIdCameraName from './previewByHeaderIdCameraName'
 
 export {
     PreviewImageByVehicleId
@@ -24,4 +25,5 @@ export {
     , ObjectDetectionImagesByVehicleId
     , LatestPreviewVehicleIdByTopicName
     , CameraMetaByImageId
+    , PreviewByMessageHeaderIdCameraName
 }

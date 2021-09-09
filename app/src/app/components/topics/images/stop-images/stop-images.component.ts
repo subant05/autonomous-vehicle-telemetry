@@ -89,8 +89,12 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
 
   private imageHandler(stopInfo:any, isLiveUpdate=false, currentHeaderId?:any){
     let counter = 0
+
     this.gqlQuery
-      .getPreviewImageByCameraMessageHeaderId({headerId:stopInfo.message.header.headerid})
+      .getPreviewImageByCameraMessageIdCameraName({
+          headerId:stopInfo.message.header.headerid
+          , cameraName: stopInfo.message.cameraName
+        })
       .subscribe((response:any)=>{
         if(!response){
           // if(isLiveUpdate){
@@ -101,7 +105,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
           return;
         }
           
-        this.image = response.image.id
+        this.image = response.id
         this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
         this.headerid = stopInfo.message.header.headerid
         this.notifyPaginationChange()

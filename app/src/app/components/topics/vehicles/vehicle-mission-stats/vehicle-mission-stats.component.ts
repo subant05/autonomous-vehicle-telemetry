@@ -11,6 +11,11 @@ import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
 export class VehicleMissionStatsComponent implements OnInit {
   private gqlOnlineQuery:Subscription | null = null
   private gqlOnlineSubscription:Subscription | null = null
+  private gqlVehicleStatusQuery:Subscription | null = null
+  pageSize=1;
+  pageSizeOptions=[1]
+  pageLength=0
+
 
   @Input() vehicleId: number | string |undefined;
   @Input() cursor: number = 0
@@ -42,31 +47,42 @@ export class VehicleMissionStatsComponent implements OnInit {
     }
   }
 
-  private getStatus(){
-    if(this.gqlOnlineQuery)
-      this.gqlOnlineQuery.unsubscribe()
-
-    this.gqlOnlineQuery = this.graphQLQuery
-        .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:1 })
-        .subscribe((response:any)=>{
-  
-          this.missionStats = response.nodes
-            .map((result:any)=>{
-              return this.formatData(result)
-            })[0]
-
-          this.isDataLoaded = true
-      })
+  private getStatusSubscription(){
     
     this.gqlOnlineSubscription = this.graphQLSubscription
         .getVehicleStatus({vehicleId:this.vehicleId})
         .subscribe((response:any):void | null=>{
           if(!response)
             return
-
-          this.missionStats = this.formatData(response)
+          
+            debugger;
+          this.pageLength =  ++this.pageLength
+          if(this.cursor === 0){
+           this.missionStats = this.formatData(response)
+          } else {
+            this.cursor = ++this.cursor
+          }
         })
     
+  }
+
+  private getVehicleStatus(){
+    if(this.gqlVehicleStatusQuery)
+      this.gqlVehicleStatusQuery.unsubscribe()
+
+
+    this.gqlVehicleStatusQuery = this.graphQLQuery
+    .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
+    .subscribe((response:any)=>{
+      this.pageLength = response.totalCount
+
+      this.missionStats = response.nodes
+            .map((result:any)=>{
+              return this.formatData(result)
+            })[0]
+      this.isDataLoaded = true
+
+  })
   }
 
   getUpTime(){
@@ -153,13 +169,21 @@ export class VehicleMissionStatsComponent implements OnInit {
 
   ngOnInit(): void {
     if(!isNaN((this.vehicleId as number))){
-      this.getStatus()
+      this.getStatusSubscription()
+      this.getVehicleStatus()
     }
   }
 
   ngOnDestroy(): void{
     this.gqlOnlineQuery?.unsubscribe()
     this.gqlOnlineSubscription?.unsubscribe()
+    this.gqlVehicleStatusQuery?.unsubscribe()
+  }
+
+  onPaginate(event:any){
+    this.cursor = event.pageIndex
+    this.pageLength = event.length
+    this.getVehicleStatus()
   }
 
 }

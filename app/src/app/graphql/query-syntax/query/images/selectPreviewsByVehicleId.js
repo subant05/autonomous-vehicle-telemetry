@@ -29,6 +29,7 @@ query MainPreviewImages($vehicleId: BigInt $topicNames:[String!]) {
             msg{
               header{
                 headerId
+                readingat
               }
               image{
                 id

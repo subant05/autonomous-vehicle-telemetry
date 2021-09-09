@@ -48,7 +48,8 @@
                             *ngIf="imageInfo.header && imageInfo.image; else noimage"
                             [imageId]="imageInfo.image.id" 
                             [label]="imageInfo.topic.name" 
-                            [headerId]="imageInfo.header.headerId">
+                            [headerId]="imageInfo.header.headerId"
+                            [timestamp]="imageInfo.header.readingat">
                         </app-image>
                         <ng-template #noimage>
                             <mat-icon aria-hidden="false" class="no-image" aria-label="No Image">image_not_supported</mat-icon>

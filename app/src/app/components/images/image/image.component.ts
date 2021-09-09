@@ -34,6 +34,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   @Input() headerId:string | undefined
   @Input() imageId: string | undefined;
   @Input() subject: Subject<{type:string, data:any}> | undefined
+  @Input() timestamp: any ="";
 
   constructor( 
     private imageService: ImageService
@@ -82,7 +83,8 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
           imageId: this.imageId,
           subject: this.subject,
           pagination: this.pagination,
-          geolocation: this.geolocation
+          geolocation: this.geolocation,
+          timestamp: this.timestamp
           // segmentation:{
           //   image:this.data
           //   , segmentation: this.segmentationData
