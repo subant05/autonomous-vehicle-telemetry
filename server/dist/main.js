@@ -10439,7 +10439,7 @@ class GqlQueryService {
         return this.basicFilteredQuery(QueryQL.Status.MissionCountByVehicleId, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
             if (!response.data.missionPaginationView || !response.data.missionPaginationViews.nodes.length)
-                null;
+                return null;
             return response.data.missionPaginationViews.nodes;
         }));
     }
