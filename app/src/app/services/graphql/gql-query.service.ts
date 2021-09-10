@@ -199,7 +199,7 @@ export class GqlQueryService {
   getVehicleStatus(variables:any){
     return this.basicFilteredQuery(QueryQL.Status.Vehicle, variables)
     .pipe(map((response:any)=>{
-      const nodes =  response.data.vehicleStatuses.edges.map((results:any)=>{
+      const nodes =  response.data.vehicleStatuses ? response.data.vehicleStatuses.edges.map((results:any)=>{
         const node = results.node
         return {
             id:node.id
@@ -212,7 +212,8 @@ export class GqlQueryService {
             , alerts: node.alerts.nodes
             , vehicleStatusDetails: node.vehicleStatusDetails.nodes
           }
-      })
+      }) : []
+      
       return {
         ...response.data.vehicleStatuses.pageInfo
         ,totalCount: response.data.vehicleStatuses.totalCount

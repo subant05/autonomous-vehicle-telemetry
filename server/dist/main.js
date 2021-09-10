@@ -10220,7 +10220,7 @@ class GqlQueryService {
     getVehicleStatus(variables) {
         return this.basicFilteredQuery(QueryQL.Status.Vehicle, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
-            const nodes = response.data.vehicleStatuses.edges.map((results) => {
+            const nodes = response.data.vehicleStatuses ? response.data.vehicleStatuses.edges.map((results) => {
                 const node = results.node;
                 return {
                     id: node.id,
@@ -10233,7 +10233,7 @@ class GqlQueryService {
                     alerts: node.alerts.nodes,
                     vehicleStatusDetails: node.vehicleStatusDetails.nodes
                 };
-            });
+            }) : [];
             return Object.assign(Object.assign({}, response.data.vehicleStatuses.pageInfo), { totalCount: response.data.vehicleStatuses.totalCount, nodes });
         }));
     }
