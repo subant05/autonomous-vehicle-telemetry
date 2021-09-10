@@ -12,9 +12,13 @@ export class VehicleMissionStatsComponent implements OnInit {
   private gqlOnlineQuery:Subscription | null = null
   private gqlOnlineSubscription:Subscription | null = null
   private gqlVehicleStatusQuery:Subscription | null = null
+  private gqlMissionCount:Subscription | null = null
+  private gqlMissionStats:Subscription | null = null
+  private missions: any[] =[]
   pageSize=1;
   pageSizeOptions=[1]
   pageLength=0
+  
 
 
   @Input() vehicleId: number | string |undefined;
@@ -56,10 +60,17 @@ export class VehicleMissionStatsComponent implements OnInit {
             return
           
             debugger;
-          this.pageLength =  ++this.pageLength
-          if(this.cursor === 0){
-           this.missionStats = this.formatData(response)
-          } else {
+          const stats = this.formatData(response)
+
+          if(this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
+            this.missionStats = stats
+          else if(this.cursor === 0  && this.missions[0].missionStartTime !== stats.missionStartTime){
+            this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
+            this.pageLength =  ++this.pageLength
+            this.missionStats = stats
+          } else if(this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime){
+            this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
+            this.pageLength =  ++this.pageLength
             this.cursor = ++this.cursor
           }
         })
@@ -70,20 +81,39 @@ export class VehicleMissionStatsComponent implements OnInit {
     if(this.gqlVehicleStatusQuery)
       this.gqlVehicleStatusQuery.unsubscribe()
 
-
     this.gqlVehicleStatusQuery = this.graphQLQuery
-    .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
+      .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
+      .subscribe((response:any)=>{
+
+        this.missionStats = response.nodes
+              .map((result:any)=>{
+                return this.formatData(result)
+              })[0]
+        this.isDataLoaded = true
+
+    })
+  }
+
+  private getMissionStatsCount(){
+    this.gqlMissionCount = this.graphQLQuery
+      .getMissonCountByVehicleId({vehicleId:this.vehicleId})
+      .subscribe((response:any)=>{
+        this.missions = response
+        this.pageLength = response.length
+    })
+  }
+
+  private getMissionStats(timestamp:any){
+    this.gqlMissionCount = this.graphQLQuery
+    .getMissonStatsByVehicleIdTimestamp({vehicleId:this.vehicleId, timestamp})
     .subscribe((response:any)=>{
-      this.pageLength = response.totalCount
+      if(!response)
+        return;
 
-      this.missionStats = response.nodes
-            .map((result:any)=>{
-              return this.formatData(result)
-            })[0]
-      this.isDataLoaded = true
-
+      this.missionStats = response
   })
   }
+
 
   getUpTime(){
     const {durationAutonomyDriving,durationAutonomyStopped, durationNoAutonomy} = this.missionStats
@@ -171,6 +201,7 @@ export class VehicleMissionStatsComponent implements OnInit {
     if(!isNaN((this.vehicleId as number))){
       this.getStatusSubscription()
       this.getVehicleStatus()
+      this.getMissionStatsCount()
     }
   }
 
@@ -178,12 +209,14 @@ export class VehicleMissionStatsComponent implements OnInit {
     this.gqlOnlineQuery?.unsubscribe()
     this.gqlOnlineSubscription?.unsubscribe()
     this.gqlVehicleStatusQuery?.unsubscribe()
+    this.gqlMissionCount?.unsubscribe()
+    this.gqlMissionStats?.unsubscribe()
   }
 
   onPaginate(event:any){
     this.cursor = event.pageIndex
     this.pageLength = event.length
-    this.getVehicleStatus()
+    this.getMissionStats(this.missions[this.cursor].missionStartTime)
   }
 
 }

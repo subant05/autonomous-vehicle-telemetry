@@ -1,3 +1,8 @@
 import Vehicle from './vehicleStatus' 
-
-export {Vehicle}
+import MissionCountByVehicleId from './missionCountByVehicle'
+import MissionStatsByVehicleIdTimestamp from './missionStatsByVehicleIdTimestamp'
+export {
+    Vehicle
+    , MissionCountByVehicleId
+    , MissionStatsByVehicleIdTimestamp
+}

@@ -638,7 +638,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _objectDetectionImagesByVehicleId__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./objectDetectionImagesByVehicleId */ 53178);
 /* harmony import */ var _latestPreviewVehicleIdByTopicName__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./latestPreviewVehicleIdByTopicName */ 34295);
 /* harmony import */ var _cameraMetaByImageId__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./cameraMetaByImageId */ 68776);
-/* harmony import */ var _previewByHeaderIdCameraName__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./previewByHeaderIdCameraName */ 817);
+/* harmony import */ var _previewByHeaderIdCameraName__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./previewByHeaderIdCameraName */ 14817);
 
 
 
@@ -847,7 +847,7 @@ query PreviewImage ($headerId: BigInt){
 
 /***/ }),
 
-/***/ 817:
+/***/ 14817:
 /*!**********************************************************************************!*\
   !*** ./src/app/graphql/query-syntax/query/images/previewByHeaderIdCameraName.js ***!
   \**********************************************************************************/
@@ -2111,12 +2111,90 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Vehicle": () => (/* reexport safe */ _vehicleStatus__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */   "Vehicle": () => (/* reexport safe */ _vehicleStatus__WEBPACK_IMPORTED_MODULE_0__.default),
+/* harmony export */   "MissionCountByVehicleId": () => (/* reexport safe */ _missionCountByVehicle__WEBPACK_IMPORTED_MODULE_1__.default),
+/* harmony export */   "MissionStatsByVehicleIdTimestamp": () => (/* reexport safe */ _missionStatsByVehicleIdTimestamp__WEBPACK_IMPORTED_MODULE_2__.default)
 /* harmony export */ });
 /* harmony import */ var _vehicleStatus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vehicleStatus */ 55462);
+/* harmony import */ var _missionCountByVehicle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./missionCountByVehicle */ 61322);
+/* harmony import */ var _missionStatsByVehicleIdTimestamp__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./missionStatsByVehicleIdTimestamp */ 948);
  
 
 
+
+
+/***/ }),
+
+/***/ 61322:
+/*!****************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/status/missionCountByVehicle.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ missionCountByVehicleId)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const missionCountByVehicleId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`query Missions($vehicleId: BigInt){
+    missionPaginationViews(condition:{vehicleId:$vehicleId}){
+      totalCount
+      nodes{
+        missionStartTime
+        missionReadingCount
+      }
+    }
+  }`
+
+  
+
+/***/ }),
+
+/***/ 948:
+/*!***************************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/status/missionStatsByVehicleIdTimestamp.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ missionStatsByVehicleIdTimestamp)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const missionStatsByVehicleIdTimestamp = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`query MissionStats($vehicleId: BigInt, $timestamp: Datetime) {
+  missionStatsByTimestamps(
+    first:1
+    orderBy: ID_DESC
+    filter:{missionStartTime:{equalTo:$timestamp}}
+    condition: {vehicleId: $vehicleId}
+  ) {
+    nodes {
+      autonomyAreaTravelledSqm
+      autonomyDistanceTravelledM
+      durationAutonomyDriving
+      durationAutonomyStopped
+      durationNoAutonomy
+      durationTeleop
+      id
+      missionStartTime
+      numFalsePositives
+      numStateDemotion
+      numStops
+      numTeleopQueries
+      numTruePositives
+      vehicleId
+      vehicleName
+    }
+  }
+}`
+
+  
 
 /***/ }),
 
@@ -6498,6 +6576,9 @@ class VehicleMissionStatsComponent {
         this.gqlOnlineQuery = null;
         this.gqlOnlineSubscription = null;
         this.gqlVehicleStatusQuery = null;
+        this.gqlMissionCount = null;
+        this.gqlMissionStats = null;
+        this.missions = [];
         this.pageSize = 1;
         this.pageSizeOptions = [1];
         this.pageLength = 0;
@@ -6524,11 +6605,17 @@ class VehicleMissionStatsComponent {
             if (!response)
                 return;
             debugger;
-            this.pageLength = ++this.pageLength;
-            if (this.cursor === 0) {
-                this.missionStats = this.formatData(response);
+            const stats = this.formatData(response);
+            if (this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
+                this.missionStats = stats;
+            else if (this.cursor === 0 && this.missions[0].missionStartTime !== stats.missionStartTime) {
+                this.missions = [{ missionStartTime: stats.missionStartTime, vehicleId: this.vehicleId }, ...this.missions];
+                this.pageLength = ++this.pageLength;
+                this.missionStats = stats;
             }
-            else {
+            else if (this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime) {
+                this.missions = [{ missionStartTime: stats.missionStartTime, vehicleId: this.vehicleId }, ...this.missions];
+                this.pageLength = ++this.pageLength;
                 this.cursor = ++this.cursor;
             }
         });
@@ -6539,12 +6626,28 @@ class VehicleMissionStatsComponent {
         this.gqlVehicleStatusQuery = this.graphQLQuery
             .getVehicleStatus({ vehicle_id: this.vehicleId, cursor: this.cursor, size: this.pageSize })
             .subscribe((response) => {
-            this.pageLength = response.totalCount;
             this.missionStats = response.nodes
                 .map((result) => {
                 return this.formatData(result);
             })[0];
             this.isDataLoaded = true;
+        });
+    }
+    getMissionStatsCount() {
+        this.gqlMissionCount = this.graphQLQuery
+            .getMissonCountByVehicleId({ vehicleId: this.vehicleId })
+            .subscribe((response) => {
+            this.missions = response;
+            this.pageLength = response.length;
+        });
+    }
+    getMissionStats(timestamp) {
+        this.gqlMissionCount = this.graphQLQuery
+            .getMissonStatsByVehicleIdTimestamp({ vehicleId: this.vehicleId, timestamp })
+            .subscribe((response) => {
+            if (!response)
+                return;
+            this.missionStats = response;
         });
     }
     getUpTime() {
@@ -6614,18 +6717,21 @@ class VehicleMissionStatsComponent {
         if (!isNaN(this.vehicleId)) {
             this.getStatusSubscription();
             this.getVehicleStatus();
+            this.getMissionStatsCount();
         }
     }
     ngOnDestroy() {
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e;
         (_a = this.gqlOnlineQuery) === null || _a === void 0 ? void 0 : _a.unsubscribe();
         (_b = this.gqlOnlineSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
         (_c = this.gqlVehicleStatusQuery) === null || _c === void 0 ? void 0 : _c.unsubscribe();
+        (_d = this.gqlMissionCount) === null || _d === void 0 ? void 0 : _d.unsubscribe();
+        (_e = this.gqlMissionStats) === null || _e === void 0 ? void 0 : _e.unsubscribe();
     }
     onPaginate(event) {
         this.cursor = event.pageIndex;
         this.pageLength = event.length;
-        this.getVehicleStatus();
+        this.getMissionStats(this.missions[this.cursor].missionStartTime);
     }
 }
 VehicleMissionStatsComponent.ɵfac = function VehicleMissionStatsComponent_Factory(t) { return new (t || VehicleMissionStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };
@@ -10287,6 +10393,22 @@ class GqlQueryService {
             if (!response.data.imagesViews.nodes.length)
                 null;
             return response.data.imagesViews.nodes[0];
+        }));
+    }
+    getMissonCountByVehicleId(variables = {}) {
+        return this.basicFilteredQuery(QueryQL.Status.MissionCountByVehicleId, variables)
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            if (!response.data.missionPaginationViews.nodes.length)
+                null;
+            return response.data.missionPaginationViews.nodes;
+        }));
+    }
+    getMissonStatsByVehicleIdTimestamp(variables = {}) {
+        return this.basicFilteredQuery(QueryQL.Status.MissionStatsByVehicleIdTimestamp, variables)
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            if (!response.data.missionStatsByTimestamps.nodes.length)
+                null;
+            return response.data.missionStatsByTimestamps.nodes[0];
         }));
     }
 }

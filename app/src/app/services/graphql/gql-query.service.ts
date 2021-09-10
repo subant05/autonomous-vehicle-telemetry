@@ -458,4 +458,28 @@ export class GqlQueryService {
     }))
 
   }
+
+  getMissonCountByVehicleId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Status.MissionCountByVehicleId, variables)
+    .pipe(map((response:any)=>{
+      if(!response.data.missionPaginationViews.nodes.length)
+        null;
+
+      return response.data.missionPaginationViews.nodes
+      
+    }))
+
+  }
+
+  getMissonStatsByVehicleIdTimestamp(variables={}){
+    return this.basicFilteredQuery(QueryQL.Status.MissionStatsByVehicleIdTimestamp, variables)
+    .pipe(map((response:any)=>{
+      if(!response.data.missionStatsByTimestamps.nodes.length)
+        null;
+
+      return response.data.missionStatsByTimestamps.nodes[0]
+      
+    }))
+
+  }
 }
