@@ -4283,7 +4283,7 @@ class SegmentationImageComponent {
         this.querySubscription = this.gqlQueryService
             .getSegmentationMapByHeaderId({ imageHeaderId })
             .subscribe((response) => {
-            if (!response || (response.length && !response.length)) {
+            if (!response || !response.length) {
                 this.load.emit({ state: "no segmentation" });
                 return;
             }
@@ -10439,7 +10439,7 @@ class GqlQueryService {
         return this.basicFilteredQuery(QueryQL.Status.MissionCountByVehicleId, variables)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
             if (!response.data.missionPaginationView || !response.data.missionPaginationViews.nodes.length)
-                return null;
+                return [];
             return response.data.missionPaginationViews.nodes;
         }));
     }

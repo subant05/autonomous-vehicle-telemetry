@@ -39,7 +39,7 @@ export class SegmentationImageComponent implements OnInit {
     this.querySubscription = this.gqlQueryService
     .getSegmentationMapByHeaderId({ imageHeaderId })
     .subscribe((response:any) => {
-      if(!response || (response.length && !response.length)){
+      if(!response || !response.length){
         this.load.emit({state:"no segmentation"})
         return
       }
