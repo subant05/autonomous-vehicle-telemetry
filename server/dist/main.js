@@ -6621,19 +6621,21 @@ class VehicleMissionStatsComponent {
                 return;
             debugger;
             const stats = this.formatData(response);
-            if (!this.missions.length)
-                return;
-            else if (this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
+            if (this.missions.length && this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
                 this.missionStats = stats;
-            else if (this.cursor === 0 && this.missions[0].missionStartTime !== stats.missionStartTime) {
+            else if (this.missions.length && this.cursor === 0 && this.missions[0].missionStartTime !== stats.missionStartTime) {
                 this.missions = [{ missionStartTime: stats.missionStartTime, vehicleId: this.vehicleId }, ...this.missions];
                 this.pageLength = ++this.pageLength;
                 this.missionStats = stats;
             }
-            else if (this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime) {
+            else if (this.missions.length && this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime) {
                 this.missions = [{ missionStartTime: stats.missionStartTime, vehicleId: this.vehicleId }, ...this.missions];
                 this.pageLength = ++this.pageLength;
                 this.cursor = ++this.cursor;
+            }
+            else if (!this.missions.length) {
+                this.missions = [{ missionStartTime: stats.missionStartTime, vehicleId: this.vehicleId }, ...this.missions];
+                this.pageLength = ++this.pageLength;
             }
         });
     }
