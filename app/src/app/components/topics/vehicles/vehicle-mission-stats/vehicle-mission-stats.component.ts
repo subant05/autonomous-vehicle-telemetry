@@ -74,6 +74,7 @@ export class VehicleMissionStatsComponent implements OnInit {
           }else if(!this.missions.length){
             this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
             this.pageLength =  ++this.pageLength
+            this.missionStats = stats
           }
         })
     
