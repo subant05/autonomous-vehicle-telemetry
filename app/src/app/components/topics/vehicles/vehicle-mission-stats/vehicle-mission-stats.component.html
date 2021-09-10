@@ -84,11 +84,12 @@
 </div>
 <ng-template #nostats>
     <div class="mission-stats" >
-        <app-medallion 
+        <app-medallion *ngIf="isDataLoaded"
             class="stats large"
             title="No stats for vehicle."
             content=""
             >
         </app-medallion>
+        <mat-progress-bar *ngIf="!isDataLoaded" mode="indeterminate"></mat-progress-bar>
     </div>
 </ng-template>

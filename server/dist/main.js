@@ -6504,6 +6504,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 38583);
 /* harmony import */ var _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../core/medallion/medallion.component */ 24229);
 /* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/paginator */ 99692);
+/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+
 
 
 
@@ -6564,10 +6566,23 @@ function VehicleMissionStatsComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("pageIndex", ctx_r0.cursor)("length", ctx_r0.pageLength)("pageSize", ctx_r0.pageSize)("pageSizeOptions", ctx_r0.pageSizeOptions);
 } }
+function VehicleMissionStatsComponent_ng_template_1_app_medallion_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "app-medallion", 19);
+} }
+function VehicleMissionStatsComponent_ng_template_1_mat_progress_bar_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "mat-progress-bar", 20);
+} }
 function VehicleMissionStatsComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](1, "app-medallion", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_app_medallion_1_Template, 1, 0, "app-medallion", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, VehicleMissionStatsComponent_ng_template_1_mat_progress_bar_2_Template, 1, 0, "mat-progress-bar", 18);
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx_r2.isDataLoaded);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", !ctx_r2.isDataLoaded);
 } }
 class VehicleMissionStatsComponent {
     constructor(graphQLSubscription, graphQLQuery) {
@@ -6582,8 +6597,8 @@ class VehicleMissionStatsComponent {
         this.pageSize = 1;
         this.pageSizeOptions = [1];
         this.pageLength = 0;
-        this.cursor = 0;
         this.isDataLoaded = false;
+        this.cursor = 0;
     }
     convertToSeconds(time) {
         return parseFloat(((time * 1.0E-9)).toFixed(2));
@@ -6606,7 +6621,9 @@ class VehicleMissionStatsComponent {
                 return;
             debugger;
             const stats = this.formatData(response);
-            if (this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
+            if (!this.missions.length)
+                return;
+            else if (this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
                 this.missionStats = stats;
             else if (this.cursor === 0 && this.missions[0].missionStartTime !== stats.missionStartTime) {
                 this.missions = [{ missionStartTime: stats.missionStartTime, vehicleId: this.vehicleId }, ...this.missions];
@@ -6647,6 +6664,7 @@ class VehicleMissionStatsComponent {
             .subscribe((response) => {
             if (!response)
                 return;
+            this.isDataLoaded = true;
             this.missionStats = response;
         });
     }
@@ -6731,17 +6749,19 @@ class VehicleMissionStatsComponent {
     onPaginate(event) {
         this.cursor = event.pageIndex;
         this.pageLength = event.length;
+        this.missionStats = null;
+        this.isDataLoaded = false;
         this.getMissionStats(this.missions[this.cursor].missionStartTime);
     }
 }
 VehicleMissionStatsComponent.ɵfac = function VehicleMissionStatsComponent_Factory(t) { return new (t || VehicleMissionStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };
-VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 3, vars: 2, consts: [["class", "mission-stats", 4, "ngIf", "ngIfElse"], ["nostats", ""], [1, "mission-stats"], ["class", "stats large", "title", "Mission Start", 3, "content", 4, "ngIf"], ["title", "Uptime", 1, "stats", 3, "content"], ["title", "Done", 1, "stats", 3, "content"], ["title", "Moving", 1, "stats", 3, "content"], ["title", "Auto Stop", 1, "stats", 3, "content"], ["title", "Auto Driving", 1, "stats", 3, "content"], ["title", "Stops", 1, "stats", 3, "content"], ["title", "Telesupport Duration", 1, "stats", 3, "content"], ["title", "Telesupport", 1, "stats", 3, "content"], ["title", "# False positive", 1, "stats", 3, "content"], ["title", "# True positive", 1, "stats", 3, "content"], ["title", "Support", 1, "stats", "medium-large", 3, "content"], [3, "pageIndex", "length", "pageSize", "pageSizeOptions", "page"], ["title", "Mission Start", 1, "stats", "large", 3, "content"], ["title", "No stats for vehicle.", "content", "", 1, "stats", "large"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
+VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 3, vars: 2, consts: [["class", "mission-stats", 4, "ngIf", "ngIfElse"], ["nostats", ""], [1, "mission-stats"], ["class", "stats large", "title", "Mission Start", 3, "content", 4, "ngIf"], ["title", "Uptime", 1, "stats", 3, "content"], ["title", "Done", 1, "stats", 3, "content"], ["title", "Moving", 1, "stats", 3, "content"], ["title", "Auto Stop", 1, "stats", 3, "content"], ["title", "Auto Driving", 1, "stats", 3, "content"], ["title", "Stops", 1, "stats", 3, "content"], ["title", "Telesupport Duration", 1, "stats", 3, "content"], ["title", "Telesupport", 1, "stats", 3, "content"], ["title", "# False positive", 1, "stats", 3, "content"], ["title", "# True positive", 1, "stats", 3, "content"], ["title", "Support", 1, "stats", "medium-large", 3, "content"], [3, "pageIndex", "length", "pageSize", "pageSizeOptions", "page"], ["title", "Mission Start", 1, "stats", "large", 3, "content"], ["class", "stats large", "title", "No stats for vehicle.", "content", "", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], ["title", "No stats for vehicle.", "content", "", 1, "stats", "large"], ["mode", "indeterminate"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, VehicleMissionStatsComponent_div_0_Template, 14, 16, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_Template, 2, 0, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_Template, 3, 2, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
         const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.missionStats)("ngIfElse", _r1);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__.MedallionComponent, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_5__.MatPaginator], styles: [".mission-stats[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n  margin-right: 10px;\n  margin-bottom: 10px;\n  width: calc(50% - 10px);\n  height: auto;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n@media screen and (min-width: 400px) {\n  .mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n    width: calc(33.3% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium[_ngcontent-%COMP%] {\n    min-width: 175px;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium-large[_ngcontent-%COMP%] {\n    min-width: 175px;\n    width: calc(66.6% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.large[_ngcontent-%COMP%] {\n    min-width: 300px;\n    width: calc(100% - 10px);\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLGVBQUE7QUFDSjtBQUFJO0VBQ0ksa0JBQUE7RUFDQSxtQkFBQTtFQUNBLHVCQUFBO0VBQ0EsWUFBQTtBQUVSO0FBRFE7RUFDSSxpQkFBQTtBQUdaO0FBQ0k7RUFDSTtJQUNJLHlCQUFBO0VBQ1Y7RUFDVTtJQUNJLGdCQUFBO0VBQ2Q7RUFDVTtJQUNJLGdCQUFBO0lBQ0EseUJBQUE7RUFDZDtFQUNVO0lBQ0ksZ0JBQUE7SUFDQSx3QkFBQTtFQUNkO0FBQ0YiLCJmaWxlIjoidmVoaWNsZS1taXNzaW9uLXN0YXRzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1pc3Npb24tc3RhdHN7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICAuc3RhdHN7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgICAgICAgd2lkdGg6IGNhbGMoNTAlIC0gMTBweCk7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgICAgJjpsYXN0LW9mLXR5cGV7XG4gICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6NDAwcHgpIHtcbiAgICAgICAgLnN0YXRze1xuICAgICAgICAgICAgd2lkdGg6IGNhbGMoMzMuMyUgLSAxMHB4KTtcblxuICAgICAgICAgICAgJi5tZWRpdW0ge1xuICAgICAgICAgICAgICAgIG1pbi13aWR0aDogMTc1cHg7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAmLm1lZGl1bS1sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAxNzVweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYyg2Ni42JSAtIDEwcHgpO1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgJi5sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAzMDBweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYygxMDAlIC0gMTBweCk7ICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfVxufSJdfQ== */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__.MedallionComponent, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_5__.MatPaginator, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__.MatProgressBar], styles: [".mission-stats[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n  margin-right: 10px;\n  margin-bottom: 10px;\n  width: calc(50% - 10px);\n  height: auto;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n@media screen and (min-width: 400px) {\n  .mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n    width: calc(33.3% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium[_ngcontent-%COMP%] {\n    min-width: 175px;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium-large[_ngcontent-%COMP%] {\n    min-width: 175px;\n    width: calc(66.6% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.large[_ngcontent-%COMP%] {\n    min-width: 300px;\n    width: calc(100% - 10px);\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLGVBQUE7QUFDSjtBQUFJO0VBQ0ksa0JBQUE7RUFDQSxtQkFBQTtFQUNBLHVCQUFBO0VBQ0EsWUFBQTtBQUVSO0FBRFE7RUFDSSxpQkFBQTtBQUdaO0FBQ0k7RUFDSTtJQUNJLHlCQUFBO0VBQ1Y7RUFDVTtJQUNJLGdCQUFBO0VBQ2Q7RUFDVTtJQUNJLGdCQUFBO0lBQ0EseUJBQUE7RUFDZDtFQUNVO0lBQ0ksZ0JBQUE7SUFDQSx3QkFBQTtFQUNkO0FBQ0YiLCJmaWxlIjoidmVoaWNsZS1taXNzaW9uLXN0YXRzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1pc3Npb24tc3RhdHN7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICAuc3RhdHN7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgICAgICAgd2lkdGg6IGNhbGMoNTAlIC0gMTBweCk7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgICAgJjpsYXN0LW9mLXR5cGV7XG4gICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6NDAwcHgpIHtcbiAgICAgICAgLnN0YXRze1xuICAgICAgICAgICAgd2lkdGg6IGNhbGMoMzMuMyUgLSAxMHB4KTtcblxuICAgICAgICAgICAgJi5tZWRpdW0ge1xuICAgICAgICAgICAgICAgIG1pbi13aWR0aDogMTc1cHg7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAmLm1lZGl1bS1sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAxNzVweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYyg2Ni42JSAtIDEwcHgpO1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgJi5sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAzMDBweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYygxMDAlIC0gMTBweCk7ICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfVxufSJdfQ== */"] });
 
 
 /***/ }),

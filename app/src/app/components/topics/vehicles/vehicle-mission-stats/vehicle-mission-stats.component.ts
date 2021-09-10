@@ -17,14 +17,13 @@ export class VehicleMissionStatsComponent implements OnInit {
   private missions: any[] =[]
   pageSize=1;
   pageSizeOptions=[1]
-  pageLength=0
-  
-
+  pageLength=0  
+  missionStats: any;
+  isDataLoaded: boolean = false
 
   @Input() vehicleId: number | string |undefined;
   @Input() cursor: number = 0
-  missionStats: any;
-  isDataLoaded: boolean = false
+
 
 
   constructor(
@@ -61,8 +60,9 @@ export class VehicleMissionStatsComponent implements OnInit {
           
             debugger;
           const stats = this.formatData(response)
-
-          if(this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
+          if(!this.missions.length )
+            return
+          else if(this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
             this.missionStats = stats
           else if(this.cursor === 0  && this.missions[0].missionStartTime !== stats.missionStartTime){
             this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
@@ -110,6 +110,7 @@ export class VehicleMissionStatsComponent implements OnInit {
       if(!response)
         return;
 
+      this.isDataLoaded = true
       this.missionStats = response
   })
   }
@@ -216,6 +217,8 @@ export class VehicleMissionStatsComponent implements OnInit {
   onPaginate(event:any){
     this.cursor = event.pageIndex
     this.pageLength = event.length
+    this.missionStats = null
+    this.isDataLoaded = false
     this.getMissionStats(this.missions[this.cursor].missionStartTime)
   }
 
