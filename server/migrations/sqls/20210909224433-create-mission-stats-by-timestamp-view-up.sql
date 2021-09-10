@@ -1,4 +1,3 @@
-/* Replace with your SQL commands */
 create view state.mission_stats_by_timestamp as 
 select 
 	state.status_message_mission_stats.id  as id
@@ -20,5 +19,3 @@ from state.status_message_mission_stats
 inner join  state.status_message on state.status_message.mission_stats_id = state.status_message_mission_stats.id
 inner join state.vehicle_status on state.vehicle_status.status_message_id = state.status_message.id
 inner join vehicles.vehicles on vehicles.vehicles.id = state.vehicle_status.vehicle_id 
-Order By state.vehicle_status.id DESC
-LIMIT 1;
