@@ -34,11 +34,14 @@ router.get('/:id', async (req,res)=>{
     if(imageList.length){
       console.log(imageList[0] instanceof Array)
       var img = imageList[0] //;
+
+    console.log(img[0])
   
      res.writeHead(200, {
        'Content-Type': 'image/png',
        'Content-Length': img.length
      });
+     
      res.end(img); 
     }
     else{
