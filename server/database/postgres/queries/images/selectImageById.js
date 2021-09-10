@@ -33,7 +33,7 @@ export const sqlSelectImageBase64ById = async (id, isSegmentation = false) =>{
             if(data.rows[0].data.includes("["))
                 return [rgbToBase64({...data.rows[0],isSegmentation})]
             else
-                return [data.rows[0].data]
+                return [`data:image/png;base64,${data.rows[0].data}`]
 
         }
     }catch(e){
