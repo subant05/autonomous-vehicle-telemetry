@@ -474,7 +474,7 @@ export class GqlQueryService {
   getMissonStatsByVehicleIdTimestamp(variables={}){
     return this.basicFilteredQuery(QueryQL.Status.MissionStatsByVehicleIdTimestamp, variables)
     .pipe(map((response:any)=>{
-      if(!response.data.missionStatsByTimestamps.nodes.length)
+      if(!response.data.missionStatsByTimestamps || !response.data.missionStatsByTimestamps.nodes.length)
         null;
 
       return response.data.missionStatsByTimestamps.nodes[0]

@@ -20,6 +20,7 @@ export class VehicleMissionStatsComponent implements OnInit {
   pageLength=0  
   missionStats: any;
   isDataLoaded: boolean = false
+  isPaginationLoaded: boolean = false
 
   @Input() vehicleId: number | string |undefined;
   @Input() cursor: number = 0
@@ -58,8 +59,8 @@ export class VehicleMissionStatsComponent implements OnInit {
           if(!response)
             return
           
-            debugger;
           const stats = this.formatData(response)
+          
           if(this.missions.length && this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
             this.missionStats = stats
           else if(this.missions.length && this.cursor === 0  && this.missions[0].missionStartTime !== stats.missionStartTime){
@@ -101,6 +102,7 @@ export class VehicleMissionStatsComponent implements OnInit {
       .subscribe((response:any)=>{
         this.missions = response
         this.pageLength = response.length
+        this.isPaginationLoaded = true
     })
   }
 

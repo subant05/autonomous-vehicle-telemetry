@@ -74,13 +74,6 @@
         >
         <!-- # teleop support per meter / Area travelled  -->
     </app-medallion>
-    <mat-paginator 
-        [pageIndex]="cursor"
-        [length]="pageLength"
-        [pageSize]="pageSize"
-        [pageSizeOptions] = "pageSizeOptions"
-        (page)="onPaginate($event)">
-    </mat-paginator>
 </div>
 <ng-template #nostats>
     <div class="mission-stats" >
@@ -92,4 +85,15 @@
         </app-medallion>
         <mat-progress-bar *ngIf="!isDataLoaded" mode="indeterminate"></mat-progress-bar>
     </div>
+</ng-template>
+<mat-paginator 
+    *ngIf="isPaginationLoaded; else paginationloader"
+    [pageIndex]="cursor"
+    [length]="pageLength"
+    [pageSize]="pageSize"
+    [pageSizeOptions] = "pageSizeOptions"
+    (page)="onPaginate($event)">
+</mat-paginator>
+<ng-template #paginationloader>
+    <mat-progress-bar *ngIf="!isDataLoaded" mode="indeterminate"></mat-progress-bar>
 </ng-template>
