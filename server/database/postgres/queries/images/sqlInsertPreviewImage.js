@@ -22,7 +22,13 @@ export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         
         const queryResult =  await client.query(`
-        WITH ins_left_intrinsics_k as (
+        WITH ins_camera_json as (
+            INSERT INTO images.camera_json(json)
+            VALUES($59)
+
+            RETURNING *
+        ),
+        ins_left_intrinsics_k as (
             INSERT INTO images.side_intrinsics_k (data)
             VALUES($1)
 
@@ -339,12 +345,13 @@ export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
         )
 
         INSERT INTO images.camera 
-            (readingAt, topic_id, vehicle_id, msg_id)
+            (readingAt, topic_id, vehicle_id, msg_id, camera_json_id)
         VALUES(
             $56
             , $57
             , $58 
             , (select id from ins_camera_message)
+            , (SELECT id FROM ins_camera_json)
         )
 
         RETURNING id
@@ -408,7 +415,7 @@ export const sqlInsertPreviewImage = async (argTopic, data, cb=a=>a) =>{
             , formatDateTime(data.timestamp)
             , topic.rows[0].id
             , vehicle.rows[0].id
-
+            , JSON.stringify(data)
         ])
 
         // Sendind response immediately
