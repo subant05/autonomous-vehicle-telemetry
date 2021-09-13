@@ -463,7 +463,7 @@ export class GqlQueryService {
   getMissonCountByVehicleId(variables={}){
     return this.basicFilteredQuery(QueryQL.Status.MissionCountByVehicleId, variables)
     .pipe(map((response:any)=>{
-      if(!response.data.missionPaginationView || !response.data.missionPaginationViews.nodes.length)
+      if(!response.data.missionPaginationViews || !response.data.missionPaginationViews.nodes.length)
         return [];
 
       return response.data.missionPaginationViews.nodes

@@ -4,9 +4,20 @@ const missionStatsByVehicleIdTimestamp = gql`query MissionStats($vehicleId: BigI
   missionStatsByTimestamps(
     first:1
     orderBy: ID_DESC
-    filter:{missionStartTime:{equalTo:$timestamp}}
+    filter:{missionStartTime:{
+        lessThanOrEqualTo:$timestamp
+        , greaterThan:"2020-01-01 00:00:00-05"
+      }
+    }
     condition: {vehicleId: $vehicleId}
   ) {
+    totalCount
+    pageInfo{
+      startCursor
+      hasNextPage
+      hasPreviousPage
+      endCursor
+    }
     nodes {
       autonomyAreaTravelledSqm
       autonomyDistanceTravelledM

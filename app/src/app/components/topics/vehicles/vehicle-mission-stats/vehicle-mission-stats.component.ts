@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
+import moment from "moment"
 
 @Component({
   selector: 'app-vehicle-mission-stats',
@@ -56,7 +57,7 @@ export class VehicleMissionStatsComponent implements OnInit {
     this.gqlOnlineSubscription = this.graphQLSubscription
         .getVehicleStatus({vehicleId:this.vehicleId})
         .subscribe((response:any):void | null=>{
-          if(!response)
+          if(!response || new Date(this.missionStats.missionStartTime).getFullYear() < 2021)
             return
           
           const stats = this.formatData(response)
@@ -87,6 +88,7 @@ export class VehicleMissionStatsComponent implements OnInit {
     this.gqlVehicleStatusQuery = this.graphQLQuery
       .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
       .subscribe((response:any)=>{
+        
 
         this.missionStats = response.nodes
               .map((result:any)=>{
@@ -101,9 +103,11 @@ export class VehicleMissionStatsComponent implements OnInit {
     this.gqlMissionCount = this.graphQLQuery
       .getMissonCountByVehicleId({vehicleId:this.vehicleId})
       .subscribe((response:any)=>{
+
         this.missions = response
         this.pageLength = response.length
         this.isPaginationLoaded = true
+        this.isDataLoaded = true
     })
   }
 
@@ -204,8 +208,10 @@ export class VehicleMissionStatsComponent implements OnInit {
 
   ngOnInit(): void {
     if(!isNaN((this.vehicleId as number))){
+      const format = 'YYYY-MM-DDTHH:mm:ss'
       this.getStatusSubscription()
-      this.getVehicleStatus()
+      this.getMissionStats( moment().format(format).toString() )
+      // this.getVehicleStatus()
       this.getMissionStatsCount()
     }
   }
