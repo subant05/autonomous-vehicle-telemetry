@@ -6700,6 +6700,7 @@ class VehicleMissionStatsComponent {
             .subscribe((response) => {
             if (!response)
                 return;
+            this.isDataLoaded = true;
             this.missionStats = response;
             this.getMissionStatsCount();
         });

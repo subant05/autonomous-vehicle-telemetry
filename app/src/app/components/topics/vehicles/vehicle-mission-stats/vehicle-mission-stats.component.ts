@@ -118,6 +118,7 @@ export class VehicleMissionStatsComponent implements OnInit {
       if(!response)
         return;
 
+      this.isDataLoaded = true
       this.missionStats = response
       this.getMissionStatsCount()
   })
