@@ -6702,7 +6702,6 @@ class VehicleMissionStatsComponent {
                 return;
             this.isDataLoaded = true;
             this.missionStats = response;
-            this.getMissionStatsCount();
         });
     }
     getUpTime() {
@@ -6772,6 +6771,7 @@ class VehicleMissionStatsComponent {
         if (!isNaN(this.vehicleId)) {
             const format = 'YYYY-MM-DDTHH:mm:ss';
             this.getStatusSubscription();
+            this.getMissionStatsCount();
             this.getMissionStats(moment__WEBPACK_IMPORTED_MODULE_0___default()().format(format).toString());
             // this.getVehicleStatus()
         }

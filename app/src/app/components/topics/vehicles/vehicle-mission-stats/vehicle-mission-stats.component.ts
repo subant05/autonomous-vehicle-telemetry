@@ -120,7 +120,6 @@ export class VehicleMissionStatsComponent implements OnInit {
 
       this.isDataLoaded = true
       this.missionStats = response
-      this.getMissionStatsCount()
   })
   }
 
@@ -211,9 +210,9 @@ export class VehicleMissionStatsComponent implements OnInit {
     if(!isNaN((this.vehicleId as number))){
       const format = 'YYYY-MM-DDTHH:mm:ss'
       this.getStatusSubscription()
+      this.getMissionStatsCount()
       this.getMissionStats( moment().format(format).toString() )
       // this.getVehicleStatus()
-     
     }
   }
 
