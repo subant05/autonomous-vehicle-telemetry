@@ -6700,8 +6700,8 @@ class VehicleMissionStatsComponent {
             .subscribe((response) => {
             if (!response)
                 return;
-            this.isDataLoaded = true;
             this.missionStats = response;
+            this.getMissionStatsCount();
         });
     }
     getUpTime() {
@@ -6773,7 +6773,6 @@ class VehicleMissionStatsComponent {
             this.getStatusSubscription();
             this.getMissionStats(moment__WEBPACK_IMPORTED_MODULE_0___default()().format(format).toString());
             // this.getVehicleStatus()
-            this.getMissionStatsCount();
         }
     }
     ngOnDestroy() {

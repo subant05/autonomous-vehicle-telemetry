@@ -118,8 +118,8 @@ export class VehicleMissionStatsComponent implements OnInit {
       if(!response)
         return;
 
-      this.isDataLoaded = true
       this.missionStats = response
+      this.getMissionStatsCount()
   })
   }
 
@@ -212,7 +212,7 @@ export class VehicleMissionStatsComponent implements OnInit {
       this.getStatusSubscription()
       this.getMissionStats( moment().format(format).toString() )
       // this.getVehicleStatus()
-      this.getMissionStatsCount()
+     
     }
   }
 
