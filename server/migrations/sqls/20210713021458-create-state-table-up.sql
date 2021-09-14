@@ -112,6 +112,8 @@ CREATE TABLE IF NOT EXISTS state.status_message_mission_stats(
 
 CREATE INDEX idx_status_mission_stats
     ON state.status_message_mission_stats(id);
+CREATE INDEX idx_status_mission_stats_start_time
+    ON state.status_message_mission_stats(mission_start_time);
 
 COMMENT ON TABLE state.status_message_mission_stats IS '@omit create,update
 Table is used to store the mission stats for a vehicle';

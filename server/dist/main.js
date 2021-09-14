@@ -2176,11 +2176,7 @@ const missionStatsByVehicleIdTimestamp = apollo_angular__WEBPACK_IMPORTED_MODULE
   missionStatsByTimestamps(
     first:1
     orderBy: ID_DESC
-    filter:{missionStartTime:{
-        lessThanOrEqualTo:$timestamp
-        , greaterThan:"2020-01-01 00:00:00-05"
-      }
-    }
+    filter:{missionStartTime:{equalTo:$timestamp}}
     condition: {vehicleId: $vehicleId}
   ) {
     totalCount
@@ -6681,13 +6677,18 @@ class VehicleMissionStatsComponent {
             this.isDataLoaded = true;
         });
     }
-    getMissionStatsCount() {
+    getMissionStatsCount(cb = (a) => { }) {
         this.gqlMissionCount = this.graphQLQuery
             .getMissonCountByVehicleId({ vehicleId: this.vehicleId })
             .subscribe((response) => {
             this.missions = response;
             this.pageLength = response.length;
             this.isPaginationLoaded = true;
+            if (this.missions.length)
+                cb(this.missions[0].missionStartTime);
+            else {
+                this.isDataLoaded = true;
+            }
         });
     }
     getMissionStats(timestamp) {
@@ -6765,9 +6766,10 @@ class VehicleMissionStatsComponent {
     }
     ngOnInit() {
         if (!isNaN(this.vehicleId)) {
+            const format = 'YYYY-MM-DDTHH:mm:ss';
             this.getStatusSubscription();
-            this.getVehicleStatus();
-            this.getMissionStatsCount();
+            // this.getVehicleStatus()
+            this.getMissionStatsCount((timestamp) => this.getMissionStats(timestamp));
         }
     }
     ngOnDestroy() {
