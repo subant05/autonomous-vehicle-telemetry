@@ -6514,16 +6514,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "VehicleMissionStatsComponent": () => (/* binding */ VehicleMissionStatsComponent)
 /* harmony export */ });
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ 16738);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37716);
-/* harmony import */ var src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/graphql/gql-subscription.service */ 86427);
-/* harmony import */ var src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/graphql/gql-query.service */ 91776);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ 38583);
-/* harmony import */ var _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/medallion/medallion.component */ 24229);
-/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
-/* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/paginator */ 99692);
-
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/services/graphql/gql-subscription.service */ 86427);
+/* harmony import */ var src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/graphql/gql-query.service */ 91776);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 38583);
+/* harmony import */ var _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../core/medallion/medallion.component */ 24229);
+/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+/* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/paginator */ 99692);
 
 
 
@@ -6532,88 +6529,88 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function VehicleMissionStatsComponent_div_0_app_medallion_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "app-medallion", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "app-medallion", 17);
 } if (rf & 2) {
-    const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r6.getMissionStartTime());
+    const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r6.getMissionStartTime());
 } }
 function VehicleMissionStatsComponent_div_0_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "div", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, VehicleMissionStatsComponent_div_0_app_medallion_1_Template, 1, 1, "app-medallion", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](2, "app-medallion", 6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](3, "app-medallion", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](4, "app-medallion", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](5, "app-medallion", 9);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](6, "app-medallion", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](7, "app-medallion", 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](8, "app-medallion", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](9, "app-medallion", 13);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](10, "app-medallion", 14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](11, "app-medallion", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](12, "app-medallion", 16);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_div_0_app_medallion_1_Template, 1, 1, "app-medallion", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](2, "app-medallion", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](3, "app-medallion", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](4, "app-medallion", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](5, "app-medallion", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](6, "app-medallion", 10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](7, "app-medallion", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](8, "app-medallion", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](9, "app-medallion", 13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](10, "app-medallion", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](11, "app-medallion", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](12, "app-medallion", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r0.missionStats.missionStartTime);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getUpTime());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getAreaDone());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getMovingPercentage());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getAutonomyStopped());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getAutonomyDriving());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getStops());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getTeleopDuration());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getTelesupport());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getFalsePositives());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getTruePositives());
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("content", ctx_r0.getSupport());
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx_r0.missionStats.missionStartTime);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getUpTime());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getAreaDone());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getMovingPercentage());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getAutonomyStopped());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getAutonomyDriving());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getStops());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getTeleopDuration());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getTelesupport());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getFalsePositives());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getTruePositives());
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("content", ctx_r0.getSupport());
 } }
 function VehicleMissionStatsComponent_ng_template_1_app_medallion_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "app-medallion", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "app-medallion", 20);
 } }
 function VehicleMissionStatsComponent_ng_template_1_mat_progress_bar_2_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "mat-progress-bar", 21);
 } }
 function VehicleMissionStatsComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "div", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_app_medallion_1_Template, 1, 0, "app-medallion", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, VehicleMissionStatsComponent_ng_template_1_mat_progress_bar_2_Template, 1, 0, "mat-progress-bar", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_app_medallion_1_Template, 1, 0, "app-medallion", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, VehicleMissionStatsComponent_ng_template_1_mat_progress_bar_2_Template, 1, 0, "mat-progress-bar", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r2.isDataLoaded);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx_r2.isDataLoaded);
+    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx_r2.isDataLoaded);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", !ctx_r2.isDataLoaded);
 } }
 function VehicleMissionStatsComponent_mat_paginator_3_Template(rf, ctx) { if (rf & 1) {
-    const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-paginator", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("page", function VehicleMissionStatsComponent_mat_paginator_3_Template_mat_paginator_page_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r10); const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r9.onPaginate($event); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-paginator", 22);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("page", function VehicleMissionStatsComponent_mat_paginator_3_Template_mat_paginator_page_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r10); const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](); return ctx_r9.onPaginate($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("pageIndex", ctx_r3.cursor)("length", ctx_r3.pageLength)("pageSize", ctx_r3.pageSize)("pageSizeOptions", ctx_r3.pageSizeOptions);
+    const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("pageIndex", ctx_r3.cursor)("length", ctx_r3.pageLength)("pageSize", ctx_r3.pageSize)("pageSizeOptions", ctx_r3.pageSizeOptions);
 } }
 function VehicleMissionStatsComponent_ng_template_4_mat_progress_bar_0_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "mat-progress-bar", 21);
 } }
 function VehicleMissionStatsComponent_ng_template_4_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, VehicleMissionStatsComponent_ng_template_4_mat_progress_bar_0_Template, 1, 0, "mat-progress-bar", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, VehicleMissionStatsComponent_ng_template_4_mat_progress_bar_0_Template, 1, 0, "mat-progress-bar", 19);
 } if (rf & 2) {
-    const ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx_r5.isDataLoaded);
+    const ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", !ctx_r5.isDataLoaded);
 } }
 class VehicleMissionStatsComponent {
     constructor(graphQLSubscription, graphQLQuery) {
@@ -6691,7 +6688,6 @@ class VehicleMissionStatsComponent {
             this.missions = response;
             this.pageLength = response.length;
             this.isPaginationLoaded = true;
-            this.isDataLoaded = true;
         });
     }
     getMissionStats(timestamp) {
@@ -6769,11 +6765,9 @@ class VehicleMissionStatsComponent {
     }
     ngOnInit() {
         if (!isNaN(this.vehicleId)) {
-            const format = 'YYYY-MM-DDTHH:mm:ss';
             this.getStatusSubscription();
+            this.getVehicleStatus();
             this.getMissionStatsCount();
-            this.getMissionStats(moment__WEBPACK_IMPORTED_MODULE_0___default()().format(format).toString());
-            // this.getVehicleStatus()
         }
     }
     ngOnDestroy() {
@@ -6792,19 +6786,19 @@ class VehicleMissionStatsComponent {
         this.getMissionStats(this.missions[this.cursor].missionStartTime);
     }
 }
-VehicleMissionStatsComponent.ɵfac = function VehicleMissionStatsComponent_Factory(t) { return new (t || VehicleMissionStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService)); };
-VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 6, vars: 4, consts: [["class", "mission-stats", 4, "ngIf", "ngIfElse"], ["nostats", ""], [3, "pageIndex", "length", "pageSize", "pageSizeOptions", "page", 4, "ngIf", "ngIfElse"], ["paginationloader", ""], [1, "mission-stats"], ["class", "stats large", "title", "Mission Start", 3, "content", 4, "ngIf"], ["title", "Uptime", 1, "stats", 3, "content"], ["title", "Done", 1, "stats", 3, "content"], ["title", "Moving", 1, "stats", 3, "content"], ["title", "Auto Stop", 1, "stats", 3, "content"], ["title", "Auto Driving", 1, "stats", 3, "content"], ["title", "Stops", 1, "stats", 3, "content"], ["title", "Telesupport Duration", 1, "stats", 3, "content"], ["title", "Telesupport", 1, "stats", 3, "content"], ["title", "# False positive", 1, "stats", 3, "content"], ["title", "# True positive", 1, "stats", 3, "content"], ["title", "Support", 1, "stats", "medium-large", 3, "content"], ["title", "Mission Start", 1, "stats", "large", 3, "content"], ["class", "stats large", "title", "No stats for vehicle.", "content", "", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], ["title", "No stats for vehicle.", "content", "", 1, "stats", "large"], ["mode", "indeterminate"], [3, "pageIndex", "length", "pageSize", "pageSizeOptions", "page"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, VehicleMissionStatsComponent_div_0_Template, 13, 12, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_Template, 3, 2, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](3, VehicleMissionStatsComponent_mat_paginator_3_Template, 1, 4, "mat-paginator", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](4, VehicleMissionStatsComponent_ng_template_4_Template, 1, 1, "ng-template", null, 3, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
+VehicleMissionStatsComponent.ɵfac = function VehicleMissionStatsComponent_Factory(t) { return new (t || VehicleMissionStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };
+VehicleMissionStatsComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: VehicleMissionStatsComponent, selectors: [["app-vehicle-mission-stats"]], inputs: { vehicleId: "vehicleId", cursor: "cursor" }, decls: 6, vars: 4, consts: [["class", "mission-stats", 4, "ngIf", "ngIfElse"], ["nostats", ""], [3, "pageIndex", "length", "pageSize", "pageSizeOptions", "page", 4, "ngIf", "ngIfElse"], ["paginationloader", ""], [1, "mission-stats"], ["class", "stats large", "title", "Mission Start", 3, "content", 4, "ngIf"], ["title", "Uptime", 1, "stats", 3, "content"], ["title", "Done", 1, "stats", 3, "content"], ["title", "Moving", 1, "stats", 3, "content"], ["title", "Auto Stop", 1, "stats", 3, "content"], ["title", "Auto Driving", 1, "stats", 3, "content"], ["title", "Stops", 1, "stats", 3, "content"], ["title", "Telesupport Duration", 1, "stats", 3, "content"], ["title", "Telesupport", 1, "stats", 3, "content"], ["title", "# False positive", 1, "stats", 3, "content"], ["title", "# True positive", 1, "stats", 3, "content"], ["title", "Support", 1, "stats", "medium-large", 3, "content"], ["title", "Mission Start", 1, "stats", "large", 3, "content"], ["class", "stats large", "title", "No stats for vehicle.", "content", "", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], ["title", "No stats for vehicle.", "content", "", 1, "stats", "large"], ["mode", "indeterminate"], [3, "pageIndex", "length", "pageSize", "pageSizeOptions", "page"]], template: function VehicleMissionStatsComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, VehicleMissionStatsComponent_div_0_Template, 13, 12, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, VehicleMissionStatsComponent_ng_template_1_Template, 3, 2, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](3, VehicleMissionStatsComponent_mat_paginator_3_Template, 1, 4, "mat-paginator", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](4, VehicleMissionStatsComponent_ng_template_4_Template, 1, 1, "ng-template", null, 3, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
-        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵreference"](2);
-        const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵreference"](5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.missionStats)("ngIfElse", _r1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.isPaginationLoaded)("ngIfElse", _r4);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.NgIf, _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_3__.MedallionComponent, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_6__.MatProgressBar, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_7__.MatPaginator], styles: [".mission-stats[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n  margin-right: 10px;\n  margin-bottom: 10px;\n  width: calc(50% - 10px);\n  height: auto;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n@media screen and (min-width: 400px) {\n  .mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n    width: calc(33.3% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium[_ngcontent-%COMP%] {\n    min-width: 175px;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium-large[_ngcontent-%COMP%] {\n    min-width: 175px;\n    width: calc(66.6% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.large[_ngcontent-%COMP%] {\n    min-width: 300px;\n    width: calc(100% - 10px);\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLGVBQUE7QUFDSjtBQUFJO0VBQ0ksa0JBQUE7RUFDQSxtQkFBQTtFQUNBLHVCQUFBO0VBQ0EsWUFBQTtBQUVSO0FBRFE7RUFDSSxpQkFBQTtBQUdaO0FBQ0k7RUFDSTtJQUNJLHlCQUFBO0VBQ1Y7RUFDVTtJQUNJLGdCQUFBO0VBQ2Q7RUFDVTtJQUNJLGdCQUFBO0lBQ0EseUJBQUE7RUFDZDtFQUNVO0lBQ0ksZ0JBQUE7SUFDQSx3QkFBQTtFQUNkO0FBQ0YiLCJmaWxlIjoidmVoaWNsZS1taXNzaW9uLXN0YXRzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1pc3Npb24tc3RhdHN7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICAuc3RhdHN7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgICAgICAgd2lkdGg6IGNhbGMoNTAlIC0gMTBweCk7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgICAgJjpsYXN0LW9mLXR5cGV7XG4gICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6NDAwcHgpIHtcbiAgICAgICAgLnN0YXRze1xuICAgICAgICAgICAgd2lkdGg6IGNhbGMoMzMuMyUgLSAxMHB4KTtcblxuICAgICAgICAgICAgJi5tZWRpdW0ge1xuICAgICAgICAgICAgICAgIG1pbi13aWR0aDogMTc1cHg7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAmLm1lZGl1bS1sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAxNzVweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYyg2Ni42JSAtIDEwcHgpO1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgJi5sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAzMDBweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYygxMDAlIC0gMTBweCk7ICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfVxufSJdfQ== */"] });
+        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](2);
+        const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.missionStats)("ngIfElse", _r1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.isPaginationLoaded)("ngIfElse", _r4);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.NgIf, _core_medallion_medallion_component__WEBPACK_IMPORTED_MODULE_2__.MedallionComponent, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_5__.MatProgressBar, _angular_material_paginator__WEBPACK_IMPORTED_MODULE_6__.MatPaginator], styles: [".mission-stats[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n  margin-right: 10px;\n  margin-bottom: 10px;\n  width: calc(50% - 10px);\n  height: auto;\n}\n.mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%]:last-of-type {\n  margin-right: 0px;\n}\n@media screen and (min-width: 400px) {\n  .mission-stats[_ngcontent-%COMP%]   .stats[_ngcontent-%COMP%] {\n    width: calc(33.3% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium[_ngcontent-%COMP%] {\n    min-width: 175px;\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.medium-large[_ngcontent-%COMP%] {\n    min-width: 175px;\n    width: calc(66.6% - 10px);\n  }\n  .mission-stats[_ngcontent-%COMP%]   .stats.large[_ngcontent-%COMP%] {\n    min-width: 300px;\n    width: calc(100% - 10px);\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtbWlzc2lvbi1zdGF0cy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGFBQUE7RUFDQSxtQkFBQTtFQUNBLGVBQUE7QUFDSjtBQUFJO0VBQ0ksa0JBQUE7RUFDQSxtQkFBQTtFQUNBLHVCQUFBO0VBQ0EsWUFBQTtBQUVSO0FBRFE7RUFDSSxpQkFBQTtBQUdaO0FBQ0k7RUFDSTtJQUNJLHlCQUFBO0VBQ1Y7RUFDVTtJQUNJLGdCQUFBO0VBQ2Q7RUFDVTtJQUNJLGdCQUFBO0lBQ0EseUJBQUE7RUFDZDtFQUNVO0lBQ0ksZ0JBQUE7SUFDQSx3QkFBQTtFQUNkO0FBQ0YiLCJmaWxlIjoidmVoaWNsZS1taXNzaW9uLXN0YXRzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1pc3Npb24tc3RhdHN7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xuICAgIGZsZXgtd3JhcDogd3JhcDtcbiAgICAuc3RhdHN7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgICAgICAgd2lkdGg6IGNhbGMoNTAlIC0gMTBweCk7XG4gICAgICAgIGhlaWdodDogYXV0bztcbiAgICAgICAgJjpsYXN0LW9mLXR5cGV7XG4gICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIEBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6NDAwcHgpIHtcbiAgICAgICAgLnN0YXRze1xuICAgICAgICAgICAgd2lkdGg6IGNhbGMoMzMuMyUgLSAxMHB4KTtcblxuICAgICAgICAgICAgJi5tZWRpdW0ge1xuICAgICAgICAgICAgICAgIG1pbi13aWR0aDogMTc1cHg7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgICAmLm1lZGl1bS1sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAxNzVweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYyg2Ni42JSAtIDEwcHgpO1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgJi5sYXJnZSB7XG4gICAgICAgICAgICAgICAgbWluLXdpZHRoOiAzMDBweDtcbiAgICAgICAgICAgICAgICB3aWR0aDogY2FsYygxMDAlIC0gMTBweCk7ICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfVxufSJdfQ== */"] });
 
 
 /***/ }),
