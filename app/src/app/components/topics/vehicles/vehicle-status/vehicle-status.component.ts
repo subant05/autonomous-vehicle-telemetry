@@ -8,6 +8,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { throwServerError } from '@apollo/client/core';
 import {MatDialog} from '@angular/material/dialog';
 import {VehicleStatusDetailComponent} from 'src/app/components/modals/vehicle-status-detail/vehicle-status-detail.component'
+import { BreakingChange } from 'graphql';
 
 @Component({
   selector: 'app-vehicle-status',
@@ -109,7 +110,19 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
   }
 
   renderAlertsColumn(row:any){
-    return row.alerts ? row.alerts.alertType.name : 'information'
+    if(!row.alerts)
+      return 'information'
+
+    switch(row.alerts.alertType.severity){
+      case 1:
+        return 'priority_high'
+        break;
+      case 2:
+        return row.alerts.alertType.name
+        break;
+      default:
+          return 'information'
+    }
   }
 
 }

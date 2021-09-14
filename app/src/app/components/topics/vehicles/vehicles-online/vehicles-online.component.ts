@@ -96,7 +96,19 @@ export class VehiclesOnlineComponent extends TableUtil implements OnInit, AfterV
   }
 
   renderAlertsColumn(row:any){
-    return row.alerts ? row.alerts.alertType.name : 'information'
+    if(!row.alerts)
+      return 'information'
+
+    switch(row.alerts.alertType.severity){
+      case 1:
+        return 'priority_high'
+        break;
+      case 2:
+        return row.alerts.alertType.name
+        break;
+      default:
+          return 'information'
+    }
   }
 
 }

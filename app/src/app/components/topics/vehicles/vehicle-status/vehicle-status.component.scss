@@ -15,13 +15,14 @@
         width:24px;
     }
 
+    .critical,
     .priority_high {
         background-color: var(--critical);
         &:hover{
             background-color: var(--critical-hover);
         }
     }
-
+    
     .error {
         background-color: var(--error);
         &:hover{
