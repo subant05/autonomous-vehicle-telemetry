@@ -30,7 +30,7 @@ app.use("/", express.static(path.join(__dirname, "./dist")));
 app.use(express.static('./dist'));
   app.use(
     postgraphile(
-      process.env.NODE_ENV === "development" ? process.env.DEV_DATABASE_URL : process.env.POSTGRAPHILE,
+      process.env.NODE_ENV === "development" ? process.env.DEV_DATABASE_URL : process.env.DATABASE_URL,
       ["vehicles","topics","images","geolocation", "notifications", "state", "detection", "logging"],
       {
         appendPlugins: [
