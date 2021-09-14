@@ -56,7 +56,7 @@ export class VehicleMissionStatsComponent implements OnInit {
     this.gqlOnlineSubscription = this.graphQLSubscription
         .getVehicleStatus({vehicleId:this.vehicleId})
         .subscribe((response:any):void | null=>{
-          if(!response || new Date(this.missionStats.missionStartTime).getFullYear() < 2021)
+          if(!response || new Date(response.missionStats.missionStartTime).getFullYear() < 1971)
             return
           
           const stats = this.formatData(response)
