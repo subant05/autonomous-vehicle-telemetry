@@ -4,7 +4,10 @@ const missionStatsByVehicleIdTimestamp = gql`query MissionStats($vehicleId: BigI
   missionStatsByTimestamps(
     first:1
     orderBy: ID_DESC
-    filter:{missionStartTime:{equalTo:$timestamp}}
+    filter:{missionStartTime:{
+        lessThanOrEqualTo:$timestamp
+      , greaterThan:"1970-01-01 00:00:00-05"
+    }}
     condition: {vehicleId: $vehicleId}
   ) {
     totalCount
