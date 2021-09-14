@@ -83,7 +83,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
     const header = currentHeaderId ? currentHeaderId : this.currentHeaderId
     if(this.page === 0 && header === this.currentHeaderId){
       this.isImageLoaded = false
-      setTimeout(()=>this.imageHandler(stopInfo, true, header), 0)
+      setTimeout(()=>this.imageHandler(stopInfo, true, header), 1000)
     } 
   }
 
@@ -97,11 +97,11 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
         })
       .subscribe((response:any)=>{
         if(!response){
-          // if(isLiveUpdate){
-          //   this.recursiveImageHandler(stopInfo,currentHeaderId)
-          // }else{
+          if(isLiveUpdate){
+            this.recursiveImageHandler(stopInfo,currentHeaderId)
+          }else{
             this.isImageLoaded = true
-          // }
+          }
           return;
         }
           

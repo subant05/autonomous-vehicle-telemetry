@@ -6394,7 +6394,7 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
         const header = currentHeaderId ? currentHeaderId : this.currentHeaderId;
         if (this.page === 0 && header === this.currentHeaderId) {
             this.isImageLoaded = false;
-            setTimeout(() => this.imageHandler(stopInfo, true, header), 0);
+            setTimeout(() => this.imageHandler(stopInfo, true, header), 1000);
         }
     }
     imageHandler(stopInfo, isLiveUpdate = false, currentHeaderId) {
@@ -6406,11 +6406,12 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
         })
             .subscribe((response) => {
             if (!response) {
-                // if(isLiveUpdate){
-                //   this.recursiveImageHandler(stopInfo,currentHeaderId)
-                // }else{
-                this.isImageLoaded = true;
-                // }
+                if (isLiveUpdate) {
+                    this.recursiveImageHandler(stopInfo, currentHeaderId);
+                }
+                else {
+                    this.isImageLoaded = true;
+                }
                 return;
             }
             this.image = response.id;
