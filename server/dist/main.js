@@ -2172,15 +2172,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
 
 
+// const missionStatsByVehicleIdTimestamp = gql`query MissionStats($vehicleId: BigInt, $timestamp: Datetime) {
+//   missionStatsByTimestamps(
+//     first:1
+//     orderBy: ID_DESC
+//     filter:{missionStartTime:{
+//         lessThanOrEqualTo:$timestamp
+//       , greaterThan:"1970-01-01 00:00:00-05"
+//     }}
+//     condition: {vehicleId: $vehicleId}
+//   ) {
+//     totalCount
+//     pageInfo{
+//       startCursor
+//       hasNextPage
+//       hasPreviousPage
+//       endCursor
+//     }
+//     nodes {
+//       autonomyAreaTravelledSqm
+//       autonomyDistanceTravelledM
+//       durationAutonomyDriving
+//       durationAutonomyStopped
+//       durationNoAutonomy
+//       durationTeleop
+//       id
+//       missionStartTime
+//       numFalsePositives
+//       numStateDemotion
+//       numStops
+//       numTeleopQueries
+//       numTruePositives
+//       vehicleId
+//       vehicleName
+//     }
+//   }
+// }`
+
 const missionStatsByVehicleIdTimestamp = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`query MissionStats($vehicleId: BigInt, $timestamp: Datetime) {
   missionStatsByTimestamps(
     first:1
     orderBy: ID_DESC
-    filter:{missionStartTime:{
-        lessThanOrEqualTo:$timestamp
-      , greaterThan:"1970-01-01 00:00:00-05"
-    }}
-    condition: {vehicleId: $vehicleId}
+    filter:{
+      missionStartTime: {equalTo: $timestamp}
+      , vehicleId: {equalTo: $vehicleId}
+  }
   ) {
     totalCount
     pageInfo{
@@ -2208,7 +2244,6 @@ const missionStatsByVehicleIdTimestamp = apollo_angular__WEBPACK_IMPORTED_MODULE
     }
   }
 }`
-
   
 
 /***/ }),
