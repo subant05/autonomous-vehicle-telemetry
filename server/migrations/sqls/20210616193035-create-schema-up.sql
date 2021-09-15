@@ -7,3 +7,4 @@ CREATE SCHEMA images;
 CREATE SCHEMA notifications;
 CREATE SCHEMA detection;
 CREATE SCHEMA state;
+CREATE SCHEMA production;

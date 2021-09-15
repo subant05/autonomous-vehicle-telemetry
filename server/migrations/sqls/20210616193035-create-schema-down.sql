@@ -7,3 +7,4 @@ DROP SCHEMA images;
 DROP SCHEMA notifications;
 Drop SCHEMA detection;
 DROP SCHEMA state;
+DROP SCHEMA production;
