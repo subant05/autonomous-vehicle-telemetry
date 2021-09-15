@@ -10,7 +10,7 @@ export const sqlInsertVehicleStatus = async (argTopic, data, cb=a=>a) =>{
     }
     
     try{
-        cb(null, "Data Recieved" )
+        cb(null, `Data Recieved Autonomy State ${data.seq} : ${data.vehicle.name}` )
 
         const topic = await sqlInsertTopic(argTopic, {category:"status", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
