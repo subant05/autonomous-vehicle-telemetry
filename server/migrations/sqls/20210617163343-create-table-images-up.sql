@@ -1333,3 +1333,29 @@ EXCEPTION
 END
 $$
 LANGUAGE plpgsql;
+
+-- 
+CREATE OR REPLACE FUNCTION  images.select_image_by_id(_image_id bigint)
+	RETURNS TABLE (
+			 data text, 
+            is_bigendian int,
+            encoding varchar(255),
+            height int,
+            width int,
+            step bigint)
+  LANGUAGE plpgsql AS
+$$
+BEGIN
+   RETURN QUERY
+   SELECT 
+            img_data.data as data, 
+            imgs.is_bigendian as is_bigendian,
+            imgs.encoding as encoding,
+            imgs.height as height,
+            imgs.width as width,
+            imgs.step as step
+        FROM images.images as imgs
+        INNER JOIN images.image_data  as img_data ON  imgs.data_id = img_data.id
+        WHERE imgs.id = _image_id;
+END;
+$$;

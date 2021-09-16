@@ -34,3 +34,4 @@ DROP TABLE images.camera_message;
 DROP TABLE images.camera;
 DROP TABLE images.segmentation_map;
 DROP FUNCTION images.insert_camera_image;
+DROP FUNCTION images.select_image_by_id(_image_id  bigint);
