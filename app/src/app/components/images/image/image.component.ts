@@ -128,7 +128,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     this.imageLoaded= false
     const imgSrc = event.path[0].src
     event.path[0].src = ""
-    setTimeout(()=>event.path[0].src=imgSrc, 4000)
+    setTimeout(()=>event.path[0].src=imgSrc, 5000)
   }
 
   ngOnDestroy(){
