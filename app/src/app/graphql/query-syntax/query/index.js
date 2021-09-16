@@ -6,6 +6,7 @@ import * as Notifications from './notifications'
 import * as Status from './status'
 import * as Logging from './logging'
 import * as Detection from './detection'
+import * as Production from './production'
 
 export {
     Topics
@@ -16,4 +17,5 @@ export {
     , Status
     , Logging
     , Detection
+    , Production
 }

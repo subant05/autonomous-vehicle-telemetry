@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, MissingTranslationStrategy } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import {map} from 'rxjs/operators'
 
@@ -177,6 +177,21 @@ export class GqlSubscriptionService {
       ,variables
     }).pipe(map((response:any)=>{
       return response.data.sqlObjectDetection.object
+    }))
+  }
+
+  getMissionByVehicleId(variables={}){
+    return this.graphService.subscribe({
+      query: SubscriptionQL.Production.MissionByVehicleId
+      ,variables
+    }).pipe(map((response:any)=>{
+      const result = response.data.sqlMission
+
+      return {
+        event: result.event
+        , mission: result.missions
+      }
+      
     }))
   }
 }

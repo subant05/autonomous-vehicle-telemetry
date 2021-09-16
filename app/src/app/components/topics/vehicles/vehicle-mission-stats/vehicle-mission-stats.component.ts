@@ -54,28 +54,46 @@ export class VehicleMissionStatsComponent implements OnInit {
   private getStatusSubscription(){
     
     this.gqlOnlineSubscription = this.graphQLSubscription
-        .getVehicleStatus({vehicleId:this.vehicleId})
+        .getMissionByVehicleId({vehicleId:this.vehicleId})
         .subscribe((response:any):void | null=>{
-          if(!response || new Date(response.missionStats.missionStartTime).getFullYear() < 1971)
+          if(!response || new Date(response.mission.missionStartTime).getFullYear() < 1971)
             return
+
+          const event = response.event
+          const stats = response.mission
           
-          const stats = this.formatData(response)
-          
-          if(this.missions.length && this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
-            this.missionStats = stats
-          else if(this.missions.length && this.cursor === 0  && this.missions[0].missionStartTime !== stats.missionStartTime){
-            this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-            this.pageLength =  ++this.pageLength
-            this.missionStats = stats
-          } else if(this.missions.length && this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime){
-            this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-            this.pageLength =  ++this.pageLength
-            this.cursor = ++this.cursor
-          }else if(!this.missions.length){
-            this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-            this.pageLength =  ++this.pageLength
-            this.missionStats = stats
+          switch(event){
+            case "INSERT":
+              this.pageLength++
+              if(stats.id !== this.missionStats.id && !this.cursor){
+                this.missionStats = stats
+              } else {
+                this.cursor++
+              }
+              break;
+            case "UPDATE":
+              if(stats.id === this.missionStats.id ){
+                this.missionStats = stats
+              } 
+              break;
           }
+
+          
+          // if(this.missions.length && this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
+          //   this.missionStats = stats
+          // else if(this.missions.length && this.cursor === 0  && this.missions[0].missionStartTime !== stats.missionStartTime){
+          //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
+          //   this.pageLength =  ++this.pageLength
+          //   this.missionStats = stats
+          // } else if(this.missions.length && this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime){
+          //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
+          //   this.pageLength =  ++this.pageLength
+          //   this.cursor = ++this.cursor
+          // }else if(!this.missions.length){
+          //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
+          //   this.pageLength =  ++this.pageLength
+          //   this.missionStats = stats
+          // }
         })
     
   }
@@ -85,16 +103,14 @@ export class VehicleMissionStatsComponent implements OnInit {
       this.gqlVehicleStatusQuery.unsubscribe()
 
     this.gqlVehicleStatusQuery = this.graphQLQuery
-      .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
+      .getMissionByVehicleId({vehicleId:this.vehicleId, cursor:this.cursor, size:this.pageSize })
       .subscribe((response:any)=>{
-        
 
-        this.missionStats = response.nodes
-              .map((result:any)=>{
-                return this.formatData(result)
-              })[0]
+        this.missions = response.nodes
+        this.missionStats = response.nodes[0]
+        this.pageLength = response.totalCount
         this.isDataLoaded = true
-
+        this.isPaginationLoaded = true
     })
   }
 
@@ -207,7 +223,7 @@ export class VehicleMissionStatsComponent implements OnInit {
     if(!isNaN((this.vehicleId as number))){
       this.getStatusSubscription()
       this.getVehicleStatus()
-      this.getMissionStatsCount()
+      // this.getMissionStatsCount()
     }
   }
 
@@ -224,7 +240,8 @@ export class VehicleMissionStatsComponent implements OnInit {
     this.pageLength = event.length
     this.missionStats = null
     this.isDataLoaded = false
-    this.getMissionStats(this.missions[this.cursor].missionStartTime)
+    this.getVehicleStatus()
+    // this.getMissionStats(this.missions[this.cursor].missionStartTime)
   }
 
 }

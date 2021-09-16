@@ -53,6 +53,13 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
           event:String
       }
 
+
+      type SQLMissionStatsPayload {
+        # (Subscription PAYLOAD Type ) camera data returned on this subscription type resolver below
+          missions(vehicleId: BigInt): Mission
+          event:String
+      }
+
       extend type Subscription {
         # (Subscription) will be triggered when the current starfire's data changes
         sqlStarfire: SQLStarfirePayload @pgSubscription(topic: ${embed(
@@ -78,6 +85,9 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
         )})
         sqlVehicleLogging: SQLVehicleLoggingPayload @pgSubscription(topic: ${embed(
             ()=>`postgraphile:sql_vehicle_logs`
+        )})
+        sqlMission: SQLMissionStatsPayload @pgSubscription(topic: ${embed(
+            ()=>`postgraphile:sql_mission`
         )})
       }
     `,
@@ -271,6 +281,36 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                         sqlBuilder.where(
                             sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
                         );
+                        if(vehicleId)
+                            sqlBuilder.where(
+                                sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`
+                            );
+                    }
+                );
+
+                return rows[0];
+            },
+        },
+
+        SQLMissionStatsPayload: {
+            // This method finds the Vehicle Logs from the database based on the event
+            // published by PostgreSQL.
+            // (Type Resolver)
+            async missions(
+                event,
+                {vehicleId},
+                _context,
+                { graphile: { selectGraphQLResultFromTable } }
+            ) {
+                const rows = await selectGraphQLResultFromTable(
+                    sql.fragment`production.missions`,
+                    (tableAlias, sqlBuilder) => {
+                        sqlBuilder.where(
+                            sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
+                        );
+                        // sqlBuilder.where(
+                        //     sql.fragment`${tableAlias}.mission_start_time > '1971-01-01'`
+                        // );
                         if(vehicleId)
                             sqlBuilder.where(
                                 sql.fragment`${tableAlias}.vehicle_id = ${sql.value(vehicleId)}`

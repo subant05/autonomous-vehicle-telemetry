@@ -6,6 +6,7 @@ import * as Vehicles from './vehicles';
 import * as Images from './images';
 import * as Logging from './logging'
 import * as Detection from './detection'
+import * as Production from './production'
 
 export {
     DeviceMessageSubscription
@@ -16,4 +17,5 @@ export {
     , Images
     , Logging
     , Detection
+    , Production
 }

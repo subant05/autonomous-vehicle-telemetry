@@ -481,6 +481,17 @@ export class GqlQueryService {
       return response.data.missionStatsByTimestamps.nodes[0]
       
     }))
+  }
 
+  getMissionByVehicleId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Production.MissionsByVehicleId, variables)
+    .pipe(map((response:any)=>{
+      if(!response.data.missions || !response.data.missions.nodes.length)
+        [];
+
+      return {
+          ...response.data.missions
+      }
+    }))
   }
 }
