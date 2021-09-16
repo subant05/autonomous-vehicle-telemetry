@@ -126,7 +126,6 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
 
   onError(event:any){
     this.imageLoaded= false
-    console.log("Error", event)
     const imgSrc = event.path[0].src
     event.path[0].src = ""
     setTimeout(()=>event.path[0].src=imgSrc, 1000)

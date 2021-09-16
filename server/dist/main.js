@@ -4248,7 +4248,6 @@ class ImageComponent {
     }
     onError(event) {
         this.imageLoaded = false;
-        console.log("Error", event);
         const imgSrc = event.path[0].src;
         event.path[0].src = "";
         setTimeout(() => event.path[0].src = imgSrc, 1000);
