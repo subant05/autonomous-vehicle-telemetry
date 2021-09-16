@@ -3899,20 +3899,20 @@ AppModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_40__["ɵ�
                 }, ws, http);
                 const defaultOptions = {
                     watchQuery: {
-                        fetchPolicy: 'cache-and-network',
-                        // nextFetchPolicy: 'no-cache', //cache-and-network //"cache-first",
+                        fetchPolicy: 'network-only',
+                        nextFetchPolicy: 'cache-first',
                         errorPolicy: 'ignore',
                     },
                     query: {
                         errorPolicy: 'ignore',
-                        fetchPolicy: 'cache-and-network', //"network-only"  //"cache-first",  //'no-cache',
-                        // nextFetchPolicy: 'cache-first', //"cache-first" 
+                        fetchPolicy: 'network-only',
+                        nextFetchPolicy: 'cache-first', //"cache-first" 
                         // errorPolicy: 'all',
                     },
                     subscription: {
                         errorPolicy: 'ignore',
-                        fetchPolicy: 'cache-and-network', //"cache-first", //'network-only', //'no-cache',
-                        // nextFetchPolicy: 'no-cache', //cache-and-network  //"cache-first" 
+                        fetchPolicy: 'network-only',
+                        nextFetchPolicy: 'cache-first' //"cache-first" 
                         // errorPolicy: 'all',
                     },
                 };
