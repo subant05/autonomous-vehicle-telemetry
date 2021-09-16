@@ -4191,15 +4191,16 @@ class ImageComponent {
         }
     }
     ngOnInit() {
-        // this.imageUrl = "/api/vehicle/images/" + this.imageId
+        this.imageUrl = "/api/vehicle/images/" + this.imageId;
+        this.imageLoaded = true;
         if (this.subject) {
             this.imageSubscription = this.subject.subscribe((response) => {
                 this.subjectHandler(response);
             });
         }
-        this.imageCache.addEventListener("load", (e) => this.onLoad(e));
-        this.imageCache.addEventListener("error", (e) => this.onError(e));
-        this.imageCache.src = "/api/vehicle/images/" + this.imageId;
+        // this.imageCache.addEventListener("load",(e)=>this.onLoad(e))
+        // this.imageCache.addEventListener("error",(e)=>this.onError(e))
+        // this.imageCache.src = "/api/vehicle/images/" + this.imageId
     }
     ngAfterViewInit() {
     }
@@ -4250,7 +4251,7 @@ class ImageComponent {
         this.imageLoaded = false;
         const imgSrc = event.path[0].src;
         event.path[0].src = "";
-        setTimeout(() => event.path[0].src = imgSrc, 5000);
+        // setTimeout(()=>event.path[0].src=imgSrc, 5000)
     }
     ngOnDestroy() {
         var _a;

@@ -60,16 +60,17 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   }
 
   ngOnInit(): void {
-    // this.imageUrl = "/api/vehicle/images/" + this.imageId
+    this.imageUrl = "/api/vehicle/images/" + this.imageId
+    this.imageLoaded=true
     if(this.subject){
       this.imageSubscription = this.subject.subscribe((response:any)=>{
         this.subjectHandler(response)
       })
     }
 
-    this.imageCache.addEventListener("load",(e)=>this.onLoad(e))
-    this.imageCache.addEventListener("error",(e)=>this.onError(e))
-    this.imageCache.src = "/api/vehicle/images/" + this.imageId
+    // this.imageCache.addEventListener("load",(e)=>this.onLoad(e))
+    // this.imageCache.addEventListener("error",(e)=>this.onError(e))
+    // this.imageCache.src = "/api/vehicle/images/" + this.imageId
   }
 
   ngAfterViewInit(){
@@ -128,7 +129,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     this.imageLoaded= false
     const imgSrc = event.path[0].src
     event.path[0].src = ""
-    setTimeout(()=>event.path[0].src=imgSrc, 5000)
+    // setTimeout(()=>event.path[0].src=imgSrc, 5000)
   }
 
   ngOnDestroy(){
