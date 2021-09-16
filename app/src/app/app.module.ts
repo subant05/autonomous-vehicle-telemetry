@@ -195,20 +195,20 @@ import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehic
 
       const defaultOptions = {
         watchQuery: {
-          fetchPolicy:  'no-cache', //cache-and-network //'cache-first', //"network-only" , //'network-only', ,  //'no-cache',
-          nextFetchPolicy: 'no-cache', //cache-and-network //"cache-first",
+          fetchPolicy: 'cache-and-network', //'no-cache' //'cache-first', //"network-only" , //'network-only', ,  //'no-cache',
+          // nextFetchPolicy: 'no-cache', //cache-and-network //"cache-first",
           errorPolicy: 'ignore',
         },
         query: {
           errorPolicy: 'ignore',
-          fetchPolicy:  'no-cache', //cache-and-network  //"cache-first",  //'no-cache',
-          nextFetchPolicy: 'cache-first', //"cache-first" 
+          fetchPolicy:  'cache-and-network',  //"network-only"  //"cache-first",  //'no-cache',
+          // nextFetchPolicy: 'cache-first', //"cache-first" 
           // errorPolicy: 'all',
         },
         subscription: {
           errorPolicy: 'ignore',
-          fetchPolicy:  'no-cache', //cache-and-network //"cache-first", //'network-only', //'no-cache',
-          nextFetchPolicy: 'no-cache', //cache-and-network  //"cache-first" 
+          fetchPolicy:  'cache-and-network', //"cache-first", //'network-only', //'no-cache',
+          // nextFetchPolicy: 'no-cache', //cache-and-network  //"cache-first" 
           // errorPolicy: 'all',
         },
       }
