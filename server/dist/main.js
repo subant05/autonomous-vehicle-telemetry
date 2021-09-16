@@ -6835,21 +6835,6 @@ class VehicleMissionStatsComponent {
                     }
                     break;
             }
-            // if(this.missions.length && this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
-            //   this.missionStats = stats
-            // else if(this.missions.length && this.cursor === 0  && this.missions[0].missionStartTime !== stats.missionStartTime){
-            //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-            //   this.pageLength =  ++this.pageLength
-            //   this.missionStats = stats
-            // } else if(this.missions.length && this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime){
-            //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-            //   this.pageLength =  ++this.pageLength
-            //   this.cursor = ++this.cursor
-            // }else if(!this.missions.length){
-            //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-            //   this.pageLength =  ++this.pageLength
-            //   this.missionStats = stats
-            // }
         });
     }
     getVehicleStatus() {
@@ -6863,25 +6848,6 @@ class VehicleMissionStatsComponent {
             this.pageLength = response.totalCount;
             this.isDataLoaded = true;
             this.isPaginationLoaded = true;
-        });
-    }
-    getMissionStatsCount() {
-        this.gqlMissionCount = this.graphQLQuery
-            .getMissonCountByVehicleId({ vehicleId: this.vehicleId })
-            .subscribe((response) => {
-            this.missions = response;
-            this.pageLength = response.length;
-            this.isPaginationLoaded = true;
-        });
-    }
-    getMissionStats(timestamp) {
-        this.gqlMissionCount = this.graphQLQuery
-            .getMissonStatsByVehicleIdTimestamp({ vehicleId: this.vehicleId, timestamp })
-            .subscribe((response) => {
-            if (!response)
-                return;
-            this.isDataLoaded = true;
-            this.missionStats = response;
         });
     }
     getUpTime() {
@@ -6968,7 +6934,6 @@ class VehicleMissionStatsComponent {
         this.missionStats = null;
         this.isDataLoaded = false;
         this.getVehicleStatus();
-        // this.getMissionStats(this.missions[this.cursor].missionStartTime)
     }
 }
 VehicleMissionStatsComponent.ɵfac = function VehicleMissionStatsComponent_Factory(t) { return new (t || VehicleMissionStatsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_0__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_1__.GqlQueryService)); };

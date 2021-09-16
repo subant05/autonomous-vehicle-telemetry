@@ -78,22 +78,6 @@ export class VehicleMissionStatsComponent implements OnInit {
               break;
           }
 
-          
-          // if(this.missions.length && this.cursor === 0 && this.missions[0].missionStartTime === stats.missionStartTime)
-          //   this.missionStats = stats
-          // else if(this.missions.length && this.cursor === 0  && this.missions[0].missionStartTime !== stats.missionStartTime){
-          //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-          //   this.pageLength =  ++this.pageLength
-          //   this.missionStats = stats
-          // } else if(this.missions.length && this.cursor !== 0 && this.missions[0].missionStartTime !== stats.missionStartTime){
-          //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-          //   this.pageLength =  ++this.pageLength
-          //   this.cursor = ++this.cursor
-          // }else if(!this.missions.length){
-          //   this.missions = [{missionStartTime: stats.missionStartTime, vehicleId:this.vehicleId}, ...this.missions]
-          //   this.pageLength =  ++this.pageLength
-          //   this.missionStats = stats
-          // }
         })
     
   }
@@ -113,29 +97,6 @@ export class VehicleMissionStatsComponent implements OnInit {
         this.isPaginationLoaded = true
     })
   }
-
-  private getMissionStatsCount(){
-    this.gqlMissionCount = this.graphQLQuery
-      .getMissonCountByVehicleId({vehicleId:this.vehicleId})
-      .subscribe((response:any)=>{
-        this.missions = response
-        this.pageLength = response.length
-        this.isPaginationLoaded = true
-    })
-  }
-
-  private getMissionStats(timestamp:any){
-    this.gqlMissionCount = this.graphQLQuery
-    .getMissonStatsByVehicleIdTimestamp({vehicleId:this.vehicleId, timestamp})
-    .subscribe((response:any)=>{
-      if(!response)
-        return;
-
-      this.isDataLoaded = true
-      this.missionStats = response
-  })
-  }
-
 
   getUpTime(){
     const {durationAutonomyDriving,durationAutonomyStopped, durationNoAutonomy} = this.missionStats
@@ -241,7 +202,6 @@ export class VehicleMissionStatsComponent implements OnInit {
     this.missionStats = null
     this.isDataLoaded = false
     this.getVehicleStatus()
-    // this.getMissionStats(this.missions[this.cursor].missionStartTime)
   }
 
 }
