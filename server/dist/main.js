@@ -6815,7 +6815,7 @@ class VehicleMissionStatsComponent {
         this.gqlOnlineSubscription = this.graphQLSubscription
             .getMissionByVehicleId({ vehicleId: this.vehicleId })
             .subscribe((response) => {
-            if (!response || new Date(response.mission.missionStartTime).getFullYear() < 1971)
+            if (!response || !response.mission || new Date(response.mission.missionStartTime).getFullYear() < 1971)
                 return;
             const event = response.event;
             const stats = response.mission;
