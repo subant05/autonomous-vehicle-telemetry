@@ -31,7 +31,7 @@ export const sqlSelectImageBase64ById = async (id, isSegmentation = false) =>{
         const data = await sqlSelectImageRgbById(id)
         if(data.rows.length){
             if(data.rows[0].data.includes("["))
-                return [rgbToBase64({...data.rows[0],isSegmentation})]
+                [] // return [rgbToBase64({...data.rows[0],isSegmentation})]
             else{
                 return [Buffer.from(data.rows[0].data, 'base64')] //[`data:image/png;base64,${data.rows[0].data}`]
             }
