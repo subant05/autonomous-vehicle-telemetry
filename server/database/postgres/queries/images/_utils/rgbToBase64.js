@@ -87,14 +87,17 @@ export class ImageService {
     )
   }
 
-  getDataURL(config){
-    return this.reMapData({...config, data:JSON.parse(config.data)}).toDataURL()
+  async getDataURL(config){
+    return new Promise((resolve, reject)=>{
+      const result = this.reMapData({...config, data:JSON.parse(config.data)}).toDataURL()
+      resolve(result)
+    })
   }
 
 }
 
 export const imageService = new ImageService()
-export const rgbToBase64 = (config)=>{
-  const img = imageService.getDataURL(config)
+export const rgbToBase64 = async (config)=>{
+  const img = await imageService.getDataURL(config)
   return Buffer.from(img.replace(/^data:image\/png;base64,/, ''), 'base64')
 }
