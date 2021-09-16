@@ -1,5 +1,6 @@
 const { client, pool } = require("../../connection.js")
 import {rgbToBase64} from './_utils/rgbToBase64'
+import process from 'process'
 
 export const sqlSelectImageRgbById = async (id) =>{
     try {
@@ -25,7 +26,7 @@ export const sqlSelectImageBase64ById = async (id, isSegmentation = false) =>{
             if(data.rows[0].data.includes("["))
                 return [rgbToBase64({...data.rows[0],isSegmentation})]
             else{
-                return [Buffer.from(data.rows[0].data, 'base64')] //[`data:image/png;base64,${data.rows[0].data}`]
+                return [data.rows[0].data] //[`data:image/png;base64,${data.rows[0].data}`]
             }
 
         }
@@ -37,4 +38,8 @@ export const sqlSelectImageBase64ById = async (id, isSegmentation = false) =>{
     return []
 }
 
+process.on("message", async ({id, isSegmentation})=>{
+    const img = await sqlSelectImageBase64ById(id, isSegmentation);
+    process.send({img})
+})
 

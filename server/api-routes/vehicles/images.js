@@ -1,8 +1,7 @@
 import express from "express";
 import * as Images from '../../database/postgres/queries/images'
 import {setDefaultVehicle,responseCallback} from './_utils'
-import { ChildProcess } from "child_process";
-
+const cp = require("child_process")
 
 
 const router = express.Router();
@@ -23,6 +22,7 @@ router.post("/segmentation", async (req, res) => {
 })
 
 router.get('/:id', async (req,res)=>{
+    const worker = cp.fork("./database/postgres/queries/images/selectImageById.js")
     const id =  parseInt(req.params.id)
     if(isNaN(id)){
       res.status(404)
@@ -30,24 +30,68 @@ router.get('/:id', async (req,res)=>{
       return
     }
     const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
-    const imageList = await Images.sqlSelectImageBase64ById(id, isSegmentation)
-    if(imageList.length){
-      console.log(imageList[0] instanceof Array)
-      var img = imageList[0] //;
 
-    console.log(img[0])
-  
-     res.writeHead(200, {
-       'Content-Type': 'image/png',
-       'Content-Length': img.length
-     });
-     res.end(img); 
+    function getImages(){
+      return new Promise((resolve, reject)=>{
+         function ImageListener(data){
+          if(data.img.length)
+            resolve(data.img)
+          else
+            reject(data.img)
+
+          worker.removeListener("message",ImageListener)
+         }
+
+         worker.addListener("message", ImageListener)
+
+         worker.send({id, isSegmentation})
+
+      })
     }
-    else{
+
+    getImages().then(imageList=>{
+      if(imageList.length){
+        const img = Buffer.from(imageList[0], 'base64') //;
+      
+        res.writeHead(200, {
+          'Content-Type': 'image/png',
+          'Content-Length': img.length
+        });
+        res.end(img); 
+      }
+
+    },()=>{
       res.status(404)
       res.send("404")
       return
-    }
+      }
+    )
+
+    // const id =  parseInt(req.params.id)
+    // if(isNaN(id)){
+    //   res.status(404)
+    //   res.send("404")
+    //   return
+    // }
+    // const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
+    // const imageList = await Images.sqlSelectImageBase64ById(id, isSegmentation)
+    // if(imageList.length){
+    //   console.log(imageList[0] instanceof Array)
+    //   var img = imageList[0] //;
+
+    // console.log(img[0])
+  
+    //  res.writeHead(200, {
+    //    'Content-Type': 'image/png',
+    //    'Content-Length': img.length
+    //  });
+    //  res.end(img); 
+    // }
+    // else{
+    //   res.status(404)
+    //   res.send("404")
+    //   return
+    // }
   })
 
 export default router;

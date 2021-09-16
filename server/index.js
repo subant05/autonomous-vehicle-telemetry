@@ -16,7 +16,7 @@ import process from 'process';
 
 const numCPUs = cpus().length;
 
-
+console.log(numCPUs)
 if (cluster.isPrimary) {
   console.log(`Primary ${process.pid} is running`);
 

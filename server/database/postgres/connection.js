@@ -1,5 +1,7 @@
 import  { Pool, Client } from 'pg'
 import dotenv from 'dotenv'
+import process from 'process';
+
 dotenv.config({ path: './.env' })
 let client, pool;
 if(process.env.NODE_ENV === "development"){
@@ -9,7 +11,7 @@ if(process.env.NODE_ENV === "development"){
         if (err) {
         console.error('error connecting: client', err.stack)
         } else {
-        console.log('connected: client')
+        console.log('connected: client', process.pid)
         }
     })
 
