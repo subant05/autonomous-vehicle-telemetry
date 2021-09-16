@@ -195,20 +195,20 @@ import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehic
 
       const defaultOptions = {
         watchQuery: {
-          fetchPolicy:  'network-only', //'cache-first', //"network-only" , //'network-only', ,  //'no-cache',
-          nextFetchPolicy: 'cache-first', //"cache-first",
+          fetchPolicy:  'no-cache', //cache-and-network //'cache-first', //"network-only" , //'network-only', ,  //'no-cache',
+          nextFetchPolicy: 'no-cache', //cache-and-network //"cache-first",
           errorPolicy: 'ignore',
         },
         query: {
           errorPolicy: 'ignore',
-          fetchPolicy:  'network-only', //"cache-first",  //'no-cache',
+          fetchPolicy:  'no-cache', //cache-and-network  //"cache-first",  //'no-cache',
           nextFetchPolicy: 'cache-first', //"cache-first" 
           // errorPolicy: 'all',
         },
         subscription: {
           errorPolicy: 'ignore',
-          fetchPolicy:  'network-only', //"cache-first", //'network-only', //'no-cache',
-          nextFetchPolicy: 'network-only' //"cache-first" 
+          fetchPolicy:  'no-cache', //cache-and-network //"cache-first", //'network-only', //'no-cache',
+          nextFetchPolicy: 'no-cache', //cache-and-network  //"cache-first" 
           // errorPolicy: 'all',
         },
       }
