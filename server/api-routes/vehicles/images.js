@@ -29,36 +29,25 @@ router.get('/:id', async (req,res)=>{
       res.send("404")
       return
     }
+    const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
+    const imageList = await Images.sqlSelectImageBase64ById(id, isSegmentation)
+    if(imageList.length){
+      console.log(imageList[0] instanceof Array)
+      var img = imageList[0] //;
 
-    try{
-      const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
-      const imageList = await Images.sqlSelectImageBase64ById(id, isSegmentation)
-      if(imageList.length){
-        console.log(imageList[0] instanceof Array)
-        var img = imageList[0] //;
+    console.log(img[0])
   
-      console.log(img[0])
-    
-       res.writeHead(200, {
-         'Content-Type': 'image/png',
-         'Content-Length': img.length
-       });
-       
-       res.end(img); 
-      }
-      else{
-        res.status(404)
-        res.send("404")
-        return
-      }
-    } catch(e){
-      console.log("FAILED TO RETRIEVE IMAGE BY ID -  MESSAGE: ", e.message)
-      console.log("FAILED TO RETRIEVE IMAGE BY ID -  STACK: ", e.stack)
+     res.writeHead(200, {
+       'Content-Type': 'image/png',
+       'Content-Length': img.length
+     });
+     res.end(img); 
+    }
+    else{
       res.status(404)
       res.send("404")
       return
     }
-
   })
 
 export default router;
