@@ -4,11 +4,17 @@
     [ngStyle]="{maxWidth:width, maxHeight:height}"
     (click)="openDialog()"
     > -->
-    <div class="images__render" (click)="openDialog()">
+    <mat-icon *ngIf="!imageLoaded" aria-hidden="false" class="no-image" aria-label="No Image">image_not_supported</mat-icon>
+
+    <div class="images__render" (click)="openDialog()" *ngIf="imageUrl && imageLoaded">
+        <mat-icon *ngIf="!imageLoaded" aria-hidden="false" class="no-image" aria-label="No Image">image_not_supported</mat-icon>
+
         <img 
             [src]="imageUrl" 
             [id]=id 
             [class]="class" 
+            (load)="onLoad($event)"
+            (error)="onError($event)"
         >
 
         <div class="segmentation"  [ngStyle]="{display: isSegmentationImage ? 'block' : 'none'} ">
@@ -18,4 +24,5 @@
         </div>
         <mat-progress-bar *ngIf="!segmentationLoaded" mode="indeterminate"></mat-progress-bar>
     </div>
+
 

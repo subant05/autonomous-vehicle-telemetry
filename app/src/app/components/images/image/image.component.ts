@@ -26,6 +26,8 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     , pageSize: number
   } | undefined;
   geolocation:any;
+  imageLoaded= false
+  imageCache = new Image()
   
 
   @Input() id: string = uuid()
@@ -58,12 +60,16 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   }
 
   ngOnInit(): void {
-    this.imageUrl = "/api/vehicle/images/" + this.imageId
+    // this.imageUrl = "/api/vehicle/images/" + this.imageId
     if(this.subject){
       this.imageSubscription = this.subject.subscribe((response:any)=>{
         this.subjectHandler(response)
       })
     }
+
+    this.imageCache.addEventListener("load",(e)=>this.onLoad(e))
+    this.imageCache.addEventListener("error",(e)=>this.onError(e))
+    this.imageCache.src = "/api/vehicle/images/" + this.imageId
   }
 
   ngAfterViewInit(){
@@ -73,6 +79,8 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   }
 
   openDialog(): void{
+    if(!this.imageLoaded)
+      return
     const dialogRef = this.dialog.open(ImageExpansionComponent, {
        data:{
           headerId:this.headerId,
@@ -109,6 +117,19 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
         // this.segmentationData = event.data
         break;
     }
+  }
+
+  onLoad(event:any){
+    this.imageLoaded =  true
+    this.imageUrl = event.target.src
+  }
+
+  onError(event:any){
+    this.imageLoaded= false
+    console.log("Error", event)
+    const imgSrc = event.path[0].src
+    event.path[0].src = ""
+    setTimeout(()=>event.path[0].src=imgSrc, 1000)
   }
 
   ngOnDestroy(){

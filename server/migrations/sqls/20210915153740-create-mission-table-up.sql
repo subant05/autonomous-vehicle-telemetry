@@ -21,3 +21,7 @@ CREATE TABLE IF NOT EXISTS production.missions(
     CONSTRAINT uq_vehicle_id_and_mission_start_time
         UNIQUE (vehicle_id, mission_start_time)
 )
+
+CREATE INDEX idx_mission_id ON production.missions(id);
+CREATE INDEX idx_mission_vehicle_id ON production.missions(vehicle_id);
+CREATE INDEX idx_mission_mission_start_time ON production.missions(mission_start_time);

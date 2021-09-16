@@ -49,6 +49,8 @@ CREATE TABLE IF NOT EXISTS images.image_data (
 
 CREATE INDEX idx_image_data_id
     ON images.image_data(id);
+CREATE INDEX idx_image_data_data
+    ON images.image_data(data);
 
 COMMENT ON TABLE images.image_data IS 'Table image data from camera';
 COMMENT ON COLUMN images.image_data.id IS '@omit create,update
