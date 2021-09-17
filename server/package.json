@@ -39,7 +39,8 @@
     "posix": "^4.2.0",
     "postgraphile": "^4.12.3",
     "postgraphile-plugin-connection-filter": "^2.2.1",
-    "ramda": "^0.27.1"
+    "ramda": "^0.27.1",
+    "redis": "^3.1.2"
   },
   "devDependencies": {
     "db-migrate": "^0.11.12",

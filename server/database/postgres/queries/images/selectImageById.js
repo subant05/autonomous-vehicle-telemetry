@@ -1,6 +1,15 @@
 const { client, pool } = require("../../connection.js")
 import {rgbToBase64} from './_utils/rgbToBase64'
 import process from 'process'
+import dotenv from 'dotenv'
+
+dotenv.config({ path: '../../../../.env' })
+const redis = require("redis");
+const redisClient = redis.createClient(process.env.REDIS_URL, {
+    tls: {
+        rejectUnauthorized: false
+    }
+});
 
 export const sqlSelectImageRgbById = async (id) =>{
     try {
@@ -39,7 +48,18 @@ export const sqlSelectImageBase64ById = async (id, isSegmentation = false) =>{
 }
 
 process.on("message", async ({id, isSegmentation})=>{
-    const img = await sqlSelectImageBase64ById(id, isSegmentation);
-    process.send({img})
+    redisClient.get(id.toString(), async (err, result) => {
+        if(err || !result){
+            const img = await sqlSelectImageBase64ById(id, isSegmentation);
+            redisClient.set(id.toString(), JSON.stringify({data: img}))
+            process.send({img})
+        }else {
+            const img = JSON.parse(result).data
+            process.send({img})
+        }
+
+      });
+    // const img = await sqlSelectImageBase64ById(id, isSegmentation);
+    // process.send({img})
 })
 

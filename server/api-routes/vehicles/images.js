@@ -2,9 +2,25 @@ import express from "express";
 import * as Images from '../../database/postgres/queries/images'
 import {setDefaultVehicle,responseCallback} from './_utils'
 const cp = require("child_process")
-
-
 const router = express.Router();
+
+function getImages(worker, id, isSegmentation){
+  return new Promise((resolve, reject)=>{
+     function ImageListener(data){
+      if(data.img.length)
+        resolve(data.img)
+      else
+        reject(data.img)
+
+      worker.removeListener("message",ImageListener)
+     }
+
+     worker.addListener("message", ImageListener)
+
+     worker.send({id, isSegmentation})
+
+  })
+}
 
 router.post("/preview", async (req, res) => {
     console.log("IMAGES:",req.body.topic)
@@ -31,25 +47,7 @@ router.get('/:id', async (req,res)=>{
     }
     const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
 
-    function getImages(){
-      return new Promise((resolve, reject)=>{
-         function ImageListener(data){
-          if(data.img.length)
-            resolve(data.img)
-          else
-            reject(data.img)
-
-          worker.removeListener("message",ImageListener)
-         }
-
-         worker.addListener("message", ImageListener)
-
-         worker.send({id, isSegmentation})
-
-      })
-    }
-
-    getImages().then(imageList=>{
+    getImages(worker, id, isSegmentation).then(imageList=>{
       if(imageList.length){
         const img = Buffer.from(imageList[0], 'base64') //;
       
