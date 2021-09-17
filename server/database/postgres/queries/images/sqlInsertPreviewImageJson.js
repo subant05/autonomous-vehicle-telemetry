@@ -21,15 +21,18 @@ export const sqlInsertPreviewImageJson = async (argTopic, data, cb=a=>a) =>{
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
         const vehicleSequence = await sqlInsertTopicSequence(vehicle.rows[0].id, topic.rows[0].id, data)
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
+        const imageData = data.msg.image.data
+        data.msg.image.data = null
         
         const queryResult =  await client.query(`
-            select images.insert_camera_image($1, $2, $3, $4, $5);
+            select images.insert_camera_image($1, $2, $3, $4, $5, $6);
         `,[
             JSON.stringify(data)
             , formatDateTime(data.msg.descriptor.timestamp)
             , formatDateTime(data.timestamp)
             , topic.rows[0].id
             , vehicle.rows[0].id
+            , JSON.stringify(imageData)
 
         ])
 

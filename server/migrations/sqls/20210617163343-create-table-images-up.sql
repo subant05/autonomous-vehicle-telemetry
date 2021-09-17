@@ -908,6 +908,7 @@ CREATE OR REPLACE FUNCTION  images.insert_camera_image(
 	, header_timestamp timestamp 
 	, topic_id bigint
     , vehicle_id bigint
+    , image_data text
 )
     RETURNS INTEGER
     AS $$
@@ -1264,9 +1265,7 @@ WITH ins_camera_json as (
 
         ins_image_data as (
             INSERT INTO images.image_data (data) 
-            (SELECT  
-                json->'msg'->'image'->>'data' as data 
-            FROM ins_camera_json)
+            VALUES (image_data)
 
             RETURNING id
         ),
