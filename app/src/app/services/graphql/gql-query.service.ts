@@ -441,10 +441,7 @@ export class GqlQueryService {
       if(!result)
         return {};
 
-      const parsed = JSON.parse(result.json)
-      parsed.msg.image.data = null
-      
-      return parsed
+      return JSON.parse(result.json)      
     }))
   }
 

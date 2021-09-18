@@ -10656,9 +10656,7 @@ class GqlQueryService {
             const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes[0].cameraJson;
             if (!result)
                 return {};
-            const parsed = JSON.parse(result.json);
-            parsed.msg.image.data = null;
-            return parsed;
+            return JSON.parse(result.json);
         }));
     }
     getPreviewImageByCameraMessageIdCameraName(variables = {}) {
