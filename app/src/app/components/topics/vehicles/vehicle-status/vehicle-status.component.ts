@@ -42,8 +42,6 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
     }
 
   private sortStatus(val:any){
-    debugger;
-
 ​   const list = [val, ...this.statusList]
    const sortedPortion =  list.slice(0,4).sort((a:any,b:any) :any=> {
      const aTime = new Date(a.readingat).valueOf()

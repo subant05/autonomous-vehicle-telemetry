@@ -7115,7 +7115,6 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
         this.cursor = 0;
     }
     sortStatus(val) {
-        debugger;
         const list = [val, ...this.statusList];
         const sortedPortion = list.slice(0, 4).sort((a, b) => {
             const aTime = new Date(a.readingat).valueOf();
