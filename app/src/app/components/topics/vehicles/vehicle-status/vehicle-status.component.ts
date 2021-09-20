@@ -25,6 +25,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
   pageSizeOptions: number[] = [5]
   pagesLength: number = 0
   isDataLoaded: boolean = false
+  isInitDataLoaded: boolean = false
   downloadButtonDisabled: boolean = false
 
 
@@ -64,6 +65,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
     this.gqlOnlineQuery = this.graphQLQuery
         .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
         .subscribe((response:any)=>{
+          this.isInitDataLoaded =true
           const results =  response.nodes.map((result:any)=>{
             return {
               ...result
@@ -86,7 +88,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
     this.gqlOnlineSubscription = this.graphQLSubscription
         .getVehicleStatus({vehicleId:this.vehicleId})
         .subscribe((response:any):void | null=>{
-          if(!response)
+          if(!response || !this.isInitDataLoaded)
             return;
 
           this.sortStatus(response)

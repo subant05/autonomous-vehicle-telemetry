@@ -7111,6 +7111,7 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
         this.pageSizeOptions = [5];
         this.pagesLength = 0;
         this.isDataLoaded = false;
+        this.isInitDataLoaded = false;
         this.downloadButtonDisabled = false;
         this.cursor = 0;
     }
@@ -7135,6 +7136,7 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
             .getVehicleStatus({ vehicle_id: this.vehicleId, cursor: this.cursor, size: this.pageSize })
             .subscribe((response) => {
             var _a;
+            this.isInitDataLoaded = true;
             const results = response.nodes.map((result) => {
                 return Object.assign(Object.assign({}, result), { status: result.state.name, alerts: result.alerts.length ? result.alerts[0] : null });
             });
@@ -7151,7 +7153,7 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
         this.gqlOnlineSubscription = this.graphQLSubscription
             .getVehicleStatus({ vehicleId: this.vehicleId })
             .subscribe((response) => {
-            if (!response)
+            if (!response || !this.isInitDataLoaded)
                 return;
             this.sortStatus(response);
             // this.statusList.unshift(response)
