@@ -2337,7 +2337,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const vehicleStatus = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 query VehicleStatus($vehicle_id:BigInt, $cursor:Int, $size:Int) {
-    vehicleStatuses( first:$size offset:$cursor orderBy:ID_DESC condition:{vehicleId:$vehicle_id}){
+    vehicleStatuses( first:$size offset:$cursor orderBy:READINGAT_DESC condition:{vehicleId:$vehicle_id}){
        pageInfo{
          startCursor
          endCursor
@@ -7078,7 +7078,7 @@ function VehicleStatusComponent_td_11_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const col_r12 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind2"](2, 1, col_r12.timestamp, "medium"), " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind2"](2, 1, col_r12.readingat, "medium"), " ");
 } }
 function VehicleStatusComponent_tr_12_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "tr", 16);
@@ -7114,6 +7114,21 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
         this.downloadButtonDisabled = false;
         this.cursor = 0;
     }
+    sortStatus(val) {
+        debugger;
+        const list = [val, ...this.statusList];
+        const sortedPortion = list.slice(0, 4).sort((a, b) => {
+            const aTime = new Date(a.readingat).valueOf();
+            const bTime = new Date(b.readingat).valueOf();
+            if (aTime > bTime)
+                return -1;
+            else if (aTime < bTime)
+                return 1;
+            else
+                return 0;
+        });
+        this.statusList = [...sortedPortion, ...list.slice(4, list.length)];
+    }
     getStatus() {
         if (this.gqlOnlineQuery)
             this.gqlOnlineQuery.unsubscribe();
@@ -7138,7 +7153,8 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
             .subscribe((response) => {
             if (!response)
                 return;
-            this.statusList.unshift(response);
+            this.sortStatus(response);
+            // this.statusList.unshift(response)
             this.updateList(this.statusList);
         });
     }
@@ -10458,7 +10474,7 @@ class GqlQueryService {
                 return {
                     id: node.id,
                     missionStats: node.statusMessage.missionStats,
-                    timestamp: node.statusMessage.header.readingat,
+                    readingat: node.statusMessage.header.readingat,
                     headerId: node.statusMessage.header.headerid,
                     node: node.statusMessage.header.node,
                     topic: node.topic.name,
@@ -10795,7 +10811,7 @@ class GqlSubscriptionService {
             if (!response.data.sqlVehicleStatus.vehicle_status)
                 return null;
             const results = response.data.sqlVehicleStatus.vehicle_status;
-            return Object.assign(Object.assign({}, results), { missionStats: results.statusMessage.missionStats, topic: results.topic.name, node: results.statusMessage.header.node, headerId: results.statusMessage.header.headerid, status: results.state.name, timestamp: results.statusMessage.header.readingat, state: results.state, vehicleStatusDetails: results.vehicleStatusDetails.nodes, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
+            return Object.assign(Object.assign({}, results), { statusMessage: results.statusMessage, missionStats: results.statusMessage.missionStats, topic: results.topic.name, node: results.statusMessage.header.node, headerId: results.statusMessage.header.headerid, status: results.state.name, readingat: results.statusMessage.header.readingat, state: results.state, vehicleStatusDetails: results.vehicleStatusDetails.nodes, alerts: results.alerts.nodes.length ? results.alerts.nodes[0] : null });
         }));
     }
     getVehiclePreviewImages(variables = {}) {

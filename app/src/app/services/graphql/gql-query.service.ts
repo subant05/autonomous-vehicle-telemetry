@@ -204,7 +204,7 @@ export class GqlQueryService {
         return {
             id:node.id
             , missionStats: node.statusMessage.missionStats
-            , timestamp:node.statusMessage.header.readingat
+            , readingat:node.statusMessage.header.readingat
             , headerId: node.statusMessage.header.headerid
             , node: node.statusMessage.header.node
             , topic: node.topic.name

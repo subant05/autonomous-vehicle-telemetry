@@ -2,7 +2,7 @@ import { gql } from 'apollo-angular';
 
 const vehicleStatus = gql`
 query VehicleStatus($vehicle_id:BigInt, $cursor:Int, $size:Int) {
-    vehicleStatuses( first:$size offset:$cursor orderBy:ID_DESC condition:{vehicleId:$vehicle_id}){
+    vehicleStatuses( first:$size offset:$cursor orderBy:READINGAT_DESC condition:{vehicleId:$vehicle_id}){
        pageInfo{
          startCursor
          endCursor

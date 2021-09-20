@@ -101,12 +101,13 @@ export class GqlSubscriptionService {
       const results =  response.data.sqlVehicleStatus.vehicle_status      
       return {
         ...results
+        , statusMessage: results.statusMessage
         , missionStats: results.statusMessage.missionStats
         , topic: results.topic.name
         , node: results.statusMessage.header.node
         , headerId: results.statusMessage.header.headerid
         , status:results.state.name
-        , timestamp: results.statusMessage.header.readingat
+        , readingat: results.statusMessage.header.readingat
         , state:results.state
         , vehicleStatusDetails: results.vehicleStatusDetails.nodes
         , alerts:results.alerts.nodes.length ? results.alerts.nodes[0] : null}

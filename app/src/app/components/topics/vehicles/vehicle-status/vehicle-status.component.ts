@@ -41,6 +41,24 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
       super()
     }
 
+  private sortStatus(val:any){
+    debugger;
+
+​   const list = [val, ...this.statusList]
+   const sortedPortion =  list.slice(0,4).sort((a:any,b:any) :any=> {
+     const aTime = new Date(a.readingat).valueOf()
+     const bTime = new Date(b.readingat).valueOf()
+
+     if(aTime > bTime)
+      return -1;
+     else if(aTime < bTime)
+      return 1
+     else 
+      return 0
+   })
+    this.statusList = [...sortedPortion , ...list.slice(4, list.length)]
+  }
+
   private getStatus(){
     if(this.gqlOnlineQuery)
       this.gqlOnlineQuery.unsubscribe()
@@ -72,7 +90,8 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
           if(!response)
             return;
 
-          this.statusList.unshift(response)
+          this.sortStatus(response)
+          // this.statusList.unshift(response)
           this.updateList(this.statusList)
         })
     
