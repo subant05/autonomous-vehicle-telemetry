@@ -74,6 +74,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
           this.pagesLength = response.totalCount
           this.statusList = this.statusList.concat(results)
           this.isDataLoaded = true
+          this.cursor = !this.cursor ? this.pageSize-1 : this.cursor+5
           this.updateList(this.statusList)
 
           if(!results.length)
@@ -90,6 +91,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
 
           this.sortStatus(response)
           // this.statusList.unshift(response)
+          this.cursor++
           this.updateList(this.statusList)
         })
     

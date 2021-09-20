@@ -7141,6 +7141,7 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
             this.pagesLength = response.totalCount;
             this.statusList = this.statusList.concat(results);
             this.isDataLoaded = true;
+            this.cursor = !this.cursor ? this.pageSize - 1 : this.cursor + 5;
             this.updateList(this.statusList);
             if (!results.length)
                 this.downloadButtonDisabled = !results.length;
@@ -7154,6 +7155,7 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
                 return;
             this.sortStatus(response);
             // this.statusList.unshift(response)
+            this.cursor++;
             this.updateList(this.statusList);
         });
     }
