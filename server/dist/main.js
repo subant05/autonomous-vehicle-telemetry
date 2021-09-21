@@ -7117,7 +7117,8 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
     }
     sortStatus(val) {
         const list = [val, ...this.statusList];
-        const sortedPortion = list.slice(0, 4).sort((a, b) => {
+        const marker = Math.ceil(list.length / 2);
+        const sortedPortion = list.slice(0, marker).sort((a, b) => {
             const aTime = new Date(a.readingat).valueOf();
             const bTime = new Date(b.readingat).valueOf();
             if (aTime > bTime)
@@ -7127,7 +7128,7 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
             else
                 return 0;
         });
-        this.statusList = [...sortedPortion, ...list.slice(4, list.length)];
+        this.statusList = [...sortedPortion, ...list.slice(marker, list.length)];
     }
     getStatus() {
         if (this.gqlOnlineQuery)
