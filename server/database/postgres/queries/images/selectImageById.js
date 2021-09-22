@@ -48,18 +48,18 @@ export const sqlSelectImageBase64ById = async (id, isSegmentation = false) =>{
 }
 
 process.on("message", async ({id, isSegmentation})=>{
-    redisClient.get(id.toString(), async (err, result) => {
-        if(err || !result){
-            const img = await sqlSelectImageBase64ById(id, isSegmentation);
-            redisClient.set(id.toString(), JSON.stringify({data: img}))
-            process.send({img})
-        }else {
-            const img = JSON.parse(result).data
-            process.send({img})
-        }
+    // redisClient.get(id.toString(), async (err, result) => {
+    //     if(err || !result){
+    //         const img = await sqlSelectImageBase64ById(id, isSegmentation);
+    //         redisClient.set(id.toString(), JSON.stringify({data: img}))
+    //         process.send({img})
+    //     }else {
+    //         const img = JSON.parse(result).data
+    //         process.send({img})
+    //     }
 
-      });
-    // const img = await sqlSelectImageBase64ById(id, isSegmentation);
-    // process.send({img})
+    //   });
+    const img = await sqlSelectImageBase64ById(id, isSegmentation);
+    process.send({img})
 })
 
