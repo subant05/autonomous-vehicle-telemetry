@@ -7576,16 +7576,17 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
             // @ts-ignore
             (_a = this.statusContainer) === null || _a === void 0 ? void 0 : _a.nativeElement.scrollTop = this.statusContainer.nativeElement.scrollHeight;
         });
-        this.gqlOnlineSubscription = this.graphQLSubscription
-            .getVehicleStatus({ vehicleId: this.vehicleId })
-            .subscribe((response) => {
-            if (!response || !this.isInitDataLoaded)
-                return;
-            this.sortStatus(response);
-            // this.statusList.unshift(response)
-            this.cursor++;
-            this.updateList(this.statusList);
-        });
+        if (!this.startDateTime && !this.endDateTime)
+            this.gqlOnlineSubscription = this.graphQLSubscription
+                .getVehicleStatus({ vehicleId: this.vehicleId })
+                .subscribe((response) => {
+                if (!response || !this.isInitDataLoaded)
+                    return;
+                this.sortStatus(response);
+                // this.statusList.unshift(response)
+                this.cursor++;
+                this.updateList(this.statusList);
+            });
     }
     ngOnInit() {
         if (!isNaN(this.vehicleId)) {
@@ -10214,6 +10215,7 @@ class VehicleAutonomyShareComponent {
         this.coordinates = [[this.longitude, this.latitude]];
     }
     getLogs() {
+        debugger;
         this.logsQuery = this.gqlQuery.getLogsByVehicleIdDateRange(Object.assign({ vehicleId: this.vehicleId }, this.timeframe)).subscribe((response) => {
             this.logs = new _angular_material_table__WEBPACK_IMPORTED_MODULE_8__.MatTableDataSource(response);
             this.logsColumns = ["node",
@@ -10230,8 +10232,8 @@ class VehicleAutonomyShareComponent {
             const readingat = response.message.header.readingat;
             this.objectDetection = response;
             this.timeframe = {
-                startDateTime: moment__WEBPACK_IMPORTED_MODULE_0___default()(readingat).subtract(1, "minute").format(src_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.timestampFormat).toString(),
-                endDateTime: moment__WEBPACK_IMPORTED_MODULE_0___default()(readingat).add(1, "minute").format(src_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.timestampFormat).toString()
+                startDateTime: moment__WEBPACK_IMPORTED_MODULE_0___default()(readingat).subtract(5, "minute").format(src_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.timestampFormat).toString(),
+                endDateTime: moment__WEBPACK_IMPORTED_MODULE_0___default()(readingat).add(5, "minute").format(src_environments_environment__WEBPACK_IMPORTED_MODULE_1__.environment.timestampFormat).toString()
             };
             this.vehicleId = response.vehicleId;
             this.setGeolocation(response);

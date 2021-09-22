@@ -93,17 +93,18 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
           this.statusContainer?.nativeElement.scrollTop = this.statusContainer.nativeElement.scrollHeight
       })
     
-    this.gqlOnlineSubscription = this.graphQLSubscription
-        .getVehicleStatus({vehicleId:this.vehicleId})
-        .subscribe((response:any):void | null=>{
-          if(!response || !this.isInitDataLoaded)
-            return;
+    if(!this.startDateTime && !this.endDateTime )
+      this.gqlOnlineSubscription = this.graphQLSubscription
+          .getVehicleStatus({vehicleId:this.vehicleId})
+          .subscribe((response:any):void | null=>{
+            if(!response || !this.isInitDataLoaded)
+              return;
 
-          this.sortStatus(response)
-          // this.statusList.unshift(response)
-          this.cursor++
-          this.updateList(this.statusList)
-        })
+            this.sortStatus(response)
+            // this.statusList.unshift(response)
+            this.cursor++
+            this.updateList(this.statusList)
+          })
     
   }
 
