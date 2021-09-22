@@ -31,6 +31,6 @@
     </table>
 </div>
 <mat-progress-bar *ngIf="!isDataLoaded" mode="indeterminate"></mat-progress-bar>
-<button [disabled]="downloadButtonDisabled" class="download" mat-mini-fab color="primary" aria-label="Load next set of status" (click)="onScroll()">
+<button *ngIf="!startDateTime && !endDateTime" [disabled]="downloadButtonDisabled" class="download" mat-mini-fab color="primary" aria-label="Load next set of status" (click)="onScroll()">
   <mat-icon aria-hidden="false" aria-label="Example home icon">file_download</mat-icon>
 </button>

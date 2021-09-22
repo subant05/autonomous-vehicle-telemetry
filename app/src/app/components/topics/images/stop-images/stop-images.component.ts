@@ -5,7 +5,8 @@ import { Subscription, Subject } from 'rxjs';
 import { TableUtil } from 'src/app/components/table/table-utils';
 import { subscribe } from 'graphql';
 import {PageEvent} from '@angular/material/paginator';
-
+import {ActivatedRoute, Router} from '@angular/router'
+import { AlertService } from 'src/app/services/notifications/alert.service';
 
 @Component({
   selector: 'app-stop-images',
@@ -40,6 +41,8 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
   constructor(
     private gqlSubscription: GqlSubscriptionService
     , private gqlQuery: GqlQueryService
+    , private route: ActivatedRoute
+    , private alertService: AlertService
   ) { 
     super()
   }
@@ -199,6 +202,18 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
       }
     })
   }
+
+  async onShare(){
+    // const temp = await navigator.clipboard.writeText(Math.random().toString())
+    navigator.clipboard.writeText(`${location.origin}/vehicles/${this.vehicleId}/share/autonomy-state/${this.objectDetection.id}`).then( ()=> {
+      console.log("Yep", this.objectDetection)
+      this.alertService.displayNotification("Copied!")
+    },  (err) => {
+      console.log("Nope")
+      this.alertService.displayNotification("Copy Failed!")
+    })
+  }
+
 
   getCurrentImage(event:PageEvent | any){
     if( this.page !== event.pageIndex || event.pageSize !== this.pageSize ){

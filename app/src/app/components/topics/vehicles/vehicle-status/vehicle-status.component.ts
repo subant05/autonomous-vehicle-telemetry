@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, AfterViewInit, Input, ViewChild, ElementR
 import { Subscription } from 'rxjs';
 import {GqlSubscriptionService} from 'src/app/services/graphql/gql-subscription.service'
 import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 import { TableUtil } from 'src/app/components/table/table-utils';
 import { PageEvent } from '@angular/material/paginator';
 import { throwServerError } from '@apollo/client/core';
@@ -31,6 +31,8 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
 
   @Input() vehicleId: number | string |undefined;
   @Input() cursor: number = 0
+  @Input() startDateTime: string | undefined
+  @Input() endDateTime: string | undefined
 
   @ViewChild('statusContainer') statusContainer: HTMLElement | undefined
   
@@ -44,7 +46,7 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
 
   private sortStatus(val:any){
 ​   const list = [val, ...this.statusList]
-   const marker = Math.ceil(list.length/2)
+   const marker = Math.ceil(list.length/2) < 20 ?  Math.ceil(list.length/2) : 20
    const sortedPortion =  list.slice(0,marker).sort((a:any,b:any) :any=> {
      const aTime = new Date(a.readingat).valueOf()
      const bTime = new Date(b.readingat).valueOf()
@@ -64,7 +66,12 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
       this.gqlOnlineQuery.unsubscribe()
 
     this.gqlOnlineQuery = this.graphQLQuery
-        .getVehicleStatus({vehicle_id:this.vehicleId, cursor:this.cursor, size:this.pageSize })
+        [ this.startDateTime && this.endDateTime ? "getVehicleStatusByDateRange" :"getVehicleStatus"]({
+          vehicle_id:this.vehicleId
+          , cursor:this.cursor
+          , size:this.pageSize
+          , startDateTime:this.startDateTime
+          , endDateTime:this.endDateTime })
         .subscribe((response:any)=>{
           this.isInitDataLoaded =true
           const results =  response.nodes.map((result:any)=>{

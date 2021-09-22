@@ -1,0 +1,75 @@
+<p>vehicle-autonomy-share works!</p>
+<div class="header">
+    <div class="header__title">
+        <h2>
+            Autonomy Share {{vehicleId}}
+        </h2>
+    </div>
+</div>
+<div class="grid gap col-2" *ngIf="objectDetection">
+    <div class="grid__cell">
+        <div class="grid__cell--label">Image</div>
+        <div class="grid__cell--content status-section">
+            <app-image 
+                *ngIf="image; else noimage"
+                [imageId]="image" 
+                [label]="label" 
+                [headerId]="headerid">
+            </app-image>
+            <ng-template #noimage>
+                <mat-icon aria-hidden="false" class="no-image" aria-label="No Image">image_not_supported</mat-icon>
+            </ng-template>
+        </div>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Geolocation</div>
+        <div class="grid__cell--content status-section">
+            <div class="map" *ngIf="vehicleId && coordinates" style="height:400px;">
+                <app-starfire 
+                *ngIf="vehicleId"
+                [showTractor]=true 
+                [zoom]=16 
+                [coordinates]="coordinates"
+                [vehicleId]="vehicleId" ></app-starfire>
+            </div>
+        </div>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Autonomy State</div>
+        <div class="grid__cell--content status-section">
+            <app-vehicle-status
+                 *ngIf="vehicleId"
+                [vehicleId]="vehicleId"
+                [startDateTime]="timeframe.startDateTime"
+                [endDateTime]="timeframe.endDateTime"
+            ></app-vehicle-status>
+        </div>
+    </div>
+    <div class="grid__cell">
+        <div class="grid__cell--label">Logs</div>
+        <div class="grid__cell--content status-section" style="max-height: 400px; overflow-y: scroll;">
+            <table  *ngIf="logs && logsColumns" mat-table  class="vehicles__status"  [dataSource]="logs" >
+                <ng-container matColumnDef="node">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Node </th>
+                    <td mat-cell *matCellDef="let col" class="node"> {{col.name}} </td>
+                </ng-container>    
+                <ng-container matColumnDef="level">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type </th>
+                    <td mat-cell *matCellDef="let col" class="type"> {{col.level}} </td>
+                </ng-container>     
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description </th>
+                    <td mat-cell *matCellDef="let col" class="description"> {{col.msg}} </td>
+                </ng-container>   
+                <ng-container matColumnDef="timestamp">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Timestamp </th>
+                    <td mat-cell *matCellDef="let col"> {{col.readingat | date:'medium' }} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="logsColumns"></tr>
+                <tr mat-row 
+                  *matRowDef="let row; columns: logsColumns;"
+                ></tr>
+            </table>
+        </div>
+    </div>
+</div>

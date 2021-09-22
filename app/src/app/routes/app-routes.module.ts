@@ -13,6 +13,7 @@ import { VehicleGeolocationComponent } from '../pages/vehicle/pages/vehicle-geol
 import { VehicleImagesComponent } from '../pages/vehicle/pages/vehicle-images/vehicle-images.component';
 import { VehicleLoggingComponent } from '../pages/vehicle/pages/vehicle-logging/vehicle-logging.component';
 import { VehicleSystemComponent } from '../pages/vehicle/pages/vehicle-system/vehicle-system.component';
+import { VehicleShareComponent } from "../pages/vehicle/pages/vehicle-share/vehicle-share.component"
 
 const routes: Routes = [
     {
@@ -152,6 +153,23 @@ const routes: Routes = [
                                     ]
                                   },
                             },
+                            {
+                              path:"share/:type/:id",
+                              component:VehicleShareComponent
+                              , data: {
+                                  title: 'Vehicle Share',
+                                  breadcrumb: [
+                                  {
+                                      label: 'Vehices',
+                                      url: '../'
+                                  },
+                                    {
+                                      label: 'Share',
+                                      url: ''
+                                    }
+                                  ]
+                                },
+                          },
                             {
                                 path: "**"
                                 , component:ErrorComponent

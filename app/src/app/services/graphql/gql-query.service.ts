@@ -222,6 +222,32 @@ export class GqlQueryService {
     }))
   }
 
+  getVehicleStatusByDateRange(variables:any){
+    return this.basicFilteredQuery(QueryQL.Status.ByVehicleIdDateRange, variables)
+    .pipe(map((response:any)=>{
+      const nodes =  response.data.vehicleStatuses ? response.data.vehicleStatuses.edges.map((results:any)=>{
+        const node = results.node
+        return {
+            id:node.id
+            , missionStats: node.statusMessage.missionStats
+            , readingat:node.statusMessage.header.readingat
+            , headerId: node.statusMessage.header.headerid
+            , node: node.statusMessage.header.node
+            , topic: node.topic.name
+            , state: node.state
+            , alerts: node.alerts.nodes
+            , vehicleStatusDetails: node.vehicleStatusDetails.nodes
+          }
+      }) : []
+      
+      return {
+        ...response.data.vehicleStatuses.pageInfo
+        ,totalCount: response.data.vehicleStatuses.totalCount
+        , nodes
+      }
+    }))
+  }
+
   getVehiclePreviewImages(variables={}){
     return this.basicFilteredQuery(QueryQL.Images.PreviewDetailsByVehicleId, variables)
     .pipe(map((response:any)=>{
@@ -306,6 +332,16 @@ export class GqlQueryService {
     return this.basicFilteredQuery(QueryQL.Detection.ByVehicleId, variables)
     .pipe(map((response:any)=>{
       return response.data.objects
+    }))
+  }
+
+  getObjectDetectionById(variables={}){
+    return this.basicFilteredQuery(QueryQL.Detection.ById, variables)
+    .pipe(map((response:any)=>{
+      if(!response.data.objects || !response.data.objects.nodes.length)
+        return null
+
+      return response.data.objects.nodes[0]
     }))
   }
 
@@ -416,6 +452,16 @@ export class GqlQueryService {
     }))
   }
 
+  getLogsByVehicleIdDateRange(variables={}){
+    return this.basicFilteredQuery(QueryQL.Logging.ByVehicleIdDateRange, variables)
+    .pipe(map((response:any)=>{
+      if(!response || !response.data)
+        return []
+
+      return response.data.logging.nodes
+    }))
+  }
+
   // getImageMeta(variables={}){
   //   return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
   //   .pipe(map((response:any)=>{
@@ -491,4 +537,6 @@ export class GqlQueryService {
       }
     }))
   }
+
+  
 }

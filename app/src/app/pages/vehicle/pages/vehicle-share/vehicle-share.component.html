@@ -1,0 +1,6 @@
+<div [ngSwitch]="type">
+    <app-vehicle-autonomy-share 
+        *ngSwitchCase="'autonomy-state'"
+        [id]="id"></app-vehicle-autonomy-share>
+    <div *ngSwitchDefault>Share not found</div>
+</div>

@@ -83,6 +83,8 @@ import { MedallionComponent } from './components/core/medallion/medallion.compon
 import { ObjectDetectionDetailComponent } from './components/modals/object-detection-detail/object-detection-detail.component';
 import { StopImagesComponent } from './components/topics/images/stop-images/stop-images.component';
 import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehicle-mission-stats/vehicle-mission-stats.component';
+import { VehicleShareComponent } from './pages/vehicle/pages/vehicle-share/vehicle-share.component';
+import { VehicleAutonomyShareComponent } from './pages/vehicle/pages/vehicle-share/pages/vehicle-autonomy-share/vehicle-autonomy-share.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +121,8 @@ import { VehicleMissionStatsComponent } from './components/topics/vehicles/vehic
     ObjectDetectionDetailComponent,
     StopImagesComponent,
     VehicleMissionStatsComponent,
+    VehicleShareComponent,
+    VehicleAutonomyShareComponent,
   ],
   imports: [
     BrowserModule,
