@@ -7273,7 +7273,7 @@ class VehicleMissionStatsComponent {
                     }
                     break;
                 case "UPDATE":
-                    if (stats.id === this.missionStats.id) {
+                    if (!this.missionStats || stats.id === this.missionStats.id) {
                         this.missionStats = stats;
                     }
                     break;
