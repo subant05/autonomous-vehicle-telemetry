@@ -37,7 +37,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _objectByVehicleId__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./objectByVehicleId */ 73730);
 /* harmony import */ var _objectHeaderIdByVehicleId__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./objectHeaderIdByVehicleId */ 74874);
-/* harmony import */ var _objectById__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./objectById */ 360);
+/* harmony import */ var _objectById__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./objectById */ 33360);
 
 
 
@@ -46,7 +46,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 360:
+/***/ 33360:
 /*!********************************************************************!*\
   !*** ./src/app/graphql/query-syntax/query/detection/objectById.js ***!
   \********************************************************************/
@@ -1501,7 +1501,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 585:
+/***/ 68585:
 /*!****************************************************************************!*\
   !*** ./src/app/graphql/query-syntax/query/logging/byVehicleIdDateRange.js ***!
   \****************************************************************************/
@@ -1615,7 +1615,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _queryBuilders_loggingQueryBuilder__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./queryBuilders/loggingQueryBuilder */ 72871);
 /* harmony import */ var _loggingNodeTypes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./loggingNodeTypes */ 34641);
 /* harmony import */ var _currentLogsByVehicleId__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./currentLogsByVehicleId */ 85118);
-/* harmony import */ var _byVehicleIdDateRange__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./byVehicleIdDateRange */ 585);
+/* harmony import */ var _byVehicleIdDateRange__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./byVehicleIdDateRange */ 68585);
 
 
 
@@ -2359,7 +2359,7 @@ const missionsQuery = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 
 /***/ }),
 
-/***/ 93:
+/***/ 20093:
 /*!***************************************************************************!*\
   !*** ./src/app/graphql/query-syntax/query/status/byVehicleIdDateRange.js ***!
   \***************************************************************************/
@@ -2487,7 +2487,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vehicleStatus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vehicleStatus */ 55462);
 /* harmony import */ var _missionCountByVehicle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./missionCountByVehicle */ 61322);
 /* harmony import */ var _missionStatsByVehicleIdTimestamp__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./missionStatsByVehicleIdTimestamp */ 83948);
-/* harmony import */ var _byVehicleIdDateRange__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./byVehicleIdDateRange */ 93);
+/* harmony import */ var _byVehicleIdDateRange__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./byVehicleIdDateRange */ 20093);
  
 
 
@@ -4080,8 +4080,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_modals_object_detection_detail_object_detection_detail_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./components/modals/object-detection-detail/object-detection-detail.component */ 56675);
 /* harmony import */ var _components_topics_images_stop_images_stop_images_component__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./components/topics/images/stop-images/stop-images.component */ 43613);
 /* harmony import */ var _components_topics_vehicles_vehicle_mission_stats_vehicle_mission_stats_component__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./components/topics/vehicles/vehicle-mission-stats/vehicle-mission-stats.component */ 68027);
-/* harmony import */ var _pages_vehicle_pages_vehicle_share_vehicle_share_component__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./pages/vehicle/pages/vehicle-share/vehicle-share.component */ 530);
-/* harmony import */ var _pages_vehicle_pages_vehicle_share_pages_vehicle_autonomy_share_vehicle_autonomy_share_component__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./pages/vehicle/pages/vehicle-share/pages/vehicle-autonomy-share/vehicle-autonomy-share.component */ 668);
+/* harmony import */ var _pages_vehicle_pages_vehicle_share_vehicle_share_component__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./pages/vehicle/pages/vehicle-share/vehicle-share.component */ 94530);
+/* harmony import */ var _pages_vehicle_pages_vehicle_share_pages_vehicle_autonomy_share_vehicle_autonomy_share_component__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./pages/vehicle/pages/vehicle-share/pages/vehicle-autonomy-share/vehicle-autonomy-share.component */ 83668);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! @angular/core */ 37716);
 
 
@@ -9951,7 +9951,7 @@ VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_M
 
 /***/ }),
 
-/***/ 668:
+/***/ 83668:
 /*!********************************************************************************************************************!*\
   !*** ./src/app/pages/vehicle/pages/vehicle-share/pages/vehicle-autonomy-share/vehicle-autonomy-share.component.ts ***!
   \********************************************************************************************************************/
@@ -10265,7 +10265,7 @@ VehicleAutonomyShareComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPOR
 
 /***/ }),
 
-/***/ 530:
+/***/ 94530:
 /*!******************************************************************************!*\
   !*** ./src/app/pages/vehicle/pages/vehicle-share/vehicle-share.component.ts ***!
   \******************************************************************************/
@@ -10279,7 +10279,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 37716);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ 39895);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ 38583);
-/* harmony import */ var _pages_vehicle_autonomy_share_vehicle_autonomy_share_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/vehicle-autonomy-share/vehicle-autonomy-share.component */ 668);
+/* harmony import */ var _pages_vehicle_autonomy_share_vehicle_autonomy_share_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/vehicle-autonomy-share/vehicle-autonomy-share.component */ 83668);
 
 
 
@@ -10629,7 +10629,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_vehicle_pages_vehicle_images_vehicle_images_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-images/vehicle-images.component */ 17962);
 /* harmony import */ var _pages_vehicle_pages_vehicle_logging_vehicle_logging_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-logging/vehicle-logging.component */ 81668);
 /* harmony import */ var _pages_vehicle_pages_vehicle_system_vehicle_system_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-system/vehicle-system.component */ 52862);
-/* harmony import */ var _pages_vehicle_pages_vehicle_share_vehicle_share_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-share/vehicle-share.component */ 530);
+/* harmony import */ var _pages_vehicle_pages_vehicle_share_vehicle_share_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../pages/vehicle/pages/vehicle-share/vehicle-share.component */ 94530);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/core */ 37716);
 
 
