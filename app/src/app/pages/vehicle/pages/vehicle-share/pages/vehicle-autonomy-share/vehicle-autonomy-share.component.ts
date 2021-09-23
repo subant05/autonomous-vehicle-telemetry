@@ -33,6 +33,7 @@ export class VehicleAutonomyShareComponent implements OnInit, OnDestroy {
   timeframe: any ={}
   logs:any=new MatTableDataSource([])
   logsColumns:string[] |undefined;
+  isLogLoaded: boolean = false
 
   @Input() id:number | undefined
 
@@ -70,11 +71,11 @@ export class VehicleAutonomyShareComponent implements OnInit, OnDestroy {
   }
 
   private getLogs(){
-    debugger;
     this.logsQuery = this.gqlQuery.getLogsByVehicleIdDateRange({
       vehicleId:this.vehicleId
       , ...this.timeframe
     }).subscribe((response:any)=>{
+      this.isLogLoaded = true
       this.logs = new MatTableDataSource(response)
       this.logsColumns=["node"
         , "level"
@@ -91,8 +92,8 @@ export class VehicleAutonomyShareComponent implements OnInit, OnDestroy {
         const readingat = response.message.header.readingat
         this.objectDetection = response
          this.timeframe = {
-           startDateTime: moment(readingat).subtract(5,"minute").format( environment.timestampFormat).toString()
-           , endDateTime: moment(readingat).add(5,"minute").format( environment.timestampFormat).toString()
+           startDateTime: moment(readingat).subtract(1,"minute").format( environment.timestampFormat).toString()
+           , endDateTime: moment(readingat).add(1,"minute").format( environment.timestampFormat).toString()
           }
           
         this.vehicleId = response.vehicleId

@@ -23,7 +23,7 @@
     <div class="grid__cell">
         <div class="grid__cell--label">Geolocation</div>
         <div class="grid__cell--content status-section">
-            <div class="map" *ngIf="vehicleId && coordinates" style="height:400px;">
+            <div class="map" *ngIf="vehicleId && coordinates; else geoloader" style="height:400px;">
                 <app-starfire 
                 *ngIf="vehicleId"
                 [showTractor]=true 
@@ -31,6 +31,9 @@
                 [coordinates]="coordinates"
                 [vehicleId]="vehicleId" ></app-starfire>
             </div>
+            <ng-template #geoloader>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </ng-template>
         </div>
     </div>
     <div class="grid__cell">
@@ -47,7 +50,7 @@
     <div class="grid__cell">
         <div class="grid__cell--label">Logs</div>
         <div class="grid__cell--content status-section" style="max-height: 400px; overflow-y: scroll;">
-            <table  *ngIf="logs && logsColumns" mat-table  class="vehicles__status"  [dataSource]="logs" >
+            <table  *ngIf="isLogLoaded; else logsloader" mat-table  class="vehicles__status"  [dataSource]="logs" >
                 <ng-container matColumnDef="node">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Node </th>
                     <td mat-cell *matCellDef="let col" class="node"> {{col.name}} </td>
@@ -69,6 +72,9 @@
                   *matRowDef="let row; columns: logsColumns;"
                 ></tr>
             </table>
+            <ng-template #logsloader>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </ng-template>
         </div>
     </div>
 </div>
