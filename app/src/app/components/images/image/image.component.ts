@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, AfterViewChecked, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { v4 as uuid } from "uuid"
 import {ImageService} from 'src/app/services/images/image.service'
 import {MatDialog} from '@angular/material/dialog';
@@ -37,6 +37,10 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   @Input() imageId: string | undefined;
   @Input() subject: Subject<{type:string, data:any}> | undefined
   @Input() timestamp: any ="";
+  @Output() load = new EventEmitter<string|number>()
+  @Output() error = new EventEmitter<string|number>()
+
+
 
   constructor( 
     private imageService: ImageService
@@ -123,12 +127,14 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   onLoad(event:any){
     this.imageLoaded =  true
     this.imageUrl = event.target.src
+    this.load.emit(this.imageId)
   }
 
   onError(event:any){
     this.imageLoaded= false
     const imgSrc = event.path[0].src
     event.path[0].src = ""
+    this.error.emit(this.imageId)
     // setTimeout(()=>event.path[0].src=imgSrc, 5000)
   }
 

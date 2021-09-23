@@ -34,6 +34,18 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
     ) { }
 
   
+  private findImageByTopicId(value:any){
+    return this.vehicleImages.findIndex((item:any)=>{
+      return !item ? false : item.topic.id === value
+    }) 
+  }
+
+  private findImageByImageId(value:any){
+    return this.vehicleImages.findIndex((item:any)=>{
+      return !item ? false : item.image.id === value
+    }) 
+  }
+
   private setupLiveImageSubscription(){
     this.allImageSubscriptions = 
     this.graphQLSubscription
@@ -43,11 +55,9 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
         return;
 
       
-      const imageIndex = this.vehicleImages.findIndex((item:any)=>{
-        return !item ? false : item.topic.id === response.topicId
-      }) 
+      const imageIndex = this.findImageByTopicId(response.topicId)
 
-      if(imageIndex !== -1){
+      if(imageIndex !== -1 && this.vehicleImages[imageIndex].done){
         this.vehicleImages[imageIndex] = {
           topic:{
              name: response.topic
@@ -58,24 +68,6 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
          }
       }
 
-    })
-  }
-
-  previewImageQuery(){
-    this.previewImagesSubscription = this.graphQLQuery
-    .getPreviewImagesByTopicNameVehicleId({
-      vehicleId:this.vehicleId
-      , topicNames:["/side_right/left/preview"
-      , "/side_left/left/preview"
-      , "/front_right/left/preview"
-      , "/front_left/left/preview"
-      , "/front_center/left/preview"
-      , "/rear/left/preview"]
-    }).subscribe((response:any)=>{
-      this.isImagesLoaded = true
-
-      if(response)
-        this.vehicleImages = response
     })
   }
 
@@ -101,6 +93,30 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
       if(response)
         this.vehiclesLastCoordinates = [[response.longitude, response.latitude]]
     })
+  }
+
+  previewImageQuery(){
+    this.previewImagesSubscription = this.graphQLQuery
+    .getPreviewImagesByTopicNameVehicleId({
+      vehicleId:this.vehicleId
+      , topicNames:["/side_right/left/preview"
+      , "/side_left/left/preview"
+      , "/front_right/left/preview"
+      , "/front_left/left/preview"
+      , "/front_center/left/preview"
+      , "/rear/left/preview"]
+    }).subscribe((response:any)=>{
+      this.isImagesLoaded = true
+
+      if(response)
+        this.vehicleImages = response
+    })
+  }
+
+  onImageLoaded(imageId:number|string){
+    const imageIndex = this.findImageByImageId(imageId)
+    if(this.vehicleImages[imageIndex])
+      this.vehicleImages[imageIndex].done = true
   }
 
   ngOnInit(): void {

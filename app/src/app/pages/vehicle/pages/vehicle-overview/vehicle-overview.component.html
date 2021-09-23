@@ -49,7 +49,10 @@
                             [imageId]="imageInfo.image.id" 
                             [label]="imageInfo.topic.name" 
                             [headerId]="imageInfo.header.headerId"
-                            [timestamp]="imageInfo.header.readingat">
+                            [timestamp]="imageInfo.header.readingat"
+                            (load)="onImageLoaded($event)"
+                            (error)="onImageLoaded($event)"
+                            >
                         </app-image>
                         <ng-template #noimage>
                             <mat-icon aria-hidden="false" class="no-image" aria-label="No Image">image_not_supported</mat-icon>

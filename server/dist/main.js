@@ -4401,15 +4401,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ImageComponent": () => (/* binding */ ImageComponent)
 /* harmony export */ });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
 /* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! uuid */ 61319);
 /* harmony import */ var _modals_image_expansion_image_expansion_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../modals/image-expansion/image-expansion.component */ 54217);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
 /* harmony import */ var src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/images/image.service */ 82329);
 /* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/dialog */ 22238);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 38583);
 /* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/icon */ 76627);
 /* harmony import */ var _segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../segmentation-image/segmentation-image.component */ 98299);
 /* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+
 
 
 
@@ -4481,6 +4482,8 @@ class ImageComponent {
         this.class = "";
         this.label = "";
         this.timestamp = "";
+        this.load = new _angular_core__WEBPACK_IMPORTED_MODULE_3__.EventEmitter();
+        this.error = new _angular_core__WEBPACK_IMPORTED_MODULE_3__.EventEmitter();
     }
     subjectHandler(response) {
         switch (response.type) {
@@ -4550,11 +4553,13 @@ class ImageComponent {
     onLoad(event) {
         this.imageLoaded = true;
         this.imageUrl = event.target.src;
+        this.load.emit(this.imageId);
     }
     onError(event) {
         this.imageLoaded = false;
         const imgSrc = event.path[0].src;
         event.path[0].src = "";
+        this.error.emit(this.imageId);
         // setTimeout(()=>event.path[0].src=imgSrc, 5000)
     }
     ngOnDestroy() {
@@ -4563,7 +4568,7 @@ class ImageComponent {
     }
 }
 ImageComponent.ɵfac = function ImageComponent_Factory(t) { return new (t || ImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialog)); };
-ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", imageId: "imageId", subject: "subject", timestamp: "timestamp" }, decls: 2, vars: 2, consts: [["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["class", "images__render", 3, "click", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], [1, "images__render", 3, "click"], [3, "src", "id", "load", "error"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
+ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", imageId: "imageId", subject: "subject", timestamp: "timestamp" }, outputs: { load: "load", error: "error" }, decls: 2, vars: 2, consts: [["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["class", "images__render", 3, "click", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], [1, "images__render", 3, "click"], [3, "src", "id", "load", "error"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, ImageComponent_mat_icon_0_Template, 2, 0, "mat-icon", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, ImageComponent_div_1_Template, 6, 10, "div", 1);
     } if (rf & 2) {
@@ -9747,7 +9752,10 @@ function VehicleOverviewComponent_button_4_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](0, "button", 14);
 } }
 function VehicleOverviewComponent_div_21_div_1_div_1_app_image_5_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](0, "app-image", 21);
+    const _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "app-image", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("load", function VehicleOverviewComponent_div_21_div_1_div_1_app_image_5_Template_app_image_load_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r11); const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](4); return ctx_r10.onImageLoaded($event); })("error", function VehicleOverviewComponent_div_21_div_1_div_1_app_image_5_Template_app_image_error_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r11); const ctx_r12 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](4); return ctx_r12.onImageLoaded($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const imageInfo_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](2).$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("imageId", imageInfo_r5.image.id)("label", imageInfo_r5.topic.name)("headerId", imageInfo_r5.header.headerId)("timestamp", imageInfo_r5.header.readingat);
@@ -9816,6 +9824,16 @@ class VehicleOverviewComponent {
         this.vehicleId = "";
         this.isVehicleOnline = false;
     }
+    findImageByTopicId(value) {
+        return this.vehicleImages.findIndex((item) => {
+            return !item ? false : item.topic.id === value;
+        });
+    }
+    findImageByImageId(value) {
+        return this.vehicleImages.findIndex((item) => {
+            return !item ? false : item.image.id === value;
+        });
+    }
     setupLiveImageSubscription() {
         this.allImageSubscriptions =
             this.graphQLSubscription
@@ -9823,10 +9841,8 @@ class VehicleOverviewComponent {
                 .subscribe((response) => {
                 if (response.vehicleId !== this.vehicleId)
                     return;
-                const imageIndex = this.vehicleImages.findIndex((item) => {
-                    return !item ? false : item.topic.id === response.topicId;
-                });
-                if (imageIndex !== -1) {
+                const imageIndex = this.findImageByTopicId(response.topicId);
+                if (imageIndex !== -1 && this.vehicleImages[imageIndex].done) {
                     this.vehicleImages[imageIndex] = {
                         topic: {
                             name: response.topic,
@@ -9837,22 +9853,6 @@ class VehicleOverviewComponent {
                     };
                 }
             });
-    }
-    previewImageQuery() {
-        this.previewImagesSubscription = this.graphQLQuery
-            .getPreviewImagesByTopicNameVehicleId({
-            vehicleId: this.vehicleId,
-            topicNames: ["/side_right/left/preview",
-                "/side_left/left/preview",
-                "/front_right/left/preview",
-                "/front_left/left/preview",
-                "/front_center/left/preview",
-                "/rear/left/preview"]
-        }).subscribe((response) => {
-            this.isImagesLoaded = true;
-            if (response)
-                this.vehicleImages = response;
-        });
     }
     setupOnlineSubscription() {
         this.onlineStatusQuery = this.graphQLQuery
@@ -9874,6 +9874,27 @@ class VehicleOverviewComponent {
             if (response)
                 this.vehiclesLastCoordinates = [[response.longitude, response.latitude]];
         });
+    }
+    previewImageQuery() {
+        this.previewImagesSubscription = this.graphQLQuery
+            .getPreviewImagesByTopicNameVehicleId({
+            vehicleId: this.vehicleId,
+            topicNames: ["/side_right/left/preview",
+                "/side_left/left/preview",
+                "/front_right/left/preview",
+                "/front_left/left/preview",
+                "/front_center/left/preview",
+                "/rear/left/preview"]
+        }).subscribe((response) => {
+            this.isImagesLoaded = true;
+            if (response)
+                this.vehicleImages = response;
+        });
+    }
+    onImageLoaded(imageId) {
+        const imageIndex = this.findImageByImageId(imageId);
+        if (this.vehicleImages[imageIndex])
+            this.vehicleImages[imageIndex].done = true;
     }
     ngOnInit() {
         this.vehicleId = this.route.parent.snapshot.params.id;
@@ -9897,7 +9918,7 @@ class VehicleOverviewComponent {
     }
 }
 VehicleOverviewComponent.ɵfac = function VehicleOverviewComponent_Factory(t) { return new (t || VehicleOverviewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](src_app_services_geolocation_geolocation_service__WEBPACK_IMPORTED_MODULE_0__.GeolocationService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](src_app_services_graphql_gql_subscription_service__WEBPACK_IMPORTED_MODULE_1__.GqlSubscriptionService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_8__.ActivatedRoute)); };
-VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineComponent"]({ type: VehicleOverviewComponent, selectors: [["app-vehicle-overview"]], decls: 24, vars: 7, consts: [[1, "header"], [1, "header__title"], ["class", "live-pulse", "mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 4, "ngIf"], [1, "grid", "gap", "col-2"], [1, "grid__cell"], [3, "vehicleId"], [1, "grid__cell--label"], [1, "grid__cell--content", "status-section"], [1, "grid__cell", "grid__cell__full-width"], [1, "divider"], [1, "grid__cell--content"], [3, "vehicleId", "live"], ["class", "preview-images", 4, "ngIf", "ngIfElse"], ["loader", ""], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "preview-images"], ["class", "preview-images__img", 4, "ngFor", "ngForOf"], [1, "preview-images__img"], [4, "ngIf"], [3, "imageId", "label", "headerId", "timestamp", 4, "ngIf", "ngIfElse"], ["noimage", ""], [3, "imageId", "label", "headerId", "timestamp"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function VehicleOverviewComponent_Template(rf, ctx) { if (rf & 1) {
+VehicleOverviewComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineComponent"]({ type: VehicleOverviewComponent, selectors: [["app-vehicle-overview"]], decls: 24, vars: 7, consts: [[1, "header"], [1, "header__title"], ["class", "live-pulse", "mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 4, "ngIf"], [1, "grid", "gap", "col-2"], [1, "grid__cell"], [3, "vehicleId"], [1, "grid__cell--label"], [1, "grid__cell--content", "status-section"], [1, "grid__cell", "grid__cell__full-width"], [1, "divider"], [1, "grid__cell--content"], [3, "vehicleId", "live"], ["class", "preview-images", 4, "ngIf", "ngIfElse"], ["loader", ""], ["mat-mini-fab", "", "color", "warn", "aria-label", "Section is live", 1, "live-pulse"], [1, "preview-images"], ["class", "preview-images__img", 4, "ngFor", "ngForOf"], [1, "preview-images__img"], [4, "ngIf"], [3, "imageId", "label", "headerId", "timestamp", "load", "error", 4, "ngIf", "ngIfElse"], ["noimage", ""], [3, "imageId", "label", "headerId", "timestamp", "load", "error"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], ["mode", "indeterminate"]], template: function VehicleOverviewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "h2");
