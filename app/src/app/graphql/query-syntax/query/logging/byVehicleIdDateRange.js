@@ -1,9 +1,11 @@
 import { gql } from 'apollo-angular';
 
 const byVehicleIdDateRange = gql`
-query Logging ($vehicleId:BigInt $startDateTime: Datetime $endDateTime: Datetime){ 
+query Logging ($vehicleId:BigInt $size:Int $cursor:Int $startDateTime: Datetime $endDateTime: Datetime){ 
 logging: vehicleLogViews(
-    orderBy: READINGAT_DESC, 
+    first: $size
+    offset: $cursor
+    orderBy: READINGAT_DESC
     condition:{vehicleId:$vehicleId}
     filter:{
         readingat:{

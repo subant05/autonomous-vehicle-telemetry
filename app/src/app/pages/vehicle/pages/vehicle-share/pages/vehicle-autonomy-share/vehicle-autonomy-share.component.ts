@@ -74,6 +74,8 @@ export class VehicleAutonomyShareComponent implements OnInit, OnDestroy {
     this.logsQuery = this.gqlQuery.getLogsByVehicleIdDateRange({
       vehicleId:this.vehicleId
       , ...this.timeframe
+      , cursor:0
+      , size:20
     }).subscribe((response:any)=>{
       this.isLogLoaded = true
       this.logs = new MatTableDataSource(response)

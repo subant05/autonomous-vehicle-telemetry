@@ -1516,9 +1516,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const byVehicleIdDateRange = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
-query Logging ($vehicleId:BigInt $startDateTime: Datetime $endDateTime: Datetime){ 
+query Logging ($vehicleId:BigInt $size:Int $cursor:Int $startDateTime: Datetime $endDateTime: Datetime){ 
 logging: vehicleLogViews(
-    orderBy: READINGAT_DESC, 
+    first: $size
+    offset: $cursor
+    orderBy: READINGAT_DESC
     condition:{vehicleId:$vehicleId}
     filter:{
         readingat:{
@@ -10249,7 +10251,7 @@ class VehicleAutonomyShareComponent {
         this.coordinates = [[this.longitude, this.latitude]];
     }
     getLogs() {
-        this.logsQuery = this.gqlQuery.getLogsByVehicleIdDateRange(Object.assign({ vehicleId: this.vehicleId }, this.timeframe)).subscribe((response) => {
+        this.logsQuery = this.gqlQuery.getLogsByVehicleIdDateRange(Object.assign(Object.assign({ vehicleId: this.vehicleId }, this.timeframe), { cursor: 0, size: 20 })).subscribe((response) => {
             this.isLogLoaded = true;
             this.logs = new _angular_material_table__WEBPACK_IMPORTED_MODULE_8__.MatTableDataSource(response);
             this.logsColumns = ["node",
