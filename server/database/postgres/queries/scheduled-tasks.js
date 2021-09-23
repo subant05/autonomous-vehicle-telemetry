@@ -14,7 +14,7 @@ export const removeOfflineVehicles = async ()=>{
         ]
     )
 
-    setTimeout(()=>removeOfflineVehicles(), 1000)
+    setTimeout(()=>removeOfflineVehicles(), 3000)
 }
 
 export const publishOnlineVehicles = async ()=>{
@@ -29,6 +29,6 @@ export const publishOnlineVehicles = async ()=>{
       )
     `)
 
-    setTimeout(()=>publishOnlineVehicles(), 500)
+    setTimeout(()=>publishOnlineVehicles(), 1000)
 
 }
