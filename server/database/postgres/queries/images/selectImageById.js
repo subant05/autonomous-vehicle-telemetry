@@ -4,12 +4,12 @@ import process from 'process'
 import dotenv from 'dotenv'
 
 dotenv.config({ path: '../../../../.env' })
-const redis = require("redis");
-const redisClient = redis.createClient(process.env.REDIS_URL, {
-    tls: {
-        rejectUnauthorized: false
-    }
-});
+// const redis = require("redis");
+// const redisClient = redis.createClient(process.env.REDIS_URL, {
+//     tls: {
+//         rejectUnauthorized: false
+//     }
+// });
 
 export const sqlSelectImageRgbById = async (id) =>{
     try {
