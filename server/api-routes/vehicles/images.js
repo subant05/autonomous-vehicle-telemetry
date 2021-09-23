@@ -5,15 +5,29 @@ const cp = require("child_process")
 const router = express.Router();
 const worker = cp.fork("./database/postgres/queries/images/selectImageById.js")
 
-function getImages(id, isSegmentation){
+function getImages(id, isSegmentation, res){
   return new Promise((resolve, reject)=>{
      function ImageListener(data){
-      if(data.img.length)
-        resolve(data.img)
-      else
+        if(data.img.length){
+          if( id === data.img[1]){
+              const img = Buffer.from(data.img[0], 'base64') //;
+            
+              res.writeHead(200, {
+                'Content-Type': 'image/png',
+                'Content-Length': img.length
+              });
+              res.end(img); 
+            resolve(data.img)
+            worker.removeListener("message",ImageListener)
+          }
+      }else{
+          res.status(404)
+          res.send("404")
+          return
         reject(data.img)
+        worker.removeListener("message",ImageListener)
+      }
 
-      worker.removeListener("message",ImageListener)
      }
 
      worker.addListener("message", ImageListener)
@@ -47,23 +61,7 @@ router.get('/:id', async (req,res)=>{
     }
     const isSegmentation   = req.query.segmentation && req.query.segmentation === "true" ? true: false
 
-    getImages( id, isSegmentation).then(imageList=>{
-      if(imageList.length){
-        const img = Buffer.from(imageList[0], 'base64') //;
-      
-        res.writeHead(200, {
-          'Content-Type': 'image/png',
-          'Content-Length': img.length
-        });
-        res.end(img); 
-      }
-
-    },()=>{
-      res.status(404)
-      res.send("404")
-      return
-      }
-    )
+    await getImages( id, isSegmentation, res)
 
     // const id =  parseInt(req.params.id)
     // if(isNaN(id)){
