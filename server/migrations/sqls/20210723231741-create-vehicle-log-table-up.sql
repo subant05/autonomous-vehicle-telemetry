@@ -89,4 +89,5 @@ CREATE INDEX idx_vehicle_logs_id ON logging.vehicle_logs(id);
 CREATE INDEX idx_vehicle_logs_vehicle_id ON logging.vehicle_logs(vehicle_id);
 CREATE INDEX idx_vehicle_logs_topic_id ON logging.vehicle_logs(topic_id);
 CREATE INDEX idx_vehicle_logs_vehicle_log_message_id ON logging.vehicle_logs(message_id);
+CREATE INDEX idx_vehicle_logs_readingat ON logging.vehicle_logs(readingat);
 

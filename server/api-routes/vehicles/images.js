@@ -4,6 +4,7 @@ import {setDefaultVehicle,responseCallback} from './_utils'
 const cp = require("child_process")
 const router = express.Router();
 const worker = cp.fork("./database/postgres/queries/images/selectImageById.js")
+console.log(`Worker ${process.pid} started`);
 
 function getImages(id, isSegmentation, res){
   return new Promise((resolve, reject)=>{

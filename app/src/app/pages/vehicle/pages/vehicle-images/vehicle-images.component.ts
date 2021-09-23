@@ -36,6 +36,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   cursor: number = 0;
   images: any[]= []
   imagesLoaded:boolean = false
+  topicsLoaded:boolean = false
 
   constructor(
     private route: ActivatedRoute
@@ -81,8 +82,9 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
         , category:"images"
       })
       .subscribe((response:any)=>{
-        // if(!response.length)
-        //   return
+        if(!response.length){
+          this.imagesLoaded = true
+        }
 
 
         this.topics = response
@@ -97,14 +99,19 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
           this.onSubmit()
 
         this.setupInfiniteScroll()
+        this.topicsLoaded = true
       })
   }
 
   onSubmit(scrolled?:any){
-    this.imagesLoaded = false
+    debugger;
     if(!this.fgImageFilter.valid )
       return;
-      
+
+    if(!scrolled)
+      this.images = []
+
+    this.imagesLoaded = false
     const variales = {
       vehicleId: this.vehicleId
       , topicName: this.fgImageFilter.controls.topics.value
@@ -119,18 +126,19 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
           this.imageQuery = this
             .gqlQuery.getObjectDetectionImages(variales)
             .subscribe((response:any)=>{
-              this.imagesLoaded = true
               if(!response.nodes.length){
                 this.noResultsNotification()
-                if(!scrolled)
-                  this.images = []
+                // if(!scrolled)
+                //   this.images = []
                 return
               }
 
-              if(scrolled)
+              // if(scrolled)
                 this.images = this.images.concat(response.nodes)
-              else 
-                this.images = response.nodes
+              // else 
+              //   this.images = response.nodes
+              
+              this.imagesLoaded = true
             })
         break;
       default:
@@ -138,11 +146,10 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
           this.imageQuery = this
             .gqlQuery.getLatestImagePreview(variales)
             .subscribe((response:any)=>{
-              this.imagesLoaded = true
               if(!response || !response.cameraData.nodes.length){
                 this.noResultsNotification()
-                if(!scrolled)
-                  this.images = []
+                // if(!scrolled)
+                //   this.images = []
               }
 
               const results = response.cameraData.nodes.map((item:any)=>item.msg)
@@ -160,11 +167,14 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
                   moment().format(this.timeFormat)
                 )
 
-              if(scrolled)
-                this.images = this.images.concat(results)
-              else 
-                this.images = results
+              this.filterService.saveFilterState(`images-${this.vehicleId}`,this.fgImageFilter)
 
+              // if(scrolled)
+                this.images = this.images.concat(results)
+              // else 
+              //   this.images = results
+
+              this.imagesLoaded = true
             })
         } else
           this.imageQuery = this
@@ -173,17 +183,20 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
             .subscribe((response:any)=>{
               if(!response || !response.cameraData.nodes.length){
                 this.noResultsNotification()
-                if(!scrolled)
-                  this.images = []
+                // if(!scrolled)
+                //   this.images = []
+                this.imagesLoaded = true
                 return
               }
 
               const results = response.cameraData.nodes.map((item:any)=>item.msg)
               
-              if(scrolled)
+              // if(scrolled)
                 this.images = this.images.concat(results)
-              else 
-                this.images = results
+              // else 
+              //   this.images = results
+              
+              this.imagesLoaded = true
             })
         break;
     }

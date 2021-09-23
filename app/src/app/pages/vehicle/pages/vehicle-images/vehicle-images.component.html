@@ -84,8 +84,8 @@
     <div *ngIf="!topics.length">
         There are no images associated with this vehicle
     </div>
-    <div *ngIf="!imagesLoaded && topics.length">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </div>
 </ng-template>
+<div *ngIf="!imagesLoaded || !topicsLoaded">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
  
