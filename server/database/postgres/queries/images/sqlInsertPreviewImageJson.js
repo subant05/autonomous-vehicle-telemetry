@@ -5,17 +5,13 @@ import {sqlInsertCameraMessage} from './sqlInsertCameraMessage'
 import process from 'process'
 const { client, pool } = require("../../connection.js")
 
-export const sqlInsertPreviewImageJson = async (argTopic, data, cb=a=>a) =>{
-    cb(null, JSON.stringify("Data Sent") )
+export const sqlInsertPreviewImageJson = async (argTopic, data) =>{
 
     if(!argTopic || !argTopic.includes('/preview') || !data){
-        // cb(null, "ignored")
         return;
     }
     
     try{
-        // Vehicle should not wait for response
-
         const topic = await sqlInsertTopic(argTopic, {category:"images", ...data})
         const vehicle = await sqlInsertVehicle(data.vehicle)
         const vehicleTopic = await sqlInsertVehicleTopic(vehicle.rows[0].id, topic.rows[0].id)
@@ -23,7 +19,7 @@ export const sqlInsertPreviewImageJson = async (argTopic, data, cb=a=>a) =>{
         const vehicleOnline = await sqlInsertVehicleOnline(vehicle.rows[0].id)
         const imageData = data.msg.image.data
         data.msg.image.data = null
-        
+
         const queryResult =  await client.query(`
             select images.insert_camera_image($1, $2, $3, $4, $5, $6);
         `,[
@@ -36,15 +32,16 @@ export const sqlInsertPreviewImageJson = async (argTopic, data, cb=a=>a) =>{
 
         ])
 
-        // Sendind response immediately
-        // cb(null, JSON.stringify(queryResult) )
         return queryResult
 
     }catch(e){
         console.log("INSERT CAMERA DATA MESSAGE: ", e.message)
         console.log("INSERT CAMERA DATA STACK: ", e.stack)
-        cb(e)
         return null
     }
-
 }
+
+process.on("message", async ({topic, body, cb, marker})=>{
+    const result = await sqlInsertPreviewImageJson(topic, body);
+    process.send({marker})
+})

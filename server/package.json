@@ -35,12 +35,14 @@
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
+    "npm": "^7.24.1",
     "pg": "^8.6.0",
     "posix": "^4.2.0",
     "postgraphile": "^4.12.3",
     "postgraphile-plugin-connection-filter": "^2.2.1",
     "ramda": "^0.27.1",
-    "redis": "^3.1.2"
+    "redis": "^3.1.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "db-migrate": "^0.11.12",

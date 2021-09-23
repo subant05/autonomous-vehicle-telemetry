@@ -1,12 +1,12 @@
 import { sqlInsertTopic, sqlInsertTopicSequence } from '../topics'
 import {sqlInsertVehicle, sqlInsertVehicleOnline, sqlInsertVehicleTopic} from '../vehicles'
 import {formatDateTime} from '../_utils'
-import moment from 'moment';
-import {sqlInsertCameraMessage} from './sqlInsertCameraMessage'
+import process from 'process'
+
 const { client, pool } = require("../../connection.js")
 
 export const sqlInsertSegmentationMap = async (argTopic, data, cb=a=>a) =>{
-    cb(null, JSON.stringify("Data Sent") )
+    // cb(null, JSON.stringify("Data Sent") )
 
     // if(!argTopic.includes('/segmentation') || !data){
     //     // cb(null, "ignored")
@@ -39,9 +39,14 @@ export const sqlInsertSegmentationMap = async (argTopic, data, cb=a=>a) =>{
     }catch(e){
         console.log("INSERT SEGMENTATION CAMERA DATA MESSAGE: ", e.message)
         console.log("INSERT SEGMENTATION CAMERA DATA STACK: ", e.stack)
-        cb(e)
+        // cb(e)
         return null
     }
 
     return null
 }
+
+process.on("message", async ({topic, body, cb, marker})=>{
+    const result = await sqlInsertSegmentationMap(topic, body, cb);
+    process.send({marker})
+})

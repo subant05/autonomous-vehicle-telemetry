@@ -1,10 +1,17 @@
 import express from "express";
 import * as Images from '../../database/postgres/queries/images'
 import {setDefaultVehicle,responseCallback} from './_utils'
+import { v4 as uuid } from 'uuid';
+
 const cp = require("child_process")
 const router = express.Router();
-const worker = cp.fork("./database/postgres/queries/images/selectImageById.js")
-console.log(`Worker ${process.pid} started`);
+const getImageWorker = cp.fork("./database/postgres/queries/images/selectImageById.js")
+const insertSegmentationWorker = cp.fork("./database/postgres/queries/images/sqlInsertSegmentationMap.js")
+const insertImageWorker = cp.fork("./database/postgres/queries/images/sqlInsertPreviewImageJson.js")
+
+console.log(`getImageWorker ${process.pid} started`);
+console.log(`insertSegmentationWorker ${process.pid} started`);
+console.log(`insertImageWorker ${process.pid} started`);
 
 function getImages(id, isSegmentation, res){
   return new Promise((resolve, reject)=>{
@@ -19,38 +26,85 @@ function getImages(id, isSegmentation, res){
               });
               res.end(img); 
             resolve(data.img)
-            worker.removeListener("message",ImageListener)
+            getImageWorker.removeListener("message",ImageListener)
           }
       }else{
           res.status(404)
           res.send("404")
           return
         reject(data.img)
-        worker.removeListener("message",ImageListener)
+        getImageWorker.removeListener("message",ImageListener)
       }
 
      }
 
-     worker.addListener("message", ImageListener)
+     getImageWorker.addListener("message", ImageListener)
 
-     worker.send({id, isSegmentation})
+     getImageWorker.send({id, isSegmentation})
 
   })
+}
+
+function insertSegmentation(topic, body, cb, marker){
+  cb(null, JSON.stringify("Data Sent") )
+  return new Promise((resolve, reject)=>{
+    function InsertListener(data){
+      if(data.marker){
+         if( marker === data.marker){
+           resolve(data.img)
+           insertSegmentationWorker.removeListener("message",InsertListener)
+         }
+      } else {
+       reject(data)
+       insertSegmentationWorker.removeListener("message",InsertListener)
+     }
+
+    }
+
+    insertSegmentationWorker.addListener("message", InsertListener)
+
+    insertSegmentationWorker.send({topic, body, cb, marker})
+
+ })
+}
+
+
+function insertImage(topic, body, cb, marker){
+  cb(null, JSON.stringify("Data Sent") )
+  return new Promise((resolve, reject)=>{
+    function InsertListener(data){
+      if(data.marker){
+         if( marker === data.marker){
+           resolve(data.img)
+           insertImageWorker.removeListener("message",InsertListener)
+         }
+      } else {
+       reject(data)
+       insertImageWorker.removeListener("message",InsertListener)
+     }
+
+    }
+
+    insertImageWorker.addListener("message", InsertListener)
+
+    insertImageWorker.send({topic, body, cb, marker})
+
+ })
 }
 
 router.post("/preview", async (req, res) => {
     console.log("IMAGES:",req.body.topic)
 
     setDefaultVehicle(req)
-    Images.sqlInsertPreviewImageJson(req.body.topic, req.body, responseCallback(res))
-
-    // Images.sqlInsertPreviewImage(req.body.topic, req.body, responseCallback(res))
+    await insertImage(req.body.topic, req.body, responseCallback(res), uuid())
+    // Images.sqlInsertPreviewImageJson(req.body.topic, req.body, responseCallback(res))
 }) 
 router.post("/segmentation", async (req, res) => {
     console.log("SEGMENTATION:",req.body.topic)
 
     setDefaultVehicle(req)
-    Images.sqlInsertSegmentationMap(req.body.topic, req.body, responseCallback(res))
+    await insertSegmentation(req.body.topic, req.body, responseCallback(res), uuid())
+    // Images.sqlInsertSegmentationMap(req.body.topic, req.body, responseCallback(res))
 })
 
 router.get('/:id', async (req,res)=>{
