@@ -39,15 +39,14 @@ export class SegmentationImageComponent implements OnInit {
     this.querySubscription = this.gqlQueryService
     .getSegmentationMapByHeaderId({ imageHeaderId })
     .subscribe((response:any) => {
-      if(!response || !response.length){
+      if(!response){
         this.load.emit({state:"no segmentation"})
         return
       }
 
-      const {segmentation} = response
-
-      this.imageData = `/api/vehicle/images/${segmentation.id}?segmentation=true`
-      this.load.emit({state:"loaded", data: segmentation})
+      // const {segmentation} = response
+      this.imageData = `/api/vehicle/images/${response.imageId}?segmentation=true`
+      this.load.emit({state:"loaded", data: response})
     })
   }
 

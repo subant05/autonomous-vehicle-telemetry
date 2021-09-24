@@ -20,11 +20,11 @@
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </ng-template>
         <div class="grid__cell center-cell-content" >
-            <!-- <div class="segmentation" [ngStyle]="{display: loadedSegmentations && segmentationToggle.checked ? 'inline-block' : 'none'} ">
+            <div class="segmentation" [ngStyle]="{display: loadedSegmentations && segmentationToggle.checked ? 'inline-block' : 'none'} ">
                 <app-segmentation-image   
                     (load)="onSegmentationLoad($event)"  
                     [imageHeaderId]="data.headerId"></app-segmentation-image>
-            </div> -->
+            </div>
             <img *ngIf="data.imageUrl; else image_loader" 
                 [src]="data.imageUrl" 
                 [id]=id 

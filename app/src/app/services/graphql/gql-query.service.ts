@@ -120,21 +120,25 @@ export class GqlQueryService {
     return this
       .basicFilteredQuery(QueryQL.Images.SegmentationMapByHeaderId, variables)
       .pipe(map(response=>{
-        if(!response.data.cameraMessageHeaders)
-          return []
+        // if(!response.data.cameraMessageHeaders)
+        //   return []
 
-        return response.data.cameraMessageHeaders.nodes.filter((msg:any, index:number, array:any[]) =>{
-          if(!msg.cameraMessagesByHeaderId.nodes.length)
-            return false
+        // return response.data.cameraMessageHeaders.nodes.filter((msg:any, index:number, array:any[]) =>{
+        //   if(!msg.cameraMessagesByHeaderId.nodes.length)
+        //     return false
 
-          const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
+        //   const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
           
-          return !!segmentation && segmentation.msg.image.encoding === "mono8"
-        }).map((msg:any)=>{
-            const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
+        //   return !!segmentation && segmentation.msg.image.encoding === "mono8"
+        // }).map((msg:any)=>{
+        //     const segmentation = msg.cameraMessagesByHeaderId.nodes[0].segmentationMapsByMsgId.nodes[0]
             
-            return {segmentation:segmentation.msg.image}
-        })[0]
+        //     return {segmentation:segmentation.msg.image}
+        // })[0]
+        if(!response.data.segmentationViews.nodes.length)
+          return null
+        
+        return response.data.segmentationViews.nodes[0]
 
       }))
   }
