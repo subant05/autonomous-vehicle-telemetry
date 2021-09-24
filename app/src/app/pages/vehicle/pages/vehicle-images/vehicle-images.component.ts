@@ -104,7 +104,6 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(scrolled?:any){
-    debugger;
     if(!this.fgImageFilter.valid )
       return;
 

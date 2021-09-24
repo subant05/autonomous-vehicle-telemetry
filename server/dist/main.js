@@ -8989,7 +8989,6 @@ class VehicleImagesComponent {
         });
     }
     onSubmit(scrolled) {
-        debugger;
         if (!this.fgImageFilter.valid)
             return;
         if (!scrolled)
