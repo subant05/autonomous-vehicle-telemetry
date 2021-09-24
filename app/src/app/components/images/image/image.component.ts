@@ -32,6 +32,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   geolocation:any;
   imageLoaded= false
   imageCache = new Image()
+  isImageRendered: boolean = false
   meta: any;
   
 
@@ -118,6 +119,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   }
 
   ngAfterViewInit(){
+    this.getImageMeta()
   }
 
   ngAfterViewChecked(){
@@ -167,12 +169,14 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
 
   onLoad(event:any){
     this.imageLoaded =  true
+    this.isImageRendered  = true
     this.imageUrl = event.target.src
     this.load.emit(this.imageId)
   }
 
   onError(event:any){
     this.imageLoaded= false
+    this.isImageRendered  = true
     const imgSrc = event.path[0].src
     event.path[0].src = ""
     this.error.emit(this.imageId)
@@ -180,7 +184,6 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   }
 
   onMouseover(event:any){
-    this.getImageMeta()
   }
 
   ngOnDestroy(){

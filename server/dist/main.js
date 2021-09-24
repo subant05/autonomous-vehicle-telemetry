@@ -4501,24 +4501,28 @@ function ImageComponent_div_1_mat_icon_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1, "image_not_supported");
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
 } }
-function ImageComponent_div_1_mat_progress_bar_5_Template(rf, ctx) { if (rf & 1) {
+function ImageComponent_div_1_mat_progress_bar_3_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 8);
+} }
+function ImageComponent_div_1_mat_progress_bar_6_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 8);
 } }
 const _c0 = function (a0) { return { display: a0 }; };
 function ImageComponent_div_1_Template(rf, ctx) { if (rf & 1) {
-    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
+    const _r6 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "div", 3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function ImageComponent_div_1_Template_div_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r4.openDialog(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function ImageComponent_div_1_Template_div_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r6); const ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r5.openDialog(); });
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, ImageComponent_div_1_mat_icon_1_Template, 2, 0, "mat-icon", 0);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](2, "img", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_img_load_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r6.onLoad($event); })("error", function ImageComponent_div_1_Template_img_error_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r7.onError($event); })("mouseover", function ImageComponent_div_1_Template_img_mouseover_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r8.onMouseover($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_img_load_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r6); const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r7.onLoad($event); })("error", function ImageComponent_div_1_Template_img_error_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r6); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r8.onError($event); })("mouseover", function ImageComponent_div_1_Template_img_mouseover_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r6); const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r9.onMouseover($event); });
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](3, "div", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](4, "app-segmentation-image", 6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_app_segmentation_image_load_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r9.onSegmentationLoad($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](3, ImageComponent_div_1_mat_progress_bar_3_Template, 1, 0, "mat-progress-bar", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](4, "div", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](5, "app-segmentation-image", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_app_segmentation_image_load_5_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r6); const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r10.onSegmentationLoad($event); });
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](5, ImageComponent_div_1_mat_progress_bar_5_Template, 1, 0, "mat-progress-bar", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](6, ImageComponent_div_1_mat_progress_bar_6_Template, 1, 0, "mat-progress-bar", 5);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
@@ -4528,11 +4532,13 @@ function ImageComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵclassMap"](ctx_r1.class);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("src", ctx_r1.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsanitizeUrl"])("id", ctx_r1.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction1"](8, _c0, ctx_r1.isSegmentationImage ? "block" : "none"));
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx_r1.isImageRendered);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction1"](9, _c0, ctx_r1.isSegmentationImage ? "block" : "none"));
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("imageHeaderId", ctx_r1.headerId);
     _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx_r1.segmentationLoaded);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r1.isImageRendered && !ctx_r1.segmentationLoaded);
 } }
 class ImageComponent {
     constructor(imageService, graphQLQuery, dialog) {
@@ -4550,6 +4556,7 @@ class ImageComponent {
         this.segmentationData = null;
         this.imageLoaded = false;
         this.imageCache = new Image();
+        this.isImageRendered = false;
         this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_5__.default)();
         this.class = "";
         this.label = "";
@@ -4614,6 +4621,7 @@ class ImageComponent {
         // this.imageCache.src = "/api/vehicle/images/" + this.imageId
     }
     ngAfterViewInit() {
+        this.getImageMeta();
     }
     ngAfterViewChecked() {
     }
@@ -4657,18 +4665,19 @@ class ImageComponent {
     }
     onLoad(event) {
         this.imageLoaded = true;
+        this.isImageRendered = true;
         this.imageUrl = event.target.src;
         this.load.emit(this.imageId);
     }
     onError(event) {
         this.imageLoaded = false;
+        this.isImageRendered = true;
         const imgSrc = event.path[0].src;
         event.path[0].src = "";
         this.error.emit(this.imageId);
         // setTimeout(()=>event.path[0].src=imgSrc, 5000)
     }
     onMouseover(event) {
-        this.getImageMeta();
     }
     ngOnDestroy() {
         var _a, _b, _c;
@@ -4678,9 +4687,9 @@ class ImageComponent {
     }
 }
 ImageComponent.ɵfac = function ImageComponent_Factory(t) { return new (t || ImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__.MatDialog)); };
-ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", imageId: "imageId", subject: "subject", timestamp: "timestamp" }, outputs: { load: "load", error: "error" }, decls: 2, vars: 2, consts: [["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["class", "images__render", 3, "click", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], [1, "images__render", 3, "click"], [3, "src", "id", "load", "error", "mouseover"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
+ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", imageId: "imageId", subject: "subject", timestamp: "timestamp" }, outputs: { load: "load", error: "error" }, decls: 2, vars: 2, consts: [["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["class", "images__render", 3, "click", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], [1, "images__render", 3, "click"], [3, "src", "id", "load", "error", "mouseover"], ["mode", "indeterminate", 4, "ngIf"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, ImageComponent_mat_icon_0_Template, 2, 0, "mat-icon", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, ImageComponent_div_1_Template, 6, 10, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, ImageComponent_div_1_Template, 7, 11, "div", 1);
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx.imageLoaded);
         _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
