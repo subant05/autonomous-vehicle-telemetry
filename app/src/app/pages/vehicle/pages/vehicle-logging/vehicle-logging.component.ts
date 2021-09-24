@@ -75,6 +75,19 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.formatTimestampForInputs()
   }
 
+  private sort(){
+    this.savedResults =  this.savedResults.sort((a:any,b:any)=>{
+        const aTime = new Date(a.readingat).valueOf()
+        const bTime = new Date(b.readingat).valueOf()
+        if(a > b)
+          return -1;
+        else if(a < b)
+          return 1
+        else 
+          return 0
+    })
+  }
+
   private updateTable({data, action} = {data:[], action:"replace"}){
     switch(action){
       case "concat":
@@ -92,6 +105,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
           break;
     }
 
+    this.sort()
     this.updateList(this.savedResults)    
   }
 
