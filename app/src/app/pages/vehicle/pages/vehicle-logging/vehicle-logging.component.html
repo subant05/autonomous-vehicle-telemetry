@@ -99,7 +99,7 @@
     <div class="grid__cell table">
         <div class="grid__cell--label">Logs</div>
         <div class="grid__cell--content scollable">
-            <div *ngIf="savedResults.length; else loader;">
+            <div *ngIf="savedResults.length && !isQuerying; else loader;">
                 <table  mat-table  class="vehicles__status"  [dataSource]="tableList" >
                     <!-- Position Column -->
             

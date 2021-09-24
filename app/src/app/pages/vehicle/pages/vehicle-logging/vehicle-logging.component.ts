@@ -60,6 +60,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   isScrollDataLoading:boolean = false
   savedResults: any[] =[]
   paginationRange: number[] = [ 25, 50, 100]
+  isQuerying:boolean = false
   
   constructor(
     private graphQLSubscription: GqlSubscriptionService
@@ -100,6 +101,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       case "replace":
       default:
           this.savedResults = [...data]
+          this.isQuerying =false
           break;
     }
 
@@ -344,7 +346,8 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
   onSubmit(): void{
     if(!this.isFormValid())
       return;
-    
+
+    this.isQuerying = true
     this.cursor = 0
     this.startDateTime = this.fgLoggingFilter.value.startDateTime
     this.endDateTime = this.fgLoggingFilter.value.endDateTime
