@@ -4,12 +4,16 @@ import {ImageService} from 'src/app/services/images/image.service'
 import {MatDialog} from '@angular/material/dialog';
 import { ImageExpansionComponent } from '../../modals/image-expansion/image-expansion.component';
 import { Subject, Subscription } from 'rxjs';
+import { GqlQueryService } from 'src/app/services/graphql/gql-query.service';
+
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
   styleUrls: ['./image.component.scss']
 })
 export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
+  private imageByHeaderIdSubscription :Subscription |undefined
+  private metaDataSubscription:Subscription |undefined
   imageUrl: string = ""
   width: string=""
   height: string=""
@@ -28,6 +32,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   geolocation:any;
   imageLoaded= false
   imageCache = new Image()
+  meta: any;
   
 
   @Input() id: string = uuid()
@@ -44,6 +49,7 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
 
   constructor( 
     private imageService: ImageService
+    , private graphQLQuery: GqlQueryService
     , public dialog: MatDialog) { }
 
   
@@ -63,12 +69,46 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     }
   }
 
-  ngOnInit(): void {
-    this.imageUrl = "/api/vehicle/images/" + this.imageId
-    this.imageLoaded=true
+  private setImageSubscription(){
     if(this.subject){
       this.imageSubscription = this.subject.subscribe((response:any)=>{
         this.subjectHandler(response)
+      })
+    }
+  }
+
+  private getImageMeta(){
+    if(this.imageId && !this.meta)
+      this.metaDataSubscription = this.graphQLQuery
+        .getImageMeta({imageId: this.imageId})
+        .subscribe((response:any)=>{
+          if(response)
+            this.meta = response
+        })
+  }
+
+  private setImage(id?:any){
+    this.imageId = id
+    this.imageUrl = id ? "/api/vehicle/images/" + id : ""
+    this.imageLoaded=true
+    this.setImageSubscription()
+  }
+
+  ngOnInit(): void {
+    if(this.imageId){
+      this.setImage(this.imageId)
+    } else if(this.headerId){
+      this.imageByHeaderIdSubscription = this.graphQLQuery.getVehiclePreviewImageByHeaderId({
+        headerId: this.headerId
+        , size:1
+        , cursor:0
+        , encoding:"rgb8"
+      }).subscribe((response:any)=>{
+        if(!response.length){
+          this.setImage()
+          return
+        }
+        this.setImage(response[0].id)
       })
     }
 
@@ -97,7 +137,8 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
           subject: this.subject,
           pagination: this.pagination,
           geolocation: this.geolocation,
-          timestamp: this.timestamp
+          timestamp: this.timestamp,
+          meta: this.meta
           // segmentation:{
           //   image:this.data
           //   , segmentation: this.segmentationData
@@ -138,8 +179,14 @@ export class ImageComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     // setTimeout(()=>event.path[0].src=imgSrc, 5000)
   }
 
+  onMouseover(event:any){
+    this.getImageMeta()
+  }
+
   ngOnDestroy(){
     this.imageSubscription?.unsubscribe()
+    this.imageByHeaderIdSubscription?.unsubscribe()
+    this.metaDataSubscription?.unsubscribe()
   }
 
 }

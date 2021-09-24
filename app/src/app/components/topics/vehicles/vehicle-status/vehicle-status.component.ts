@@ -131,7 +131,6 @@ export class VehicleStatusComponent extends TableUtil implements OnInit, OnDestr
   }
 
   openDialog(row:any): void{
-    console.log(row)
     const dialogRef = this.dialog.open(VehicleStatusDetailComponent, {data:row});
 
     dialogRef.afterClosed().subscribe(result => {

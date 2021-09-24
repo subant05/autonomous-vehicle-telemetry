@@ -15,6 +15,7 @@
             [class]="class" 
             (load)="onLoad($event)"
             (error)="onError($event)"
+            (mouseover)="onMouseover($event)"
         >
 
         <div class="segmentation"  [ngStyle]="{display: isSegmentationImage ? 'block' : 'none'} ">

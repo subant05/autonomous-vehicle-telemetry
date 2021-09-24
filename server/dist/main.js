@@ -758,7 +758,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ObjectDetectionImagesByVehicleId": () => (/* reexport safe */ _objectDetectionImagesByVehicleId__WEBPACK_IMPORTED_MODULE_9__.default),
 /* harmony export */   "LatestPreviewVehicleIdByTopicName": () => (/* reexport safe */ _latestPreviewVehicleIdByTopicName__WEBPACK_IMPORTED_MODULE_10__.default),
 /* harmony export */   "CameraMetaByImageId": () => (/* reexport safe */ _cameraMetaByImageId__WEBPACK_IMPORTED_MODULE_11__.default),
-/* harmony export */   "PreviewByMessageHeaderIdCameraName": () => (/* reexport safe */ _previewByHeaderIdCameraName__WEBPACK_IMPORTED_MODULE_12__.default)
+/* harmony export */   "PreviewByMessageHeaderIdCameraName": () => (/* reexport safe */ _previewByHeaderIdCameraName__WEBPACK_IMPORTED_MODULE_12__.default),
+/* harmony export */   "PreviewViewByMessageHeaderId": () => (/* reexport safe */ _previewViewByHeaderId__WEBPACK_IMPORTED_MODULE_13__.default)
 /* harmony export */ });
 /* harmony import */ var _previewByVehicleId__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./previewByVehicleId */ 9348);
 /* harmony import */ var _previewByVehicleIdTopicId__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./previewByVehicleIdTopicId */ 55516);
@@ -773,6 +774,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _latestPreviewVehicleIdByTopicName__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./latestPreviewVehicleIdByTopicName */ 34295);
 /* harmony import */ var _cameraMetaByImageId__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./cameraMetaByImageId */ 68776);
 /* harmony import */ var _previewByHeaderIdCameraName__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./previewByHeaderIdCameraName */ 14817);
+/* harmony import */ var _previewViewByHeaderId__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./previewViewByHeaderId */ 100);
+
 
 
 
@@ -1288,6 +1291,54 @@ query PreviewByVehicleIdTopicName($vehicleId: BigInt, $topicName:String, $cursor
     }
   }
   `
+
+
+/***/ }),
+
+/***/ 100:
+/*!****************************************************************************!*\
+  !*** ./src/app/graphql/query-syntax/query/images/previewViewByHeaderId.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ previewViewByMessageHeaderId)
+/* harmony export */ });
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
+
+
+const previewViewByMessageHeaderId = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
+query Images($headerId: BigInt $size:Int $cursor:Int $encoding:String) {
+    imagesViews(
+      first:$size
+      offset:$cursor
+      orderBy:ID_DESC
+      filter:{
+        headerId:{equalTo:$headerId}
+        , encoding:{equalTo:$encoding}
+      }
+    ) {
+      nodes{
+        id
+        width
+        height
+        isBigendian
+        step
+        encoding
+        readingat
+        vehicleId
+        topicId
+        node
+        cameraName
+        headerId
+        topicName
+      }
+    }
+  }
+`
+
 
 
 /***/ }),
@@ -4419,15 +4470,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ImageComponent": () => (/* binding */ ImageComponent)
 /* harmony export */ });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! uuid */ 61319);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! uuid */ 61319);
 /* harmony import */ var _modals_image_expansion_image_expansion_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../modals/image-expansion/image-expansion.component */ 54217);
 /* harmony import */ var src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/images/image.service */ 82329);
-/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/dialog */ 22238);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 38583);
-/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/icon */ 76627);
-/* harmony import */ var _segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../segmentation-image/segmentation-image.component */ 98299);
-/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+/* harmony import */ var src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/graphql/gql-query.service */ 91776);
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/dialog */ 22238);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ 38583);
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/material/icon */ 76627);
+/* harmony import */ var _segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../segmentation-image/segmentation-image.component */ 98299);
+/* harmony import */ var _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material/progress-bar */ 12178);
+
 
 
 
@@ -4439,69 +4492,70 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function ImageComponent_mat_icon_0_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-icon", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1, "image_not_supported");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-icon", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1, "image_not_supported");
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
 } }
 function ImageComponent_div_1_mat_icon_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-icon", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1, "image_not_supported");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-icon", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1, "image_not_supported");
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
 } }
 function ImageComponent_div_1_mat_progress_bar_5_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "mat-progress-bar", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](0, "mat-progress-bar", 8);
 } }
 const _c0 = function (a0) { return { display: a0 }; };
 function ImageComponent_div_1_Template(rf, ctx) { if (rf & 1) {
-    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "div", 3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function ImageComponent_div_1_Template_div_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r5); const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](); return ctx_r4.openDialog(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, ImageComponent_div_1_mat_icon_1_Template, 2, 0, "mat-icon", 0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](2, "img", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_img_load_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r5); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](); return ctx_r6.onLoad($event); })("error", function ImageComponent_div_1_Template_img_error_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r5); const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](); return ctx_r7.onError($event); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "div", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](4, "app-segmentation-image", 6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_app_segmentation_image_load_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵrestoreView"](_r5); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"](); return ctx_r8.onSegmentationLoad($event); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](5, ImageComponent_div_1_mat_progress_bar_5_Template, 1, 0, "mat-progress-bar", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "div", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function ImageComponent_div_1_Template_div_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r4.openDialog(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, ImageComponent_div_1_mat_icon_1_Template, 2, 0, "mat-icon", 0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](2, "img", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_img_load_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r6.onLoad($event); })("error", function ImageComponent_div_1_Template_img_error_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r7.onError($event); })("mouseover", function ImageComponent_div_1_Template_img_mouseover_2_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r8.onMouseover($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](3, "div", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](4, "app-segmentation-image", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("load", function ImageComponent_div_1_Template_app_segmentation_image_load_4_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r9.onSegmentationLoad($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](5, ImageComponent_div_1_mat_progress_bar_5_Template, 1, 0, "mat-progress-bar", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", !ctx_r1.imageLoaded);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵclassMap"](ctx_r1.class);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("src", ctx_r1.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsanitizeUrl"])("id", ctx_r1.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpureFunction1"](8, _c0, ctx_r1.isSegmentationImage ? "block" : "none"));
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("imageHeaderId", ctx_r1.headerId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", !ctx_r1.segmentationLoaded);
+    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx_r1.imageLoaded);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵclassMap"](ctx_r1.class);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("src", ctx_r1.imageUrl, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsanitizeUrl"])("id", ctx_r1.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngStyle", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction1"](8, _c0, ctx_r1.isSegmentationImage ? "block" : "none"));
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("imageHeaderId", ctx_r1.headerId);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx_r1.segmentationLoaded);
 } }
 class ImageComponent {
-    constructor(imageService, dialog) {
+    constructor(imageService, graphQLQuery, dialog) {
         this.imageService = imageService;
+        this.graphQLQuery = graphQLQuery;
         this.dialog = dialog;
         this.imageUrl = "";
         this.width = "";
         this.height = "";
-        this.resultId = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
-        this.lensId = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
+        this.resultId = (0,uuid__WEBPACK_IMPORTED_MODULE_5__.default)();
+        this.lensId = (0,uuid__WEBPACK_IMPORTED_MODULE_5__.default)();
         this.zoomAdded = false;
         this.segmentationLoaded = false;
         this.isSegmentationImage = false;
         this.segmentationData = null;
         this.imageLoaded = false;
         this.imageCache = new Image();
-        this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_4__.default)();
+        this.id = (0,uuid__WEBPACK_IMPORTED_MODULE_5__.default)();
         this.class = "";
         this.label = "";
         this.timestamp = "";
-        this.load = new _angular_core__WEBPACK_IMPORTED_MODULE_3__.EventEmitter();
-        this.error = new _angular_core__WEBPACK_IMPORTED_MODULE_3__.EventEmitter();
+        this.load = new _angular_core__WEBPACK_IMPORTED_MODULE_4__.EventEmitter();
+        this.error = new _angular_core__WEBPACK_IMPORTED_MODULE_4__.EventEmitter();
     }
     subjectHandler(response) {
         switch (response.type) {
@@ -4515,12 +4569,44 @@ class ImageComponent {
                 break;
         }
     }
-    ngOnInit() {
-        this.imageUrl = "/api/vehicle/images/" + this.imageId;
-        this.imageLoaded = true;
+    setImageSubscription() {
         if (this.subject) {
             this.imageSubscription = this.subject.subscribe((response) => {
                 this.subjectHandler(response);
+            });
+        }
+    }
+    getImageMeta() {
+        if (this.imageId && !this.meta)
+            this.metaDataSubscription = this.graphQLQuery
+                .getImageMeta({ imageId: this.imageId })
+                .subscribe((response) => {
+                if (response)
+                    this.meta = response;
+            });
+    }
+    setImage(id) {
+        this.imageId = id;
+        this.imageUrl = id ? "/api/vehicle/images/" + id : "";
+        this.imageLoaded = true;
+        this.setImageSubscription();
+    }
+    ngOnInit() {
+        if (this.imageId) {
+            this.setImage(this.imageId);
+        }
+        else if (this.headerId) {
+            this.imageByHeaderIdSubscription = this.graphQLQuery.getVehiclePreviewImageByHeaderId({
+                headerId: this.headerId,
+                size: 1,
+                cursor: 0,
+                encoding: "rgb8"
+            }).subscribe((response) => {
+                if (!response.length) {
+                    this.setImage();
+                    return;
+                }
+                this.setImage(response[0].id);
             });
         }
         // this.imageCache.addEventListener("load",(e)=>this.onLoad(e))
@@ -4545,7 +4631,8 @@ class ImageComponent {
                 subject: this.subject,
                 pagination: this.pagination,
                 geolocation: this.geolocation,
-                timestamp: this.timestamp
+                timestamp: this.timestamp,
+                meta: this.meta
                 // segmentation:{
                 //   image:this.data
                 //   , segmentation: this.segmentationData
@@ -4580,20 +4667,25 @@ class ImageComponent {
         this.error.emit(this.imageId);
         // setTimeout(()=>event.path[0].src=imgSrc, 5000)
     }
+    onMouseover(event) {
+        this.getImageMeta();
+    }
     ngOnDestroy() {
-        var _a;
+        var _a, _b, _c;
         (_a = this.imageSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        (_b = this.imageByHeaderIdSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
+        (_c = this.metaDataSubscription) === null || _c === void 0 ? void 0 : _c.unsubscribe();
     }
 }
-ImageComponent.ɵfac = function ImageComponent_Factory(t) { return new (t || ImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__.MatDialog)); };
-ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", imageId: "imageId", subject: "subject", timestamp: "timestamp" }, outputs: { load: "load", error: "error" }, decls: 2, vars: 2, consts: [["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["class", "images__render", 3, "click", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], [1, "images__render", 3, "click"], [3, "src", "id", "load", "error"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, ImageComponent_mat_icon_0_Template, 2, 0, "mat-icon", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, ImageComponent_div_1_Template, 6, 10, "div", 1);
+ImageComponent.ɵfac = function ImageComponent_Factory(t) { return new (t || ImageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_1__.ImageService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](src_app_services_graphql_gql_query_service__WEBPACK_IMPORTED_MODULE_2__.GqlQueryService), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__.MatDialog)); };
+ImageComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: ImageComponent, selectors: [["app-image"]], inputs: { id: "id", class: "class", label: "label", headerId: "headerId", imageId: "imageId", subject: "subject", timestamp: "timestamp" }, outputs: { load: "load", error: "error" }, decls: 2, vars: 2, consts: [["aria-hidden", "false", "class", "no-image", "aria-label", "No Image", 4, "ngIf"], ["class", "images__render", 3, "click", 4, "ngIf"], ["aria-hidden", "false", "aria-label", "No Image", 1, "no-image"], [1, "images__render", 3, "click"], [3, "src", "id", "load", "error", "mouseover"], [1, "segmentation", 3, "ngStyle"], [3, "imageHeaderId", "load"], ["mode", "indeterminate", 4, "ngIf"], ["mode", "indeterminate"]], template: function ImageComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, ImageComponent_mat_icon_0_Template, 2, 0, "mat-icon", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, ImageComponent_div_1_Template, 6, 10, "div", 1);
     } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", !ctx.imageLoaded);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.imageUrl && ctx.imageLoaded);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.NgIf, _angular_material_icon__WEBPACK_IMPORTED_MODULE_7__.MatIcon, _angular_common__WEBPACK_IMPORTED_MODULE_6__.NgStyle, _segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_2__.SegmentationImageComponent, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_8__.MatProgressBar], styles: ["img[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.images__render[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n\n.images__render[_ngcontent-%COMP%]   .image[_ngcontent-%COMP%], .images__render[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  margin: auto;\n}\n\n.images__render[_ngcontent-%COMP%]   .segmentation[_ngcontent-%COMP%] {\n  margin: 0;\n  z-index: 1;\n  width: 100%;\n  margin-top: calc(-50% + -7px);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImltYWdlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksV0FBQTtBQUNKOztBQUNDO0VBQ0csZUFBQTtBQUVKOztBQUFJOztFQUVJLFdBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtBQUVSOztBQUdJO0VBQ0ksU0FBQTtFQUNBLFVBQUE7RUFDQSxXQUFBO0VBQ0EsNkJBQUE7QUFEUiIsImZpbGUiOiJpbWFnZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImltZyB7XG4gICAgd2lkdGg6MTAwJTtcbiB9XG4gLmltYWdlc19fcmVuZGVye1xuICAgIGN1cnNvcjogcG9pbnRlcjtcblxuICAgIC5pbWFnZSxcbiAgICBpbWcge1xuICAgICAgICB3aWR0aDogMTAwJTtcbiAgICAgICAgaGVpZ2h0OiBhdXRvO1xuICAgICAgICBtYXJnaW46YXV0bztcbiAgICAgICAgLy8gXG5cbiAgICB9XG5cbiAgICAuc2VnbWVudGF0aW9ue1xuICAgICAgICBtYXJnaW46MDtcbiAgICAgICAgei1pbmRleDogMTtcbiAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIG1hcmdpbi10b3A6IGNhbGMoLTUwJSArIC03cHgpO1xuICAgIH1cbn0iXX0= */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !ctx.imageLoaded);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.imageUrl && ctx.imageLoaded);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_7__.NgIf, _angular_material_icon__WEBPACK_IMPORTED_MODULE_8__.MatIcon, _angular_common__WEBPACK_IMPORTED_MODULE_7__.NgStyle, _segmentation_image_segmentation_image_component__WEBPACK_IMPORTED_MODULE_3__.SegmentationImageComponent, _angular_material_progress_bar__WEBPACK_IMPORTED_MODULE_9__.MatProgressBar], styles: ["img[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.images__render[_ngcontent-%COMP%] {\n  cursor: pointer;\n}\n\n.images__render[_ngcontent-%COMP%]   .image[_ngcontent-%COMP%], .images__render[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  margin: auto;\n}\n\n.images__render[_ngcontent-%COMP%]   .segmentation[_ngcontent-%COMP%] {\n  margin: 0;\n  z-index: 1;\n  width: 100%;\n  margin-top: calc(-50% + -7px);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImltYWdlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksV0FBQTtBQUNKOztBQUNDO0VBQ0csZUFBQTtBQUVKOztBQUFJOztFQUVJLFdBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtBQUVSOztBQUdJO0VBQ0ksU0FBQTtFQUNBLFVBQUE7RUFDQSxXQUFBO0VBQ0EsNkJBQUE7QUFEUiIsImZpbGUiOiJpbWFnZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImltZyB7XG4gICAgd2lkdGg6MTAwJTtcbiB9XG4gLmltYWdlc19fcmVuZGVye1xuICAgIGN1cnNvcjogcG9pbnRlcjtcblxuICAgIC5pbWFnZSxcbiAgICBpbWcge1xuICAgICAgICB3aWR0aDogMTAwJTtcbiAgICAgICAgaGVpZ2h0OiBhdXRvO1xuICAgICAgICBtYXJnaW46YXV0bztcbiAgICAgICAgLy8gXG5cbiAgICB9XG5cbiAgICAuc2VnbWVudGF0aW9ue1xuICAgICAgICBtYXJnaW46MDtcbiAgICAgICAgei1pbmRleDogMTtcbiAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIG1hcmdpbi10b3A6IGNhbGMoLTUwJSArIC03cHgpO1xuICAgIH1cbn0iXX0= */"] });
 
 
 /***/ }),
@@ -5107,13 +5199,17 @@ class ImageExpansionComponent {
     }
     getMetaData() {
         var _a;
-        (_a = this.metaDataSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
-        this.metaDataSubscription = this.graphQLQuery
-            .getImageMeta({ imageId: this.data.imageId })
-            .subscribe((response) => {
-            if (response)
-                this.meta = response;
-        });
+        if (this.data.meta)
+            this.meta = this.data.meta;
+        else {
+            (_a = this.metaDataSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+            this.metaDataSubscription = this.graphQLQuery
+                .getImageMeta({ imageId: this.data.imageId })
+                .subscribe((response) => {
+                if (response)
+                    this.meta = response;
+            });
+        }
     }
     ngOnInit() {
         if (this.data.subject) {
@@ -5545,7 +5641,7 @@ VehicleStatusDetailComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORT
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.data.topic, " ");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind2"](27, 5, ctx.data.timestamp, "medium"), " ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind2"](27, 5, ctx.data.timestamp || ctx.data.readingat, "medium"), " ");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](7);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.data.vehicleStatusDetails);
     } }, directives: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_1__.MatDialogTitle, _angular_material_dialog__WEBPACK_IMPORTED_MODULE_1__.MatDialogContent, _angular_material_list__WEBPACK_IMPORTED_MODULE_2__.MatList, _angular_material_list__WEBPACK_IMPORTED_MODULE_2__.MatListItem, _angular_material_core__WEBPACK_IMPORTED_MODULE_3__.MatLine, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_4__.MatAccordion, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgForOf, _angular_material_dialog__WEBPACK_IMPORTED_MODULE_1__.MatDialogActions, _angular_material_button__WEBPACK_IMPORTED_MODULE_6__.MatButton, _angular_material_dialog__WEBPACK_IMPORTED_MODULE_1__.MatDialogClose, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_4__.MatExpansionPanel, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgClass, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_4__.MatExpansionPanelHeader, _angular_material_expansion__WEBPACK_IMPORTED_MODULE_4__.MatExpansionPanelTitle, _angular_common__WEBPACK_IMPORTED_MODULE_5__.NgIf, _angular_material_icon__WEBPACK_IMPORTED_MODULE_7__.MatIcon], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.DatePipe], styles: [".reasons[_ngcontent-%COMP%]   .active[_ngcontent-%COMP%] {\n  background-color: var(--error);\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInZlaGljbGUtc3RhdHVzLWRldGFpbC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDSTtFQUNJLDhCQUFBO0FBQVIiLCJmaWxlIjoidmVoaWNsZS1zdGF0dXMtZGV0YWlsLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnJlYXNvbnN7XG4gICAgLmFjdGl2ZSB7XG4gICAgICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWVycm9yKTtcbiAgICB9XG59Il19 */"] });
@@ -7629,7 +7725,6 @@ class VehicleStatusComponent extends src_app_components_table_table_utils__WEBPA
         this.getStatus();
     }
     openDialog(row) {
-        console.log(row);
         const dialogRef = this.dialog.open(src_app_components_modals_vehicle_status_detail_vehicle_status_detail_component__WEBPACK_IMPORTED_MODULE_1__.VehicleStatusDetailComponent, { data: row });
         dialogRef.afterClosed().subscribe(result => {
             console.log(`Dialog closed: ${result}`);
@@ -11397,6 +11492,12 @@ class GqlQueryService {
                     header: header
                 };
             });
+        }));
+    }
+    getVehiclePreviewImageByHeaderId(variables = {}) {
+        return this.basicFilteredQuery(QueryQL.Images.PreviewViewByMessageHeaderId, variables)
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            return response.data.imagesViews.nodes;
         }));
     }
     getVehicleLocationByDateTimestamp(variables = {}) {

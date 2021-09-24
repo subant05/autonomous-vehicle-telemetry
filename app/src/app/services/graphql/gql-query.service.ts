@@ -273,6 +273,13 @@ export class GqlQueryService {
     }))
   }
 
+  getVehiclePreviewImageByHeaderId(variables={}){
+    return this.basicFilteredQuery(QueryQL.Images.PreviewViewByMessageHeaderId, variables)
+      .pipe(map((response:any)=>{
+         return response.data.imagesViews.nodes
+      }))
+  }
+
   getVehicleLocationByDateTimestamp(variables={}){
     return this.basicFilteredQuery(QueryQL.Geolocation.ByVehicleIdDateTimestamp, variables)
     .pipe(map((response:any)=>{

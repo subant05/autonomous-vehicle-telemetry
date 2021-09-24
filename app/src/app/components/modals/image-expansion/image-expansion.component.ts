@@ -58,13 +58,17 @@ export class ImageExpansionComponent implements OnInit, OnDestroy {
 
 
   private getMetaData(){
-    this.metaDataSubscription?.unsubscribe()
-    this.metaDataSubscription = this.graphQLQuery
-      .getImageMeta({imageId: this.data.imageId})
-      .subscribe((response:any)=>{
-        if(response)
-          this.meta = response
-      })
+    if(this.data.meta)
+      this.meta = this.data.meta
+    else {
+      this.metaDataSubscription?.unsubscribe()
+      this.metaDataSubscription = this.graphQLQuery
+        .getImageMeta({imageId: this.data.imageId})
+        .subscribe((response:any)=>{
+          if(response)
+            this.meta = response
+        })
+      }
   }
 
   ngOnInit(): void {

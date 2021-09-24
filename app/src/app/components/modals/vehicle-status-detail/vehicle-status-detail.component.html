@@ -26,7 +26,7 @@
                         <b>Timestamp </b> 
                     </div>
                     <div mat-line>
-                        {{data.timestamp | date:'medium'}}
+                        {{data.timestamp || data.readingat | date:'medium'}}
                     </div> 
                 </mat-list-item>
             </mat-list>
