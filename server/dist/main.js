@@ -9504,22 +9504,20 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
         this.vehicleId = this.route.parent.snapshot.params.id;
         this.formatTimestampForInputs();
     }
-    sort() {
-        this.savedResults = this.savedResults.sort((a, b) => {
-            const aTime = new Date(a.readingat).valueOf();
-            const bTime = new Date(b.readingat).valueOf();
-            if (a > b)
-                return -1;
-            else if (a < b)
-                return 1;
-            else
-                return 0;
-        });
+    sort(a, b) {
+        const aTime = new Date(a.readingat).valueOf();
+        const bTime = new Date(b.readingat).valueOf();
+        if (aTime > bTime)
+            return -1;
+        else if (aTime < bTime)
+            return 1;
+        else
+            return 0;
     }
     updateTable({ data, action } = { data: [], action: "replace" }) {
         switch (action) {
             case "concat":
-                this.savedResults = this.savedResults.concat(data);
+                this.savedResults = this.savedResults.concat(data).sort(this.sort);
                 break;
             case "prepend":
                 this.savedResults.unshift(data);
@@ -9532,7 +9530,6 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
                 this.savedResults = [...data];
                 break;
         }
-        this.sort();
         this.updateList(this.savedResults);
     }
     formatTimestampForInputs() {

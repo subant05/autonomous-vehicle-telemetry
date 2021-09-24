@@ -75,23 +75,21 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     this.formatTimestampForInputs()
   }
 
-  private sort(){
-    this.savedResults =  this.savedResults.sort((a:any,b:any)=>{
+  private sort(a:any,b:any){
         const aTime = new Date(a.readingat).valueOf()
         const bTime = new Date(b.readingat).valueOf()
-        if(a > b)
+        if(aTime > bTime)
           return -1;
-        else if(a < b)
+        else if(aTime < bTime)
           return 1
         else 
           return 0
-    })
   }
 
   private updateTable({data, action} = {data:[], action:"replace"}){
     switch(action){
       case "concat":
-        this.savedResults = this.savedResults.concat(data)
+        this.savedResults = this.savedResults.concat(data).sort(this.sort)
         break;
       case "prepend":
         this.savedResults.unshift(data)
@@ -105,7 +103,6 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
           break;
     }
 
-    this.sort()
     this.updateList(this.savedResults)    
   }
 
