@@ -109,7 +109,7 @@ export class StopImagesComponent extends TableUtil implements OnInit, OnDestroy 
         }
           
         this.image = response.id
-        this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat) }`
+        this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat).toLocaleString() }`
         this.headerid = stopInfo.message.header.headerid
         this.notifyPaginationChange()
         this.notifyImageChange()

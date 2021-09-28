@@ -6,6 +6,7 @@ import {GqlQueryService} from 'src/app/services/graphql/gql-query.service'
 import {FilterService} from 'src/app/services/form/filter.service'
 import {ScrollService} from 'src/app/services/layout/scroll.service'
 import moment from 'moment';
+import { environment } from 'src/environments/environment';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -111,11 +112,11 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
       this.images = []
 
     this.imagesLoaded = false
-    const variales = {
+    const variables = {
       vehicleId: this.vehicleId
       , topicName: this.fgImageFilter.controls.topics.value
-      , startDateTime: this.fgImageFilter.controls.startDateTime.value
-      , endDateTime: this.fgImageFilter.controls.endDateTime.value
+      , startDateTime: moment(this.fgImageFilter.controls.startDateTime.value).utc()
+      , endDateTime: moment(this.fgImageFilter.controls.endDateTime.value).utc()
       , cursor: this.cursor
       , size: this.pageSize
     }
@@ -123,7 +124,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
     switch(this.fgImageFilter.controls.topics.value){
       case "/toUI/closest_on_path_object":
           this.imageQuery = this
-            .gqlQuery.getObjectDetectionImages(variales)
+            .gqlQuery.getObjectDetectionImages(variables)
             .subscribe((response:any)=>{
               if(!response.nodes.length){
                 this.noResultsNotification()
@@ -143,7 +144,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
       default:
         if(!this.filterService.getFilterState(`images-${this.vehicleId}`)){
           this.imageQuery = this
-            .gqlQuery.getLatestImagePreview(variales)
+            .gqlQuery.getLatestImagePreview(variables)
             .subscribe((response:any)=>{
               if(!response || !response.cameraData.nodes.length){
                 this.noResultsNotification()
@@ -178,7 +179,7 @@ export class VehicleImagesComponent implements OnInit, OnDestroy {
         } else
           this.imageQuery = this
             .gqlQuery
-            .getImagePreview(variales)
+            .getImagePreview(variables)
             .subscribe((response:any)=>{
               if(!response || !response.cameraData.nodes.length){
                 this.noResultsNotification()

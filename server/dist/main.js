@@ -4270,20 +4270,20 @@ AppModule.ɵinj = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_42__["ɵ�
                 }, ws, http);
                 const defaultOptions = {
                     watchQuery: {
-                        fetchPolicy: 'network-only',
-                        nextFetchPolicy: 'cache-first',
+                        fetchPolicy: 'no-cache',
+                        nextFetchPolicy: 'no-cache',
                         errorPolicy: 'ignore',
                     },
                     query: {
                         errorPolicy: 'ignore',
-                        fetchPolicy: 'network-only',
-                        nextFetchPolicy: 'cache-first', //"cache-first" 
+                        fetchPolicy: 'no-cache',
+                        nextFetchPolicy: 'no-cache', //"cache-first" 
                         // errorPolicy: 'all',
                     },
                     subscription: {
                         errorPolicy: 'ignore',
-                        fetchPolicy: 'network-only',
-                        nextFetchPolicy: 'cache-first' //"cache-first" 
+                        fetchPolicy: 'no-cache',
+                        nextFetchPolicy: 'no-cache' //"cache-first" 
                         // errorPolicy: 'all',
                     },
                 };
@@ -7071,7 +7071,7 @@ class StopImagesComponent extends src_app_components_table_table_utils__WEBPACK_
       }
 
       this.image = response.id;
-      this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat)}`;
+      this.label = `${stopInfo.topic.name} | ${new Date(stopInfo.readingat).toLocaleString()}`;
       this.headerid = stopInfo.message.header.headerid;
       this.notifyPaginationChange();
       this.notifyImageChange();
@@ -8994,18 +8994,18 @@ class VehicleImagesComponent {
         if (!scrolled)
             this.images = [];
         this.imagesLoaded = false;
-        const variales = {
+        const variables = {
             vehicleId: this.vehicleId,
             topicName: this.fgImageFilter.controls.topics.value,
-            startDateTime: this.fgImageFilter.controls.startDateTime.value,
-            endDateTime: this.fgImageFilter.controls.endDateTime.value,
+            startDateTime: moment__WEBPACK_IMPORTED_MODULE_0___default()(this.fgImageFilter.controls.startDateTime.value).utc(),
+            endDateTime: moment__WEBPACK_IMPORTED_MODULE_0___default()(this.fgImageFilter.controls.endDateTime.value).utc(),
             cursor: this.cursor,
             size: this.pageSize
         };
         switch (this.fgImageFilter.controls.topics.value) {
             case "/toUI/closest_on_path_object":
                 this.imageQuery = this
-                    .gqlQuery.getObjectDetectionImages(variales)
+                    .gqlQuery.getObjectDetectionImages(variables)
                     .subscribe((response) => {
                     if (!response.nodes.length) {
                         this.noResultsNotification();
@@ -9023,7 +9023,7 @@ class VehicleImagesComponent {
             default:
                 if (!this.filterService.getFilterState(`images-${this.vehicleId}`)) {
                     this.imageQuery = this
-                        .gqlQuery.getLatestImagePreview(variales)
+                        .gqlQuery.getLatestImagePreview(variables)
                         .subscribe((response) => {
                         if (!response || !response.cameraData.nodes.length) {
                             this.noResultsNotification();
@@ -9050,7 +9050,7 @@ class VehicleImagesComponent {
                 else
                     this.imageQuery = this
                         .gqlQuery
-                        .getImagePreview(variales)
+                        .getImagePreview(variables)
                         .subscribe((response) => {
                         if (!response || !response.cameraData.nodes.length) {
                             this.noResultsNotification();
@@ -11302,11 +11302,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "GqlQueryService": () => (/* binding */ GqlQueryService)
 /* harmony export */ });
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! uuid */ 61319);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ 88002);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
-/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! apollo-angular */ 550);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! uuid */ 61319);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ 88002);
+/* harmony import */ var _apollo_client_link_error__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @apollo/client/link/error */ 398);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! apollo-angular */ 550);
 /* harmony import */ var src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/services/images/image.service */ 82329);
+
 
 
 
@@ -11317,11 +11319,19 @@ class GqlQueryService {
     constructor(graphService, imageService) {
         this.graphService = graphService;
         this.imageService = imageService;
+        const link = (0,_apollo_client_link_error__WEBPACK_IMPORTED_MODULE_1__.onError)(({ graphQLErrors, networkError }) => {
+            debugger;
+            if (graphQLErrors)
+                graphQLErrors.map(({ message, locations, path }) => console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`));
+            if (networkError)
+                console.log(`[Network error]: ${networkError}`);
+        });
     }
     basicFilteredQuery(Query, variables = {}) {
         return this.graphService
             .watchQuery({
             query: Query,
+            errorPolicy: 'all',
             variables
         })
             .valueChanges;
@@ -11339,7 +11349,7 @@ class GqlQueryService {
         //   .watchQuery<any>({ query: QueryQL.Geolocation.ById,variables })
         //   .valueChanges
         return this.basicFilteredQuery(QueryQL.Geolocation.ById, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.starfires.nodes;
         }));
     }
@@ -11351,7 +11361,7 @@ class GqlQueryService {
     }
     getAllVehicles() {
         return this.basicFilteredQuery(QueryQL.Vehicles.All)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)(response => {
             return response.data.vehicles.nodes.map((vehicle) => {
                 return Object.assign(Object.assign({}, vehicle), { type: vehicle.type.type });
             });
@@ -11359,7 +11369,7 @@ class GqlQueryService {
     }
     getOnlineVehicles({ sort = "" } = {}) {
         return this.basicFilteredQuery(QueryQL.Vehicles.Online)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)(response => {
             const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle) => {
                 const result = Object.assign({}, vehicle.vehicle);
                 result.id = vehicle.id;
@@ -11381,7 +11391,7 @@ class GqlQueryService {
     }
     getOfflineVehicles() {
         return this.basicFilteredQuery(QueryQL.Vehicles.Offline)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)(response => {
             return response.data.vehiclesOfflines.nodes.map((vehicle) => {
                 return Object.assign({}, vehicle);
             });
@@ -11389,7 +11399,7 @@ class GqlQueryService {
     }
     getVehicleOnlineStatus(variables) {
         return this.basicFilteredQuery(QueryQL.Vehicles.OnlineOrOfflineById, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)(response => {
             const results = response.data;
             return { online: !results.online.nodes.length ?
                     null : Object.assign({}, results.online.nodes[0]),
@@ -11404,7 +11414,7 @@ class GqlQueryService {
     getSegmentationMapByHeaderId(variables) {
         return this
             .basicFilteredQuery(QueryQL.Images.SegmentationMapByHeaderId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)(response => {
             // if(!response.data.cameraMessageHeaders)
             //   return []
             // return response.data.cameraMessageHeaders.nodes.filter((msg:any, index:number, array:any[]) =>{
@@ -11423,11 +11433,11 @@ class GqlQueryService {
     }
     getImagePreview(variables) {
         return this.basicFilteredQuery(QueryQL.Images.PreviewByVehicleIdTopicName, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             const cameraData = response.data.topics.nodes[0].cameras;
             const totalCount = cameraData.totalCount;
             const images = cameraData.nodes.map((info) => {
-                const image = Object.assign(Object.assign({}, info.msg.image), { timestamp: new Date(info.readingat).toUTCString(), vehicle: info.vehicle.name, id: info.id, imageId: (0,uuid__WEBPACK_IMPORTED_MODULE_2__.default)(), headerId: info.msg.header.headerId, meta: info.msg.cameraMeta });
+                const image = Object.assign(Object.assign({}, info.msg.image), { timestamp: new Date(info.readingat).toUTCString(), vehicle: info.vehicle.name, id: info.id, imageId: (0,uuid__WEBPACK_IMPORTED_MODULE_3__.default)(), headerId: info.msg.header.headerId, meta: info.msg.cameraMeta });
                 return image;
             });
             return { cameraData, totalCount, images };
@@ -11435,11 +11445,11 @@ class GqlQueryService {
     }
     getLatestImagePreview(variables) {
         return this.basicFilteredQuery(QueryQL.Images.LatestPreviewVehicleIdByTopicName, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             const cameraData = response.data.topics.nodes[0].cameras;
             const totalCount = cameraData.totalCount;
             const images = cameraData.nodes.map((info) => {
-                const image = Object.assign(Object.assign({}, info.msg.image), { timestamp: new Date(info.readingat).toUTCString(), vehicle: info.vehicle.name, id: info.id, imageId: (0,uuid__WEBPACK_IMPORTED_MODULE_2__.default)(), headerId: info.msg.header.headerId, meta: info.msg.cameraMeta });
+                const image = Object.assign(Object.assign({}, info.msg.image), { timestamp: new Date(info.readingat).toUTCString(), vehicle: info.vehicle.name, id: info.id, imageId: (0,uuid__WEBPACK_IMPORTED_MODULE_3__.default)(), headerId: info.msg.header.headerId, meta: info.msg.cameraMeta });
                 return image;
             });
             return { cameraData, totalCount, images };
@@ -11452,13 +11462,13 @@ class GqlQueryService {
     }
     getVehiclePreviousLocation(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Geolocation.PreviousLocation, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.starfires.nodes.length ? response.data.starfires.nodes[0].msg : null;
         }));
     }
     getVehicleStatus(variables) {
         return this.basicFilteredQuery(QueryQL.Status.Vehicle, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             const nodes = response.data.vehicleStatuses ? response.data.vehicleStatuses.edges.map((results) => {
                 const node = results.node;
                 return {
@@ -11478,7 +11488,7 @@ class GqlQueryService {
     }
     getVehicleStatusByDateRange(variables) {
         return this.basicFilteredQuery(QueryQL.Status.ByVehicleIdDateRange, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             const nodes = response.data.vehicleStatuses ? response.data.vehicleStatuses.edges.map((results) => {
                 const node = results.node;
                 return {
@@ -11498,7 +11508,7 @@ class GqlQueryService {
     }
     getVehiclePreviewImages(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.PreviewDetailsByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.topicCategories.nodes[0].topics.nodes.map((item) => {
                 const preview = item.cameras.nodes[0];
                 if (!preview)
@@ -11517,13 +11527,13 @@ class GqlQueryService {
     }
     getVehiclePreviewImageByHeaderId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.PreviewViewByMessageHeaderId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.imagesViews.nodes;
         }));
     }
     getVehicleLocationByDateTimestamp(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Geolocation.ByVehicleIdDateTimestamp, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.starfires.nodes;
             // ? null :
             //   response.data.starfires.nodes.map((geo:any)=>{
@@ -11538,7 +11548,7 @@ class GqlQueryService {
     }
     getAllVehicleLogsStatusDetection(variables = { logType: [], paginationRange: 25, nodes: [] }) {
         return this.basicFilteredQuery(QueryQL.Logging.QueryBuilder(variables.logType, variables.paginationRange, variables.nodes), variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             // const logging:any = []
             if (!response || !response.data)
                 return [];
@@ -11551,7 +11561,7 @@ class GqlQueryService {
     }
     getPreviewImageByCameraMessageHeaderId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.PreviewByMessageHeaderId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             const result = response.data.cameraMessageHeaders.nodes.map((node) => {
                 return node.cameraMessagesByHeaderId.nodes[0].camerasByMsgId.nodes[0];
             }).filter((result) => !!result);
@@ -11569,13 +11579,13 @@ class GqlQueryService {
     }
     getObjectDetectionByVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Detection.ByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.objects;
         }));
     }
     getObjectDetectionById(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Detection.ById, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             if (!response.data.objects || !response.data.objects.nodes.length)
                 return null;
             return response.data.objects.nodes[0];
@@ -11583,13 +11593,13 @@ class GqlQueryService {
     }
     getLoggingNodes(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Logging.NodesByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.vehicleNodes.nodes;
         }));
     }
     getTopicsByCategoryVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Topics.ByCategoryVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             const byList = [];
             response.data.list.nodes.filter((item) => {
                 return item.vehicleTopics.nodes.length;
@@ -11610,7 +11620,7 @@ class GqlQueryService {
     }
     getPreviewImagesByTopicNameVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.ByTopicNamesVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             if (!response.data.topics)
                 return null;
             return response.data.topics.nodes.map((result, index, array) => {
@@ -11629,13 +11639,13 @@ class GqlQueryService {
     }
     getObjectDetectionHeaderIdByVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Detection.HeaderIdByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return response.data.objects;
         }));
     }
     getObjectDetectionImages(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.ObjectDetectionImagesByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             return {
                 totalCount: response.data.objectDetectionImages.totalCount,
                 nodes: response.data.objectDetectionImages.nodes.map((data) => {
@@ -11664,7 +11674,7 @@ class GqlQueryService {
     }
     getCurrentLogsByVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Logging.CurrentLogsByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             // const logging:any = []
             if (!response || !response.data)
                 return [];
@@ -11674,7 +11684,7 @@ class GqlQueryService {
     }
     getLogsByVehicleIdDateRange(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Logging.ByVehicleIdDateRange, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             if (!response || !response.data)
                 return [];
             return response.data.logging.nodes;
@@ -11700,7 +11710,7 @@ class GqlQueryService {
     // }
     getImageMeta(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.CameraMetaByImageId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             const result = response.data.image.cameraMessages.nodes[0].camerasByMsgId.nodes[0].cameraJson;
             if (!result)
                 return {};
@@ -11709,7 +11719,7 @@ class GqlQueryService {
     }
     getPreviewImageByCameraMessageIdCameraName(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Images.PreviewByMessageHeaderIdCameraName, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             if (!response.data.imagesViews.nodes.length)
                 null;
             return response.data.imagesViews.nodes[0];
@@ -11717,7 +11727,7 @@ class GqlQueryService {
     }
     getMissonCountByVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Status.MissionCountByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             if (!response.data.missionPaginationViews || !response.data.missionPaginationViews.nodes.length)
                 return [];
             return response.data.missionPaginationViews.nodes;
@@ -11725,7 +11735,7 @@ class GqlQueryService {
     }
     getMissonStatsByVehicleIdTimestamp(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Status.MissionStatsByVehicleIdTimestamp, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             if (!response.data.missionStatsByTimestamps || !response.data.missionStatsByTimestamps.nodes.length)
                 null;
             return response.data.missionStatsByTimestamps.nodes[0];
@@ -11733,15 +11743,15 @@ class GqlQueryService {
     }
     getMissionByVehicleId(variables = {}) {
         return this.basicFilteredQuery(QueryQL.Production.MissionsByVehicleId, variables)
-            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)((response) => {
+            .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_2__.map)((response) => {
             if (!response.data.missions || !response.data.missions.nodes.length)
                 [];
             return Object.assign({}, response.data.missions);
         }));
     }
 }
-GqlQueryService.ɵfac = function GqlQueryService_Factory(t) { return new (t || GqlQueryService)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](apollo_angular__WEBPACK_IMPORTED_MODULE_4__.Apollo), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_0__.ImageService)); };
-GqlQueryService.ɵprov = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjectable"]({ token: GqlQueryService, factory: GqlQueryService.ɵfac, providedIn: 'root' });
+GqlQueryService.ɵfac = function GqlQueryService_Factory(t) { return new (t || GqlQueryService)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵinject"](apollo_angular__WEBPACK_IMPORTED_MODULE_5__.Apollo), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵinject"](src_app_services_images_image_service__WEBPACK_IMPORTED_MODULE_0__.ImageService)); };
+GqlQueryService.ɵprov = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjectable"]({ token: GqlQueryService, factory: GqlQueryService.ɵfac, providedIn: 'root' });
 
 
 /***/ }),

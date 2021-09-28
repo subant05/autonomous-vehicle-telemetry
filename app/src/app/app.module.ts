@@ -199,20 +199,20 @@ import { VehicleAutonomyShareComponent } from './pages/vehicle/pages/vehicle-sha
 
       const defaultOptions = {
         watchQuery: {
-          fetchPolicy:  'network-only', //'cache-first', //"network-only" , //'network-only', ,  //'no-cache',
-          nextFetchPolicy: 'cache-first', //"cache-first",
+          fetchPolicy:  'no-cache', //'cache-first', //"network-only" , //'network-only', ,  //'no-cache',
+          nextFetchPolicy: 'no-cache', //"cache-first",
           errorPolicy: 'ignore',
         },
         query: {
           errorPolicy: 'ignore',
-          fetchPolicy:  'network-only', //"cache-first",  //'no-cache',
-          nextFetchPolicy: 'cache-first', //"cache-first" 
+          fetchPolicy:  'no-cache', //"cache-first",  //'no-cache',
+          nextFetchPolicy: 'no-cache', //"cache-first" 
           // errorPolicy: 'all',
         },
         subscription: {
           errorPolicy: 'ignore',
-          fetchPolicy:  'network-only', //"cache-first", //'network-only', //'no-cache',
-          nextFetchPolicy: 'cache-first' //"cache-first" 
+          fetchPolicy:  'no-cache', //"cache-first", //'network-only', //'no-cache',
+          nextFetchPolicy: 'no-cache' //"cache-first" 
           // errorPolicy: 'all',
         },
       }

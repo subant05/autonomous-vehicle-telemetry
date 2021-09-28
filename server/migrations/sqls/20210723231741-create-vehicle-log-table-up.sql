@@ -50,6 +50,7 @@ This stamp associated wih the logging message of the log';
 
 CREATE INDEX idx_vehicle_log_messages_id ON logging.vehicle_log_messages(id);
 CREATE INDEX idx_vehicle_log_messages_stamp_id ON logging.vehicle_log_messages(stamp_id);
+CREATE INDEX idx_vehicle_log_messages_name ON logging.vehicle_log_messages(name);
 
 
 CREATE TABLE IF NOT EXISTS logging.vehicle_logs(
