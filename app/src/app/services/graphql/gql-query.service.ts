@@ -19,7 +19,6 @@ export class GqlQueryService {
     , private imageService:ImageService 
   ) { 
     const link = onError(({ graphQLErrors, networkError }) => {
-      debugger;
       if (graphQLErrors)
         graphQLErrors.map(({ message, locations, path }) =>
           console.log(

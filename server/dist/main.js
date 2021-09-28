@@ -11320,7 +11320,6 @@ class GqlQueryService {
         this.graphService = graphService;
         this.imageService = imageService;
         const link = (0,_apollo_client_link_error__WEBPACK_IMPORTED_MODULE_1__.onError)(({ graphQLErrors, networkError }) => {
-            debugger;
             if (graphQLErrors)
                 graphQLErrors.map(({ message, locations, path }) => console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`));
             if (networkError)
