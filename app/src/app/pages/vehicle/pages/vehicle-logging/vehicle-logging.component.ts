@@ -261,7 +261,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       startDateTime: new FormControl(this.startDateTime,[Validators.required])
       , endDateTime: new FormControl(this.endDateTime,[Validators.required])
       , logType: new FormControl(this.logType, [Validators.required])
-      , paginationRange: new FormControl(this.paginationRange[1], [Validators.required])
+      , paginationRange: new FormControl(this.paginationRange[0], [Validators.required])
       , nodes: new FormControl(this.nodes, [Validators.required])
       , isLive: new FormControl(this.isLive, [Validators.required])
     })

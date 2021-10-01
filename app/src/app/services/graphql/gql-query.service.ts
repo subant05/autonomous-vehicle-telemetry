@@ -5,7 +5,6 @@ import { v4 as uuid } from "uuid"
 import { map } from 'rxjs/operators'
 import {ImageService} from 'src/app/services/images/image.service'
 import { resourceLimits } from 'worker_threads';
-import { onError } from "@apollo/client/link/error";
 
 const QueryQL = require("src/app/graphql/query-syntax/query")
 
@@ -17,18 +16,7 @@ export class GqlQueryService {
   constructor( 
     private graphService: Apollo
     , private imageService:ImageService 
-  ) { 
-    const link = onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors)
-        graphQLErrors.map(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
-    
-      if (networkError) console.log(`[Network error]: ${networkError}`);
-    });
-  }
+  ) { }
 
   private basicFilteredQuery (Query:any, variables:any={}) {
     return this.graphService

@@ -15,6 +15,7 @@
     "@babel/node": "^7.14.7",
     "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "^7.14.8",
+    "@formant/data-sdk": "^0.0.28",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "@graphile/pg-pubsub": "^4.12.1",
     "apollo-server": "^2.24.0",
