@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS production.missions(
     num_true_positives bigint NOT NULL,
     num_false_positives bigint NOT NULL,
     num_teleop_queries bigint NOT NULL,
-    mission_start_time timestamp NOT NULL,
+    mission_start_time TIMESTAMPTZ NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT fk_vehicle_id
         FOREIGN KEY (vehicle_id)

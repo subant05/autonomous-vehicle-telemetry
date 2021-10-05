@@ -32,7 +32,7 @@ if (cluster.isPrimary) {
 } else {
   console.log(`Worker ${process.pid} started`);
 
-  posix.setrlimit('nofile', { soft: 10000 });
+  // posix.setrlimit('nofile', { soft: 10000 });
   const pluginHook = makePluginHook([PgPubsub]);
   dotenv.config({ path: './.env' })
   const app = express();
