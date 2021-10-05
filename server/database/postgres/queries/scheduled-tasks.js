@@ -29,6 +29,6 @@ export const publishOnlineVehicles = async ()=>{
       )
     `)
 
-    setTimeout(()=>publishOnlineVehicles(), 500)
+    setTimeout(()=>publishOnlineVehicles(), 1000)
 
 }
