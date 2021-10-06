@@ -69,20 +69,12 @@ export class GqlQueryService {
   getOnlineVehicles({sort=""}={}){
     return this.basicFilteredQuery(QueryQL.Vehicles.Online)
       .pipe(map(response=>{
-        const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle:any)=>{
-          const result = {...vehicle.vehicle}
-          result.id = vehicle.id
-          if(result.vehicleStatuses.nodes.length){
-            result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0]
-            result.state = result.vehicleStatuses.nodes[0].state
-          }
 
-          return result
-        })
+        const results = response.data.onlineVehicles.nodes
         switch(sort){
           case "alert":
             return results.sort((a:any, b:any)=>
-              a.alerts.alertType.severity - b.alerts.alertType.severity
+              a.alertSeverity - b.alertSeverity
             )
             break;
           default:
@@ -90,6 +82,27 @@ export class GqlQueryService {
             break;
         }
 
+
+        // const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle:any)=>{
+        //   const result = {...vehicle.vehicle}
+        //   result.id = vehicle.id
+        //   if(result.vehicleStatuses.nodes.length){
+        //     result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0]
+        //     result.state = result.vehicleStatuses.nodes[0].state
+        //   }
+
+        //   return result
+        // })
+        // switch(sort){
+        //   case "alert":
+        //     return results.sort((a:any, b:any)=>
+        //       a.alerts.alertType.severity - b.alerts.alertType.severity
+        //     )
+        //     break;
+        //   default:
+        //     return results
+        //     break;
+        // }
       }))
   }
 

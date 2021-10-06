@@ -3124,42 +3124,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-angular */ 9463);
 
 
+// const onlineVehicles  = gql`
+// query OnlineVehicles {
+//     vehiclesOnlines{
+//       nodes{
+//         id
+//         vehicleId
+//         vehicle{
+//           vehicleStatuses(first:1,orderBy:ID_DESC) {
+//             nodes{
+//               alerts(first:1,orderBy:ID_DESC) {
+//                 nodes{
+//                   alertType {
+//                     name
+//                     severity
+//                   }
+//                   message
+//                   read
+//                   dismissed
+//                 }
+//               }
+//               state {
+//                 description
+//                 name
+//               }
+//             }
+//           }
+//           id
+//           vehicle_id: id
+//           name
+//           deviceId
+//           ip
+//         }
+//       }
+//     }
+//   }
+// `
+
 const onlineVehicles  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
-query OnlineVehicles {
-    vehiclesOnlines{
+  query OnlineVehicles{
+    onlineVehicles{
       nodes{
-        id
         vehicleId
-        vehicle{
-          vehicleStatuses(first:1,orderBy:ID_DESC) {
-            nodes{
-              alerts(first:1,orderBy:ID_DESC) {
-                nodes{
-                  alertType {
-                    name
-                    severity
-                  }
-                  message
-                  read
-                  dismissed
-                }
-              }
-              state {
-                description
-                name
-              }
-            }
-          }
-          id
-          vehicle_id: id
-          name
-          deviceId
-          ip
-        }
+        id
+        ip
+        vehicleName
+        deviceId
+        alertSeverity
+        alertName
+        alertMessage
       }
     }
   }
 `
+
 
 
 
@@ -8028,7 +8046,7 @@ function VehiclesOnlineComponent_td_11_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const col_r13 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", col_r13.vehicle_id, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", col_r13.vehicleId, " ");
 } }
 function VehiclesOnlineComponent_th_13_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "th", 13);
@@ -8043,7 +8061,7 @@ function VehiclesOnlineComponent_td_14_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const col_r14 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipeBind1"](2, 1, col_r14.name), " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipeBind1"](2, 1, col_r14.vehicleName), " ");
 } }
 function VehiclesOnlineComponent_th_16_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "th", 13);
@@ -8147,14 +8165,14 @@ class VehiclesOnlineComponent extends src_app_components_table_table_utils__WEBP
         }
     }
     renderAlertsColumn(row) {
-        if (!row.alerts)
+        if (!row.alertName)
             return 'information';
-        switch (row.alerts.alertType.severity) {
+        switch (row.alertName) {
             case 1:
                 return 'priority_high';
                 break;
             case 2:
-                return row.alerts.alertType.name;
+                return row.alertName;
                 break;
             default:
                 return 'information';
@@ -11361,23 +11379,34 @@ class GqlQueryService {
     getOnlineVehicles({ sort = "" } = {}) {
         return this.basicFilteredQuery(QueryQL.Vehicles.Online)
             .pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.map)(response => {
-            const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle) => {
-                const result = Object.assign({}, vehicle.vehicle);
-                result.id = vehicle.id;
-                if (result.vehicleStatuses.nodes.length) {
-                    result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0];
-                    result.state = result.vehicleStatuses.nodes[0].state;
-                }
-                return result;
-            });
+            const results = response.data.onlineVehicles.nodes;
             switch (sort) {
                 case "alert":
-                    return results.sort((a, b) => a.alerts.alertType.severity - b.alerts.alertType.severity);
+                    return results.sort((a, b) => a.alertSeverity - b.alertSeverity);
                     break;
                 default:
                     return results;
                     break;
             }
+            // const results = !response.data.vehiclesOnlines ? [] : response.data.vehiclesOnlines.nodes.map((vehicle:any)=>{
+            //   const result = {...vehicle.vehicle}
+            //   result.id = vehicle.id
+            //   if(result.vehicleStatuses.nodes.length){
+            //     result.alerts = result.vehicleStatuses.nodes[0].alerts.nodes[0]
+            //     result.state = result.vehicleStatuses.nodes[0].state
+            //   }
+            //   return result
+            // })
+            // switch(sort){
+            //   case "alert":
+            //     return results.sort((a:any, b:any)=>
+            //       a.alerts.alertType.severity - b.alerts.alertType.severity
+            //     )
+            //     break;
+            //   default:
+            //     return results
+            //     break;
+            // }
         }));
     }
     getOfflineVehicles() {

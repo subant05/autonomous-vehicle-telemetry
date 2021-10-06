@@ -96,15 +96,15 @@ export class VehiclesOnlineComponent extends TableUtil implements OnInit, AfterV
   }
 
   renderAlertsColumn(row:any){
-    if(!row.alerts)
+    if(!row.alertName)
       return 'information'
 
-    switch(row.alerts.alertType.severity){
+    switch(row.alertName){
       case 1:
         return 'priority_high'
         break;
       case 2:
-        return row.alerts.alertType.name
+        return row.alertName
         break;
       default:
           return 'information'
