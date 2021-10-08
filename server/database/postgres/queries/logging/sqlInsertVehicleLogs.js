@@ -80,7 +80,7 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
     }catch(e){
         console.log("INSERT VEHICLE LOG ERROR MESSAGE: ", e.message)
         console.log("INSERT VEHICLE LOG ERROR STACK: ", e.stack)
-        cb(e)
+        // cb(e)
         return null
     } 
 }

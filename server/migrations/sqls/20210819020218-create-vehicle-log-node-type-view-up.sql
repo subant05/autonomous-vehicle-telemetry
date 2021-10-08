@@ -1,4 +1,4 @@
-CREATE VIEW logging.vehicle_log_node_types AS
+CREATE OR REPLACE VIEW logging.vehicle_log_node_types AS
 SELECT  
     DISTINCT logging.vehicle_log_messages.name as node_type, 
     vehicles.vehicles.id as vehicle_id,

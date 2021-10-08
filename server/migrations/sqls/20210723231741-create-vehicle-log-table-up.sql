@@ -92,3 +92,48 @@ CREATE INDEX idx_vehicle_logs_topic_id ON logging.vehicle_logs(topic_id);
 CREATE INDEX idx_vehicle_logs_vehicle_log_message_id ON logging.vehicle_logs(message_id);
 CREATE INDEX idx_vehicle_logs_readingat ON logging.vehicle_logs(readingat);
 
+
+
+CREATE TABLE IF NOT EXISTS logging.vehicle_logs_partitioned(
+    id BIGSERIAL,
+    message_id BIGINT NOT NULL,
+    vehicle_id BIGINT NOT NULL,
+    topic_id BIGINT NOT NULL,
+    readingAt TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT fk_vehicle_log_message_id
+        FOREIGN KEY (message_id)
+        REFERENCES logging.vehicle_log_messages(id),
+    CONSTRAINT fk_vehicle_id
+        FOREIGN KEY (vehicle_id)
+        REFERENCES vehicles.vehicles(id),
+    CONSTRAINT fk_topic_id
+        FOREIGN KEY (topic_id)
+        REFERENCES topics.topics(id)
+)
+PARTITION BY RANGE(readingAt);
+
+
+COMMENT ON TABLE logging.vehicle_logs_partitioned IS 'Vehicle logs table contains the logs the are streamed from the vehicle';
+COMMENT ON COLUMN logging.vehicle_logs_partitioned.id IS '@omit create,update
+This is the id of the log and its autoincremented';
+COMMENT ON COLUMN logging.vehicle_logs_partitioned.message_id IS '@omit create,update
+This is the log message id assocated with the  log';
+COMMENT ON COLUMN logging.vehicle_logs_partitioned.vehicle_id IS '@omit create,update
+This is the vehicle id the log is associated with';
+COMMENT ON COLUMN logging.vehicle_logs_partitioned.topic_id IS '@omit create,update
+The topic associated with the log';
+COMMENT ON COLUMN logging.vehicle_logs_partitioned.readingAt IS '@omit create,update
+The timestamp the log was created on the vehicle';
+COMMENT ON COLUMN logging.vehicle_logs_partitioned.created_at IS '@omit create,update
+The timestamp the log inserted into database';
+
+CREATE INDEX idx_vehicle_logs_partitioned_id ON logging.vehicle_logs_partitioned(id);
+CREATE INDEX idx_vehicle_logs_partitioned_vehicle_id ON logging.vehicle_logs_partitioned(vehicle_id);
+CREATE INDEX idx_vehicle_logs_partitioned_topic_id ON logging.vehicle_logs_partitioned(topic_id);
+CREATE INDEX idx_vehicle_logs_partitioned_vehicle_log_message_id ON logging.vehicle_logs_partitioned(message_id);
+CREATE INDEX idx_vehicle_logs_partitioned_readingat ON logging.vehicle_logs_partitioned(readingat);
+
+DELETE from logging.vehicle_logs where readingat > NOW();
+insert into logging.vehicle_logs_partitioned (id, message_id, topic_id, vehicle_id, readingat, created_at)
+select id, message_id, topic_id, vehicle_id, readingat, created_at from logging.vehicle_logs;
