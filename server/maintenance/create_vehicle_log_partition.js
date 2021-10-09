@@ -45,7 +45,7 @@ const formatDateTime  = (datetime)=>{
 
 const addVehcileLogPartition = () =>{
     try{
-        const day = moment().add(4, 'days').utc().format("yyyy_MM_DD").toString()
+        const day = moment().add(2, 'days').utc().format("yyyy_MM_DD").toString()
         return client.query(`
             CREATE TABLE IF NOT EXISTS logging.vehicle_logs_d${day}
             PARTITION OF logging.vehicle_logs_partitioned
