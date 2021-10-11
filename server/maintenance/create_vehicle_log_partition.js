@@ -45,10 +45,12 @@ const formatDateTime  = (datetime)=>{
 
 const addVehcileLogPartition = () =>{
     try{
-        const day = moment().add(2, 'days').utc().format("yyyy_MM_DD").toString()
+        const day = moment().add(1, 'days').utc().format("yyyy_MM_DD").toString()
+        const nextDay = moment().add(2, 'days').utc().format("yyyy_MM_DD").toString()
+
         return client.query(`
             CREATE TABLE IF NOT EXISTS logging.vehicle_logs_d${day}
-            PARTITION OF logging.vehicle_logs_partitioned
+            PARTITION OF logging.vehicle_logs
             FOR VALUES
             FROM ('${day} 00:00:00.000000+00')
             TO ('${day} 23:59:59.999999+00');
