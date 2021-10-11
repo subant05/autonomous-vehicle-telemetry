@@ -1,7 +1,4 @@
 import { makeExtendSchemaPlugin, gql, embed } from 'graphile-utils';
-import {formatDateTime} from '../../database/postgres/queries/_utils'
-import moment from 'moment'
-
 let run = false
 
 export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql }) => ({
@@ -279,7 +276,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                 { graphile: { selectGraphQLResultFromTable } }
             ) {
                 const rows = await selectGraphQLResultFromTable(
-                    sql.fragment`logging.vehicle_nodes_trigger_d${moment().utc().format("yyyy_MM_DD").toString()}`,
+                    sql.fragment`logging.vehicle_log_view`,
                     (tableAlias, sqlBuilder) => {
                         sqlBuilder.where(
                             sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`
