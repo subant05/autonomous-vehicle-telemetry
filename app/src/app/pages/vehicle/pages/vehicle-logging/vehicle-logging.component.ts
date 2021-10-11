@@ -190,10 +190,7 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
 
   const addData = (response:any) => {
     this.updateTable({data:{
-      readingat: response.readingat
-      , ...response.message
-      , ...response.message.stamp
-      , __typename: "VehicleLogView"
+      ...response
       , stamp:null
       }, action:"prepend"})
   }
@@ -203,10 +200,10 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
       if(response && 
         ( this.fgLoggingFilter.value.logType.indexOf("logging") !== -1 && 
           this.fgLoggingFilter.value.isLive)){
-            if(this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1){
+            if(this.fgLoggingFilter.value.nodes.indexOf(response.name) > -1){
               addData(response)
-            } else if (this.nodes.indexOf(response.message.name) === -1){
-                this.nodes.push(response.message.name)
+            } else if (this.nodes.indexOf(response.name) === -1){
+                this.nodes.push(response.name)
                 this.nodes = this.nodes.sort((a:any,b:any)=>{
                   if(a < b)
                     return -1

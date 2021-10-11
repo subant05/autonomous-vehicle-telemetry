@@ -4,19 +4,22 @@ const loggingByVehicleId  = gql`
 subscription LoggingSubscription ($vehicleId: BigInt) {
     sqlVehicleLogging {
         vehicle_logs(vehicleId:$vehicleId) {
+            id
             readingat
-            message{
-            stamp{
-                sec
-                nanosec
-            }
-            msg
-            line
+            topicId
+            vehicleId
+            name: node
+            function
             file
             level
-            name
-            function
-            }
+            msg
+            sec
+            nanosec
+            sec
+            nanosec
+            deviceId
+            node
+            vehicleName
         }
     }
 }

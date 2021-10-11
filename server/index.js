@@ -6,6 +6,7 @@ import ApiRouter from './api-routes/'
 import dotenv from 'dotenv'
 import { postgraphile, makePluginHook }  from "postgraphile";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
+import {tableExtensionPlugin} from 'postgraphile-table-extension-plugin';
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import PgPubsub from "@graphile/pg-pubsub"
 import {JupiterSubscriptionPlugin} from './plugins/postgraphile/subscriptions'
@@ -65,6 +66,7 @@ if (cluster.isPrimary) {
         {
           appendPlugins: [
             PgSimplifyInflectorPlugin
+            , tableExtensionPlugin
             , ConnectionFilterPlugin
             , JupiterSubscriptionPlugin
           ],

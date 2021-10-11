@@ -137,3 +137,33 @@ CREATE INDEX idx_vehicle_logs_partitioned_readingat ON logging.vehicle_logs_part
 DELETE from logging.vehicle_logs where readingat > NOW();
 insert into logging.vehicle_logs_partitioned (id, message_id, topic_id, vehicle_id, readingat, created_at)
 select id, message_id, topic_id, vehicle_id, readingat, created_at from logging.vehicle_logs;
+
+
+COMMENT ON TABLE logging.vehicle_logs IS NULL;
+COMMENT ON COLUMN logging.vehicle_logs.id IS  NULL;
+COMMENT ON COLUMN logging.vehicle_logs.message_id IS  NULL;
+COMMENT ON COLUMN logging.vehicle_logs.vehicle_id IS  NULL;
+COMMENT ON COLUMN logging.vehicle_logs.topic_id IS  NULL;
+COMMENT ON COLUMN logging.vehicle_logs.readingAt IS  NULL;
+COMMENT ON COLUMN logging.vehicle_logs.created_at IS  NULL;
+
+COMMENT ON TABLE logging.vehicle_logs IS 'Vehicle logs table contains the logs the are streamed from the vehicle';
+COMMENT ON COLUMN logging.vehicle_logs.id IS '@omit create,update
+This is the id of the log and its autoincremented';
+COMMENT ON COLUMN logging.vehicle_logs.message_id IS '@omit create,update
+This is the log message id assocated with the  log';
+COMMENT ON COLUMN logging.vehicle_logs.vehicle_id IS '@omit create,update
+This is the vehicle id the log is associated with';
+COMMENT ON COLUMN logging.vehicle_logs.topic_id IS '@omit create,update
+The topic associated with the log';
+COMMENT ON COLUMN logging.vehicle_logs.readingAt IS '@omit create,update
+The timestamp the log was created on the vehicle';
+COMMENT ON COLUMN logging.vehicle_logs.created_at IS '@omit create,update
+The timestamp the log inserted into database';
+
+
+CREATE INDEX idx_vehicle_logs_id ON logging.vehicle_logs(id);
+CREATE INDEX idx_vehicle_logs_vehicle_id ON logging.vehicle_logs(vehicle_id);
+CREATE INDEX idx_vehicle_logs_topic_id ON logging.vehicle_logs(topic_id);
+CREATE INDEX idx_vehicle_logs_vehicle_log_message_id ON logging.vehicle_logs(message_id);
+CREATE INDEX idx_vehicle_logs_readingat ON logging.vehicle_logs(readingat);

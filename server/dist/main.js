@@ -2051,7 +2051,7 @@ __webpack_require__.r(__webpack_exports__);
 const logging = (paginationRange=25, nodes=[])=>`
 logging: vehicleLogViews(
   first: ${paginationRange}, 
-  orderBy: ID_DESC, 
+  orderBy: READINGAT_DESC, 
   offset: $cursor
   condition:{vehicleId:$vehicleId}
   filter:{
@@ -3672,19 +3672,22 @@ const loggingByVehicleId  = apollo_angular__WEBPACK_IMPORTED_MODULE_0__.default`
 subscription LoggingSubscription ($vehicleId: BigInt) {
     sqlVehicleLogging {
         vehicle_logs(vehicleId:$vehicleId) {
+            id
             readingat
-            message{
-            stamp{
-                sec
-                nanosec
-            }
-            msg
-            line
+            topicId
+            vehicleId
+            name: node
+            function
             file
             level
-            name
-            function
-            }
+            msg
+            sec
+            nanosec
+            sec
+            nanosec
+            deviceId
+            node
+            vehicleName
         }
     }
 }
@@ -9600,7 +9603,7 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
     // 
     initLiveLogging() {
         const addData = (response) => {
-            this.updateTable({ data: Object.assign(Object.assign(Object.assign({ readingat: response.readingat }, response.message), response.message.stamp), { __typename: "VehicleLogView", stamp: null }), action: "prepend" });
+            this.updateTable({ data: Object.assign(Object.assign({}, response), { stamp: null }), action: "prepend" });
         };
         this.loggingSubscription = this.graphQLSubscription
             .getLoggingByVehicleId({ vehicleId: this.vehicleId })
@@ -9608,11 +9611,11 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             if (response &&
                 (this.fgLoggingFilter.value.logType.indexOf("logging") !== -1 &&
                     this.fgLoggingFilter.value.isLive)) {
-                if (this.fgLoggingFilter.value.nodes.indexOf(response.message.name) > -1) {
+                if (this.fgLoggingFilter.value.nodes.indexOf(response.name) > -1) {
                     addData(response);
                 }
-                else if (this.nodes.indexOf(response.message.name) === -1) {
-                    this.nodes.push(response.message.name);
+                else if (this.nodes.indexOf(response.name) === -1) {
+                    this.nodes.push(response.name);
                     this.nodes = this.nodes.sort((a, b) => {
                         if (a < b)
                             return -1;

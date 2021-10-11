@@ -52,6 +52,10 @@ const addVehcileLogPartition = () =>{
             FOR VALUES
             FROM ('${day} 00:00:00.000000+00')
             TO ('${day} 23:59:59.999999+00');
+
+            CREATE TRIGGER vehicle_nodes_trigger${day}
+            AFTER INSERT ON  logging.vehicle_logs_d${day}FOR EACH ROW
+            EXECUTE PROCEDURE  logging.vehicle_log_nodes_insert();
         `);
     
     }catch (e){

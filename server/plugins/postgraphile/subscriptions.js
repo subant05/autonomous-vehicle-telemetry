@@ -49,7 +49,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
 
       type SQLVehicleLoggingPayload {
         # (Subscription PAYLOAD Type ) camera data returned on this subscription type resolver below
-          vehicle_logs(vehicleId: BigInt): VehicleLog
+          vehicle_logs(vehicleId: BigInt): VehicleLogView
           event:String
       }
 
@@ -276,7 +276,7 @@ export const JupiterSubscriptionPlugin = makeExtendSchemaPlugin(({ pgSql: sql })
                 { graphile: { selectGraphQLResultFromTable } }
             ) {
                 const rows = await selectGraphQLResultFromTable(
-                    sql.fragment`logging.vehicle_logs`,
+                    sql.fragment`logging.vehicle_log_view`,
                     (tableAlias, sqlBuilder) => {
                         sqlBuilder.where(
                             sql.fragment`${tableAlias}.id = ${sql.value(event.__node__[0])}`

@@ -40,7 +40,7 @@
 export const logging = (paginationRange=25, nodes=[])=>`
 logging: vehicleLogViews(
   first: ${paginationRange}, 
-  orderBy: ID_DESC, 
+  orderBy: READINGAT_DESC, 
   offset: $cursor
   condition:{vehicleId:$vehicleId}
   filter:{
