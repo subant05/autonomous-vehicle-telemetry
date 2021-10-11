@@ -172,7 +172,9 @@ export class VehicleLoggingComponent extends TableUtil implements OnInit, OnDest
     }
 
     if(init){
-      this.initialDataLoad(variables)
+      // this.initialDataLoad(variables)
+      this.isQuerying = false
+      this.isScrollDataLoading = false
     } else {
       if(scroll)
         this.getDataLoad(variables, "concat")
