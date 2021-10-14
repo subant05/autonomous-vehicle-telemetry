@@ -37,6 +37,7 @@ export const sqlInsertPreviewImageJson = async (argTopic, data) =>{
     }catch(e){
         console.log("INSERT CAMERA DATA MESSAGE: ", e.message)
         console.log("INSERT CAMERA DATA STACK: ", e.stack)
+        console.log("INSERT CAMERA DATA JSON: ", JSON.stringify(data, null, " "))
         return null
     }
 }
