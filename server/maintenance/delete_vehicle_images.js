@@ -45,7 +45,7 @@ const formatDateTime  = (datetime)=>{
 
 const addVehcileLogPartition = () =>{
     try{
-        const currentMonth = moment().subtract(30, 'days').utc().format("YYYY-MM-DD").toString()
+        const currentMonth = moment().subtract(15, 'days').utc().format("YYYY-MM-DD").toString()
 
         return client.query(`
             delete from images.image_data where id in (
@@ -55,9 +55,27 @@ const addVehcileLogPartition = () =>{
                 inner join images.camera_message on images.camera_message.image_id = images.images.id
                 inner join images.camera on images.camera.msg_id = images.camera_message.id
                 where images.camera.readingat < ${currentMonth}
-            ) ;
+            ) 
+        `);
+    
+    }catch (e){
+        return Promise.reject(0)
+    }
+}
 
-            delete from images.camera_json where id not in (
+
+addVehcileLogPartition().then((data)=>{
+    console.log(data)
+    process.exit(1);
+}, 
+(data)=>{
+    console.log(data)
+    process.exit(0);
+})
+
+
+/**
+ *             delete from images.camera_json where id not in (
                 select 
                     images.camera.camera_json_id
                 from images.camera
@@ -152,20 +170,4 @@ const addVehcileLogPartition = () =>{
                     images.camera_meta.right_histogram_id as id
                 from images.camera_meta
             );
-
-        `);
-    
-    }catch (e){
-        return Promise.reject(0)
-    }
-}
-
-
-addVehcileLogPartition().then((data)=>{
-    console.log(data)
-    process.exit(1);
-}, 
-(data)=>{
-    console.log(data)
-    process.exit(0);
-})
+ */
