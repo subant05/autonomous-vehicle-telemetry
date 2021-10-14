@@ -9586,9 +9586,9 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             nodes: this.fgLoggingFilter.value.nodes
         };
         if (init) {
-            // this.initialDataLoad(variables)
-            this.isQuerying = false;
-            this.isScrollDataLoading = false;
+            this.initialDataLoad(variables);
+            // this.isQuerying = false
+            // this.isScrollDataLoading = false
         }
         else {
             if (scroll)
@@ -9989,7 +9989,7 @@ class VehicleOverviewComponent {
     }
     findImageByImageId(value) {
         return this.vehicleImages.findIndex((item) => {
-            return !item ? false : item.image.id === value;
+            return !item || !item.image ? false : item.image.id === value;
         });
     }
     setupLiveImageSubscription() {
@@ -10000,7 +10000,7 @@ class VehicleOverviewComponent {
                 if (response.vehicleId !== this.vehicleId)
                     return;
                 const imageIndex = this.findImageByTopicId(response.topicId);
-                if (imageIndex !== -1 && this.vehicleImages[imageIndex].done) {
+                if (imageIndex !== -1 && (!("done" in this.vehicleImages[imageIndex]) || this.vehicleImages[imageIndex].done)) {
                     this.vehicleImages[imageIndex] = {
                         topic: {
                             name: response.topic,

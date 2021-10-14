@@ -42,7 +42,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
 
   private findImageByImageId(value:any){
     return this.vehicleImages.findIndex((item:any)=>{
-      return !item ? false : item.image.id === value
+      return !item || !item.image ? false : item.image.id === value
     }) 
   }
 
@@ -57,7 +57,7 @@ export class VehicleOverviewComponent implements OnInit, OnDestroy, AfterViewIni
       
       const imageIndex = this.findImageByTopicId(response.topicId)
 
-      if(imageIndex !== -1 && this.vehicleImages[imageIndex].done){
+      if(imageIndex !== -1 && (!("done" in this.vehicleImages[imageIndex]) || this.vehicleImages[imageIndex].done)){
         this.vehicleImages[imageIndex] = {
           topic:{
              name: response.topic
