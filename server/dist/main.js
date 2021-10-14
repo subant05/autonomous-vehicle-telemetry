@@ -9586,9 +9586,9 @@ class VehicleLoggingComponent extends src_app_components_table_table_utils__WEBP
             nodes: this.fgLoggingFilter.value.nodes
         };
         if (init) {
-            this.initialDataLoad(variables);
-            // this.isQuerying = false
-            // this.isScrollDataLoading = false
+            // this.initialDataLoad(variables)
+            this.isQuerying = false;
+            this.isScrollDataLoading = false;
         }
         else {
             if (scroll)
