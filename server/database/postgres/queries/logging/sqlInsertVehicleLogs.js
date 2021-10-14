@@ -80,6 +80,8 @@ export const sqlInsertVehicleLogs = async (argTopic, data, cb = a => a) => {
     }catch(e){
         console.log("INSERT VEHICLE LOG ERROR MESSAGE: ", e.message)
         console.log("INSERT VEHICLE LOG ERROR STACK: ", e.stack)
+        console.log("INSERT CAMERA VEHICLE SQL RESULT: ", data[0].vehicle)
+        console.log("INSERT CAMERA JSON VEHICLE PROPERTY: ", JSON.stringify(data.vehicle, null, " "))
         // cb(e)
         return null
     } 
