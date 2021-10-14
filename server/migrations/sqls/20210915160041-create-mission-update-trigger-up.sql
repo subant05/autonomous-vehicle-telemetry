@@ -6,17 +6,17 @@ CREATE OR REPLACE FUNCTION production.missions_insert()
 BEGIN
         UPDATE production.missions
         SET 
-            duration_autonomy_stopped = NEW.duration_autonomy_stopped, 
-            duration_autonomy_driving = NEW.duration_autonomy_driving,
-            duration_no_autonomy =NEW.duration_no_autonomy,
-            duration_teleop = NEW.duration_teleop,
-            autonomy_distance_travelled_m = NEW.autonomy_distance_travelled_m,
-            autonomy_area_travelled_sqm = NEW.autonomy_area_travelled_sqm,
-            num_stops = NEW.num_stops,
-            num_state_demotion = NEW.num_state_demotion,
-            num_true_positives = NEW.num_true_positives,
-            num_false_positives = NEW.num_false_positives,
-            num_teleop_queries = NEW.num_teleop_queries
+            duration_autonomy_stopped = GREATEST(duration_autonomy_stopped, NEW.duration_autonomy_stopped), 
+            duration_autonomy_driving = GREATEST(duration_autonomy_driving, NEW.duration_autonomy_driving),
+            duration_no_autonomy = GREATEST(duration_no_autonomy, NEW.duration_no_autonomy),
+            duration_teleop = GREATEST(duration_teleop, NEW.duration_teleop),
+            autonomy_distance_travelled_m = GREATEST(autonomy_distance_travelled_m, NEW.autonomy_distance_travelled_m),
+            autonomy_area_travelled_sqm = GREATEST(autonomy_area_travelled_sqm, NEW.autonomy_area_travelled_sqm),
+            num_stops = GREATEST(num_stops, NEW.num_stops),
+            num_state_demotion = GREATEST(num_state_demotion, NEW.num_state_demotion),
+            num_true_positives = GREATEST(num_true_positives, NEW.num_true_positives),
+            num_false_positives = GREATEST(num_false_positives, NEW.num_false_positives),
+            num_teleop_queries = GREATEST(num_teleop_queries, NEW.num_teleop_queries)
         WHERE
             mission_start_time = NEW.mission_start_time
 			AND vehicle_id = (SELECT 
