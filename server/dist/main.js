@@ -3665,20 +3665,12 @@ subscription LoggingSubscription ($vehicleId: BigInt) {
         vehicle_logs(vehicleId:$vehicleId) {
             id
             readingat
-            topicId
             vehicleId
             name: node
             function
             file
             level
             msg
-            sec
-            nanosec
-            sec
-            nanosec
-            deviceId
-            node
-            vehicleName
         }
     }
 }
