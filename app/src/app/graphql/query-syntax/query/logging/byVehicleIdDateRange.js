@@ -17,15 +17,12 @@ logging: vehicleLogViews(
     nodes{
       id
       readingat
-      topicId
       vehicleId
       name: node
       function
       file
       level
       msg
-      sec
-      nanosec
     }
   }
 }
