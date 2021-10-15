@@ -45,7 +45,7 @@ const formatDateTime  = (datetime)=>{
 
 const addVehcileLogPartition = () =>{
     try{
-        const currentMonth = moment().subtract(15, 'days').utc().format("YYYY-MM-DD").toString()
+        const currentMonth = moment().subtract(13, 'days').utc().format("YYYY-MM-DD").toString()
 
         return client.query(`
             delete from images.image_data where id in (
