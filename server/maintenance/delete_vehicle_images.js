@@ -54,7 +54,7 @@ const addVehcileLogPartition = () =>{
                 from images.images
                 inner join images.camera_message on images.camera_message.image_id = images.images.id
                 inner join images.camera on images.camera.msg_id = images.camera_message.id
-                where images.camera.readingat < ${currentMonth}
+                where images.camera.readingat < '${currentMonth}'
             ) 
         `);
     
